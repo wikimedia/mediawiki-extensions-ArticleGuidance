@@ -1,0 +1,25 @@
+{
+	"name": "ArticleGuidance",
+	"author": [
+		"Stephane Bisson",
+		"Eduardo Medina",
+		"Nik Gkountas"
+	],
+	"url": "https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ArticleGuidance",
+	"descriptionmsg": "articleguidance-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.45.0"
+	},
+	"config": {},
+	"HookHandlers": {},
+	"Hooks": {},
+	"MessagesDirs": {
+		"ArticleGuidance": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {},
+	"manifest_version": 2
+}

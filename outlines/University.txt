@@ -1,0 +1,41 @@
+<noinclude>
+<article-guidance article-type="Q3918" notability-risk=0>
+Accredited universities and colleges are generally considered notable under Wikipedia's [[WP:ORG|organizational notability guidelines]]. Focus on what makes this institution distinctive: its research output, academic reputation, historical significance, or cultural contributions. Maintain a [[WP:NPOV|neutral point of view]]—avoid promotional language, cherry-picked rankings, or presenting the institution in an unduly favorable light. Use reliable, independent secondary sources such as academic publications, government accreditation reports, and established news media rather than the university's own marketing materials. Avoid listing every degree programme, all faculty members, or exhaustive student organisation directories—focus on what is notable and well-documented. For research universities, provide specific, sourced examples of research achievements rather than vague claims of excellence. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox university}}
+[University Name] is a [public/private] university located in [City, Country], founded in [year]. It is known for [research profile, academic specialisation, or historical significance], and enrolled approximately [number] students as of [year].
+
+== History ==
+
+[University Name] was established in [year] by [founders or legislation], with an initial focus on [original mission or faculties]. The institution was granted [charter/university status] in [year] and has since expanded to [number] faculties covering [fields].
+
+== Academics ==
+
+The university is organised into [number] faculties, including [Faculty Name] and [Faculty Name]. It offers degrees in [fields] and holds accreditation from [accrediting body]. In the [year] [ranking system], it was ranked [position] among [scope of ranking].
+
+== Research ==
+
+[University Name]'s research strengths lie in [field] and [field]. The [Research Centre Name], established in [year], focuses on [research area]. [Faculty member name] was awarded the [prestigious prize] in [year] for work on [topic].
+
+== Campus ==
+
+The main campus is located in [neighborhood or district] and covers [area]. The [Building Name], built in [year] in [architectural style], is a listed structure. The university library holds [number] volumes and the [special collection name].
+
+== Student life ==
+
+The university has approximately [number] registered student organisations, including [club or society name]. The [sports team name] competes in [league or competition] and won [championship] in [year]. Student media includes [newspaper or radio station name], founded in [year].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:Universities and colleges]]

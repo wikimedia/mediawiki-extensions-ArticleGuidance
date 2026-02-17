@@ -1,0 +1,44 @@
+<noinclude>
+<article-guidance article-type="Q482994" notability-risk=0>
+Follow Wikipedia's [[WP:ALBUM|album guidelines]]. Use reliable music sources and reviews. Ensure proper attribution for production credits and chart data. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox album}}
+[Album Title] is a [genre] studio album by [Artist Name], released on [release date] through [Record Label]. The album [brief description of musical style or themes], and includes the single '[Single Name]', which peaked at number [X] on the [Chart Name].
+
+== Background and recording ==
+
+[Album Title] was recorded between [start year] and [end year] at [Studio Name] in [City]. [Producer Name] produced the album, with sessions described as [brief characterization of the recording process].
+
+== Composition and style ==
+
+The album draws on [genre] and [genre], with lyrics exploring themes of [theme] and [theme]. '[Song Name]' is characterized by [musical feature], while '[Song Name]' incorporates [style element].
+
+== Critical reception ==
+
+[Album Title] received [positive/mixed/negative] reviews from critics. [Publication] awarded it [score], describing it as "[excerpt from review]". [Publication] wrote that the album "[excerpt from review]".
+
+== Track listing ==
+
+{{Track listing
+| title1 = [Song Title]
+| writer1 = [Songwriter Name]
+| length1 = [m:ss]
+| title2 = [Song Title]
+| writer2 = [Songwriter Name]
+| length2 = [m:ss]
+}}
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Album-URL Official Album Page]
+
+[[Category:Albums]]

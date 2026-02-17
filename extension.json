@@ -12,14 +12,152 @@
 	"requires": {
 		"MediaWiki": ">= 1.45.0"
 	},
-	"config": {},
-	"HookHandlers": {},
-	"Hooks": {},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\ArticleGuidance\\": "src/"
+	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
+	"RestRoutes": [
+		{
+			"path": "/articleguidance/v0/outlines",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ListOutlinesHandler",
+			"services": [
+				"ArticleGuidanceOutlineService"
+			]
+		}
+	],
+	"SpecialPages": {
+		"NewArticle": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Specials\\SpecialNewArticle",
+			"services": []
+		}
+	},
+	"HookHandlers": {
+		"RedLinkRedirect": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\RedLinkRedirectHandler",
+			"services": [
+				"ArticleGuidanceTitleExtractor"
+			]
+		},
+		"ArticleGuidanceTag": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\ArticleGuidanceTagHandler",
+			"services": [
+				"ArticleGuidanceWikidataInfoFetcher",
+				"ArticleGuidanceRenderer"
+			]
+		}
+	},
+	"Hooks": {
+		"BeforeInitialize": "RedLinkRedirect",
+		"AlternateEdit": "RedLinkRedirect",
+		"ParserFirstCallInit": [
+			"ArticleGuidanceTag"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"ArticleGuidanceAlias": "ArticleGuidance.alias.php"
+	},
 	"MessagesDirs": {
 		"ArticleGuidance": [
 			"i18n"
 		]
 	},
-	"ResourceModules": {},
+	"ResourceModules": {
+		"ext.articleguidance.newarticle": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"localBasePath": "resources/ext.articleguidance.newarticle",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle",
+			"packageFiles": [
+				"init.js",
+				"App.vue",
+				"api/MediaWiki.js",
+				"api/Outlines.js",
+				"api/Wikidata.js",
+				"api/Sparql.js",
+				"composables/useArticleExist.js",
+				"composables/useSearch.js",
+				"composables/useWikidataSearch.js",
+				"composables/useOutlines.js",
+				"composables/useSteps.js",
+				"components/StepHeader.vue",
+				"components/Step.vue",
+				"components/SearchStep.vue",
+				"components/OutlinesStep.vue",
+				"components/SourcesStep.vue",
+				"components/InstructionsStep.vue",
+				"components/ArticleCard.vue",
+				"components/StateMessage.vue",
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconArrowPrevious"
+					]
+				}
+			],
+			"codexComponents": [
+				"CdxButton",
+				"CdxCard",
+				"CdxIcon",
+				"CdxMessage",
+				"CdxProgressIndicator",
+				"CdxSelect",
+				"CdxTextInput"
+			],
+			"messages": [
+				"articleguidance-specialnewarticle-search-title",
+				"articleguidance-specialnewarticle-title-placeholder",
+				"articleguidance-specialnewarticle-loading",
+				"articleguidance-specialnewarticle-checking",
+				"articleguidance-specialnewarticle-no-results",
+				"articleguidance-specialnewarticle-exists-warning",
+				"articleguidance-specialnewarticle-edit-existing",
+				"articleguidance-specialnewarticle-browse-outlines",
+				"articleguidance-outlines-browse-title",
+				"articleguidance-outlines-browse-subtitle",
+				"articleguidance-sources-title",
+				"articleguidance-sources-subtitle",
+				"articleguidance-sources-notability-title",
+				"articleguidance-sources-notability-description",
+				"articleguidance-sources-references-title",
+				"articleguidance-sources-description",
+				"articleguidance-sources-url-placeholder",
+				"articleguidance-sources-check-button",
+				"articleguidance-sources-remove-button",
+				"articleguidance-sources-unreliable-domain",
+				"articleguidance-sources-invalid-url",
+				"articleguidance-sources-continue",
+				"articleguidance-instructions-title",
+				"articleguidance-instructions-subtitle",
+				"articleguidance-instructions-references-title",
+				"articleguidance-instructions-references-description",
+				"articleguidance-instructions-reference-placeholder",
+				"articleguidance-instructions-start-writing",
+				"articleguidance-navigation-back"
+			],
+			"dependencies": [
+				"vue"
+			]
+		},
+		"ext.articleguidance.tag.styles": {
+			"localBasePath": "resources/ext.articleguidance.tag.styles",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.tag.styles",
+			"styles": [
+				"article-guidance.less"
+			]
+		},
+		"ext.articleguidance.newarticle.styles": {
+			"localBasePath": "resources/ext.articleguidance.newarticle.styles",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle.styles",
+			"styles": [
+				"styles.less"
+			]
+		}
+	},
+	"TrackingCategories": [
+		"articleguidance-tracking-category"
+	],
 	"manifest_version": 2
 }

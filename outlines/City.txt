@@ -1,0 +1,45 @@
+<noinclude>
+<article-guidance article-type="Q515" notability-risk=0>
+Make sure you provide comprehensive coverage of the [[city]]'s geography, history, and demographics using reliable sources. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox settlement}}
+[City Name] is a city in [State/Province], [Country], with a population of approximately [number] as of [year]. It is known for [notable characteristic] and serves as [administrative/economic/cultural role] for [region].
+
+== History ==
+
+[City Name] was founded in [year] by [founder or group], originally serving as a [trading post/military fort/colonial settlement]. The city expanded significantly during [period], driven by [factor such as industrialisation or the railway].
+
+=== Early history ===
+
+The area was first settled by [people or group] around [date]. [Key founder or explorer] established [City Name] in [year], and the first [census/record] recorded a population of [number].
+
+== Geography ==
+
+[City Name] is situated in [geographic description, e.g., a river valley / a coastal plain] at [elevation], bordered by [neighboring cities or natural features]. The climate is [climate type], with [brief description of seasons or weather patterns].
+
+== Demographics ==
+
+As of the [year] census, [City Name] had a population of [number]. The most widely spoken languages are [language] and [language], and [percentage]% of residents identify as [ethnic group].
+
+== Economy ==
+
+The city's economy is centred on [primary industry], with major employers including [Company Name] and [Company Name]. [City Name] is also a hub for [secondary sector or service industry].
+
+== Culture ==
+
+[City Name] is home to [cultural institution], and hosts the annual [Festival Name] each [month]. The city is known for [dish or culinary tradition], and its [arts/sports] scene includes [notable venue or team].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:Cities]]

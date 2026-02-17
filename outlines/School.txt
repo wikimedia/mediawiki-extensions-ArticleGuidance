@@ -1,0 +1,39 @@
+<noinclude>
+<article-guidance article-type="Q3914" notability-risk=1>
+Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organizations]]. Most primary and secondary schools are not considered notable unless they have received significant coverage in reliable, independent sources beyond routine school listings or local news. The school must be described by multiple independent, reliable secondary sources—not the school's own website, yearbooks, or local directories. Avoid promotional or boosterish language; describe the school factually and neutrally per [[WP:NPOV]]. Do not include lists of current students, staff rosters, recent sports results, or routine school events. Focus on what makes the school historically, architecturally, or culturally significant. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox school}}
+[School Name] is a [type, e.g., state secondary/independent grammar] school located in [City, Country], founded in [year]. It is notable for [reason for notability supported by independent sources].
+
+== History ==
+
+[School Name] was founded in [year] by [founder or authority] with the original purpose of [mission]. The school relocated to its current site in [year] and was expanded in [year] following [reason for expansion].
+
+== Campus and facilities ==
+
+The school occupies a [area] site in [location]. Its main building, constructed in [year] in [architectural style], has been listed as [heritage designation] since [year]. The campus also includes [notable facility].
+
+== Academics ==
+
+[School Name] follows the [curriculum framework] and specialises in [subject area or magnet programme]. In the [year] [inspection body] report, the school was rated [grade] overall, with inspectors noting [specific finding from report].
+
+== Notable alumni ==
+
+* [[Alumni Name]], [brief description of notability]
+* [[Alumni Name]], [brief description of notability]
+* [[Alumni Name]], [brief description of notability]
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:Schools]]

@@ -1,0 +1,43 @@
+<noinclude>
+<article-guidance article-type="Q5" notability-risk=1>
+Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability guidelines]]. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox person}}
+[Full Name] (born [birth date] in [birthplace]) is a [nationality] [profession] known for [primary reason for notability]. [He/She/They] [brief additional notable fact, e.g., won the [Award Name] in [year] / directed [notable work] / led [organization]].
+
+== Early life ==
+
+[Last Name] was born on [birth date] in [birthplace] to [parent description]. [He/She/They] attended [School Name] in [city], and later studied [subject] at [University Name], graduating in [year].
+
+== Career ==
+
+=== Early career ===
+
+[Last Name] began [his/her/their] career at [Organization Name] in [year], where [he/she/they] [early role or contribution]. [He/She/They] first gained wider recognition in [year] when [early notable achievement].
+
+=== Major achievements ===
+
+[Last Name]'s most significant work is [work or achievement], which [impact or significance]. In [year], [he/she/they] received the [Award Name] for [reason].
+
+== Personal life ==
+
+[Last Name] married [Spouse Name] in [year] and has [number] children. [He/She/They] resides in [City, Country] and is known for [personal interest or charitable work].
+
+== Legacy ==
+
+[Last Name] is regarded as [assessment of significance] in [field or discipline]. [His/Her/Their] work on [contribution] has influenced [subsequent developments or figures], and [he/she/they] is commemorated by [memorial, award, or institution named after them].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:People]]

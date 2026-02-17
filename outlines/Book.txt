@@ -1,0 +1,37 @@
+<noinclude>
+<article-guidance article-type="Q571" notability-risk=1>
+Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. Use reliable secondary sources for criticism and reception. Avoid excessive plot detail per [[WP:PLOTSUM]]. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox book}}
+[Book Title] is a [year] [genre] [novel/non-fiction book] by [Author Name], first published by [Publisher] on [date]. The work [brief description of premise or subject], and is notable for [reason for notability].
+
+== Plot ==
+
+[Protagonist Name], a [description], [sets out to / is forced to / discovers] [central conflict]. As [he/she/they] [main narrative arc], [complication arises]. The story concludes with [brief, spoiler-aware summary of resolution].
+
+== Themes ==
+
+[Book Title] explores themes of [theme] and [theme]. The author uses [literary technique] to convey [idea], as seen in [example from the text]. Critics have noted the influence of [influence] on the work.
+
+== Reception ==
+
+[Book Title] received [positive/mixed/negative] reviews upon publication. [Publication] called it "[excerpt]", while [Publication] wrote that "[excerpt]". The book won the [Award Name] in [year].
+
+== Legacy and influence ==
+
+[Book Title] is regarded as [assessment of significance] in [genre or field]. It has influenced [subsequent works or authors], and has been adapted into [film/television/stage production] in [year].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Publisher-URL Publisher's page]
+
+[[Category:Books]]

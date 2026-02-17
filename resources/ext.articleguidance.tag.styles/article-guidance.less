@@ -1,0 +1,77 @@
+@import 'mediawiki.skin.variables.less';
+
+.ext-articleguidance {
+	border: 1px solid @border-color-base;
+	border-radius: 2px;
+	padding: 12px;
+	margin: 8px 0;
+	background-color: @background-color-neutral-subtle;
+	overflow: auto; // Clear floats
+}
+
+.ext-articleguidance-image {
+	float: right;
+	max-width: 120px;
+	max-height: 120px;
+	margin-left: 12px;
+	margin-bottom: 8px;
+	border-radius: 2px;
+	border: 1px solid @border-color-subtle;
+}
+
+.ext-articleguidance-header {
+	font-weight: bold;
+	margin-bottom: 8px;
+	color: @color-base;
+}
+
+.ext-articleguidance-type {
+	display: inline-block;
+	background-color: @background-color-neutral-subtle;
+	padding: 2px 8px;
+	border-radius: 2px;
+	font-size: 0.9em;
+	margin-right: 8px;
+}
+
+.ext-articleguidance-type-label {
+	font-weight: bold;
+	color: @color-progressive;
+}
+
+.ext-articleguidance-description {
+	font-style: italic;
+	color: @color-subtle;
+	margin-top: 4px;
+	font-size: 0.95em;
+}
+
+.ext-articleguidance-risk-warning {
+	display: inline-block;
+	background-color: @background-color-warning-subtle;
+	border: 1px solid @border-color-warning;
+	padding: 4px 8px;
+	border-radius: 2px;
+	margin-top: 8px;
+	color: @color-warning;
+}
+
+.ext-articleguidance-risk-warning::before {
+	content: '⚠ ';
+}
+
+.ext-articleguidance-content {
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid @border-color-subtle;
+}
+
+.ext-articleguidance-invalid {
+	border-color: @border-color-error;
+	background-color: @background-color-error-subtle;
+}
+
+.ext-articleguidance-error {
+	color: @color-error;
+	font-weight: bold;
+}

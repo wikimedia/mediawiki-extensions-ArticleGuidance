@@ -1,0 +1,40 @@
+<noinclude>
+<article-guidance article-type="Q11424" notability-risk=0>
+Follow Wikipedia's [[WP:FILM|film guidelines]]. Keep plot summaries concise per [[WP:PLOT]]. Use reliable film sources and reviews. Avoid excessive detail and maintain encyclopedic tone. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox film}}
+[Film Title] is a [year] [genre] film directed by [Director Name], starring [Lead Actor] and [Lead Actor]. The film follows [brief, one-sentence premise], and was released by [Distributor] on [release date].
+
+== Plot ==
+
+[Protagonist Name], a [description], [sets out to / is forced to / discovers] [central conflict]. As [he/she/they] [main narrative arc], [complication arises]. The film concludes when [resolution, written without unnecessary spoilers].
+
+== Cast ==
+
+* [Actor Name] as [Character Name], a [brief character description]
+* [Actor Name] as [Character Name], a [brief character description]
+* [Actor Name] as [Character Name], a [brief character description]
+
+== Production ==
+
+[Film Title] was developed by [Production Company] over [time period]. [Director Name] was attached to direct in [year], and principal photography took place in [location] between [start month/year] and [end month/year].
+
+== Reception ==
+
+[Film Title] earned $[amount] at the worldwide box office. It holds a [score]% approval rating on Rotten Tomatoes based on [number] reviews, with the consensus stating "[critical consensus text]". The film received [number] nominations at the [Awards ceremony], winning [number].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://IMDb-URL IMDb entry]
+* [https://Official-Website-URL Official Website]
+
+[[Category:Films]]

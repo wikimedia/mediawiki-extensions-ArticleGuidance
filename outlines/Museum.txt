@@ -1,0 +1,41 @@
+<noinclude>
+<article-guidance article-type="Q33506" notability-risk=0>
+Make sure you are not personally affiliated with the [[museum]] in any way, shape or form! [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox museum}}
+The [Museum Name] is a [type, e.g., art/natural history/science] museum located in [City, Country]. Founded in [year], the museum holds a collection of [brief description of holdings].
+
+== Location ==
+
+The [Museum Name] is situated at [address] in [neighborhood], [City]. It is accessible by [public transport options] and is located [proximity to a landmark or city centre].
+
+== History ==
+
+The [Museum Name] was founded in [year] by [founder or institution]. Originally housed in [first location], it moved to its current premises in [year].
+
+{{Timeline}}
+
+== Collections ==
+
+=== Permanent collections ===
+
+The museum's permanent collection includes [collection name], comprising [number] works of [type]. Notable holdings include [specific work or artifact] by [creator], dating from [period].
+
+=== Temporary exhibits ===
+
+The museum currently presents [Exhibition Name] ([opening date] – [closing date]), featuring [brief description of exhibit content and origin].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:Museums]]

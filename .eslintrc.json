@@ -2,5 +2,8 @@
 	"root": true,
 	"extends": [
 		"wikimedia/server"
-	]
+	],
+	"parserOptions": {
+		"ecmaVersion": 2018
+	}
 }

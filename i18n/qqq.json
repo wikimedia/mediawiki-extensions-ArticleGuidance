@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Stephane Bisson",
 			"Eduardo Medina",
-			"Nik Gkountas"
+			"Nik Gkountas",
+			"Stephane Bisson"
 		]
 	},
 	"articleguidance-desc": "{{desc|name=ArticleGuidance|url=https://www.mediawiki.org/wiki/Extension:ArticleGuidance}}"

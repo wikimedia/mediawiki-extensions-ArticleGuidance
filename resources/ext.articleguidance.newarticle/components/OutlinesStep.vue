@@ -6,7 +6,7 @@
 		@back="handleBack"
 	>
 		<p class="ext-articleguidance-outlines-subtitle">
-			{{ $i18n( 'articleguidance-outlines-browse-subtitle', articleTitle ).text() }}
+			{{ $i18n( 'articleguidance-outlines-browse-subtitle', searchQuery ).text() }}
 		</p>
 
 		<!-- Loading state -->
@@ -23,9 +23,9 @@
 		</cdx-message>
 
 		<!-- Outlines list -->
-		<div v-if="!loading && allOutlines.length > 0" class="ext-articleguidance-outlines-list">
+		<div v-if="!loading && outlinesList.length > 0" class="ext-articleguidance-outlines-list">
 			<article-card
-				v-for="outlineItem in allOutlines"
+				v-for="outlineItem in outlinesList"
 				:key="outlineItem.articleType"
 				:title="outlineItem.label"
 				:description="outlineItem.description"
@@ -38,9 +38,10 @@
 </template>
 
 <script>
-const { defineComponent, ref, onMounted } = require( 'vue' );
+const { defineComponent, onMounted } = require( 'vue' );
+const { storeToRefs } = require( 'pinia' );
 const { CdxMessage } = require( '../codex.js' );
-const { useOutlines } = require( '../composables/useOutlines.js' );
+const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
@@ -53,43 +54,28 @@ module.exports = defineComponent( {
 		ArticleCard,
 		StateMessage
 	},
-	props: {
-		articleTitle: {
-			type: String,
-			default: ''
-		}
-	},
-	emits: [ 'select-outline', 'back' ],
-	setup( props, { emit } ) {
-		const allOutlines = ref( [] );
-		const loading = ref( true );
-		const error = ref( null );
+	setup() {
+		const store = useArticleGuidanceStore();
+		const { outlinesList, outlinesLoading: loading, outlinesError: error, searchQuery } =
+			storeToRefs( store );
 
-		const { getOutlines } = useOutlines();
-
-		onMounted( async () => {
-			try {
-				const outlines = await getOutlines();
-				allOutlines.value = outlines;
-			} catch ( err ) {
-				error.value = err.message || 'Failed to load outlines';
-			} finally {
-				loading.value = false;
-			}
+		onMounted( () => {
+			store.loadOutlines();
 		} );
 
 		const handleSelectOutline = ( outlineItem ) => {
-			emit( 'select-outline', outlineItem );
+			store.selectOutline( outlineItem );
 		};
 
 		const handleBack = () => {
-			emit( 'back' );
+			store.goBack();
 		};
 
 		return {
-			allOutlines,
+			outlinesList,
 			loading,
 			error,
+			searchQuery,
 			handleSelectOutline,
 			handleBack
 		};

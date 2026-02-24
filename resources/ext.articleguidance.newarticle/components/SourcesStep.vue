@@ -6,12 +6,12 @@
 		@back="handleBack"
 	>
 		<p class="ext-articleguidance-sources-subtitle">
-			{{ $i18n( 'articleguidance-sources-subtitle', articleTitle ).text() }}
+			{{ $i18n( 'articleguidance-sources-subtitle', searchQuery ).text() }}
 		</p>
 
 		<!-- Notability warning (if applicable) -->
 		<cdx-message
-			v-if="outline.notabilityRisk"
+			v-if="selectedOutline.notabilityRisk"
 			type="warning"
 			class="ext-articleguidance-notability-warning"
 		>
@@ -94,8 +94,10 @@
 </template>
 
 <script>
-const { defineComponent, ref, computed } = require( 'vue' );
+const { defineComponent, ref, computed, watch } = require( 'vue' );
+const { storeToRefs } = require( 'pinia' );
 const { CdxButton, CdxMessage, CdxTextInput } = require( '../codex.js' );
+const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const Step = require( './Step.vue' );
 
 // Unreliable domains to reject
@@ -133,22 +135,21 @@ module.exports = defineComponent( {
 		CdxTextInput,
 		Step
 	},
-	props: {
-		outline: {
-			type: Object,
-			required: true
-		},
-		articleTitle: {
-			type: String,
-			required: true
-		}
-	},
-	emits: [ 'back', 'continue' ],
-	setup( props, { emit } ) {
+	setup() {
+		const store = useArticleGuidanceStore();
+		const { selectedOutline, searchQuery } = storeToRefs( store );
+
 		// Current URL being entered
 		const currentUrl = ref( '' );
-		// List of verified sources with reliability status
-		const verifiedSources = ref( [] );
+		// Initialize from store so back-navigation preserves entered sources
+		const verifiedSources = ref(
+			store.references.map( ( url ) => ( { url, reliable: true } ) )
+		);
+
+		// Keep store in sync as sources are added/removed
+		watch( verifiedSources, ( sources ) => {
+			store.setReferences( sources.filter( ( s ) => s.reliable ).map( ( s ) => s.url ) );
+		}, { deep: true } );
 
 		/**
 		 * Check if a URL is from an unreliable domain
@@ -217,7 +218,7 @@ module.exports = defineComponent( {
 		 */
 		const canContinue = computed( () => {
 			const reliableCount = verifiedSources.value.filter( ( s ) => s.reliable ).length;
-			const requiredCount = props.outline.notabilityRisk ? 2 : 1;
+			const requiredCount = selectedOutline.value.notabilityRisk ? 2 : 1;
 			return reliableCount >= requiredCount;
 		} );
 
@@ -225,18 +226,17 @@ module.exports = defineComponent( {
 		 * Handle continue - emit only accepted (reliable) references to parent
 		 */
 		const handleContinue = () => {
-			const acceptedReferences = verifiedSources.value
-				.filter( ( source ) => source.reliable )
-				.map( ( source ) => source.url );
-			emit( 'continue', acceptedReferences );
+			store.confirmSources();
 		};
 
 		// Handle back navigation
 		const handleBack = () => {
-			emit( 'back' );
+			store.goBack();
 		};
 
 		return {
+			selectedOutline,
+			searchQuery,
 			currentUrl,
 			verifiedSources,
 			handleVerifyUrl,

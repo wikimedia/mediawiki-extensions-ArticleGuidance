@@ -1,7 +1,6 @@
 const { ref, watch } = require( 'vue' );
 const { searchWikidata } = require( '../api/Wikidata.js' );
 const { findTypeMatches } = require( '../api/Sparql.js' );
-const { useOutlines } = require( './useOutlines.js' );
 
 /**
  * Composable for searching Wikidata with outline matching and hierarchy depth filtering
@@ -22,7 +21,8 @@ function useWikidataSearch( query, language ) {
 	const error = ref( null );
 	let debounceTimer = null;
 
-	const { getOutlines } = useOutlines();
+	const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+	const store = useArticleGuidanceStore();
 
 	/**
 	 * Perform search with current query and language
@@ -53,7 +53,7 @@ function useWikidataSearch( query, language ) {
 			const searchQIds = wikidataResults.map( ( result ) => result.id );
 
 			// Get all outlines (cached after first fetch)
-			const outlines = await getOutlines();
+			const outlines = await store.loadOutlines();
 
 			// Extract article-type Q IDs from outlines
 			const outlineQIds = outlines

@@ -71,6 +71,7 @@
 			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle",
 			"packageFiles": [
 				"init.js",
+				"stores/useArticleGuidanceStore.js",
 				"App.vue",
 				"api/MediaWiki.js",
 				"api/Outlines.js",
@@ -79,8 +80,6 @@
 				"composables/useArticleExist.js",
 				"composables/useSearch.js",
 				"composables/useWikidataSearch.js",
-				"composables/useOutlines.js",
-				"composables/useSteps.js",
 				"components/StepHeader.vue",
 				"components/Step.vue",
 				"components/SearchStep.vue",
@@ -138,7 +137,8 @@
 				"articleguidance-navigation-back"
 			],
 			"dependencies": [
-				"vue"
+				"vue",
+				"pinia"
 			]
 		},
 		"ext.articleguidance.tag.styles": {

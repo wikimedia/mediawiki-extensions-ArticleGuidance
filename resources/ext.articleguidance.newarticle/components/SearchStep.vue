@@ -84,9 +84,10 @@
 
 <script>
 const { defineComponent, ref, onMounted, computed } = require( 'vue' );
+const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton, CdxProgressIndicator } = require( '../codex.js' );
 const { useSearch } = require( '../composables/useSearch.js' );
-const { useOutlines } = require( '../composables/useOutlines.js' );
+const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
@@ -102,53 +103,32 @@ module.exports = defineComponent( {
 		ArticleCard,
 		StateMessage
 	},
-	props: {
-		initialTitle: {
-			type: String,
-			default: ''
-		}
-	},
-	emits: [ 'select', 'browse-outlines' ],
-	setup( props, { emit } ) {
-		// Reactive state
-		const searchQuery = ref( props.initialTitle );
+	setup() {
 		const selectedLanguage = ref( mw.config.get( 'wgUserLanguage' ) );
+
+		const store = useArticleGuidanceStore();
+		const { outlinesList, searchQuery } = storeToRefs( store );
 
 		// Initialize search composable
 		const {
 			results, loading, error, performSearch, articleExist
 		} = useSearch( searchQuery, selectedLanguage );
 
-		// Initialize outlines composable
-		const { getOutlines } = useOutlines();
-		const outlines = ref( [] );
-
-		// Load outlines on mount
-		onMounted( async () => {
-			try {
-				outlines.value = await getOutlines();
-			} catch ( err ) {
-				// eslint-disable-next-line no-console
-				console.error( 'Failed to load outlines:', err );
-			}
-
-			if ( props.initialTitle && props.initialTitle.trim().length >= 2 ) {
-				performSearch( props.initialTitle );
+		onMounted( () => {
+			store.loadOutlines();
+			if ( searchQuery.value && searchQuery.value.trim().length >= 2 ) {
+				performSearch( searchQuery.value );
 			}
 		} );
 
 		// Handle result selection
 		const handleSelect = ( result ) => {
-			emit( 'select', {
-				result,
-				searchQuery: searchQuery.value,
-				language: selectedLanguage.value
-			} );
+			store.selectArticle( result );
 		};
 
 		// Handle browse outlines
 		const handleBrowseOutlines = () => {
-			emit( 'browse-outlines', searchQuery.value );
+			store.browseOutlines();
 		};
 
 		// Handle editing existing article
@@ -163,7 +143,7 @@ module.exports = defineComponent( {
 		const resultsWithOutlines = computed( () => {
 			// Create a map from articleType Q ID to outline label
 			const outlineMap = {};
-			outlines.value.forEach( ( outline ) => {
+			outlinesList.value.forEach( ( outline ) => {
 				if ( outline.articleType ) {
 					outlineMap[ outline.articleType ] = outline.label;
 				}

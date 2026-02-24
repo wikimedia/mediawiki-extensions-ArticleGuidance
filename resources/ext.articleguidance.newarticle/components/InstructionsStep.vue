@@ -6,13 +6,13 @@
 		@back="handleBack"
 	>
 		<p class="ext-articleguidance-instructions-subtitle">
-			{{ $i18n( 'articleguidance-instructions-subtitle', articleTitle ).text() }}
+			{{ $i18n( 'articleguidance-instructions-subtitle', searchQuery ).text() }}
 		</p>
 
 		<!-- Article guidance instructions -->
-		<div v-if="outline.instructions" class="ext-articleguidance-instructions-content">
+		<div v-if="selectedOutline.instructions" class="ext-articleguidance-instructions-content">
 			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div v-html="outline.instructions"></div>
+			<div v-html="selectedOutline.instructions"></div>
 		</div>
 
 		<!-- Actions -->
@@ -30,7 +30,9 @@
 
 <script>
 const { defineComponent } = require( 'vue' );
+const { storeToRefs } = require( 'pinia' );
 const { CdxButton } = require( '../codex.js' );
+const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const Step = require( './Step.vue' );
 
 module.exports = defineComponent( {
@@ -39,40 +41,28 @@ module.exports = defineComponent( {
 		CdxButton,
 		Step
 	},
-	props: {
-		outline: {
-			type: Object,
-			required: true
-		},
-		articleTitle: {
-			type: String,
-			required: true
-		},
-		references: {
-			type: Array,
-			default: () => []
-		}
-	},
-	emits: [ 'back' ],
-	setup( props, { emit } ) {
+	setup() {
+		const store = useArticleGuidanceStore();
+		const { selectedOutline, searchQuery, references } = storeToRefs( store );
+
 		// Generate URL for creating an article with the selected outline as preload
 		// Uses the article title as entered by the user in the text input
 		const getCreateArticleUrl = () => {
 			const preloadParams = [];
 
 			// Add references as preload parameters
-			const validRefs = props.references.filter( ( r ) => r.trim() !== '' );
+			const validRefs = references.value.filter( ( r ) => r.trim() !== '' );
 			validRefs.forEach( ( r ) => {
 				preloadParams.push( `* ${ r }` );
 			} );
 
 			const params = {
 				veaction: 'edit',
-				preload: props.outline.title,
+				preload: selectedOutline.value.title,
 				preloadparams: [ preloadParams.join( '\n\n' ) ]
 			};
 
-			return mw.util.getUrl( props.articleTitle, params );
+			return mw.util.getUrl( searchQuery.value, params );
 		};
 
 		// Navigate to article creation page
@@ -83,10 +73,12 @@ module.exports = defineComponent( {
 
 		// Handle back navigation
 		const handleBack = () => {
-			emit( 'back' );
+			store.goBack();
 		};
 
 		return {
+			selectedOutline,
+			searchQuery,
 			handleStartWriting,
 			handleBack
 		};

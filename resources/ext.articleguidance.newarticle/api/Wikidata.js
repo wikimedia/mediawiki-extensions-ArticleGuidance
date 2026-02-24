@@ -48,6 +48,32 @@ async function searchWikidata( query, language, limit = 20 ) {
 	}
 }
 
+/**
+ * Fetch the number of Wikipedia sitelinks for a Wikidata entity
+ *
+ * @param {string} qid Wikidata entity ID (e.g. Q42)
+ * @return {Promise<number>} Number of Wikipedia sitelinks
+ */
+async function fetchSitelinkCount( qid ) {
+	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
+		action: 'wbgetentities',
+		ids: qid,
+		props: 'sitelinks/urls',
+		format: 'json',
+		origin: '*'
+	} );
+	const response = await fetch( url );
+	const data = await response.json();
+	const entity = data.entities && data.entities[ qid ];
+	if ( !entity || !entity.sitelinks ) {
+		return 0;
+	}
+	return Object.values( entity.sitelinks )
+		.filter( ( sitelink ) => sitelink.url && sitelink.url.includes( 'wikipedia.org' ) )
+		.length;
+}
+
 module.exports = {
-	searchWikidata
+	searchWikidata,
+	fetchSitelinkCount
 };

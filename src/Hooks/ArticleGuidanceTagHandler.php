@@ -18,6 +18,13 @@ class ArticleGuidanceTagHandler implements
 	ParserFirstCallInitHook
 {
 
+	private const KNOWN_NOTABILITY_TAGS = [ 'wikidata', 'crosswiki', 'sources', 'junior', 'draft' ];
+
+	private const NOTABILITY_TAG_THRESHOLDS = [
+		'crosswiki' => 5,
+		'sources' => 2,
+	];
+
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
@@ -59,7 +66,13 @@ class ArticleGuidanceTagHandler implements
 
 		// Extract parameters
 		$articleType = $attributes['article-type'] ?? null;
-		$notabilityRisk = $this->parseBoolean( $attributes['notability-risk'] ?? null );
+		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
+		$validTags = array_values( array_filter( $allTags, static function ( $tag ) {
+			return in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true );
+		} ) );
+		$invalidTags = array_values( array_filter( $allTags, static function ( $tag ) {
+			return !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true );
+		} ) );
 
 		// Parse instructions for display in the tag
 		$instructionsHtml = null;
@@ -92,11 +105,11 @@ class ArticleGuidanceTagHandler implements
 
 					$this->storeGuidanceData(
 						$output, $wikidataId, $wikidataLabel, $wikidataDescription,
-						$wikidataImage, $notabilityRisk, $hierarchyDepth
+						$wikidataImage, $validTags, $hierarchyDepth
 					);
 				} else {
 					// In preview mode, don't fetch from Wikidata
-					$this->storeGuidanceData( $output, $wikidataId, null, null, null, $notabilityRisk, null );
+					$this->storeGuidanceData( $output, $wikidataId, null, null, null, $validTags, null );
 				}
 			}
 		}
@@ -107,9 +120,11 @@ class ArticleGuidanceTagHandler implements
 			$wikidataLabel,
 			$wikidataDescription,
 			$articleType,
-			$notabilityRisk ?? false,
+			$validTags,
+			$invalidTags,
 			$instructionsHtml,
-			$wikidataImage
+			$wikidataImage,
+			self::NOTABILITY_TAG_THRESHOLDS
 		);
 
 		return $html;
@@ -144,7 +159,7 @@ class ArticleGuidanceTagHandler implements
 	 * @param string|null $label
 	 * @param string|null $description
 	 * @param string|null $image
-	 * @param bool|null $notabilityRisk
+	 * @param array $notabilityRisk Valid notability-risk tags
 	 * @param int|null $hierarchyDepth
 	 */
 	private function storeGuidanceData(
@@ -153,7 +168,7 @@ class ArticleGuidanceTagHandler implements
 		?string $label,
 		?string $description,
 		?string $image,
-		?bool $notabilityRisk,
+		array $notabilityRisk,
 		?int $hierarchyDepth
 	): void {
 		$output->setExtensionData( 'ArticleGuidance:data', [
@@ -161,28 +176,33 @@ class ArticleGuidanceTagHandler implements
 			'label' => $label,
 			'description' => $description,
 			'image' => $image,
-			'notabilityRisk' => $notabilityRisk ?? false,
-			'hierarchyDepth' => $hierarchyDepth
+			'notabilityRisk' => $notabilityRisk,
+			'hierarchyDepth' => $hierarchyDepth,
+			'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
 		] );
 	}
 
 	/**
-	 * Parse a string value as a boolean
+	 * Parse the notability-risk attribute value into an array of tags
 	 *
-	 * @param string|null $value String to parse
-	 * @return bool|null Boolean value, or null if not parseable
+	 * Tags are separated by '/', ',', or whitespace. Returns an empty array
+	 * for null or blank input. Both valid and unknown tags are returned.
+	 *
+	 * @param string|null $value Attribute value to parse
+	 * @return array Parsed tag strings (lowercased, trimmed, non-empty)
 	 */
-	private function parseBoolean( ?string $value ): ?bool {
-		if ( $value === null ) {
-			return null;
+	private function parseNotabilityRisk( ?string $value ): array {
+		if ( $value === null || trim( $value ) === '' ) {
+			return [];
 		}
-		$normalized = strtolower( trim( $value ) );
-		if ( $normalized === 'true' || $normalized === '1' ) {
-			return true;
+		$parts = preg_split( '/[\/,\s]+/', $value );
+		$tags = [];
+		foreach ( $parts as $part ) {
+			$tag = strtolower( trim( $part ) );
+			if ( $tag !== '' ) {
+				$tags[] = $tag;
+			}
 		}
-		if ( $normalized === 'false' || $normalized === '0' || $normalized === '' ) {
-			return false;
-		}
-		return null;
+		return $tags;
 	}
 }

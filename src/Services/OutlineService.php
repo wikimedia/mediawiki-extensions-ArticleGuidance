@@ -24,7 +24,7 @@ class OutlineService {
 	/**
 	 * Get all outlines in the wiki
 	 *
-	 * @return array Array of outline data with id, name, and summary fields
+	 * @return array Array of outline data with id, name, notabilityRisk (string[]), and summary fields
 	 */
 	public function getOutlines(): array {
 		// Get the tracking category name from the message
@@ -68,8 +68,9 @@ class OutlineService {
 					'articleType' => $wikidataId,
 					'instructions' => $pageData['instructions'] ?? null,
 					'thumbnail' => $pageData['image'] ?? null,
-					'notabilityRisk' => $pageData['notabilityRisk'] ?? false,
-					'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null
+					'notabilityRisk' => $pageData['notabilityRisk'] ?? [],
+					'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
+					'notabilityThresholds' => $pageData['notabilityThresholds'] ?? [],
 				];
 			}
 		}
@@ -83,8 +84,8 @@ class OutlineService {
 	 * Fetches ParserOutput once and extracts guidance data, sections, and instructions
 	 *
 	 * @param Title $title Page title
-	 * @return array|null Array with articleType, label, description, image, notabilityRisk,
-	 * 	hierarchyDepth, sections, instructions or null if not found
+	 * @return array|null Array with articleType, label, description, image,
+	 * 	notabilityRisk (string[]), hierarchyDepth, sections, instructions or null if not found
 	 */
 	private function getPageData( Title $title ): ?array {
 		if ( !$title->exists() ) {

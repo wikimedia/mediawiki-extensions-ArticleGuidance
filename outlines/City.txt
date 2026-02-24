@@ -1,5 +1,5 @@
 <noinclude>
-<article-guidance article-type="Q515" notability-risk=0>
+<article-guidance article-type="Q515" notability-risk="wikidata">
 Make sure you provide comprehensive coverage of the [[city]]'s geography, history, and demographics using reliable sources. [[Documentation]]
 </article-guidance>
 </noinclude>

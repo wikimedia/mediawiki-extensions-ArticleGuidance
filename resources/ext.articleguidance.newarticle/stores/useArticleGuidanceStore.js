@@ -1,6 +1,10 @@
 const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
 const { fetchOutlines } = require( '../api/Outlines.js' );
+const { fetchSitelinkCount } = require( '../api/Wikidata.js' );
+const { evaluateNotabilityTags } = require( '../utils/notability.js' );
+const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
+const { getDraftTitle } = require( '../utils/draft.js' );
 
 const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const currentStep = ref( 'search' );
@@ -12,8 +16,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlines = ref( null );
 	const outlinesLoading = ref( false );
 	const outlinesError = ref( null );
+	const sitelinkCount = ref( null );
 	const outlinesList = computed( () => outlines.value || [] );
 	const showOutlines = ref( false );
+
+	const JUNIOR_EDIT_THRESHOLD = 100;
 
 	function goTo( step ) {
 		currentStep.value = step;
@@ -50,6 +57,14 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return loadingPromise;
 	}
 
+	async function loadSitelinkCount() {
+		if ( !selectedResult.value ) {
+			sitelinkCount.value = null;
+			return;
+		}
+		sitelinkCount.value = await fetchSitelinkCount( selectedResult.value.id );
+	}
+
 	async function selectArticle( result ) {
 		selectedResult.value = result;
 		searchQuery.value = result.label;
@@ -59,7 +74,16 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			( o ) => o.articleType === result.matchedQId
 		);
 		selectedOutline.value = matchedOutline;
-		goTo( 'sources' );
+		sitelinkCount.value = null;
+		if ( matchedOutline && matchedOutline.notabilityRisk &&
+			matchedOutline.notabilityRisk.includes( 'crosswiki' ) ) {
+			await loadSitelinkCount();
+		}
+		if ( shouldShowNotabilityStep() ) {
+			goTo( 'notability' );
+		} else {
+			goTo( 'sources' );
+		}
 	}
 
 	function browseOutlines() {
@@ -73,7 +97,12 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function selectOutline( outline ) {
 		selectedOutline.value = outline;
-		goTo( 'sources' );
+		sitelinkCount.value = null;
+		if ( shouldShowNotabilityStep() ) {
+			goTo( 'notability' );
+		} else {
+			goTo( 'sources' );
+		}
 	}
 
 	function setReferences( refs ) {
@@ -82,6 +111,61 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function setSearchQuery( query ) {
 		searchQuery.value = query;
+	}
+
+	function buildNotabilityState() {
+		return {
+			selectedResult: selectedResult.value,
+			sitelinkCount: sitelinkCount.value,
+			references: references.value,
+			editCount: mw.config.get( 'wgUserEditCount' ) || 0,
+			juniorThreshold: JUNIOR_EDIT_THRESHOLD
+		};
+	}
+
+	function getActiveNotabilityTags() {
+		const outline = selectedOutline.value;
+		if ( !outline || !outline.notabilityRisk ) {
+			return [];
+		}
+		const { tagResults } = evaluateNotabilityTags( outline, buildNotabilityState() );
+		return tagResults.filter( ( r ) => r.active ).map( ( r ) => r.tag );
+	}
+
+	function getNonSourcesNotabilityTags() {
+		return getActiveNotabilityTags().filter( ( tag ) => tag !== 'sources' );
+	}
+
+	function shouldShowNotabilityStep() {
+		const outline = selectedOutline.value;
+		const state = buildNotabilityState();
+		const { tagResults, willShow } = evaluateNotabilityTags( outline, state );
+		reportNotabilityEvaluation( outline, tagResults, state.selectedResult );
+		return willShow;
+	}
+
+	const minRequiredSources = computed( () => {
+		const outline = selectedOutline.value;
+		if ( outline && outline.notabilityRisk && outline.notabilityRisk.includes( 'sources' ) ) {
+			const thresholds = outline.notabilityThresholds || {};
+			return thresholds.sources !== undefined ? thresholds.sources : 2;
+		}
+		return 0;
+	} );
+
+	const notabilityThresholds = computed(
+		() => ( selectedOutline.value && selectedOutline.value.notabilityThresholds ) || {}
+	);
+
+	const creationTitle = computed( () => {
+		if ( !getActiveNotabilityTags().includes( 'draft' ) ) {
+			return searchQuery.value;
+		}
+		return getDraftTitle( searchQuery.value );
+	} );
+
+	function confirmNotability() {
+		goTo( 'sources' );
 	}
 
 	function confirmSources() {
@@ -106,6 +190,13 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		outlinesLoading,
 		outlinesError,
 		showOutlines,
+		sitelinkCount,
+		minRequiredSources,
+		notabilityThresholds,
+		creationTitle,
+		getActiveNotabilityTags,
+		getNonSourcesNotabilityTags,
+		shouldShowNotabilityStep,
 		loadOutlines,
 		selectArticle,
 		browseOutlines,
@@ -113,6 +204,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		selectOutline,
 		setReferences,
 		setSearchQuery,
+		confirmNotability,
 		confirmSources,
 		goBack
 	};

@@ -31,7 +31,9 @@
 	"SpecialPages": {
 		"NewArticle": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Specials\\SpecialNewArticle",
-			"services": []
+			"services": [
+				"ContentLanguage"
+			]
 		}
 	},
 	"HookHandlers": {
@@ -92,18 +94,27 @@
 				"components/SearchStep.vue",
 				"components/Outlines.vue",
 				"components/SourcesStep.vue",
+				"components/NotabilityStep.vue",
 				"components/InstructionsStep.vue",
 				"components/ArticleInfo.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
 				"utils/sources.js",
+				"utils/notability.js",
+				"utils/draft.js",
+				"utils/articleUrl.js",
+				"logging/notability.js",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
 						"cdxIconArrowPrevious",
 						"cdxIconArticle",
-						"cdxIconClose"
+						"cdxIconBook",
+						"cdxIconClose",
+						"cdxIconInfoFilled",
+						"cdxIconLogoWikidata",
+						"cdxIconSandbox"
 					]
 				}
 			],
@@ -128,7 +139,6 @@
 				"articleguidance-specialnewarticle-disambiguation-title",
 				"articleguidance-specialnewarticle-browse-outlines-prefix",
 				"articleguidance-specialnewarticle-browse-outlines-link",
-				"articleguidance-outlines-browse-title",
 				"articleguidance-sources-title",
 				"articleguidance-sources-subtitle",
 				"articleguidance-sources-notability-title",
@@ -136,7 +146,6 @@
 				"articleguidance-sources-url-placeholder",
 				"articleguidance-sources-approved",
 				"articleguidance-sources-not-recommended",
-				"articleguidance-sources-unreliable-domain",
 				"articleguidance-sources-invalid-url",
 				"articleguidance-sources-duplicate",
 				"articleguidance-sources-continue",
@@ -147,7 +156,20 @@
 				"articleguidance-instructions-guidance-intro",
 				"articleguidance-instructions-source-guidance",
 				"articleguidance-instructions-start-writing",
-				"articleguidance-navigation-back"
+				"articleguidance-navigation-back",
+				"articleguidance-notability-warning",
+				"articleguidance-notability-options-heading",
+				"articleguidance-notability-option-wikidata-title",
+				"articleguidance-notability-option-wikidata-description",
+				"articleguidance-notability-option-sandbox-title",
+				"articleguidance-notability-option-sandbox-description",
+				"articleguidance-notability-option-learn-title",
+				"articleguidance-notability-option-learn-description",
+				"articleguidance-notability-tag-wikidata",
+				"articleguidance-notability-tag-crosswiki",
+				"articleguidance-notability-tag-junior",
+				"articleguidance-notability-tag-draft",
+				"articleguidance-notability-tag-draft-location"
 			],
 			"dependencies": [
 				"vue",

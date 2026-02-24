@@ -1,5 +1,5 @@
 <noinclude>
-<article-guidance article-type="Q571" notability-risk=1>
+<article-guidance article-type="Q571" notability-risk="sources wikidata">
 Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. Use reliable secondary sources for criticism and reception. Avoid excessive plot detail per [[WP:PLOTSUM]]. [[Documentation]]
 </article-guidance>
 </noinclude>

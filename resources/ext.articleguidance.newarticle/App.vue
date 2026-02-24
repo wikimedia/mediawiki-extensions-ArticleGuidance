@@ -2,6 +2,7 @@
 	<div class="ext-articleguidance-newarticle">
 		<search-step v-if="currentStep === 'search'"></search-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
+		<notability-step v-else-if="currentStep === 'notability'"></notability-step>
 		<instructions-step v-else-if="currentStep === 'instructions'"></instructions-step>
 	</div>
 </template>
@@ -13,12 +14,14 @@ const useArticleGuidanceStore = require( './stores/useArticleGuidanceStore.js' )
 const SearchStep = require( './components/SearchStep.vue' );
 const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
+const NotabilityStep = require( './components/NotabilityStep.vue' );
 
 module.exports = defineComponent( {
 	name: 'App',
 	components: {
 		SearchStep,
 		SourcesStep,
+		NotabilityStep,
 		InstructionsStep
 	},
 	props: {

@@ -103,6 +103,7 @@
 			<cdx-button
 				weight="primary"
 				action="progressive"
+				:disabled="!canContinue"
 				@click="handleContinue"
 			>
 				{{ $i18n( 'articleguidance-sources-continue' ).text() }}
@@ -140,7 +141,7 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline } = storeToRefs( store );
+		const { selectedOutline, minRequiredSources } = storeToRefs( store );
 
 		// Ref for the URL text input component
 		const urlInput = ref( null );
@@ -250,8 +251,13 @@ module.exports = defineComponent( {
 			verifiedSources.value.splice( index, 1 );
 		};
 
+		const isReliable = ( s ) => s.reliable;
+		const canContinue = computed(
+			() => verifiedSources.value.filter( isReliable ).length >= minRequiredSources.value
+		);
+
 		/**
-		 * Handle continue — step is optional by default, always enabled
+		 * Handle continue - emit only accepted (reliable) references to parent
 		 */
 		const handleContinue = () => {
 			store.confirmSources();
@@ -261,14 +267,15 @@ module.exports = defineComponent( {
 			store.goBack();
 		};
 
-		const hasNotabilityRisk = computed( () => selectedOutline &&
-				selectedOutline.notabilityRisk &&
-				selectedOutline.notabilityRisk.length > 0 );
+		const hasNotabilityRisk = computed( () => selectedOutline.value &&
+				selectedOutline.value.notabilityRisk &&
+				selectedOutline.value.notabilityRisk.includes( 'sources' ) );
 
 		return {
 			urlInput,
 			currentUrl,
 			checking,
+			canContinue,
 			validationError,
 			unreliableWarning,
 			verifiedSources,

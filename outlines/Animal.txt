@@ -1,5 +1,5 @@
 <noinclude>
-<article-guidance article-type="Q729" notability-risk=0>
+<article-guidance article-type="Q729" notability-risk="wikidata">
 Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification. [[Documentation]]
 </article-guidance>
 </noinclude>

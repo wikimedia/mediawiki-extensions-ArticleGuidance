@@ -18,7 +18,8 @@ class ArticleGuidanceRenderer {
 	 * @param string|null $wikidataLabel Label from Wikidata
 	 * @param string|null $wikidataDescription Description from Wikidata
 	 * @param string|null $articleType Raw article-type attribute (for error display)
-	 * @param bool $notabilityRisk Whether to show notability warning
+	 * @param array $notabilityRisk Valid notability-risk tags
+	 * @param array $invalidNotabilityRisk Unknown notability-risk tags
 	 * @param string|null $instructionsHtml Parsed instructions HTML
 	 * @param string|null $wikidataImage Image URL from Wikidata
 	 * @return string Rendered HTML
@@ -28,9 +29,11 @@ class ArticleGuidanceRenderer {
 		?string $wikidataLabel,
 		?string $wikidataDescription,
 		?string $articleType,
-		bool $notabilityRisk,
+		array $notabilityRisk,
+		array $invalidNotabilityRisk,
 		?string $instructionsHtml,
-		?string $wikidataImage = null
+		?string $wikidataImage = null,
+		array $notabilityThresholds = []
 	): string {
 		$isValid = $wikidataId !== null;
 
@@ -42,21 +45,21 @@ class ArticleGuidanceRenderer {
 
 		$html = Html::openElement( 'div', [ 'class' => implode( ' ', $classes ) ] );
 
-		// Image (if available) - displayed right-aligned
+		// --- Top region: image + identity info ---
+		$topHtml = '';
+
 		if ( $wikidataImage ) {
-			$html .= Html::element( 'img', [
+			$topHtml .= Html::element( 'img', [
 				'src' => $wikidataImage,
 				'class' => 'ext-articleguidance-image',
 				'alt' => $wikidataLabel ?? ''
 			] );
 		}
 
-		// Header
-		$html .= Html::element( 'div', [ 'class' => 'ext-articleguidance-header' ],
+		$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-header' ],
 			'Article Guidance'
 		);
 
-		// Article type information
 		if ( $wikidataId ) {
 			$typeHtml = Html::element( 'span', [ 'class' => 'ext-articleguidance-type-label' ],
 				'Type: '
@@ -71,24 +74,62 @@ class ArticleGuidanceRenderer {
 				$typeHtml .= ' ' . wfMessage( 'parentheses' )->rawParams( $label )->escaped();
 			}
 
-			$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-type' ], $typeHtml );
+			$topHtml .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-type' ], $typeHtml );
 
 			if ( $wikidataDescription ) {
-				$html .= Html::element( 'div', [ 'class' => 'ext-articleguidance-description' ],
+				$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-description' ],
 					$wikidataDescription
 				);
 			}
 		} elseif ( $articleType !== null ) {
-			$html .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
+			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
 				"Invalid article-type: '$articleType' (expected format: Q12345)"
 			);
 		}
 
-		// Notability risk warning
-		if ( $notabilityRisk ) {
-			$html .= Html::element( 'div', [ 'class' => 'ext-articleguidance-risk-warning' ],
-				'This article may have notability concerns'
+		$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-top' ], $topHtml );
+
+		// --- Second region: notability restrictions/errors ---
+		if ( $notabilityRisk !== [] || $invalidNotabilityRisk !== [] ) {
+			$boxHtml = Html::element( 'div', [ 'class' => 'ext-articleguidance-restrictions-title' ],
+				wfMessage( 'articleguidance-notability-restrictions-title' )->text()
 			);
+
+			if ( $notabilityRisk !== [] ) {
+				$listHtml = '';
+				foreach ( $notabilityRisk as $tag ) {
+					$badge = Html::element( 'span',
+						[ 'class' => 'ext-articleguidance-restriction-tag' ],
+						$tag
+					);
+					$threshold = $notabilityThresholds[$tag] ?? null;
+					$msg = $threshold !== null
+						? wfMessage( 'articleguidance-notability-tag-' . $tag, $threshold )
+						: wfMessage( 'articleguidance-notability-tag-' . $tag );
+					$desc = Html::element( 'span',
+						[ 'class' => 'ext-articleguidance-restriction-desc' ],
+						$msg->text()
+					);
+					$listHtml .= Html::rawElement( 'li',
+						[ 'class' => 'ext-articleguidance-restriction-item' ],
+						$badge . $desc
+					);
+				}
+				$boxHtml .= Html::rawElement( 'ul',
+					[ 'class' => 'ext-articleguidance-restrictions-list' ],
+					$listHtml
+				);
+			}
+
+			if ( $invalidNotabilityRisk !== [] ) {
+				$unknownList = implode( ', ', $invalidNotabilityRisk );
+				$boxHtml .= Html::element( 'div',
+					[ 'class' => 'ext-articleguidance-restrictions-unknown' ],
+					wfMessage( 'articleguidance-notability-unknown-tags', $unknownList )->text()
+				);
+			}
+
+			$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-restrictions' ], $boxHtml );
 		}
 
 		// Instructions content

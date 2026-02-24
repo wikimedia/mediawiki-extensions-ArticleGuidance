@@ -49,6 +49,7 @@ const { defineComponent } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxButton } = require( '../codex.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
@@ -61,33 +62,17 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, searchQuery, references } = storeToRefs( store );
+		const { selectedOutline, references, creationTitle } = storeToRefs( store );
 
-		// Generate URL for creating an article with the selected outline as preload
-		// Uses the article title as entered by the user in the text input
-		const getCreateArticleUrl = () => {
-			const preloadParams = [];
-
-			// Add references as preload parameters
-			const validRefs = references.value.filter( ( r ) => r.trim() !== '' );
-			validRefs.forEach( ( r, index ) => {
-				preloadParams.push( `<ref name="ref${ index + 1 }">${ r }</ref>` );
-			} );
-
-			const params = {
-				veaction: 'edit',
-				preload: selectedOutline.value.title,
-				preloadparams: [ preloadParams.join( '\n' ) ],
-				articleguidance: 1
-			};
-
-			return mw.util.getUrl( searchQuery.value, params );
-		};
+		const buildCreateArticleUrl = () => getCreateArticleUrl(
+			creationTitle.value,
+			selectedOutline.value.title,
+			references.value
+		);
 
 		// Navigate to article creation page
 		const handleStartWriting = () => {
-			const url = getCreateArticleUrl();
-			window.location.href = url;
+			window.location.href = buildCreateArticleUrl();
 		};
 
 		// Handle back navigation

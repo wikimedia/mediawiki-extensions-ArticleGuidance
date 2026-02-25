@@ -2,5 +2,11 @@
 	"@metadata": {
 		"authors": []
 	},
-	"articleguidance-desc": "Ermöglicht Benutzern die Erstellung von Artikeln über einen geführten, unterstützten Workflow."
+	"articleguidance-desc": "Ermöglicht Benutzern die Erstellung von Artikeln über einen geführten, unterstützten Workflow.",
+	"articleguidance-specialnewarticle-title": "Neuer Artikel",
+	"articleguidance-specialnewarticle-search-title": "Neuer Artikel",
+	"articleguidance-specialnewarticle-title-placeholder": "Titel des Artikels eingeben",
+	"articleguidance-specialnewarticle-loading": "Suche …",
+	"articleguidance-specialnewarticle-checking": "Überprüfung...",
+	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden."
 }

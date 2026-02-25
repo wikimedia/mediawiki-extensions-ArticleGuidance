@@ -20,6 +20,7 @@ function useWikidataSearch( query, language ) {
 	const loading = ref( false );
 	const error = ref( null );
 	let debounceTimer = null;
+	let latestRequestId = 0;
 
 	const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 	const store = useArticleGuidanceStore();
@@ -31,6 +32,7 @@ function useWikidataSearch( query, language ) {
 	 * @return {Promise<void>}
 	 */
 	const performSearch = async ( searchQuery ) => {
+		const requestId = ++latestRequestId;
 		if ( !searchQuery || searchQuery.trim().length < 1 ) {
 			results.value = [];
 			loading.value = false;
@@ -44,6 +46,10 @@ function useWikidataSearch( query, language ) {
 			// Get Wikidata search results
 			const wikidataResults = await searchWikidata( searchQuery, language.value );
 
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
+
 			if ( wikidataResults.length === 0 ) {
 				results.value = [];
 				return;
@@ -54,6 +60,10 @@ function useWikidataSearch( query, language ) {
 
 			// Get all outlines (cached after first fetch)
 			const outlines = await store.loadOutlines();
+
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
 
 			// Extract article-type Q IDs from outlines
 			const outlineQIds = outlines
@@ -69,6 +79,10 @@ function useWikidataSearch( query, language ) {
 			// Use SPARQL to find all matches between search results and outline types
 			// Returns { searchQId: [outlineQId1, outlineQId2, ...] }
 			const sparqlMatches = await findTypeMatches( searchQIds, outlineQIds );
+
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
 
 			// Create maps of outlineQId -> hierarchyDepth and outlineQId -> thumbnail
 			const depthMap = {};
@@ -133,12 +147,20 @@ function useWikidataSearch( query, language ) {
 				} );
 			} );
 
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
 			results.value = filteredResults;
 		} catch ( err ) {
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
 			error.value = err.message || 'Failed to search Wikidata';
 			results.value = [];
 		} finally {
-			loading.value = false;
+			if ( requestId === latestRequestId ) {
+				loading.value = false;
+			}
 		}
 	};
 

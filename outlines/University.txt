@@ -4,6 +4,7 @@ Accredited universities and colleges are generally considered notable under Wiki
 </article-guidance>
 </noinclude>
 {{Infobox university}}
+
 [University Name] is a [public/private] university located in [City, Country], founded in [year]. It is known for [research profile, academic specialisation, or historical significance], and enrolled approximately [number] students as of [year].
 
 == History ==

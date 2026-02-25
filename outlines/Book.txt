@@ -4,6 +4,7 @@ Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. 
 </article-guidance>
 </noinclude>
 {{Infobox book}}
+
 [Book Title] is a [year] [genre] [novel/non-fiction book] by [Author Name], first published by [Publisher] on [date]. The work [brief description of premise or subject], and is notable for [reason for notability].
 
 == Plot ==

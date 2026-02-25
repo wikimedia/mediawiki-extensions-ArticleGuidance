@@ -4,6 +4,7 @@ Follow Wikipedia's [[WP:FILM|film guidelines]]. Keep plot summaries concise per 
 </article-guidance>
 </noinclude>
 {{Infobox film}}
+
 [Film Title] is a [year] [genre] film directed by [Director Name], starring [Lead Actor] and [Lead Actor]. The film follows [brief, one-sentence premise], and was released by [Distributor] on [release date].
 
 == Plot ==

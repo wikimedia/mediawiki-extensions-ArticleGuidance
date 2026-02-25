@@ -4,6 +4,7 @@ Ensure the company meets Wikipedia's [[WP:CORP|notability guidelines for organiz
 </article-guidance>
 </noinclude>
 {{Infobox company}}
+
 [Company Name] is a [country] [industry] company founded in [year] by [Founder Name], headquartered in [City, Country]. The company [main products or services] and employed approximately [number] people as of [year].
 
 == History ==

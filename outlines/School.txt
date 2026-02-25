@@ -4,6 +4,7 @@ Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organi
 </article-guidance>
 </noinclude>
 {{Infobox school}}
+
 [School Name] is a [type, e.g., state secondary/independent grammar] school located in [City, Country], founded in [year]. It is notable for [reason for notability supported by independent sources].
 
 == History ==

@@ -4,6 +4,7 @@ Make sure you provide comprehensive coverage of the [[city]]'s geography, histor
 </article-guidance>
 </noinclude>
 {{Infobox settlement}}
+
 [City Name] is a city in [State/Province], [Country], with a population of approximately [number] as of [year]. It is known for [notable characteristic] and serves as [administrative/economic/cultural role] for [region].
 
 == History ==

@@ -4,6 +4,7 @@ Make sure you are not personally affiliated with the [[museum]] in any way, shap
 </article-guidance>
 </noinclude>
 {{Infobox museum}}
+
 The [Museum Name] is a [type, e.g., art/natural history/science] museum located in [City, Country]. Founded in [year], the museum holds a collection of [brief description of holdings].
 
 == Location ==

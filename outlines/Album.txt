@@ -4,6 +4,7 @@ Follow Wikipedia's [[WP:ALBUM|album guidelines]]. Use reliable music sources and
 </article-guidance>
 </noinclude>
 {{Infobox album}}
+
 [Album Title] is a [genre] studio album by [Artist Name], released on [release date] through [Record Label]. The album [brief description of musical style or themes], and includes the single '[Single Name]', which peaked at number [X] on the [Chart Name].
 
 == Background and recording ==

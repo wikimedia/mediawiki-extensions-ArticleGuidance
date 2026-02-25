@@ -4,6 +4,7 @@ Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability
 </article-guidance>
 </noinclude>
 {{Infobox person}}
+
 [Full Name] (born [birth date] in [birthplace]) is a [nationality] [profession] known for [primary reason for notability]. [He/She/They] [brief additional notable fact, e.g., won the [Award Name] in [year] / directed [notable work] / led [organization]].
 
 == Early life ==

@@ -47,6 +47,12 @@
 				"ArticleGuidanceWikidataInfoFetcher",
 				"ArticleGuidanceRenderer"
 			]
+		},
+		"EditTag": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler",
+			"services": [
+				"ChangeTagsStore"
+			]
 		}
 	},
 	"Hooks": {
@@ -54,7 +60,10 @@
 		"AlternateEdit": "RedLinkRedirect",
 		"ParserFirstCallInit": [
 			"ArticleGuidanceTag"
-		]
+		],
+		"ListDefinedTags": "EditTag",
+		"ChangeTagsListActive": "EditTag",
+		"RecentChange_save": "EditTag"
 	},
 	"ExtensionMessagesFiles": {
 		"ArticleGuidanceAlias": "ArticleGuidance.alias.php"
@@ -150,11 +159,28 @@
 				"article-guidance.less"
 			]
 		},
+		"ext.articleguidance.ve": {
+			"localBasePath": "resources/ext.articleguidance.ve",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.ve",
+			"packageFiles": [
+				"init.js"
+			],
+			"dependencies": [
+				"mediawiki.util"
+			]
+		},
 		"ext.articleguidance.newarticle.styles": {
 			"localBasePath": "resources/ext.articleguidance.newarticle.styles",
 			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle.styles",
 			"styles": [
 				"styles.less"
+			]
+		}
+	},
+	"attributes": {
+		"VisualEditor": {
+			"PluginModules": [
+				"ext.articleguidance.ve"
 			]
 		}
 	},

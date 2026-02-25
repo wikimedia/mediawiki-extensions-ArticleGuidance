@@ -40,5 +40,8 @@
 	"articleguidance-instructions-start-writing": "Button text to start writing the article in the editor",
 	"articleguidance-navigation-back": "Button text for the back navigation button",
 	"articleguidance-tracking-category": "Tracking category name for pages that use the article-guidance tag. See [[Special:TrackingCategories]].",
-	"articleguidance-tracking-category-desc": "Description of the tracking category for pages using article-guidance tags, shown on [[Special:TrackingCategories]]."
+	"articleguidance-tracking-category-desc": "Description of the tracking category for pages using article-guidance tags, shown on [[Special:TrackingCategories]].",
+	"tag-articleguidance": "Display name for the 'articleguidance' edit tag shown in recent changes, history, and log pages.",
+	"tag-articleguidance-description": "Description of the 'articleguidance' edit tag shown on [[Special:Tags]].",
+	"tag-articleguidance-helppage": "URL of the help page linked from the 'articleguidance' edit tag on [[Special:Tags]] and other tag display contexts. Do not translate the URL; translate the target page instead."
 }

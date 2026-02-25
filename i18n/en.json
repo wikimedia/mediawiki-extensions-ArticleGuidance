@@ -40,5 +40,8 @@
 	"articleguidance-instructions-start-writing": "Start writing",
 	"articleguidance-navigation-back": "Back",
 	"articleguidance-tracking-category": "Pages using article guidance",
-	"articleguidance-tracking-category-desc": "Pages in this category use the <article-guidance> tag to provide structured guidance for article creation."
+	"articleguidance-tracking-category-desc": "Pages in this category use the <article-guidance> tag to provide structured guidance for article creation.",
+	"tag-articleguidance": "Article Guidance",
+	"tag-articleguidance-description": "Edit was made using the Article Guidance workflow",
+	"tag-articleguidance-helppage": "https://www.mediawiki.org/wiki/Special:MyLanguage/Article_guidance"
 }

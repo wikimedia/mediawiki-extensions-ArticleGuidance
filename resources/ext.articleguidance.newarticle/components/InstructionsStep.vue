@@ -59,7 +59,8 @@ module.exports = defineComponent( {
 			const params = {
 				veaction: 'edit',
 				preload: selectedOutline.value.title,
-				preloadparams: [ preloadParams.join( '\n\n' ) ]
+				preloadparams: [ preloadParams.join( '\n\n' ) ],
+				articleguidance: 1
 			};
 
 			return mw.util.getUrl( searchQuery.value, params );

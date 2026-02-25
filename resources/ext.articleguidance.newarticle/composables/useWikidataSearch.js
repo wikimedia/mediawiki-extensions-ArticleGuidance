@@ -31,7 +31,7 @@ function useWikidataSearch( query, language ) {
 	 * @return {Promise<void>}
 	 */
 	const performSearch = async ( searchQuery ) => {
-		if ( !searchQuery || searchQuery.trim().length < 2 ) {
+		if ( !searchQuery || searchQuery.trim().length < 1 ) {
 			results.value = [];
 			loading.value = false;
 			return;
@@ -150,7 +150,7 @@ function useWikidataSearch( query, language ) {
 		}
 
 		// Don't search if query is too short
-		if ( !newQuery || newQuery.trim().length < 2 ) {
+		if ( !newQuery || newQuery.trim().length < 1 ) {
 			results.value = [];
 			loading.value = false;
 			return;
@@ -165,7 +165,7 @@ function useWikidataSearch( query, language ) {
 	// Watch language changes and re-search
 	watch( language, () => {
 		// Re-search with current query when language changes
-		if ( query.value && query.value.trim().length >= 2 ) {
+		if ( query.value && query.value.trim().length >= 1 ) {
 			performSearch( query.value );
 		}
 	} );

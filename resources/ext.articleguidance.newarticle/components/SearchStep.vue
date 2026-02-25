@@ -50,18 +50,23 @@
 			</div>
 
 			<!-- Results list (only shown if article doesn't exist) -->
-			<div v-if="showResults" class="ext-articleguidance-results-list">
-				<article-card
-					v-for="result in resultsWithOutlines"
-					:key="result.id"
-					:title="result.label"
-					:description="result.description"
-					:thumbnail="result.thumbnail"
-					:outline-name="result.outlineName"
-					@click="handleSelect( result )"
-				>
-				</article-card>
-			</div>
+			<template v-if="showResults">
+				<p class="ext-articleguidance-results-heading">
+					{{ $i18n( 'articleguidance-specialnewarticle-disambiguation-title' ).text() }}
+				</p>
+				<div class="ext-articleguidance-results-list">
+					<article-card
+						v-for="result in maxResultsWithOutlines"
+						:key="result.id"
+						:title="result.label"
+						:description="result.description"
+						:thumbnail="result.thumbnail"
+						:outline-name="result.outlineName"
+						@click="handleSelect( result )"
+					>
+					</article-card>
+				</div>
+			</template>
 
 			<!-- No results -->
 			<state-message v-if="showNoResults">
@@ -71,12 +76,16 @@
 
 		<!-- Can't find option -->
 		<div v-if="showResults || showNoResults" class="ext-articleguidance-search-footer">
+			<span class="ext-articleguidance-browse-prefix">
+				{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines-prefix' ).text() }}
+			</span>
 			<cdx-button
+				class="ext-articleguidance-browse-link"
 				weight="quiet"
 				action="progressive"
 				@click="handleBrowseOutlines"
 			>
-				{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines' ).text() }}
+				{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines-link' ).text() }}
 			</cdx-button>
 		</div>
 	</step>
@@ -116,7 +125,7 @@ module.exports = defineComponent( {
 
 		onMounted( () => {
 			store.loadOutlines();
-			if ( searchQuery.value && searchQuery.value.trim().length >= 2 ) {
+			if ( searchQuery.value && searchQuery.value.trim().length >= 1 ) {
 				performSearch( searchQuery.value );
 			}
 		} );
@@ -194,6 +203,8 @@ module.exports = defineComponent( {
 			} ) );
 		} );
 
+		const maxResultsWithOutlines = computed( () => resultsWithOutlines.value.slice( 0, 5 ) );
+
 		// Computed properties for display states
 		// Show warning when article exists
 		const showExistsWarning = computed(
@@ -219,7 +230,7 @@ module.exports = defineComponent( {
 			searchQuery,
 			loading,
 			error,
-			resultsWithOutlines,
+			maxResultsWithOutlines,
 			handleSelect,
 			handleBrowseOutlines,
 			handleEditExisting,
@@ -242,6 +253,7 @@ module.exports = defineComponent( {
 		&__input {
 			font-size: @font-size-x-large;
 			line-height: @line-height-x-large;
+			caret-color: @color-progressive;
 
 			&, &:focus, &:hover {
 				outline: 0;
@@ -249,6 +261,16 @@ module.exports = defineComponent( {
 				border-top: 0;
 				border-left: 0;
 				border-right: 0;
+				border-bottom: 1px solid @border-color-base;
+			}
+
+			&:focus, &:focus-visible {
+				border-bottom: 2px solid @color-progressive;
+			}
+
+			&::placeholder {
+				color: @color-subtle;
+				opacity: 0.5;
 			}
 		}
 	}
@@ -276,10 +298,28 @@ module.exports = defineComponent( {
 .ext-articleguidance-results-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 16px;
+	gap: 12px;
+}
+
+.ext-articleguidance-results-heading {
+	margin: 0 0 8px 0;
+	font-weight: @font-weight-bold;
 }
 
 .ext-articleguidance-search-footer {
 	margin-top: 24px;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.ext-articleguidance-browse-prefix {
+	color: @color-base;
+}
+
+.ext-articleguidance-browse-link {
+	color: @color-progressive;
+	padding: 0;
+	min-height: auto;
 }
 </style>

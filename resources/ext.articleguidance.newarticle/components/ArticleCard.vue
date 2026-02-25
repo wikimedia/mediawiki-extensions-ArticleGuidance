@@ -2,6 +2,10 @@
 	<cdx-card
 		class="ext-articleguidance-article-card"
 		:thumbnail="cardThumbnail"
+		role="button"
+		tabindex="0"
+		@keydown.enter.prevent="$emit( 'click' )"
+		@keydown.space.prevent="$emit( 'click' )"
 		@click="$emit( 'click' )"
 	>
 		<template #title>
@@ -67,7 +71,7 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-article-card {
 	cursor: pointer;
-	transition: transform 0.2s, box-shadow 0.2s;
+	transition: background-color 0.2s;
 
 	.ext-articleguidance-article-card-title {
 		display: inline;
@@ -113,8 +117,16 @@ module.exports = defineComponent( {
 	}
 
 	&:hover {
-		transform: translateY( -2px );
-		box-shadow: 0 4px 12px rgba( 0, 0, 0, 0.15 );
+		background-color: @background-color-interactive-subtle;
+	}
+
+	&:active {
+		background-color: @background-color-interactive;
+	}
+
+	&:focus-visible {
+		outline: 2px solid @color-progressive;
+		outline-offset: 2px;
 	}
 }
 </style>

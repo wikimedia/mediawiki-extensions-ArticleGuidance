@@ -5,12 +5,20 @@
 		]
 	},
 	"articleguidance-specialnewarticle-title": "lipu sin",
+	"articleguidance-specialnewarticle-search-title": "lipu sin",
 	"articleguidance-specialnewarticle-title-placeholder": "o pana e nimi lipu",
 	"articleguidance-specialnewarticle-loading": "mi alasa...",
 	"articleguidance-specialnewarticle-checking": "mi alasa...",
+	"articleguidance-specialnewarticle-no-results": "mi alasa e ala tan nimi \"$1\"",
+	"articleguidance-specialnewarticle-exists-warning": "tenpo pini la lipu pi nimi \"$1\" li lon lipu suli ni.",
+	"articleguidance-outlines-browse-subtitle": "\"$1\" la kon ona li seme.",
 	"articleguidance-sources-title": "o pana e toki tan",
+	"articleguidance-sources-subtitle": "o pana e tan sona tawa lipu \"$1\"",
+	"articleguidance-sources-references-title": "tan sona",
+	"articleguidance-sources-description": "sina pana e tan sona pona la ni li pona e toki pi lipu sina li pana e sona lon.",
 	"articleguidance-sources-check-button": "o lukin",
 	"articleguidance-sources-remove-button": "o weka",
 	"articleguidance-sources-continue": "o awen",
+	"articleguidance-instructions-start-writing": "o open sitelen",
 	"articleguidance-navigation-back": "lipu pini"
 }

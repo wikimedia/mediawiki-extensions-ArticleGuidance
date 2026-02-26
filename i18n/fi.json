@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Samoasambia"
+		]
+	},
+	"articleguidance-specialnewarticle-title": "Uusi artikkeli",
+	"articleguidance-specialnewarticle-search-title": "Uusi artikkeli",
+	"articleguidance-specialnewarticle-title-placeholder": "Syötä artikkelin nimi",
+	"articleguidance-specialnewarticle-loading": "Haetaan...",
+	"articleguidance-specialnewarticle-checking": "Tarkistetaan...",
+	"articleguidance-specialnewarticle-no-results": "Ei aiheita haulle ”$1”",
+	"articleguidance-specialnewarticle-exists-warning": "Artikkeli nimeltä ”$1” löytyy jo tästä wikistä.",
+	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
+	"articleguidance-outlines-browse-title": "Valitse tyyppi",
+	"articleguidance-outlines-browse-subtitle": "Mistä artikkeli ”$1” kertoo?",
+	"articleguidance-sources-title": "Lisää lähteitä",
+	"articleguidance-sources-subtitle": "Lisää lähteitä artikkeliin ”$1”",
+	"articleguidance-sources-notability-title": "Ota huomioon merkittävyys",
+	"articleguidance-sources-references-title": "Lähteet",
+	"articleguidance-sources-description": "Luotettavien lähteiden lisääminen tukevat artikkelin sisällön tarkastettavuutta ja osoittavat sen luotettavuutta.",
+	"articleguidance-sources-url-placeholder": "Syötä lähteen URL-osoite",
+	"articleguidance-sources-check-button": "Tarkasta",
+	"articleguidance-sources-remove-button": "Poista",
+	"articleguidance-sources-unreliable-domain": "Ei-luotettava lähde",
+	"articleguidance-sources-invalid-url": "Virheellinen URL-osoite",
+	"articleguidance-sources-continue": "Jatka",
+	"articleguidance-instructions-subtitle": "Ohjeita aiheesta ”$1” kirjoittamiseen",
+	"articleguidance-instructions-references-title": "Lisää lähteitä merkittävyyden osoittamiseksi",
+	"articleguidance-instructions-start-writing": "Aloita kirjoittaminen",
+	"articleguidance-navigation-back": "Takaisin"
+}

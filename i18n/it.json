@@ -2,15 +2,30 @@
 	"@metadata": {
 		"authors": [
 			"Asteralee",
-			"Beta16"
+			"Beta16",
+			"Neonsn0w"
 		]
 	},
 	"articleguidance-specialnewarticle-title": "Nuova voce",
 	"articleguidance-specialnewarticle-search-title": "Nuova voce",
+	"articleguidance-specialnewarticle-checking": "Controllo in corso...",
 	"articleguidance-specialnewarticle-edit-existing": "Modifica voce esistente",
+	"articleguidance-specialnewarticle-disambiguation-title": "Cos'è questo?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Nessuno di questi?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Scegli un tipo invece",
 	"articleguidance-outlines-browse-title": "Scegli un tipo",
+	"articleguidance-outlines-browse-subtitle": "Di cosa tratta \"$1\"?",
 	"articleguidance-sources-title": "Aggiungi fonti",
+	"articleguidance-sources-subtitle": "Aggiungi fonti per \"$1\"",
 	"articleguidance-sources-references-title": "Note",
+	"articleguidance-sources-url-placeholder": "Inserisci l'URL di origine",
+	"articleguidance-sources-check-button": "Controlla",
+	"articleguidance-sources-remove-button": "Rimuovi",
+	"articleguidance-sources-unreliable-domain": "Fonte inaffidabile",
 	"articleguidance-sources-invalid-url": "URL non valido",
-	"articleguidance-sources-continue": "Continua"
+	"articleguidance-sources-continue": "Continua",
+	"articleguidance-instructions-title": "Guida all'articolo",
+	"articleguidance-instructions-subtitle": "Istruzioni per scrivere di \"$1\"",
+	"articleguidance-instructions-reference-placeholder": "URL di riferimento \"$1\"",
+	"articleguidance-navigation-back": "Indietro"
 }

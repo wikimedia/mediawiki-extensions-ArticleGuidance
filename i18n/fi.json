@@ -12,6 +12,9 @@
 	"articleguidance-specialnewarticle-no-results": "Ei aiheita haulle ”$1”",
 	"articleguidance-specialnewarticle-exists-warning": "Artikkeli nimeltä ”$1” löytyy jo tästä wikistä.",
 	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
+	"articleguidance-specialnewarticle-disambiguation-title": "Mikä tämä on?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ei mikään näistä?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Valitse sen sijaan tyyppi",
 	"articleguidance-outlines-browse-title": "Valitse tyyppi",
 	"articleguidance-outlines-browse-subtitle": "Mistä artikkeli ”$1” kertoo?",
 	"articleguidance-sources-title": "Lisää lähteitä",
@@ -27,6 +30,7 @@
 	"articleguidance-sources-continue": "Jatka",
 	"articleguidance-instructions-subtitle": "Ohjeita aiheesta ”$1” kirjoittamiseen",
 	"articleguidance-instructions-references-title": "Lisää lähteitä merkittävyyden osoittamiseksi",
+	"articleguidance-instructions-reference-placeholder": "Lähteen URL-osoite ”$1”",
 	"articleguidance-instructions-start-writing": "Aloita kirjoittaminen",
 	"articleguidance-navigation-back": "Takaisin"
 }

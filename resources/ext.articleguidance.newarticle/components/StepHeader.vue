@@ -59,7 +59,7 @@ module.exports = defineComponent( {
 	display: grid;
 	grid-template-columns: 1fr auto 1fr;
 	align-items: center;
-	padding: 8px 0;
+	height: 44px;
 	border-bottom: 1px solid @border-color-subtle;
 }
 
@@ -69,7 +69,7 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-step-header-title {
 	justify-self: center;
-	font-size: 1em;
+	font-size: @font-size-large;
 	font-weight: @font-weight-bold;
 	margin: 0;
 	color: @color-base;

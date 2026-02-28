@@ -1,7 +1,6 @@
 <template>
 	<div class="ext-articleguidance-newarticle">
 		<search-step v-if="currentStep === 'search'"></search-step>
-		<outlines-step v-else-if="currentStep === 'outlines'"></outlines-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
 		<instructions-step v-else-if="currentStep === 'instructions'"></instructions-step>
 	</div>
@@ -12,7 +11,6 @@ const { defineComponent } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const useArticleGuidanceStore = require( './stores/useArticleGuidanceStore.js' );
 const SearchStep = require( './components/SearchStep.vue' );
-const OutlinesStep = require( './components/OutlinesStep.vue' );
 const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
 
@@ -20,7 +18,6 @@ module.exports = defineComponent( {
 	name: 'App',
 	components: {
 		SearchStep,
-		OutlinesStep,
 		SourcesStep,
 		InstructionsStep
 	},

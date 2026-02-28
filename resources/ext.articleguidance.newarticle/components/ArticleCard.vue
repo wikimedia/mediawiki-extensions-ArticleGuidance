@@ -2,6 +2,7 @@
 	<cdx-card
 		class="ext-articleguidance-article-card"
 		:thumbnail="cardThumbnail"
+		:icon="icon"
 		role="button"
 		tabindex="0"
 		@keydown.enter.prevent="$emit( 'click' )"
@@ -45,6 +46,10 @@ module.exports = defineComponent( {
 			type: String,
 			default: null
 		},
+		icon: {
+			type: [ String, Object ],
+			default: null
+		},
 		outlineName: {
 			type: String,
 			default: null
@@ -53,6 +58,9 @@ module.exports = defineComponent( {
 	emits: [ 'click' ],
 	setup( props ) {
 		const cardThumbnail = computed( () => {
+			if ( props.icon ) {
+				return null;
+			}
 			if ( props.thumbnail ) {
 				return {
 					url: props.thumbnail
@@ -127,6 +135,12 @@ module.exports = defineComponent( {
 	&:focus-visible {
 		outline: 2px solid @color-progressive;
 		outline-offset: 2px;
+	}
+
+	.cdx-card__icon {
+		color: @color-subtle;
+		min-width: 20px;
+		min-height: 20px;
 	}
 }
 </style>

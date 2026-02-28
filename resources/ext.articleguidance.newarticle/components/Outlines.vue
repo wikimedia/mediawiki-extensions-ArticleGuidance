@@ -1,13 +1,8 @@
 <template>
-	<step
-		step-name="outlines"
-		:title="$i18n( 'articleguidance-outlines-browse-title' ).text()"
-		:show-back="true"
-		@back="handleBack"
-	>
-		<p class="ext-articleguidance-outlines-subtitle">
-			{{ $i18n( 'articleguidance-outlines-browse-subtitle', searchQuery ).text() }}
-		</p>
+	<div class="ext-articleguidance-outlines-panel">
+		<div class="ext-articleguidance-outlines-subtitle">
+			{{ $i18n( 'articleguidance-specialnewarticle-disambiguation-title' ).text() }}
+		</div>
 
 		<!-- Loading state -->
 		<state-message v-if="loading">
@@ -29,20 +24,20 @@
 				:key="outlineItem.articleType"
 				:title="outlineItem.label"
 				:description="outlineItem.description"
-				:thumbnail="outlineItem.thumbnail"
+				:icon="articleIcon"
 				@click="handleSelectOutline( outlineItem )"
 			>
 			</article-card>
 		</div>
-	</step>
+	</div>
 </template>
 
 <script>
 const { defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxMessage } = require( '../codex.js' );
+const { cdxIconArticle } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
-const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
 
@@ -50,13 +45,12 @@ module.exports = defineComponent( {
 	name: 'OutlinesStep',
 	components: {
 		CdxMessage,
-		Step,
 		ArticleCard,
 		StateMessage
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { outlinesList, outlinesLoading: loading, outlinesError: error, searchQuery } =
+		const { outlinesList, outlinesLoading: loading, outlinesError: error } =
 			storeToRefs( store );
 
 		onMounted( () => {
@@ -67,17 +61,12 @@ module.exports = defineComponent( {
 			store.selectOutline( outlineItem );
 		};
 
-		const handleBack = () => {
-			store.goBack();
-		};
-
 		return {
 			outlinesList,
 			loading,
 			error,
-			searchQuery,
 			handleSelectOutline,
-			handleBack
+			articleIcon: cdxIconArticle
 		};
 	}
 } );
@@ -86,20 +75,20 @@ module.exports = defineComponent( {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.ext-articleguidance-outlines-step {
-	max-width: 800px;
-	margin: 0 auto;
+.ext-articleguidance-outlines-panel {
+	margin-top: 16px;
 }
 
 .ext-articleguidance-outlines-subtitle {
 	margin: 4px 0 16px 0;
 	font-weight: @font-weight-bold;
+	font-size: @font-size-x-large;
 }
 
 .ext-articleguidance-outlines-list {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 
 	.ext-articleguidance-article-card {
 		.cdx-card__text__title {

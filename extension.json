@@ -90,7 +90,7 @@
 				"components/StepHeader.vue",
 				"components/Step.vue",
 				"components/SearchStep.vue",
-				"components/OutlinesStep.vue",
+				"components/Outlines.vue",
 				"components/SourcesStep.vue",
 				"components/InstructionsStep.vue",
 				"components/ArticleCard.vue",
@@ -99,7 +99,8 @@
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
-						"cdxIconArrowPrevious"
+						"cdxIconArrowPrevious",
+						"cdxIconArticle"
 					]
 				}
 			],
@@ -124,7 +125,6 @@
 				"articleguidance-specialnewarticle-browse-outlines-prefix",
 				"articleguidance-specialnewarticle-browse-outlines-link",
 				"articleguidance-outlines-browse-title",
-				"articleguidance-outlines-browse-subtitle",
 				"articleguidance-sources-title",
 				"articleguidance-sources-subtitle",
 				"articleguidance-sources-notability-title",

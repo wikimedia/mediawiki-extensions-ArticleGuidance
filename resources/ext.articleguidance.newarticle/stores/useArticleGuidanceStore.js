@@ -13,6 +13,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlinesLoading = ref( false );
 	const outlinesError = ref( null );
 	const outlinesList = computed( () => outlines.value || [] );
+	const showOutlines = ref( false );
 
 	function goTo( step ) {
 		currentStep.value = step;
@@ -63,7 +64,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function browseOutlines() {
 		selectedResult.value = null;
-		goTo( 'outlines' );
+		showOutlines.value = true;
+	}
+
+	function hideOutlines() {
+		showOutlines.value = false;
 	}
 
 	function selectOutline( outline ) {
@@ -100,9 +105,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		outlinesList,
 		outlinesLoading,
 		outlinesError,
+		showOutlines,
 		loadOutlines,
 		selectArticle,
 		browseOutlines,
+		hideOutlines,
 		selectOutline,
 		setReferences,
 		setSearchQuery,

@@ -4,10 +4,13 @@
 			"Milicevic01"
 		]
 	},
+	"articleguidance-specialnewarticle-title": "Нови чланак",
 	"articleguidance-specialnewarticle-search-title": "Нови чланак",
 	"articleguidance-specialnewarticle-checking": "Проверавам...",
 	"articleguidance-sources-references-title": "Референце",
 	"articleguidance-sources-remove-button": "Уклони",
+	"articleguidance-sources-unreliable-domain": "Непоуздан извор",
+	"articleguidance-sources-invalid-url": "Неисправан URL",
 	"articleguidance-sources-continue": "Настави",
 	"articleguidance-navigation-back": "Назад"
 }

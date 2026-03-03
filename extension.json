@@ -95,26 +95,31 @@
 				"components/InstructionsStep.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
+				"utils/sources.js",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
 						"cdxIconArrowPrevious",
-						"cdxIconArticle"
+						"cdxIconArticle",
+						"cdxIconClose",
+						"cdxIconInfoFilled"
 					]
 				}
 			],
 			"codexComponents": [
+				"CdxAccordion",
 				"CdxButton",
 				"CdxCard",
 				"CdxIcon",
+				"CdxInfoChip",
 				"CdxMessage",
 				"CdxProgressIndicator",
 				"CdxSelect",
 				"CdxTextInput"
 			],
 			"messages": [
-				"articleguidance-specialnewarticle-search-title",
+				"articleguidance-specialnewarticle-title",
 				"articleguidance-specialnewarticle-title-placeholder",
 				"articleguidance-specialnewarticle-loading",
 				"articleguidance-specialnewarticle-checking",
@@ -129,14 +134,16 @@
 				"articleguidance-sources-subtitle",
 				"articleguidance-sources-notability-title",
 				"articleguidance-sources-notability-description",
-				"articleguidance-sources-references-title",
-				"articleguidance-sources-description",
 				"articleguidance-sources-url-placeholder",
-				"articleguidance-sources-check-button",
-				"articleguidance-sources-remove-button",
+				"articleguidance-sources-approved",
+				"articleguidance-sources-not-recommended",
 				"articleguidance-sources-unreliable-domain",
 				"articleguidance-sources-invalid-url",
+				"articleguidance-sources-duplicate",
 				"articleguidance-sources-continue",
+				"articleguidance-sources-helper",
+				"articleguidance-sources-tips-title",
+				"articleguidance-sources-tips-content",
 				"articleguidance-instructions-title",
 				"articleguidance-instructions-subtitle",
 				"articleguidance-instructions-references-title",

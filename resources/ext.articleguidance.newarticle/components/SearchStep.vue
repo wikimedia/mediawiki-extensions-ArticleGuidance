@@ -1,7 +1,7 @@
 <template>
 	<step
 		step-name="search"
-		:title="$i18n( 'articleguidance-specialnewarticle-search-title' ).text()"
+		:title="$i18n( 'articleguidance-specialnewarticle-title' ).text()"
 		:show-back="showOutlines"
 		@back="handleHideOutlines"
 	>

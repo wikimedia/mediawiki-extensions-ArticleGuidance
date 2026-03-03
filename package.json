@@ -4,6 +4,7 @@
 	"scripts": {
 		"test": "npm -s run lint",
 		"lint": "npm -s run lint:i18n && npm -s run lint:js && npm -s run lint:css",
+		"lint:fix": "npm -s run lint:i18n && npm -s run lint:js -- --fix && npm -s run lint:css -- --fix",
 		"lint:css": "stylelint --cache --allow-empty-input \"**/*.less\"",
 		"lint:i18n": "banana-checker --requireLowerCase=0 i18n/",
 		"lint:js": "eslint --cache ."

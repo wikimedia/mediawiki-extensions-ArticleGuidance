@@ -1,137 +1,153 @@
 <template>
 	<step
 		step-name="sources"
-		:title="$i18n( 'articleguidance-sources-title' ).text()"
+		:title="$i18n( 'articleguidance-specialnewarticle-title' ).text()"
 		:show-back="true"
 		@back="handleBack"
 	>
+		<!-- Article title + type chip -->
+		<div class="ext-articleguidance-sources-article-info">
+			<h2 class="ext-articleguidance-sources-article-title">
+				{{ searchQuery }}
+			</h2>
+			<cdx-info-chip v-if="selectedOutline">
+				{{ selectedOutline.label }}
+			</cdx-info-chip>
+		</div>
+
+		<h3 class="ext-articleguidance-sources-heading">
+			{{ $i18n( 'articleguidance-sources-title' ).text() }}
+		</h3>
 		<p class="ext-articleguidance-sources-subtitle">
-			{{ $i18n( 'articleguidance-sources-subtitle', searchQuery ).text() }}
+			{{ $i18n( 'articleguidance-sources-subtitle' ).text() }}
 		</p>
 
 		<!-- Notability warning (if applicable) -->
 		<cdx-message
-			v-if="selectedOutline.notabilityRisk"
+			v-if="hasNotabilityRisk"
 			type="warning"
 			class="ext-articleguidance-notability-warning"
 		>
 			<strong>{{ $i18n( 'articleguidance-sources-notability-title' ).text() }}</strong>
-			<p class="ext-articleguidance-notability-description">
+			<div class="ext-articleguidance-notability-description">
 				{{ $i18n( 'articleguidance-sources-notability-description' ).text() }}
-			</p>
+			</div>
 		</cdx-message>
 
-		<!-- References section -->
-		<div class="ext-articleguidance-references-section">
-			<h3>{{ $i18n( 'articleguidance-sources-references-title' ).text() }}</h3>
-			<p class="ext-articleguidance-references-description">
-				{{ $i18n( 'articleguidance-sources-description' ).text() }}
-			</p>
+		<!-- URL input field -->
+		<div class="ext-articleguidance-url-input-wrapper">
+			<cdx-text-input
+				v-model="currentUrl"
+				:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
+				:disabled="checking"
+				class="ext-articleguidance-url-input"
+				@keyup.enter="handleVerifyUrl"
+				@paste="handlePaste"
+			>
+			</cdx-text-input>
+		</div>
 
-			<!-- URL input field -->
-			<div class="ext-articleguidance-url-input-wrapper">
-				<cdx-text-input
-					v-model="currentUrl"
-					:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
-					class="ext-articleguidance-url-input"
-					@keyup.enter="handleVerifyUrl"
-				>
-				</cdx-text-input>
-				<cdx-button
-					weight="normal"
-					action="progressive"
-					:disabled="!currentUrl.trim()"
-					@click="handleVerifyUrl"
-				>
-					{{ $i18n( 'articleguidance-sources-check-button' ).text() }}
-				</cdx-button>
-			</div>
+		<!-- Inline validation error -->
+		<div
+			v-if="validationError"
+			class="ext-articleguidance-validation-error"
+		>
+			{{ validationError }}
+		</div>
 
-			<!-- Verified sources list -->
-			<div v-if="verifiedSources.length > 0" class="ext-articleguidance-verified-sources">
-				<div
-					v-for="( source, index ) in verifiedSources"
-					:key="index"
-					class="ext-articleguidance-source-item"
-					:class="{
-						'ext-articleguidance-source-item--accepted': source.reliable,
-						'ext-articleguidance-source-item--rejected': !source.reliable
-					}"
-				>
-					<div class="ext-articleguidance-source-content">
-						<span class="ext-articleguidance-source-url">{{ source.url }}</span>
-						<span
-							v-if="!source.reliable"
-							class="ext-articleguidance-source-reason"
-						>
-							{{ source.reason }}
+		<!-- Checking state -->
+		<div v-if="checking" class="ext-articleguidance-checking">
+			<cdx-progress-indicator show-label>
+				{{ $i18n( 'articleguidance-specialnewarticle-checking' ).text() }}
+			</cdx-progress-indicator>
+		</div>
+
+		<!-- Verified sources list -->
+		<div v-if="verifiedSources.length > 0" class="ext-articleguidance-verified-sources">
+			<cdx-message
+				v-for="( source, index ) in verifiedSources"
+				:key="index"
+				:type="source.reliable ? 'success' : 'warning'"
+				class="ext-articleguidance-source-message"
+			>
+				<div class="ext-articleguidance-source-message-content">
+					<div class="ext-articleguidance-source-message-text">
+						<span class="ext-articleguidance-source-domain">{{ source.domain }}</span>
+						<span class="ext-articleguidance-source-status">
+							{{
+								source.reliable ?
+									$i18n( 'articleguidance-sources-approved' ).text() :
+									$i18n( 'articleguidance-sources-not-recommended' ).text()
+							}}
 						</span>
 					</div>
 					<cdx-button
 						weight="quiet"
-						action="destructive"
-						class="ext-articleguidance-source-remove"
+						class="ext-articleguidance-source-close"
+						:aria-label="$i18n( 'articleguidance-navigation-back' ).text()"
 						@click="removeSource( index )"
 					>
-						{{ $i18n( 'articleguidance-sources-remove-button' ).text() }}
+						<cdx-icon :icon="cdxIconClose"></cdx-icon>
 					</cdx-button>
 				</div>
-			</div>
+			</cdx-message>
 		</div>
+
+		<!-- Tips accordion -->
+		<cdx-accordion
+			v-model="tipsOpen"
+			class="ext-articleguidance-tips-accordion"
+			separation="outline"
+		>
+			<template #title>
+				<cdx-icon
+					:icon="cdxIconInfoFilled"
+					class="ext-articleguidance-tips-info-icon"
+				></cdx-icon>
+				{{ $i18n( 'articleguidance-sources-tips-title' ).text() }}
+			</template>
+			<div class="ext-articleguidance-tips-content">
+				{{ $i18n( 'articleguidance-sources-tips-content' ).text() }}
+			</div>
+		</cdx-accordion>
 
 		<!-- Actions -->
 		<div class="ext-articleguidance-sources-actions">
 			<cdx-button
 				weight="primary"
 				action="progressive"
-				:disabled="!canContinue"
 				@click="handleContinue"
 			>
 				{{ $i18n( 'articleguidance-sources-continue' ).text() }}
 			</cdx-button>
+			<div class="ext-articleguidance-sources-helper">
+				{{ $i18n( 'articleguidance-sources-helper' ).text() }}
+			</div>
 		</div>
 	</step>
 </template>
 
 <script>
-const { defineComponent, ref, computed, watch } = require( 'vue' );
+const { defineComponent, ref, watch, nextTick, computed } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
-const { CdxButton, CdxMessage, CdxTextInput } = require( '../codex.js' );
+const {
+	CdxAccordion, CdxButton, CdxIcon, CdxInfoChip, CdxMessage,
+	CdxProgressIndicator, CdxTextInput
+} = require( '../codex.js' );
+const { cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { extractDomain, isDuplicate, isUnreliable, isValidUrl } = require( '../utils/sources.js' );
 const Step = require( './Step.vue' );
-
-// Unreliable domains to reject
-const UNRELIABLE_DOMAINS = [
-	// Social media
-	'facebook.com',
-	'twitter.com',
-	'x.com',
-	'instagram.com',
-	'tiktok.com',
-	'linkedin.com',
-	'reddit.com',
-	'tumblr.com',
-	'pinterest.com',
-	'snapchat.com',
-	// AI/Generated content
-	'chatgpt.com',
-	'openai.com',
-	'claude.ai',
-	'bard.google.com',
-	'character.ai',
-	// User-generated content platforms
-	'medium.com',
-	'substack.com',
-	'wordpress.com',
-	'blogger.com',
-	'wix.com'
-];
 
 module.exports = defineComponent( {
 	name: 'SourcesStep',
 	components: {
+		CdxAccordion,
 		CdxButton,
+		CdxIcon,
+		CdxInfoChip,
 		CdxMessage,
+		CdxProgressIndicator,
 		CdxTextInput,
 		Step
 	},
@@ -141,53 +157,33 @@ module.exports = defineComponent( {
 
 		// Current URL being entered
 		const currentUrl = ref( '' );
+		// Whether we are currently checking a URL
+		const checking = ref( false );
+		// Inline validation error (invalid URL or duplicate)
+		const validationError = ref( null );
+		// Tips accordion open state (expanded by default)
+		const tipsOpen = ref( true );
+
 		// Initialize from store so back-navigation preserves entered sources
 		const verifiedSources = ref(
-			store.references.map( ( url ) => ( { url, reliable: true } ) )
+			store.references.map( ( url ) => ( {
+				url: url,
+				domain: extractDomain( url ),
+				reliable: true
+			} ) )
 		);
 
 		// Keep store in sync as sources are added/removed
 		watch( verifiedSources, ( sources ) => {
-			store.setReferences( sources.filter( ( s ) => s.reliable ).map( ( s ) => s.url ) );
+			store.setReferences(
+				sources.filter( ( s ) => s.reliable ).map( ( s ) => s.url )
+			);
 		}, { deep: true } );
 
 		/**
-		 * Check if a URL is from an unreliable domain
-		 *
-		 * @param {string} url - The URL to check
-		 * @return {Object|null} Object with reason if unreliable, null if reliable
-		 */
-		const checkUrlReliability = ( url ) => {
-			try {
-				// Add protocol if missing
-				let urlToParse = url;
-				if ( !/^https?:\/\//i.test( url ) ) {
-					urlToParse = 'https://' + url;
-				}
-
-				const urlObj = new URL( urlToParse );
-				const hostname = urlObj.hostname.toLowerCase().replace( /^www\./, '' );
-
-				for ( const domain of UNRELIABLE_DOMAINS ) {
-					if ( hostname === domain || hostname.endsWith( '.' + domain ) ) {
-						return {
-							reliable: false,
-							reason: mw.message( 'articleguidance-sources-unreliable-domain' ).text()
-						};
-					}
-				}
-
-				return { reliable: true };
-			} catch ( e ) {
-				return {
-					reliable: false,
-					reason: mw.message( 'articleguidance-sources-invalid-url' ).text()
-				};
-			}
-		};
-
-		/**
-		 * Verify and add the current URL
+		 * Verify and add the current URL.
+		 * Validates synchronously first, then simulates an async check
+		 * with a brief delay to show the progress indicator.
 		 */
 		const handleVerifyUrl = () => {
 			const url = currentUrl.value.trim();
@@ -195,12 +191,58 @@ module.exports = defineComponent( {
 				return;
 			}
 
-			const reliabilityCheck = checkUrlReliability( url );
-			const sourceEntry = Object.assign( { url: url }, reliabilityCheck );
-			verifiedSources.value.push( sourceEntry );
+			// Clear any previous validation error
+			validationError.value = null;
 
-			// Clear the input
+			// Inline validation: invalid URL
+			if ( !isValidUrl( url ) ) {
+				validationError.value = mw.message( 'articleguidance-sources-invalid-url' ).text();
+				return;
+			}
+
+			// Inline validation: duplicate
+			if ( isDuplicate( url, verifiedSources.value ) ) {
+				validationError.value = mw.message( 'articleguidance-sources-duplicate' ).text();
+				return;
+			}
+
+			// Start async-style check
+			checking.value = true;
 			currentUrl.value = '';
+
+			setTimeout( () => {
+				const reliable = !isUnreliable( url );
+
+				verifiedSources.value.push( {
+					url: url,
+					domain: extractDomain( url ),
+					reliable: reliable
+				} );
+
+				// Auto-expand tips if source is not recommended
+				if ( !reliable ) {
+					tipsOpen.value = true;
+				}
+
+				checking.value = false;
+			}, 500 );
+		};
+
+		/**
+		 * Handle paste event — read pasted text directly from clipboard data
+		 * and trigger verification after the input value updates.
+		 *
+		 * @param {ClipboardEvent} event - The paste event
+		 */
+		const handlePaste = ( event ) => {
+			const pastedText = event.clipboardData && event.clipboardData.getData( 'text' );
+			if ( pastedText && pastedText.trim() ) {
+				event.preventDefault();
+				currentUrl.value = pastedText.trim();
+				nextTick( () => {
+					handleVerifyUrl();
+				} );
+			}
 		};
 
 		/**
@@ -213,37 +255,36 @@ module.exports = defineComponent( {
 		};
 
 		/**
-		 * Check if user can continue based on number of reliable sources
-		 * Requires 1 reliable source for regular articles, 2 for notability risk
-		 */
-		const canContinue = computed( () => {
-			const reliableCount = verifiedSources.value.filter( ( s ) => s.reliable ).length;
-			const requiredCount = selectedOutline.value.notabilityRisk ? 2 : 1;
-			return reliableCount >= requiredCount;
-		} );
-
-		/**
-		 * Handle continue - emit only accepted (reliable) references to parent
+		 * Handle continue — step is optional by default, always enabled
 		 */
 		const handleContinue = () => {
 			store.confirmSources();
 		};
 
-		// Handle back navigation
 		const handleBack = () => {
 			store.goBack();
 		};
+
+		const hasNotabilityRisk = computed( () => selectedOutline &&
+				selectedOutline.notabilityRisk &&
+				selectedOutline.notabilityRisk.length > 0 );
 
 		return {
 			selectedOutline,
 			searchQuery,
 			currentUrl,
+			checking,
+			validationError,
+			tipsOpen,
 			verifiedSources,
 			handleVerifyUrl,
+			handlePaste,
 			removeSource,
-			canContinue,
 			handleContinue,
-			handleBack
+			handleBack,
+			cdxIconClose,
+			cdxIconInfoFilled,
+			hasNotabilityRisk
 		};
 	}
 } );
@@ -252,110 +293,165 @@ module.exports = defineComponent( {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.ext-articleguidance-sources-step {
-	max-width: 900px;
-	margin: 0 auto;
+.ext-articleguidance-sources-article-info {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 16px;
+
+	.cdx-info-chip {
+		border: 0;
+	}
+}
+
+.ext-articleguidance-sources-article-title {
+	font-size: @font-size-xx-large;
+	margin: 0;
+	color: @color-base;
+	border: 0;
+	line-height: @line-height-xx-large;
+}
+
+.ext-articleguidance-sources-heading {
+	font-size: @font-size-x-large;
+	font-weight: @font-weight-bold;
+	margin: 0 0 4px 0;
+	color: @color-base;
+	border: 0;
 }
 
 .ext-articleguidance-sources-subtitle {
-	margin: 4px 0 16px 0;
-	font-weight: @font-weight-bold;
+	margin: 0 0 16px 0;
+	color: @color-subtle;
 }
 
 .ext-articleguidance-notability-warning {
-	margin-bottom: 24px;
+	margin-bottom: 16px;
 
 	.ext-articleguidance-notability-description {
 		margin: 8px 0 0 0;
 	}
 }
 
-.ext-articleguidance-references-section {
-	margin-bottom: 24px;
-	padding: 16px;
-	border-radius: 2px;
-	background-color: @background-color-neutral-subtle;
-	border-left: 3px solid @color-progressive;
-
-	h3 {
-		font-size: 18px;
-		font-weight: 600;
-		margin: 0 0 8px 0;
-		color: @color-base;
-	}
-}
-
-.ext-articleguidance-references-description {
-	margin: 0 0 16px 0;
-	color: @color-subtle;
-	font-size: 14px;
-}
-
 .ext-articleguidance-url-input-wrapper {
-	display: flex;
-	gap: 8px;
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 
 	.ext-articleguidance-url-input {
-		flex: 1;
+		width: 100%;
 	}
+}
+
+.ext-articleguidance-validation-error {
+	color: @color-error;
+	font-size: @font-size-small;
+	margin-bottom: 12px;
+}
+
+.ext-articleguidance-checking {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 12px 0;
+	color: @color-subtle;
+	font-size: @font-size-small;
 }
 
 .ext-articleguidance-verified-sources {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	margin: 16px 0;
+}
+
+.ext-articleguidance-source-message {
+	&.cdx-message {
+		background-color: @background-color-base;
+		border: 0;
+		border-radius: 0;
+		padding: 12px 0;
+	}
+
+	&.cdx-message--success,
+	&.cdx-message--warning {
+		border-bottom: @border-width-base @border-style-base @border-color-subtle;
+	}
+
+	.ext-articleguidance-source-message-content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.ext-articleguidance-source-message-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.ext-articleguidance-source-domain {
+		font-weight: @font-weight-bold;
+		word-break: break-all;
+	}
+
+	.ext-articleguidance-source-status {
+		font-size: @font-size-small;
+		color: @color-subtle;
+	}
+
+	.ext-articleguidance-source-close {
+		flex-shrink: 0;
+	}
+}
+
+.ext-articleguidance-tips-accordion {
 	margin-top: 16px;
-}
 
-.ext-articleguidance-source-item {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 12px;
-	border-radius: 2px;
-	border: 2px solid;
-	gap: 12px;
+	&.cdx-accordion > summary {
+		position: relative;
+		padding-right: 32px;
+		border-bottom: @border-color-subtle solid 1px;
+		background-color: @background-color-neutral-subtle;
 
-	&--accepted {
-		background-color: @background-color-success-subtle;
-		border-color: @color-success;
+		&::before {
+			position: absolute;
+			right: 12px;
+		}
 	}
 
-	&--rejected {
-		background-color: @background-color-error-subtle;
-		border-color: @color-error;
+	&.cdx-accordion > summary h3 {
+		font-weight: @font-weight-normal;
+		color: @color-subtle;
 	}
 }
 
-.ext-articleguidance-source-content {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	min-width: 0;
-}
-
-.ext-articleguidance-source-url {
-	font-weight: 600;
-	word-break: break-all;
-}
-
-.ext-articleguidance-source-reason {
-	font-size: 14px;
+.ext-articleguidance-tips-info-icon {
 	color: @color-subtle;
-	font-style: italic;
+	margin-right: 8px;
 }
 
-.ext-articleguidance-source-remove {
-	flex-shrink: 0;
+.ext-articleguidance-tips-content {
+	color: @color-subtle;
+	line-height: @line-height-medium;
 }
 
 .ext-articleguidance-sources-actions {
 	display: flex;
-	justify-content: flex-end;
+	flex-direction: column;
+	align-items: center;
 	margin-top: 32px;
 	padding-top: 24px;
-	border-top: 1px solid @border-color-subtle;
+	gap: 8px;
+
+	.cdx-button {
+		width: 100%;
+		max-width: 400px;
+	}
+}
+
+.ext-articleguidance-sources-helper {
+	color: @color-placeholder;
+	font-size: @font-size-small;
 }
 </style>

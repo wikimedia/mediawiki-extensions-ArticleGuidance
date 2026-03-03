@@ -50,6 +50,6 @@ module.exports = defineComponent( {
 
 <style lang="less">
 .ext-articleguidance-step-body {
-	padding: 12px;
+	padding: 16px;
 }
 </style>

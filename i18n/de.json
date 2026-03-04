@@ -36,5 +36,7 @@
 	"articleguidance-instructions-start-writing": "Beginne mit dem Schreiben",
 	"articleguidance-navigation-back": "Zurück",
 	"articleguidance-tracking-category": "Seiten, die Artikelrichtlinien verwenden",
-	"articleguidance-tracking-category-desc": "Seiten in dieser Kategorie verwenden den <article-guidance>-Tag zur Bereitstellung einer strukturierten Anleitung für die Artikelerstellung."
+	"articleguidance-tracking-category-desc": "Seiten in dieser Kategorie verwenden den <article-guidance>-Tag zur Bereitstellung einer strukturierten Anleitung für die Artikelerstellung.",
+	"tag-articleguidance": "Artikelleitfaden",
+	"tag-articleguidance-description": "Die Bearbeitung erfolgte mithilfe des Artikelleitfaden-Workflows."
 }

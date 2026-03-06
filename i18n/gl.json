@@ -38,5 +38,7 @@
 	"articleguidance-instructions-start-writing": "Comezar a escribir",
 	"articleguidance-navigation-back": "Volver",
 	"articleguidance-tracking-category": "Páxinas que usan a guía de creación de artigos",
-	"articleguidance-tracking-category-desc": "As páxinas desta categoría usan a etiqueta <article-guidance> para proporcionar unha guía estruturada para a creación de artigos."
+	"articleguidance-tracking-category-desc": "As páxinas desta categoría usan a etiqueta <article-guidance> para proporcionar unha guía estruturada para a creación de artigos.",
+	"tag-articleguidance": "Guía de creación de artigos",
+	"tag-articleguidance-description": "A edición realizouse usando o fluxo de traballo da guía de creación de artigos"
 }

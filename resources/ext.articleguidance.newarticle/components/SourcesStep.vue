@@ -5,15 +5,7 @@
 		:show-back="true"
 		@back="handleBack"
 	>
-		<!-- Article title + type chip -->
-		<div class="ext-articleguidance-sources-article-info">
-			<h2 class="ext-articleguidance-sources-article-title">
-				{{ searchQuery }}
-			</h2>
-			<cdx-info-chip v-if="selectedOutline">
-				{{ selectedOutline.label }}
-			</cdx-info-chip>
-		</div>
+		<article-info></article-info>
 
 		<h3 class="ext-articleguidance-sources-heading">
 			{{ $i18n( 'articleguidance-sources-title' ).text() }}
@@ -131,21 +123,22 @@
 const { defineComponent, ref, watch, nextTick, computed } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const {
-	CdxAccordion, CdxButton, CdxIcon, CdxInfoChip, CdxMessage,
+	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
 const { cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { extractDomain, isDuplicate, isUnreliable, isValidUrl } = require( '../utils/sources.js' );
+const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
 module.exports = defineComponent( {
 	name: 'SourcesStep',
 	components: {
+		ArticleInfo,
 		CdxAccordion,
 		CdxButton,
 		CdxIcon,
-		CdxInfoChip,
 		CdxMessage,
 		CdxProgressIndicator,
 		CdxTextInput,
@@ -153,7 +146,7 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, searchQuery } = storeToRefs( store );
+		const { selectedOutline } = storeToRefs( store );
 
 		// Current URL being entered
 		const currentUrl = ref( '' );
@@ -270,8 +263,6 @@ module.exports = defineComponent( {
 				selectedOutline.notabilityRisk.length > 0 );
 
 		return {
-			selectedOutline,
-			searchQuery,
 			currentUrl,
 			checking,
 			validationError,
@@ -292,25 +283,6 @@ module.exports = defineComponent( {
 
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
-
-.ext-articleguidance-sources-article-info {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: 16px;
-
-	.cdx-info-chip {
-		border: 0;
-	}
-}
-
-.ext-articleguidance-sources-article-title {
-	font-size: @font-size-xx-large;
-	margin: 0;
-	color: @color-base;
-	border: 0;
-	line-height: @line-height-xx-large;
-}
 
 .ext-articleguidance-sources-heading {
 	font-size: @font-size-x-large;

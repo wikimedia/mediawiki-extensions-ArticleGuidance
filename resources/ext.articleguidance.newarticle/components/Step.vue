@@ -49,7 +49,10 @@ module.exports = defineComponent( {
 </script>
 
 <style lang="less">
+@import 'mediawiki.skin.variables.less';
+
 .ext-articleguidance-step-body {
 	padding: 16px;
 }
+
 </style>

@@ -1,18 +1,34 @@
 <template>
 	<step
 		step-name="instructions"
-		:title="$i18n( 'articleguidance-instructions-title' ).text()"
+		:title="$i18n( 'articleguidance-specialnewarticle-title' ).text()"
 		:show-back="true"
 		@back="handleBack"
 	>
-		<p class="ext-articleguidance-instructions-subtitle">
-			{{ $i18n( 'articleguidance-instructions-subtitle', searchQuery ).text() }}
-		</p>
+		<article-info></article-info>
 
-		<!-- Article guidance instructions -->
-		<div v-if="selectedOutline.instructions" class="ext-articleguidance-instructions-content">
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div v-html="selectedOutline.instructions"></div>
+		<!-- Guidance card -->
+		<div class="ext-articleguidance-guidance-card">
+			<h4 class="ext-articleguidance-guidance-heading">
+				{{ $i18n( 'articleguidance-instructions-guidance-heading' ).text() }}
+			</h4>
+			<div class="ext-articleguidance-guidance-intro">
+				{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
+			</div>
+
+			<!-- Community-provided tips (from outline) -->
+			<div
+				v-if="selectedOutline && selectedOutline.instructions"
+				class="ext-articleguidance-guidance-tips"
+			>
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<div v-html="selectedOutline.instructions"></div>
+			</div>
+
+			<!-- Source guidance -->
+			<div class="ext-articleguidance-guidance-sources">
+				{{ $i18n( 'articleguidance-instructions-source-guidance' ).text() }}
+			</div>
 		</div>
 
 		<!-- Actions -->
@@ -33,11 +49,13 @@ const { defineComponent } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxButton } = require( '../codex.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
 module.exports = defineComponent( {
 	name: 'InstructionsStep',
 	components: {
+		ArticleInfo,
 		CdxButton,
 		Step
 	},
@@ -79,7 +97,6 @@ module.exports = defineComponent( {
 
 		return {
 			selectedOutline,
-			searchQuery,
 			handleStartWriting,
 			handleBack
 		};
@@ -90,58 +107,51 @@ module.exports = defineComponent( {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.ext-articleguidance-instructions-step {
-	max-width: 900px;
-	margin: 0 auto;
-}
-
-.ext-articleguidance-instructions-subtitle {
-	font-weight: @font-weight-bold;
-	margin: 0 0 24px 0;
-}
-
-.ext-articleguidance-instructions-content {
-	margin-bottom: 24px;
+.ext-articleguidance-guidance-card {
+	background-color: @background-color-neutral-subtle;
+	border-radius: @border-radius-base;
 	padding: 16px;
-	background-color: @background-color-neutral-subtle;
-	border-left: 3px solid @color-progressive;
-	border-radius: 2px;
-}
 
-.ext-articleguidance-sections-list-wrapper {
-	margin-bottom: 24px;
+	.ext-articleguidance-guidance-intro {
+		color: @color-subtle;
+		font-size: @font-size-small;
+		margin: 0 0 12px 0;
+	}
 
-	h3 {
-		font-size: 20px;
-		font-weight: 600;
-		margin-bottom: 16px;
-		color: @color-base;
+	.ext-articleguidance-guidance-sources {
+		color: @color-subtle;
+		font-size: @font-size-small;
+		margin: 0;
+		padding-top: 12px;
+		border-top: @border-width-base @border-style-base @border-color-subtle;
 	}
 }
 
-.ext-articleguidance-sections-list {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+.ext-articleguidance-guidance-heading {
+	font-size: @font-size-large;
+	font-weight: @font-weight-bold;
+	color: @color-emphasized;
+	margin: 0 0 4px 0;
+	border: 0;
 }
 
-.ext-articleguidance-section-item {
-	padding: 12px 16px;
-	background-color: @background-color-neutral-subtle;
-	border-left: 3px solid @color-progressive;
-	margin-bottom: 8px;
-	font-weight: 500;
-
-	&:last-child {
-		margin-bottom: 0;
-	}
+.ext-articleguidance-guidance-tips {
+	color: @color-base;
+	margin-bottom: 12px;
+	padding-top: 12px;
 }
 
 .ext-articleguidance-instructions-actions {
 	display: flex;
-	justify-content: flex-end;
+	flex-direction: column;
+	align-items: center;
 	margin-top: 32px;
 	padding-top: 24px;
-	border-top: 1px solid @border-color-subtle;
+	gap: 8px;
+
+	.cdx-button {
+		width: 100%;
+		max-width: 400px;
+	}
 }
 </style>

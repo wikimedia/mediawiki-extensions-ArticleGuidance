@@ -11,10 +11,9 @@ use MediaWiki\Rest\Response;
  */
 class ListOutlinesHandler extends Handler {
 
-	private OutlineService $outlineService;
-
-	public function __construct( OutlineService $outlineService ) {
-		$this->outlineService = $outlineService;
+	public function __construct(
+		private readonly OutlineService $outlineService,
+	) {
 	}
 
 	/**

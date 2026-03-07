@@ -14,10 +14,9 @@ class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, R
 
 	private const TAG = 'articleguidance';
 
-	private ChangeTagsStore $changeTagsStore;
-
-	public function __construct( ChangeTagsStore $changeTagsStore ) {
-		$this->changeTagsStore = $changeTagsStore;
+	public function __construct(
+		private readonly ChangeTagsStore $changeTagsStore,
+	) {
 	}
 
 	/**

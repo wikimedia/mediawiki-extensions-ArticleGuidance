@@ -13,21 +13,12 @@ use WANObjectCache;
  */
 class WikidataInfoFetcher {
 
-	private HttpRequestFactory $httpRequestFactory;
-	private Language $contentLanguage;
-	private LoggerInterface $logger;
-	private WANObjectCache $cache;
-
 	public function __construct(
-		HttpRequestFactory $httpRequestFactory,
-		Language $contentLanguage,
-		LoggerInterface $logger,
-		WANObjectCache $cache
+		private readonly HttpRequestFactory $httpRequestFactory,
+		private readonly Language $contentLanguage,
+		private readonly LoggerInterface $logger,
+		private readonly WANObjectCache $cache,
 	) {
-		$this->httpRequestFactory = $httpRequestFactory;
-		$this->contentLanguage = $contentLanguage;
-		$this->logger = $logger;
-		$this->cache = $cache;
 	}
 
 	/**

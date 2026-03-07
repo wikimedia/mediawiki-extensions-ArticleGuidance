@@ -11,10 +11,9 @@ use MediaWiki\Title\Title;
 
 class RedLinkRedirectHandler {
 
-	private TitleExtractor $titleExtractor;
-
-	public function __construct( TitleExtractor $titleExtractor ) {
-		$this->titleExtractor = $titleExtractor;
+	public function __construct(
+		private readonly TitleExtractor $titleExtractor,
+	) {
 	}
 
 	/**

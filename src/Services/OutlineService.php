@@ -14,18 +14,11 @@ use MediaWiki\Title\TitleFactory;
  */
 class OutlineService {
 
-	private TitleFactory $titleFactory;
-	private WikiPageFactory $wikiPageFactory;
-	private ParserOutputAccess $parserOutputAccess;
-
 	public function __construct(
-		TitleFactory $titleFactory,
-		WikiPageFactory $wikiPageFactory,
-		ParserOutputAccess $parserOutputAccess
+		private readonly TitleFactory $titleFactory,
+		private readonly WikiPageFactory $wikiPageFactory,
+		private readonly ParserOutputAccess $parserOutputAccess,
 	) {
-		$this->titleFactory = $titleFactory;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->parserOutputAccess = $parserOutputAccess;
 	}
 
 	/**

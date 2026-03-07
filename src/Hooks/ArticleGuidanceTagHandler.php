@@ -14,15 +14,10 @@ use PPFrame;
  */
 class ArticleGuidanceTagHandler {
 
-	private WikidataInfoFetcher $wikidataInfoFetcher;
-	private ArticleGuidanceRenderer $renderer;
-
 	public function __construct(
-		WikidataInfoFetcher $wikidataInfoFetcher,
-		ArticleGuidanceRenderer $renderer
+		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
+		private readonly ArticleGuidanceRenderer $renderer,
 	) {
-		$this->wikidataInfoFetcher = $wikidataInfoFetcher;
-		$this->renderer = $renderer;
 	}
 
 	/**

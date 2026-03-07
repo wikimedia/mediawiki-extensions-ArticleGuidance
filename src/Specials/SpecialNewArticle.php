@@ -4,12 +4,12 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
-use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\SpecialPage\UnlistedSpecialPage;
 
-class SpecialNewArticle extends SpecialPage {
+class SpecialNewArticle extends UnlistedSpecialPage {
 
 	public function __construct() {
-		parent::__construct( 'NewArticle', '', $listed = false );
+		parent::__construct( 'NewArticle' );
 	}
 
 	/**

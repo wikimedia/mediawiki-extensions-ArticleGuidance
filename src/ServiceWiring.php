@@ -6,7 +6,18 @@ use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\MediaWikiServices;
 
+/** @phpcs-require-sorted-array */
 return [
+	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {
+		return new OutlineService(
+			$services->getTitleFactory(),
+			$services->getWikiPageFactory(),
+			$services->getParserOutputAccess(),
+		);
+	},
+	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
+		return new ArticleGuidanceRenderer();
+	},
 	'ArticleGuidanceTitleExtractor' => static function ( MediaWikiServices $services ): TitleExtractor {
 		return new TitleExtractor();
 	},
@@ -16,16 +27,6 @@ return [
 			$services->getContentLanguage(),
 			\MediaWiki\Logger\LoggerFactory::getInstance( 'ArticleGuidance' ),
 			$services->getMainWANObjectCache()
-		);
-	},
-	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
-		return new ArticleGuidanceRenderer();
-	},
-	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {
-		return new OutlineService(
-			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getParserOutputAccess(),
 		);
 	},
 ];

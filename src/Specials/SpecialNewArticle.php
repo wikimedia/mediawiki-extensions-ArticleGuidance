@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
-use SpecialPage;
+use MediaWiki\SpecialPage\SpecialPage;
 
 class SpecialNewArticle extends SpecialPage {
 

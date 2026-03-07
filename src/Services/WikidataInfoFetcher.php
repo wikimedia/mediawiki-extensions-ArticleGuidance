@@ -5,7 +5,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Language\Language;
 use Psr\Log\LoggerInterface;
-use WANObjectCache;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * Service for fetching Wikidata entity information including labels, descriptions,

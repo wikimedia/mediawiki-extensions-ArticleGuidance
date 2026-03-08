@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\PPFrame;
@@ -13,7 +14,9 @@ use MediaWiki\Parser\PPFrame;
 /**
  * Handler for the <article-guidance> parser tag extension
  */
-class ArticleGuidanceTagHandler {
+class ArticleGuidanceTagHandler implements
+	ParserFirstCallInitHook
+{
 
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
@@ -27,7 +30,7 @@ class ArticleGuidanceTagHandler {
 	 * @param Parser $parser
 	 * @return void
 	 */
-	public function onParserFirstCallInit( Parser $parser ): void {
+	public function onParserFirstCallInit( $parser ): void {
 		$parser->setHook( 'article-guidance', [ $this, 'renderArticleGuidance' ] );
 	}
 

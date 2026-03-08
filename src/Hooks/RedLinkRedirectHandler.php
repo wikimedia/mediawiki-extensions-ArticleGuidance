@@ -6,15 +6,20 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Actions\ActionEntryPoint;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Hook\AlternateEditHook;
+use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Output\OutputPage;
-use MediaWiki\Page\Article;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 
-class RedLinkRedirectHandler {
+class RedLinkRedirectHandler implements
+	AlternateEditHook,
+	BeforeInitializeHook
+{
 
 	public function __construct(
 		private readonly TitleExtractor $titleExtractor,
@@ -79,11 +84,11 @@ class RedLinkRedirectHandler {
 	/**
 	 * Redirect red link edit attempts to Special:NewArticle (desktop fallback)
 	 *
-	 * @param Article $article
+	 * @param EditPage $editPage
 	 * @return bool
 	 */
-	public function onAlternateEdit( $article ) {
-		$title = $article->getTitle();
+	public function onAlternateEdit( $editPage ) {
+		$title = $editPage->getTitle();
 		$context = RequestContext::getMain();
 		$request = $context->getRequest();
 

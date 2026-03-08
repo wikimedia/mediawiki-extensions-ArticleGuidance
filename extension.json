@@ -58,9 +58,7 @@
 	"Hooks": {
 		"BeforeInitialize": "RedLinkRedirect",
 		"AlternateEdit": "RedLinkRedirect",
-		"ParserFirstCallInit": [
-			"ArticleGuidanceTag"
-		],
+		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
 		"RecentChange_save": "EditTag"

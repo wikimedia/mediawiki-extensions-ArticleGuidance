@@ -4,10 +4,15 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
+use MediaWiki\Actions\ActionEntryPoint;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Page\Article;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 class RedLinkRedirectHandler {
 
@@ -20,7 +25,7 @@ class RedLinkRedirectHandler {
 	 * Check if we should redirect to Special:NewArticle
 	 *
 	 * @param Title $title
-	 * @param \WebRequest $request
+	 * @param WebRequest $request
 	 * @return bool True if should redirect
 	 */
 	private function shouldRedirect( Title $title, $request ): bool {
@@ -43,7 +48,7 @@ class RedLinkRedirectHandler {
 	 * Perform redirect to Special:NewArticle
 	 *
 	 * @param Title $title
-	 * @param \OutputPage $output
+	 * @param OutputPage $output
 	 * @return void
 	 */
 	private function performRedirect( Title $title, $output ): void {
@@ -57,14 +62,14 @@ class RedLinkRedirectHandler {
 	 * BeforeInitialize hook - catches requests early, works on mobile
 	 *
 	 * @param Title $title
-	 * @param \Article|null $article
-	 * @param \OutputPage $output
-	 * @param \User $user
-	 * @param \WebRequest $request
-	 * @param \MediaWiki $mediaWiki
+	 * @param null $unused
+	 * @param OutputPage $output
+	 * @param User $user
+	 * @param WebRequest $request
+	 * @param ActionEntryPoint $mediaWikiEntryPoint
 	 * @return bool|void
 	 */
-	public function onBeforeInitialize( $title, $article, $output, $user, $request, $mediaWiki ) {
+	public function onBeforeInitialize( $title, $unused, $output, $user, $request, $mediaWikiEntryPoint ) {
 		if ( $this->shouldRedirect( $title, $request ) ) {
 			$this->performRedirect( $title, $output );
 			return false;
@@ -74,7 +79,7 @@ class RedLinkRedirectHandler {
 	/**
 	 * Redirect red link edit attempts to Special:NewArticle (desktop fallback)
 	 *
-	 * @param \Article $article
+	 * @param Article $article
 	 * @return bool
 	 */
 	public function onAlternateEdit( $article ) {

@@ -7,6 +7,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\PPFrame;
 
 /**
@@ -135,7 +136,7 @@ class ArticleGuidanceTagHandler {
 	/**
 	 * Store article guidance data in parser output
 	 *
-	 * @param \ParserOutput $output
+	 * @param ParserOutput $output
 	 * @param string $wikidataId
 	 * @param string|null $label
 	 * @param string|null $description
@@ -144,7 +145,7 @@ class ArticleGuidanceTagHandler {
 	 * @param int|null $hierarchyDepth
 	 */
 	private function storeGuidanceData(
-		\ParserOutput $output,
+		ParserOutput $output,
 		string $wikidataId,
 		?string $label,
 		?string $description,

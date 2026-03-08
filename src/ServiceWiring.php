@@ -4,6 +4,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
 /** @phpcs-require-sorted-array */
@@ -25,7 +26,7 @@ return [
 		return new WikidataInfoFetcher(
 			$services->getHttpRequestFactory(),
 			$services->getContentLanguage(),
-			\MediaWiki\Logger\LoggerFactory::getInstance( 'ArticleGuidance' ),
+			LoggerFactory::getInstance( 'ArticleGuidance' ),
 			$services->getMainWANObjectCache()
 		);
 	},

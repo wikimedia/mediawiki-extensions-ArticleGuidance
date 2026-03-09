@@ -6,7 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
-use MediaWiki\Hook\ParserFirstCallInitHook;
+use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\PPFrame;

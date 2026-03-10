@@ -29,9 +29,12 @@
 		<!-- URL input field -->
 		<div class="ext-articleguidance-url-input-wrapper">
 			<cdx-text-input
+				ref="urlInput"
 				v-model="currentUrl"
 				:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
 				:disabled="checking"
+				:status="unreliableWarning ? 'error' : 'default'"
+				:clearable="true"
 				class="ext-articleguidance-url-input"
 				@keyup.enter="handleVerifyUrl"
 				@paste="handlePaste"
@@ -47,6 +50,20 @@
 			{{ validationError }}
 		</div>
 
+		<!-- Unreliable source warning -->
+		<cdx-message
+			v-if="unreliableWarning"
+			type="warning"
+			class="ext-articleguidance-unreliable-warning"
+		>
+			<strong>
+				{{ $i18n( 'articleguidance-sources-unreliable-warning-title' ).text() }}
+			</strong>
+			<div class="ext-articleguidance-unreliable-description">
+				{{ $i18n( 'articleguidance-sources-unreliable-warning-description' ).text() }}
+			</div>
+		</cdx-message>
+
 		<!-- Checking state -->
 		<div v-if="checking" class="ext-articleguidance-checking">
 			<cdx-progress-indicator show-label>
@@ -59,18 +76,14 @@
 			<cdx-message
 				v-for="( source, index ) in verifiedSources"
 				:key="index"
-				:type="source.reliable ? 'success' : 'warning'"
+				type="success"
 				class="ext-articleguidance-source-message"
 			>
 				<div class="ext-articleguidance-source-message-content">
 					<div class="ext-articleguidance-source-message-text">
 						<span class="ext-articleguidance-source-domain">{{ source.domain }}</span>
 						<span class="ext-articleguidance-source-status">
-							{{
-								source.reliable ?
-									$i18n( 'articleguidance-sources-approved' ).text() :
-									$i18n( 'articleguidance-sources-not-recommended' ).text()
-							}}
+							{{ $i18n( 'articleguidance-sources-approved' ).text() }}
 						</span>
 					</div>
 					<cdx-button
@@ -84,24 +97,6 @@
 				</div>
 			</cdx-message>
 		</div>
-
-		<!-- Tips accordion -->
-		<cdx-accordion
-			v-model="tipsOpen"
-			class="ext-articleguidance-tips-accordion"
-			separation="outline"
-		>
-			<template #title>
-				<cdx-icon
-					:icon="cdxIconInfoFilled"
-					class="ext-articleguidance-tips-info-icon"
-				></cdx-icon>
-				{{ $i18n( 'articleguidance-sources-tips-title' ).text() }}
-			</template>
-			<div class="ext-articleguidance-tips-content">
-				{{ $i18n( 'articleguidance-sources-tips-content' ).text() }}
-			</div>
-		</cdx-accordion>
 
 		<!-- Actions -->
 		<div class="ext-articleguidance-sources-actions">
@@ -123,10 +118,10 @@
 const { defineComponent, ref, watch, nextTick, computed } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const {
-	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
+	CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
-const { cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
+const { cdxIconClose } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { extractDomain, isDuplicate, isUnreliable, isValidUrl } = require( '../utils/sources.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
@@ -136,7 +131,6 @@ module.exports = defineComponent( {
 	name: 'SourcesStep',
 	components: {
 		ArticleInfo,
-		CdxAccordion,
 		CdxButton,
 		CdxIcon,
 		CdxMessage,
@@ -148,28 +142,36 @@ module.exports = defineComponent( {
 		const store = useArticleGuidanceStore();
 		const { selectedOutline } = storeToRefs( store );
 
+		// Ref for the URL text input component
+		const urlInput = ref( null );
 		// Current URL being entered
 		const currentUrl = ref( '' );
 		// Whether we are currently checking a URL
 		const checking = ref( false );
 		// Inline validation error (invalid URL or duplicate)
 		const validationError = ref( null );
-		// Tips accordion open state (expanded by default)
-		const tipsOpen = ref( true );
+		// Unreliable source warning (null or { domain })
+		const unreliableWarning = ref( null );
+
+		// Clear unreliable warning when user modifies the input
+		watch( currentUrl, () => {
+			if ( unreliableWarning.value ) {
+				unreliableWarning.value = null;
+			}
+		} );
 
 		// Initialize from store so back-navigation preserves entered sources
 		const verifiedSources = ref(
 			store.references.map( ( url ) => ( {
 				url: url,
-				domain: extractDomain( url ),
-				reliable: true
+				domain: extractDomain( url )
 			} ) )
 		);
 
 		// Keep store in sync as sources are added/removed
 		watch( verifiedSources, ( sources ) => {
 			store.setReferences(
-				sources.filter( ( s ) => s.reliable ).map( ( s ) => s.url )
+				sources.map( ( s ) => s.url )
 			);
 		}, { deep: true } );
 
@@ -199,23 +201,24 @@ module.exports = defineComponent( {
 				return;
 			}
 
-			// Start async-style check
+			// Check for unreliable domain before async check
+			if ( isUnreliable( url ) ) {
+				unreliableWarning.value = { domain: extractDomain( url ) };
+				if ( urlInput.value ) {
+					urlInput.value.blur();
+				}
+				return;
+			}
+
+			// Start async-style check for reliable sources
 			checking.value = true;
 			currentUrl.value = '';
 
 			setTimeout( () => {
-				const reliable = !isUnreliable( url );
-
 				verifiedSources.value.push( {
 					url: url,
-					domain: extractDomain( url ),
-					reliable: reliable
+					domain: extractDomain( url )
 				} );
-
-				// Auto-expand tips if source is not recommended
-				if ( !reliable ) {
-					tipsOpen.value = true;
-				}
 
 				checking.value = false;
 			}, 500 );
@@ -263,10 +266,11 @@ module.exports = defineComponent( {
 				selectedOutline.notabilityRisk.length > 0 );
 
 		return {
+			urlInput,
 			currentUrl,
 			checking,
 			validationError,
-			tipsOpen,
+			unreliableWarning,
 			verifiedSources,
 			handleVerifyUrl,
 			handlePaste,
@@ -274,7 +278,6 @@ module.exports = defineComponent( {
 			handleContinue,
 			handleBack,
 			cdxIconClose,
-			cdxIconInfoFilled,
 			hasNotabilityRisk
 		};
 	}
@@ -342,8 +345,7 @@ module.exports = defineComponent( {
 		padding: 12px 0;
 	}
 
-	&.cdx-message--success,
-	&.cdx-message--warning {
+	&.cdx-message--success {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
 	}
 
@@ -377,35 +379,24 @@ module.exports = defineComponent( {
 	}
 }
 
-.ext-articleguidance-tips-accordion {
-	margin-top: 16px;
+.ext-articleguidance-unreliable-warning {
+	margin: 12px 0;
 
-	&.cdx-accordion > summary {
-		position: relative;
-		padding-right: 32px;
-		border-bottom: @border-color-subtle solid 1px;
-		background-color: @background-color-neutral-subtle;
-
-		&::before {
-			position: absolute;
-			right: 12px;
-		}
-	}
-
-	&.cdx-accordion > summary h3 {
-		font-weight: @font-weight-normal;
+	.ext-articleguidance-unreliable-description {
+		font-size: @font-size-small;
 		color: @color-subtle;
+		margin-top: 4px;
 	}
-}
 
-.ext-articleguidance-tips-info-icon {
-	color: @color-subtle;
-	margin-right: 8px;
-}
-
-.ext-articleguidance-tips-content {
-	color: @color-subtle;
-	line-height: @line-height-medium;
+	&.cdx-message {
+		background-color: @background-color-base;
+		border: 0;
+		border-radius: 0;
+		padding: 12px 0;
+	}
+	&.cdx-message--warning {
+		border-bottom: @border-width-base @border-style-base @border-color-subtle;
+	}
 }
 
 .ext-articleguidance-sources-actions {

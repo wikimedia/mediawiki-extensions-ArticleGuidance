@@ -103,13 +103,11 @@
 					"callbackParam": [
 						"cdxIconArrowPrevious",
 						"cdxIconArticle",
-						"cdxIconClose",
-						"cdxIconInfoFilled"
+						"cdxIconClose"
 					]
 				}
 			],
 			"codexComponents": [
-				"CdxAccordion",
 				"CdxButton",
 				"CdxCard",
 				"CdxIcon",
@@ -143,8 +141,8 @@
 				"articleguidance-sources-duplicate",
 				"articleguidance-sources-continue",
 				"articleguidance-sources-helper",
-				"articleguidance-sources-tips-title",
-				"articleguidance-sources-tips-content",
+				"articleguidance-sources-unreliable-warning-title",
+				"articleguidance-sources-unreliable-warning-description",
 				"articleguidance-instructions-guidance-heading",
 				"articleguidance-instructions-guidance-intro",
 				"articleguidance-instructions-source-guidance",

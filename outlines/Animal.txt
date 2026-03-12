@@ -27,13 +27,11 @@ The [common name] feeds primarily on [food type], supplemented by [secondary foo
 
 The [common name] is classified as [IUCN status] by the IUCN, with an estimated population of [number] individuals. Primary threats include [threat] and [threat]. Conservation measures include [measure].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

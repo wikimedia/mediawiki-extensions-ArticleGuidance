@@ -25,13 +25,11 @@ The school occupies a [area] site in [location]. Its main building, constructed 
 * [[Alumni Name]], [brief description of notability]
 * [[Alumni Name]], [brief description of notability]
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

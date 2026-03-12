@@ -29,13 +29,11 @@ Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability
 
 [Last Name] is regarded as [assessment of significance] in [field or discipline]. [His/Her/Their] work on [contribution] has influenced [subsequent developments or figures], and [he/she/they] is commemorated by [memorial, award, or institution named after them].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

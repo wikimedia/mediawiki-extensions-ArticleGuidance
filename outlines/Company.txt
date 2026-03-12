@@ -29,13 +29,11 @@ By [year], [Company Name] had expanded into [new market or region]. The company 
 
 In [fiscal year], [Company Name] reported revenue of [amount] and a net [profit/loss] of [amount]. The company [trades on/is listed on] the [Stock Exchange] under the ticker symbol [[TICKER]].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

@@ -23,13 +23,11 @@ Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. 
 
 [Book Title] is regarded as [assessment of significance] in [genre or field]. It has influenced [subsequent works or authors], and has been adapted into [film/television/stage production] in [year].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

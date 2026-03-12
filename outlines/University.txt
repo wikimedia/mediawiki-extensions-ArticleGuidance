@@ -27,13 +27,11 @@ The main campus is located in [neighborhood or district] and covers [area]. The 
 
 The university has approximately [number] registered student organisations, including [club or society name]. The [sports team name] competes in [league or competition] and won [championship] in [year]. Student media includes [newspaper or radio station name], founded in [year].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

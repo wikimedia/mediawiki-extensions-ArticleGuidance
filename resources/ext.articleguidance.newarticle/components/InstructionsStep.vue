@@ -70,14 +70,14 @@ module.exports = defineComponent( {
 
 			// Add references as preload parameters
 			const validRefs = references.value.filter( ( r ) => r.trim() !== '' );
-			validRefs.forEach( ( r ) => {
-				preloadParams.push( `* ${ r }` );
+			validRefs.forEach( ( r, index ) => {
+				preloadParams.push( `<ref name="ref${ index + 1 }">${ r }</ref>` );
 			} );
 
 			const params = {
 				veaction: 'edit',
 				preload: selectedOutline.value.title,
-				preloadparams: [ preloadParams.join( '\n\n' ) ],
+				preloadparams: [ preloadParams.join( '\n' ) ],
 				articleguidance: 1
 			};
 

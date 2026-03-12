@@ -31,13 +31,11 @@ The city's economy is centred on [primary industry], with major employers includ
 
 [City Name] is home to [cultural institution], and hosts the annual [Festival Name] each [month]. The city is known for [dish or culinary tradition], and its [arts/sports] scene includes [notable venue or team].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

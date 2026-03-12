@@ -25,13 +25,11 @@ Follow Wikipedia's [[WP:FILM|film guidelines]]. Keep plot summaries concise per 
 
 [Film Title] earned $[amount] at the worldwide box office. It holds a [score]% approval rating on Rotten Tomatoes based on [number] reviews, with the consensus stating "[critical consensus text]". The film received [number] nominations at the [Awards ceremony], winning [number].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

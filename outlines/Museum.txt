@@ -27,13 +27,11 @@ The museum's permanent collection includes [collection name], comprising [number
 
 The museum currently presents [Exhibition Name] ([opening date] – [closing date]), featuring [brief description of exhibit content and origin].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

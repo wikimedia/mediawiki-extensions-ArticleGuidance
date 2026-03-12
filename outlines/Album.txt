@@ -30,13 +30,11 @@ The album draws on [genre] and [genre], with lyrics exploring themes of [theme] 
 | length2 = [m:ss]
 }}
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

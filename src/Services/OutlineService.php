@@ -35,10 +35,6 @@ class OutlineService {
 		// Use MediaWiki's Category system instead of raw database queries
 		$categoryTitle = $this->titleFactory->makeTitle( NS_CATEGORY, $categoryName );
 
-		if ( !$categoryTitle->exists() ) {
-			return [];
-		}
-
 		// Get category members using the Category class
 		$category = Category::newFromTitle( $categoryTitle );
 		$members = $category->getMembers();

@@ -33,7 +33,8 @@ return [
 			$services->getHttpRequestFactory(),
 			$services->getContentLanguage(),
 			LoggerFactory::getInstance( 'ArticleGuidance' ),
-			$services->getMainWANObjectCache()
+			$services->getMainWANObjectCache(),
+			$services->getMainConfig()->get( 'ArticleGuidanceMatchViaRules' )
 		);
 	},
 ];

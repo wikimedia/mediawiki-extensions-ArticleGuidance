@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
+use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Html\Html;
 
 /**
@@ -33,7 +34,8 @@ class ArticleGuidanceRenderer {
 		array $invalidNotabilityRisk,
 		?string $instructionsHtml,
 		?string $wikidataImage = null,
-		array $notabilityThresholds = []
+		array $notabilityThresholds = [],
+		?string $matchVia = null
 	): string {
 		$isValid = $wikidataId !== null;
 
@@ -64,10 +66,21 @@ class ArticleGuidanceRenderer {
 			$typeHtml = Html::element( 'span', [ 'class' => 'ext-articleguidance-type-label' ],
 				'Type: '
 			);
-			$typeHtml .= Html::element( 'a', [
+			$linkAttrs = [
 				'href' => "https://www.wikidata.org/wiki/$wikidataId",
 				'target' => '_blank',
-			], $wikidataId );
+			];
+			if ( $matchVia !== null ) {
+				$propName = WikidataProperties::PROPERTY_NAMES[$matchVia] ?? $matchVia;
+				$linkAttrs['title'] = "match-via: $matchVia ($propName)";
+			} else {
+				$p31 = WikidataProperties::PROP_INSTANCE_OF;
+				$p279 = WikidataProperties::PROP_SUBCLASS_OF;
+				$p31Name = WikidataProperties::PROPERTY_NAMES[$p31];
+				$p279Name = WikidataProperties::PROPERTY_NAMES[$p279];
+				$linkAttrs['title'] = "match-via: default ($p31 $p31Name / $p279 $p279Name*)";
+			}
+			$typeHtml .= Html::element( 'a', $linkAttrs, $wikidataId );
 
 			if ( $wikidataLabel ) {
 				$label = Html::element( 'span', [], $wikidataLabel );

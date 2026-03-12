@@ -1,0 +1,60 @@
+<noinclude>
+<article-guidance article-type="Q33999" notability-risk="sources wikidata crosswiki">
+Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors]]. Living persons must be handled with particular care per [[WP:BLP]]. Coverage should focus on significant professional work rather than personal life. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox person}}
+
+[Full Name] (born [birth date] in [birthplace]) is a [nationality] actor known for [primary role or work]. [He/She/They] first gained recognition in [year] with [notable role or production], and has since appeared in [notable works].
+
+== Early life ==
+
+[Last Name] was born on [birth date] in [birthplace]. [He/She/They] developed an early interest in acting through [school plays / local theatre / drama school] and trained at [drama school or university] in [city].
+
+== Career ==
+
+=== Early career ===
+
+[Last Name] began [his/her/their] professional career in [year] with [first notable role or production]. [He/She/They] built experience in [theatre / television / film] before achieving wider recognition.
+
+=== Breakthrough ===
+
+[Last Name] gained widespread attention in [year] for [his/her/their] role as [character] in [production]. The performance earned [him/her/them] [award nomination or critical acclaim].
+
+=== Notable works ===
+
+[Last Name]'s career has spanned [genres/media]. [His/Her/Their] most acclaimed performances include [work 1] ([year]) and [work 2] ([year]). [He/She/They] received the [Award Name] for [role] in [year].
+
+== Filmography ==
+
+=== Film ===
+
+* [Year] — ''[Film Title]'' as [Character Name]
+* [Year] — ''[Film Title]'' as [Character Name]
+
+=== Television ===
+
+* [Year–Year] — ''[Series Title]'' as [Character Name]
+
+=== Theatre ===
+
+* [Year] — ''[Play Title]'' as [Character Name] ([Theatre Name], [City])
+
+== Personal life ==
+
+[Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://IMDb-URL IMDb entry]
+* [https://Official-Website-URL Official Website]
+
+[[Category:Actors]]

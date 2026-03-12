@@ -66,6 +66,7 @@ class OutlineService {
 					'label' => $pageData['label'] ?? $wikidataId,
 					'description' => $description,
 					'articleType' => $wikidataId,
+					'matchVia' => $pageData['matchVia'] ?? null,
 					'instructions' => $pageData['instructions'] ?? null,
 					'thumbnail' => $pageData['image'] ?? null,
 					'notabilityRisk' => $pageData['notabilityRisk'] ?? [],

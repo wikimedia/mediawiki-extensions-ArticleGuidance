@@ -65,12 +65,10 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
-			// Extract article-type Q IDs from outlines
-			const outlineQIds = outlines
-				.map( ( outline ) => outline.articleType )
-				.filter( ( qid ) => qid ); // Filter out any null/undefined
+			// Filter outlines to those with a valid article type
+			const validOutlines = outlines.filter( ( outline ) => outline.articleType );
 
-			if ( outlineQIds.length === 0 ) {
+			if ( validOutlines.length === 0 ) {
 				// No outlines configured, show no results
 				results.value = [];
 				return;
@@ -78,73 +76,38 @@ function useWikidataSearch( query, language ) {
 
 			// Use SPARQL to find all matches between search results and outline types
 			// Returns { searchQId: [outlineQId1, outlineQId2, ...] }
-			const sparqlMatches = await findTypeMatches( searchQIds, outlineQIds );
+			const sparqlMatches = await findTypeMatches( searchQIds, validOutlines );
 
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 
-			// Create maps of outlineQId -> hierarchyDepth and outlineQId -> thumbnail
-			const depthMap = {};
-			const thumbnailMap = {};
+			// Build outline lookup and map SPARQL results to display objects
+			const outlineByType = {};
 			outlines.forEach( ( outline ) => {
 				if ( outline.articleType ) {
-					if ( outline.hierarchyDepth !== null ) {
-						depthMap[ outline.articleType ] = outline.hierarchyDepth;
-					}
-					if ( outline.thumbnail ) {
-						thumbnailMap[ outline.articleType ] = outline.thumbnail;
-					}
+					outlineByType[ outline.articleType ] = outline;
 				}
 			} );
 
-			// Build matched results
-			const matchedResults = [];
-
+			const filteredResults = [];
 			wikidataResults.forEach( ( result ) => {
-				const matchedTypes = sparqlMatches[ result.id ];
-				if ( matchedTypes && matchedTypes.length > 0 ) {
-					matchedTypes.forEach( ( matchedQId ) => {
-						matchedResults.push( {
+				const matchedQIds = sparqlMatches[ result.id ];
+				if ( matchedQIds && matchedQIds.length > 0 ) {
+					matchedQIds.forEach( ( matchedQId ) => {
+						const outline = outlineByType[ matchedQId ];
+						filteredResults.push( {
 							id: result.id,
 							label: result.label,
 							description: result.description,
 							url: result.url,
 							matchedQId: matchedQId,
-							hierarchyDepth: depthMap[ matchedQId ] || 0,
-							thumbnail: thumbnailMap[ matchedQId ] || null
+							matchVia: outline ? outline.matchVia || null : null,
+							hierarchyDepth: outline ? outline.hierarchyDepth || 0 : 0,
+							thumbnail: outline ? outline.thumbnail || null : null
 						} );
 					} );
 				}
-			} );
-
-			// Group results by item ID to find max depth per item (not globally)
-			const resultsByItemId = {};
-			matchedResults.forEach( ( result ) => {
-				if ( !resultsByItemId[ result.id ] ) {
-					resultsByItemId[ result.id ] = [];
-				}
-				resultsByItemId[ result.id ].push( result );
-			} );
-
-			// Filter each item's results to show only the most specific matches
-			const filteredResults = [];
-			Object.values( resultsByItemId ).forEach( ( itemResults ) => {
-				// Find the maximum depth for this specific item
-				const maxDepthForItem = itemResults.reduce(
-					( max, result ) => Math.max( max, result.hierarchyDepth || 0 ),
-					0
-				);
-
-				// Keep only results at the maximum depth for this item
-				// If maxDepthForItem is 0 (no depth data), show all matches for this item
-				const filteredItemResults = maxDepthForItem > 0 ?
-					itemResults.filter( ( result ) => result.hierarchyDepth === maxDepthForItem ) :
-					itemResults;
-
-				filteredItemResults.forEach( ( item ) => {
-					filteredResults.push( item );
-				} );
 			} );
 
 			if ( requestId !== latestRequestId ) {

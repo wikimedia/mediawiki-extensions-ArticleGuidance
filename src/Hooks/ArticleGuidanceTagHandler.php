@@ -73,6 +73,12 @@ class ArticleGuidanceTagHandler implements
 		$invalidTags = array_values( array_filter( $allTags,
 			static fn ( $tag ) => !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
 		) );
+		// Explicit match-via override from tag attribute; null means infer from Wikidata
+		$explicitMatchVia = $attributes['match-via'] ?? null;
+		if ( $explicitMatchVia !== null && !$this->isValidWikidataPropertyId( $explicitMatchVia ) ) {
+			$explicitMatchVia = null;
+		}
+		$matchVia = $explicitMatchVia;
 
 		// Parse instructions for display in the tag
 		$instructionsHtml = null;
@@ -95,21 +101,25 @@ class ArticleGuidanceTagHandler implements
 					// Get user language
 					$language = $parser->getContentLanguage()->getCode();
 
-					$entityData = $this->fetchWikidataEntity( $wikidataId, $language );
+					$entityData = $this->fetchWikidataEntity( $wikidataId, $language, $explicitMatchVia );
 					if ( $entityData ) {
 						$wikidataLabel = $entityData['label'] ?? null;
 						$wikidataDescription = $entityData['description'] ?? null;
 						$wikidataImage = $entityData['image'] ?? null;
 						$hierarchyDepth = $entityData['hierarchyDepth'] ?? null;
+						// Use inferred match-via from entity data; explicit override takes precedence
+						$matchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
 					}
 
 					$this->storeGuidanceData(
 						$output, $wikidataId, $wikidataLabel, $wikidataDescription,
-						$wikidataImage, $validTags, $hierarchyDepth
+						$wikidataImage, $validTags, $hierarchyDepth, $matchVia
 					);
 				} else {
-					// In preview mode, don't fetch from Wikidata
-					$this->storeGuidanceData( $output, $wikidataId, null, null, null, $validTags, null );
+					// In preview mode, don't fetch from Wikidata; inference is unavailable
+					$this->storeGuidanceData(
+						$output, $wikidataId, null, null, null, $validTags, null, $explicitMatchVia
+					);
 				}
 			}
 		}
@@ -124,7 +134,8 @@ class ArticleGuidanceTagHandler implements
 			$invalidTags,
 			$instructionsHtml,
 			$wikidataImage,
-			self::NOTABILITY_TAG_THRESHOLDS
+			self::NOTABILITY_TAG_THRESHOLDS,
+			$matchVia
 		);
 
 		return $html;
@@ -141,14 +152,25 @@ class ArticleGuidanceTagHandler implements
 	}
 
 	/**
+	 * Validate if a string is a valid Wikidata property ID (P followed by digits)
+	 *
+	 * @param string $id String to validate
+	 * @return bool True if valid Wikidata property ID format
+	 */
+	private function isValidWikidataPropertyId( string $id ): bool {
+		return (bool)preg_match( '/^P\d+$/', trim( $id ) );
+	}
+
+	/**
 	 * Fetch Wikidata entity information
 	 *
 	 * @param string $wikidataId Wikidata ID
 	 * @param string $language Language code
+	 * @param string|null $matchVia Wikidata property ID used for outline matching, or null for default
 	 * @return array|null Array with 'label', 'description', 'image', and 'hierarchyDepth', or null
 	 */
-	private function fetchWikidataEntity( string $wikidataId, string $language ): ?array {
-		return $this->wikidataInfoFetcher->fetchEntityCached( $wikidataId, $language );
+	private function fetchWikidataEntity( string $wikidataId, string $language, ?string $matchVia = null ): ?array {
+		return $this->wikidataInfoFetcher->fetchEntityCached( $wikidataId, $language, $matchVia );
 	}
 
 	/**
@@ -161,6 +183,7 @@ class ArticleGuidanceTagHandler implements
 	 * @param string|null $image
 	 * @param array $notabilityRisk Valid notability-risk tags
 	 * @param int|null $hierarchyDepth
+	 * @param string|null $matchVia Wikidata property ID used for matching (e.g. 'P106'), or null for default
 	 */
 	private function storeGuidanceData(
 		ParserOutput $output,
@@ -169,7 +192,8 @@ class ArticleGuidanceTagHandler implements
 		?string $description,
 		?string $image,
 		array $notabilityRisk,
-		?int $hierarchyDepth
+		?int $hierarchyDepth,
+		?string $matchVia = null
 	): void {
 		$output->setExtensionData( 'ArticleGuidance:data', [
 			'articleType' => $wikidataId,
@@ -179,6 +203,7 @@ class ArticleGuidanceTagHandler implements
 			'notabilityRisk' => $notabilityRisk,
 			'hierarchyDepth' => $hierarchyDepth,
 			'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
+			'matchVia' => $matchVia
 		] );
 	}
 

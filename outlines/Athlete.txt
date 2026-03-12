@@ -1,0 +1,52 @@
+<noinclude>
+<article-guidance article-type="Q2066131" notability-risk="sources wikidata crosswiki">
+Ensure the subject meets Wikipedia's [[WP:ATHLETE|notability guidelines for athletes]]. Significant professional or international competition is generally required. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox sportsperson}}
+
+[Full Name] (born [birth date] in [birthplace]) is a [nationality] [sport] athlete. [He/She/They] competes for [team / country] and is known for [primary achievements].
+
+== Early life ==
+
+[Last Name] was born on [birth date] in [birthplace]. [He/She/They] began [sport] at the age of [age] and progressed through [youth club / regional programme / national academy] before turning professional in [year].
+
+== Career ==
+
+=== Early career ===
+
+[Last Name] began [his/her/their] professional career with [team / organisation] in [year]. [He/She/They] established [himself/herself/themselves] as [description of early career role or performance].
+
+=== Major achievements ===
+
+[Last Name]'s career highlights include [achievement 1] in [year] and [achievement 2] in [year]. [He/She/They] represented [country] at [international competition] in [year], [winning / finishing] [result].
+
+== Career statistics ==
+
+{| class="wikitable"
+! Season !! Club / Team !! Competitions !! Notable results
+|-
+| [Year] || [Team] || [Competition] || [Result]
+|}
+
+== International career ==
+
+[Last Name] made [his/her/their] international debut for [country] in [year]. [He/She/They] has earned [number] caps and represented [country] at [major tournament or event].
+
+== Personal life ==
+
+[Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official Website]
+
+[[Category:Athletes]]

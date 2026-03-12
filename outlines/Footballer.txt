@@ -1,0 +1,67 @@
+<noinclude>
+<article-guidance article-type="Q937857" notability-risk="sources wikidata crosswiki">
+Ensure the subject meets Wikipedia's [[WP:FOOTBALLER|notability guidelines for footballers]]. Professional players at the top level of national leagues, or those with significant international caps, generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox football biography}}
+
+[Full Name] (born [birth date] in [birthplace]) is a [nationality] professional footballer who plays as a [position] for [current club] and the [country] national team.
+
+== Early life ==
+
+[Last Name] was born on [birth date] in [birthplace] and began playing football at [local club / academy]. [He/She/They] joined the [Club Name] academy at age [age] and progressed through the youth ranks before signing [his/her/their] first professional contract in [year].
+
+== Club career ==
+
+=== [First Club] ([year]–[year]) ===
+
+[Last Name] made [his/her/their] professional debut for [Club] on [date] in a [competition] match against [opponent]. [He/She/They] scored [number] goals in [number] appearances during [his/her/their] time at the club.
+
+=== [Next Club] ([year]–[year]) ===
+
+[Last Name] joined [Club] in [year] for a transfer fee of [fee]. [He/She/They] [key contribution or season highlights]. [He/She/They] helped the team [achievement, e.g., win the league / reach a cup final].
+
+=== [Current Club] ([year]–present) ===
+
+[Last Name] signed for [Club] in [year]. [He/She/They] has made [number] appearances and scored [number] goals for the club.
+
+== International career ==
+
+[Last Name] made [his/her/their] international debut for [country] on [date] against [opponent]. [He/She/They] has earned [number] caps and represented [country] at [tournament, e.g., FIFA World Cup / UEFA European Championship] in [year].
+
+== Career statistics ==
+
+=== Club ===
+
+{| class="wikitable"
+! Club !! Season !! League apps !! League goals !! Total apps !! Total goals
+|-
+| [Club] || [Year] || [Apps] || [Goals] || [Total Apps] || [Total Goals]
+|}
+
+=== International ===
+
+{| class="wikitable"
+! National team !! Caps !! Goals
+|-
+| [Country] || [Caps] || [Goals]
+|}
+
+== Personal life ==
+
+[Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Soccerway-URL Profile on Soccerway]
+* [https://Official-Website-URL Official Website]
+
+[[Category:Footballers]]

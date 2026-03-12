@@ -1,0 +1,57 @@
+<noinclude>
+<article-guidance article-type="Q82955" notability-risk="sources wikidata crosswiki">
+Ensure the subject meets Wikipedia's [[WP:POLITICIAN|notability guidelines for politicians]]. Living persons must be handled with particular care per [[WP:BLP]]. Maintain a neutral point of view per [[WP:NPOV]] when covering political positions and controversies. [[Documentation]]
+</article-guidance>
+</noinclude>
+{{Infobox officeholder}}
+
+[Full Name] (born [birth date] in [birthplace]) is a [nationality] politician who has served as [most significant office] since [year]. A member of the [Party Name], [he/she/they] is known for [primary policy focus or notable action].
+
+== Early life and education ==
+
+[Last Name] was born on [birth date] in [birthplace]. [He/She/They] studied [subject] at [university], graduating in [year], and later [additional education or professional background].
+
+== Political career ==
+
+=== Entry into politics ===
+
+[Last Name] first entered politics in [year] when [he/she/they] [how they entered — ran for office / was appointed / joined a party role]. [He/She/They] was elected to [office] in [year], representing [constituency / region].
+
+=== [Office or role] ([year–year]) ===
+
+As [office], [Last Name] [key actions, legislation introduced, or positions held]. [He/She/They] oversaw [major policy or event] and [additional notable accomplishment].
+
+=== [Subsequent office or role] ===
+
+In [year], [Last Name] [was elected / appointed] to [office]. [His/Her/Their] tenure was marked by [key policy area or event].
+
+== Political positions ==
+
+[Last Name] supports [policy area], arguing that [brief neutral description of position]. On [another issue], [he/she/they] has [position], which [context or impact].
+
+== Electoral history ==
+
+{| class="wikitable"
+! Election !! Constituency !! Party !! Votes !! Result
+|-
+| [Year] || [Constituency] || [Party] || [Votes] || [Elected / Not elected]
+|}
+
+== Personal life ==
+
+[Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
+
+== Further reading ==
+
+$1
+
+== References ==
+
+<references />
+
+== External links ==
+
+* [https://Official-Website-URL Official website]
+* [https://Parliament-Profile-URL Parliamentary profile]
+
+[[Category:Politicians]]

@@ -12,6 +12,21 @@
 	"requires": {
 		"MediaWiki": ">= 1.46.0"
 	},
+	"config": {
+		"ArticleGuidanceMatchViaRules": {
+			"value": [
+				{
+					"superclass": "Q12737077",
+					"matchVia": "P106"
+				},
+				{
+					"superclass": "Q16521",
+					"matchVia": "P171",
+					"exclude": "Q5"
+				}
+			]
+		}
+	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ArticleGuidance\\": "src/"
 	},

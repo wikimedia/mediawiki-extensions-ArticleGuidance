@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"Omotecho",
 			"RhAnish"
 		]
 	},
 	"articleguidance-specialnewarticle-disambiguation-title": "これは何ですか?",
-	"articleguidance-sources-invalid-url": "無効なURL"
+	"articleguidance-sources-invalid-url": "有効なURLを入力"
 }

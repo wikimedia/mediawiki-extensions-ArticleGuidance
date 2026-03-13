@@ -67,7 +67,7 @@ module.exports = defineComponent( {
 		const buildCreateArticleUrl = () => getCreateArticleUrl(
 			creationTitle.value,
 			selectedOutline.value.title,
-			references.value
+			references.value.map( ( r ) => r.url )
 		);
 
 		// Navigate to article creation page

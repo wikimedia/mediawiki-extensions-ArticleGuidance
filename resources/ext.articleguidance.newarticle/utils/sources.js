@@ -1,51 +1,3 @@
-// Unreliable domains to reject
-const UNRELIABLE_DOMAINS = [
-	// Social media
-	'facebook.com',
-	'twitter.com',
-	'x.com',
-	'instagram.com',
-	'tiktok.com',
-	'linkedin.com',
-	'reddit.com',
-	'tumblr.com',
-	'pinterest.com',
-	'snapchat.com',
-	// AI/Generated content
-	'chatgpt.com',
-	'openai.com',
-	'claude.ai',
-	'google.com',
-	'character.ai',
-	// User-generated content platforms
-	'medium.com',
-	'substack.com',
-	'wordpress.com',
-	'blogger.com',
-	'wix.com',
-	'youtube.com',
-	'youtu.be'
-];
-
-/**
- * Extract the domain name from a URL, stripping www. prefix.
- *
- * @param {string} url - The URL to extract the domain from
- * @return {string} The domain name, or the original string if parsing fails
- */
-function extractDomain( url ) {
-	try {
-		let urlToParse = url;
-		if ( !/^https?:\/\//i.test( url ) ) {
-			urlToParse = 'https://' + url;
-		}
-		const urlObj = new URL( urlToParse );
-		return urlObj.hostname.toLowerCase().replace( /^www\./, '' );
-	} catch ( e ) {
-		return url;
-	}
-}
-
 /**
  * Check whether the string is a syntactically valid URL.
  *
@@ -64,22 +16,6 @@ function isValidUrl( url ) {
 	} catch ( e ) {
 		return false;
 	}
-}
-
-/**
- * Check if a URL is from an unreliable domain.
- *
- * @param {string} url - The URL to check
- * @return {boolean} True if the domain is unreliable
- */
-function isUnreliable( url ) {
-	const domain = extractDomain( url );
-	for ( const bad of UNRELIABLE_DOMAINS ) {
-		if ( domain === bad || domain.endsWith( '.' + bad ) ) {
-			return true;
-		}
-	}
-	return false;
 }
 
 /**
@@ -104,9 +40,6 @@ function isDuplicate( url, sources ) {
 }
 
 module.exports = {
-	UNRELIABLE_DOMAINS,
-	extractDomain,
 	isValidUrl,
-	isUnreliable,
 	isDuplicate
 };

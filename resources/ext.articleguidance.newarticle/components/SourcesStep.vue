@@ -124,7 +124,8 @@ const {
 } = require( '../codex.js' );
 const { cdxIconClose } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
-const { extractDomain, isDuplicate, isUnreliable, isValidUrl } = require( '../utils/sources.js' );
+const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
+const { validateSource } = require( '../api/Sources.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
@@ -162,26 +163,18 @@ module.exports = defineComponent( {
 		} );
 
 		// Initialize from store so back-navigation preserves entered sources
-		const verifiedSources = ref(
-			store.references.map( ( url ) => ( {
-				url: url,
-				domain: extractDomain( url )
-			} ) )
-		);
+		const verifiedSources = ref( store.references.slice() );
 
 		// Keep store in sync as sources are added/removed
 		watch( verifiedSources, ( sources ) => {
-			store.setReferences(
-				sources.map( ( s ) => s.url )
-			);
+			store.setReferences( sources );
 		}, { deep: true } );
 
 		/**
 		 * Verify and add the current URL.
-		 * Validates synchronously first, then simulates an async check
-		 * with a brief delay to show the progress indicator.
+		 * Check source reliability with the API.
 		 */
-		const handleVerifyUrl = () => {
+		const handleVerifyUrl = async () => {
 			const url = currentUrl.value.trim();
 			if ( !url ) {
 				return;
@@ -202,27 +195,27 @@ module.exports = defineComponent( {
 				return;
 			}
 
-			// Check for unreliable domain before async check
-			if ( isUnreliable( url ) ) {
-				unreliableWarning.value = { domain: extractDomain( url ) };
-				if ( urlInput.value ) {
-					urlInput.value.blur();
-				}
-				return;
-			}
-
-			// Start async-style check for reliable sources
 			checking.value = true;
-			currentUrl.value = '';
 
-			setTimeout( () => {
-				verifiedSources.value.push( {
-					url: url,
-					domain: extractDomain( url )
-				} );
-
+			try {
+				const result = await validateSource( url );
+				if ( !result.reliable ) {
+					unreliableWarning.value = { domain: result.domain };
+					if ( urlInput.value ) {
+						urlInput.value.blur();
+					}
+				} else {
+					currentUrl.value = '';
+					verifiedSources.value.push( {
+						url: url,
+						domain: result.domain
+					} );
+				}
+			} catch ( e ) {
+				validationError.value = mw.message( 'articleguidance-sources-check-failed' ).text();
+			} finally {
 				checking.value = false;
-			}, 500 );
+			}
 		};
 
 		/**
@@ -251,9 +244,8 @@ module.exports = defineComponent( {
 			verifiedSources.value.splice( index, 1 );
 		};
 
-		const isReliable = ( s ) => s.reliable;
 		const canContinue = computed(
-			() => verifiedSources.value.filter( isReliable ).length >= minRequiredSources.value
+			() => verifiedSources.value.length >= minRequiredSources.value
 		);
 
 		/**

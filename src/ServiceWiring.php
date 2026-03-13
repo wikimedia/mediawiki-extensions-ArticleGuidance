@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
+use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Logger\LoggerFactory;
@@ -20,6 +21,9 @@ return [
 	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
 		return new ArticleGuidanceRenderer();
+	},
+	'ArticleGuidanceSourceValidator' => static function ( MediaWikiServices $services ): SourceValidator {
+		return new SourceValidator();
 	},
 	'ArticleGuidanceTitleExtractor' => static function ( MediaWikiServices $services ): TitleExtractor {
 		return new TitleExtractor();

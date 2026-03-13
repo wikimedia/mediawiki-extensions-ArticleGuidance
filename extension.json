@@ -26,6 +26,14 @@
 			"services": [
 				"ArticleGuidanceOutlineService"
 			]
+		},
+		{
+			"path": "/articleguidance/v0/source/validate",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ValidateSourceHandler",
+			"services": [
+				"ArticleGuidanceSourceValidator"
+			]
 		}
 	],
 	"SpecialPages": {
@@ -84,6 +92,7 @@
 				"App.vue",
 				"api/MediaWiki.js",
 				"api/Outlines.js",
+				"api/Sources.js",
 				"api/Wikidata.js",
 				"api/Sparql.js",
 				"composables/useArticleExist.js",
@@ -152,6 +161,7 @@
 				"articleguidance-sources-helper",
 				"articleguidance-sources-unreliable-warning-title",
 				"articleguidance-sources-unreliable-warning-description",
+				"articleguidance-sources-check-failed",
 				"articleguidance-instructions-guidance-heading",
 				"articleguidance-instructions-guidance-intro",
 				"articleguidance-instructions-source-guidance",

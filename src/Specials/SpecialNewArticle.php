@@ -4,16 +4,15 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
-use Language;
+use MediaWiki\Language\Language;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
 
 class SpecialNewArticle extends UnlistedSpecialPage {
 
-	private Language $contentLanguage;
-
-	public function __construct( Language $contentLanguage ) {
+	public function __construct(
+		private readonly Language $contentLanguage,
+	) {
 		parent::__construct( 'NewArticle' );
-		$this->contentLanguage = $contentLanguage;
 	}
 
 	/**

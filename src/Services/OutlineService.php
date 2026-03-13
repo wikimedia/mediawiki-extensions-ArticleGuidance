@@ -1,7 +1,11 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
+use DOMDocument;
+use DOMXPath;
 use MediaWiki\Category\Category;
 use MediaWiki\Page\ParserOutputAccess;
 use MediaWiki\Page\WikiPageFactory;
@@ -112,9 +116,9 @@ class OutlineService {
 		$instructions = null;
 		$html = $parserOutput->getContentHolderText();
 		if ( $html ) {
-			$dom = new \DOMDocument();
+			$dom = new DOMDocument();
 			$dom->loadHTML( '<?xml encoding="utf-8" ?>' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-			$xpath = new \DOMXPath( $dom );
+			$xpath = new DOMXPath( $dom );
 
 			// Find the div with class ext-articleguidance-content
 			$nodes = $xpath->query( '//div[@class="ext-articleguidance-content"]' );

@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace MediaWiki\Extension\ArticleGuidance\Rest;
 
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;

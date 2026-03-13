@@ -67,12 +67,12 @@ class ArticleGuidanceTagHandler implements
 		// Extract parameters
 		$articleType = $attributes['article-type'] ?? null;
 		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
-		$validTags = array_values( array_filter( $allTags, static function ( $tag ) {
-			return in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true );
-		} ) );
-		$invalidTags = array_values( array_filter( $allTags, static function ( $tag ) {
-			return !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true );
-		} ) );
+		$validTags = array_values( array_filter( $allTags,
+			static fn ( $tag ) => in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
+		) );
+		$invalidTags = array_values( array_filter( $allTags,
+			static fn ( $tag ) => !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
+		) );
 
 		// Parse instructions for display in the tag
 		$instructionsHtml = null;

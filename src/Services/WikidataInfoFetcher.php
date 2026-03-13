@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Http\HttpRequestFactory;
@@ -161,40 +163,35 @@ class WikidataInfoFetcher {
 			return null;
 		}
 
-		try {
-			$data = json_decode( $body, true );
-			if ( !isset( $data['entities'][$wikidataId] ) ) {
-				$this->logger->error( 'Invalid Wikidata API response format', [
-					'wikidataId' => $wikidataId
-				] );
-				return null;
-			}
-
-			$entity = $data['entities'][$wikidataId];
-			$label = $entity['labels'][$languageCode]['value'] ?? null;
-			$description = $entity['descriptions'][$languageCode]['value'] ?? null;
-
-			// Extract image from P18 claim
-			$image = null;
-			if ( isset( $entity['claims']['P18'][0]['mainsnak']['datavalue']['value'] ) ) {
-				$imageName = $entity['claims']['P18'][0]['mainsnak']['datavalue']['value'];
-				$image = $this->getCommonsImageUrl( $imageName );
-			}
-
-			// Return null if we got no useful data
-			if ( !$label && !$description && !$image ) {
-				return null;
-			}
-
-			return [
-				'label' => $label,
-				'description' => $description,
-				'image' => $image,
-			];
-		} catch ( \Exception $e ) {
-			$this->logger->warning( 'Failed to parse wbgetentities response: ' . $e->getMessage() );
+		$data = json_decode( $body, true );
+		if ( !is_array( $data ) || !isset( $data['entities'][$wikidataId] ) ) {
+			$this->logger->error( 'Invalid Wikidata API response format', [
+				'wikidataId' => $wikidataId
+			] );
 			return null;
 		}
+
+		$entity = $data['entities'][$wikidataId];
+		$label = $entity['labels'][$languageCode]['value'] ?? null;
+		$description = $entity['descriptions'][$languageCode]['value'] ?? null;
+
+		// Extract image from P18 claim
+		$image = null;
+		if ( isset( $entity['claims']['P18'][0]['mainsnak']['datavalue']['value'] ) ) {
+			$imageName = $entity['claims']['P18'][0]['mainsnak']['datavalue']['value'];
+			$image = $this->getCommonsImageUrl( $imageName );
+		}
+
+		// Return null if we got no useful data
+		if ( !$label && !$description && !$image ) {
+			return null;
+		}
+
+		return [
+			'label' => $label,
+			'description' => $description,
+			'image' => $image,
+		];
 	}
 
 	/**
@@ -219,13 +216,9 @@ class WikidataInfoFetcher {
 			return null;
 		}
 
-		try {
-			$data = json_decode( $body, true );
-			if ( isset( $data['results']['bindings'][0]['maxDepth']['value'] ) ) {
-				return (int)$data['results']['bindings'][0]['maxDepth']['value'];
-			}
-		} catch ( \Exception $e ) {
-			$this->logger->warning( 'Failed to parse SPARQL response: ' . $e->getMessage() );
+		$data = json_decode( $body, true );
+		if ( is_array( $data ) && isset( $data['results']['bindings'][0]['maxDepth']['value'] ) ) {
+			return (int)$data['results']['bindings'][0]['maxDepth']['value'];
 		}
 
 		// Graceful degradation

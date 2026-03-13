@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;

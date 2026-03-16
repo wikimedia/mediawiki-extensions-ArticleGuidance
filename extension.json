@@ -159,6 +159,8 @@
 				"articleguidance-sources-duplicate",
 				"articleguidance-sources-continue",
 				"articleguidance-sources-helper",
+				"articleguidance-sources-helper-required",
+				"articleguidance-sources-helper-progress",
 				"articleguidance-sources-unreliable-warning-title",
 				"articleguidance-sources-unreliable-warning-description",
 				"articleguidance-sources-check-failed",

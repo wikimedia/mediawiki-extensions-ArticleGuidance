@@ -9,6 +9,10 @@
 
 		<h3 class="ext-articleguidance-sources-heading">
 			{{ $i18n( 'articleguidance-sources-title' ).text() }}
+			<span
+				v-if="isMandatory"
+				class="ext-articleguidance-sources-required-indicator"
+			>*</span>
 		</h3>
 		<p class="ext-articleguidance-sources-subtitle">
 			{{ $i18n( 'articleguidance-sources-subtitle' ).text() }}
@@ -109,7 +113,7 @@
 				{{ $i18n( 'articleguidance-sources-continue' ).text() }}
 			</cdx-button>
 			<div class="ext-articleguidance-sources-helper">
-				{{ $i18n( 'articleguidance-sources-helper' ).text() }}
+				{{ helperText }}
 			</div>
 		</div>
 	</step>
@@ -244,12 +248,35 @@ module.exports = defineComponent( {
 			verifiedSources.value.splice( index, 1 );
 		};
 
+		const isMandatory = computed(
+			() => minRequiredSources.value > 0
+		);
+
 		const canContinue = computed(
 			() => verifiedSources.value.length >= minRequiredSources.value
 		);
 
+		const helperText = computed( () => {
+			if ( !isMandatory.value ) {
+				return mw.message( 'articleguidance-sources-helper' ).text();
+			}
+			if ( verifiedSources.value.length === 0 ) {
+				const raw = selectedOutline.value && selectedOutline.value.label || '';
+				const label = raw.charAt( 0 ).toUpperCase() + raw.slice( 1 );
+				return mw.message( 'articleguidance-sources-helper-required', label ).text();
+			}
+			if ( verifiedSources.value.length < minRequiredSources.value ) {
+				return mw.message(
+					'articleguidance-sources-helper-progress',
+					verifiedSources.value.length,
+					minRequiredSources.value
+				).text();
+			}
+			return mw.message( 'articleguidance-sources-helper' ).text();
+		} );
+
 		/**
-		 * Handle continue - emit only accepted (reliable) references to parent
+		 * Handle continue - navigate to next step
 		 */
 		const handleContinue = () => {
 			store.confirmSources();
@@ -267,7 +294,9 @@ module.exports = defineComponent( {
 			urlInput,
 			currentUrl,
 			checking,
+			isMandatory,
 			canContinue,
+			helperText,
 			validationError,
 			unreliableWarning,
 			verifiedSources,
@@ -292,6 +321,10 @@ module.exports = defineComponent( {
 	margin: 0 0 4px 0;
 	color: @color-base;
 	border: 0;
+
+	.ext-articleguidance-sources-required-indicator {
+		color: @color-error;
+	}
 }
 
 .ext-articleguidance-sources-subtitle {

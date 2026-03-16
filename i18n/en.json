@@ -28,6 +28,8 @@
 	"articleguidance-sources-duplicate": "This source has already been added",
 	"articleguidance-sources-continue": "Continue",
 	"articleguidance-sources-helper": "You can add sources while you write.",
+	"articleguidance-sources-helper-required": "$1 articles on this wiki require sources.",
+	"articleguidance-sources-helper-progress": "$1 of {{PLURAL:$2|$2 source|$2 sources}} added.",
 	"articleguidance-sources-unreliable-warning-title": "Not recommended by community",
 	"articleguidance-sources-unreliable-warning-description": "This source type is rarely accepted for this article type.",
 	"articleguidance-sources-check-failed": "Source check failed. Please try again.",

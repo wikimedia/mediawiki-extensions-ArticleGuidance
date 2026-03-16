@@ -28,6 +28,8 @@
 	"articleguidance-sources-duplicate": "Inline validation error displayed below the input when the URL has already been added",
 	"articleguidance-sources-continue": "Button text to continue from the sources step to the next step",
 	"articleguidance-sources-helper": "Helper text displayed below the continue button indicating that adding sources is optional at this stage",
+	"articleguidance-sources-helper-required": "Persistent helper text shown below the Continue button when the article type requires sources and none have been added yet. Parameters:\n* $1 - The human-readable article type label (e.g., \"Animal\", \"Person\")",
+	"articleguidance-sources-helper-progress": "Helper text shown below the Continue button indicating how many of the required sources have been added so far. Parameters:\n* $1 - The number of sources added so far\n* $2 - The minimum number of sources required",
 	"articleguidance-sources-unreliable-warning-title": "Title of the warning message shown below the input when a URL from a discouraged domain is entered",
 	"articleguidance-sources-unreliable-warning-description": "Description text for the warning shown when a URL from a discouraged domain is entered",
 	"articleguidance-sources-check-failed": "Error message displayed when the source validation API call fails unexpectedly",

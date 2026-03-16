@@ -1,5 +1,7 @@
 <template>
-	<div :class="'ext-articleguidance-' + stepName + '-step'">
+	<div
+		:class="'ext-articleguidance-' + stepName + '-step'"
+	>
 		<step-header
 			:title="title"
 			:show-back="showBack"
@@ -7,7 +9,9 @@
 		>
 		</step-header>
 		<div class="ext-articleguidance-step-body">
-			<slot></slot>
+			<div class="ext-articleguidance-step-content">
+				<slot></slot>
+			</div>
 		</div>
 	</div>
 </template>
@@ -52,7 +56,13 @@ module.exports = defineComponent( {
 @import 'mediawiki.skin.variables.less';
 
 .ext-articleguidance-step-body {
-	padding: 16px;
+	padding: clamp( 16px, 2vw, 24px ) clamp( 16px, 3vw, 32px ) clamp( 16px, 3vw, 32px );
+}
+
+.ext-articleguidance-step-header-inner,
+.ext-articleguidance-step-content {
+	max-width: 40rem;
+	margin: 0 auto;
 }
 
 </style>

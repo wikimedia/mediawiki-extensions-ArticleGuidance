@@ -331,6 +331,12 @@ module.exports = defineComponent( {
 	gap: 12px;
 }
 
+@media only screen and ( min-width: @min-width-breakpoint-desktop ) {
+	.ext-articleguidance-results-list {
+		grid-template-columns: 1fr;
+	}
+}
+
 .ext-articleguidance-results-heading {
 	margin: 0 0 8px 0;
 	font-weight: @font-weight-bold;

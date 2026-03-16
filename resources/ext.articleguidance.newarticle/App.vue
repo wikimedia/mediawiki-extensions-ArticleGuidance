@@ -44,8 +44,11 @@ module.exports = defineComponent( {
 </script>
 
 <style lang="less">
+@import 'mediawiki.skin.variables.less';
+
 .ext-articleguidance-newarticle {
-	max-width: 1200px;
+	width: 100%;
+	max-width: 64rem;
 	margin: 0 auto;
 }
 </style>

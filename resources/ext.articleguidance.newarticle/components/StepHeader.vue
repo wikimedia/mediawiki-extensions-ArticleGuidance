@@ -1,19 +1,21 @@
 <template>
 	<div class="ext-articleguidance-step-header">
-		<div class="ext-articleguidance-step-header-back">
-			<cdx-button
-				v-if="showBack"
-				weight="quiet"
-				:aria-label="$i18n( 'articleguidance-navigation-back' ).text()"
-				@click="handleBack"
-			>
-				<cdx-icon :icon="cdxIconArrowPrevious"></cdx-icon>
-			</cdx-button>
+		<div class="ext-articleguidance-step-header-inner">
+			<div class="ext-articleguidance-step-header-back">
+				<cdx-button
+					v-if="showBack"
+					weight="quiet"
+					:aria-label="$i18n( 'articleguidance-navigation-back' ).text()"
+					@click="handleBack"
+				>
+					<cdx-icon :icon="cdxIconArrowPrevious"></cdx-icon>
+				</cdx-button>
+			</div>
+			<h1 class="ext-articleguidance-step-header-title">
+				{{ title }}
+			</h1>
+			<div class="ext-articleguidance-step-header-spacer"></div>
 		</div>
-		<h1 class="ext-articleguidance-step-header-title">
-			{{ title }}
-		</h1>
-		<div class="ext-articleguidance-step-header-spacer"></div>
 	</div>
 </template>
 
@@ -56,11 +58,14 @@ module.exports = defineComponent( {
 @import 'mediawiki.skin.variables.less';
 
 .ext-articleguidance-step-header {
+	border-bottom: 1px solid @border-color-subtle;
+}
+
+.ext-articleguidance-step-header-inner {
 	display: grid;
 	grid-template-columns: 1fr auto 1fr;
 	align-items: center;
-	height: 44px;
-	border-bottom: 1px solid @border-color-subtle;
+	min-height: 44px;
 }
 
 .ext-articleguidance-step-header-back {

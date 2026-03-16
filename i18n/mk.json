@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"articleguidance-desc": "Им овозможува на корисниците да создаваат статии преку воден и потпомогнат работен тек.",
+	"articleguidance-specialnewarticle-title": "Нова статија",
+	"articleguidance-specialnewarticle-title-placeholder": "Наслов на статијата",
+	"articleguidance-specialnewarticle-loading": "Пребарувам...",
+	"articleguidance-specialnewarticle-checking": "Проверувам...",
+	"articleguidance-specialnewarticle-no-results": "Не најдов теми за „$1“"
+}

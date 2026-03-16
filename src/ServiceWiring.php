@@ -7,8 +7,10 @@ use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Registration\ExtensionRegistry;
 
 /** @phpcs-require-sorted-array */
 return [
@@ -23,7 +25,13 @@ return [
 		return new ArticleGuidanceRenderer();
 	},
 	'ArticleGuidanceSourceValidator' => static function ( MediaWikiServices $services ): SourceValidator {
-		return new SourceValidator();
+		$spamBlacklist = ExtensionRegistry::getInstance()->isLoaded( 'SpamBlacklist' )
+			? BaseBlacklist::getSpamBlacklist()
+			: null;
+		return new SourceValidator(
+			$spamBlacklist,
+			$services->getUserFactory(),
+		);
 	},
 	'ArticleGuidanceTitleExtractor' => static function ( MediaWikiServices $services ): TitleExtractor {
 		return new TitleExtractor();

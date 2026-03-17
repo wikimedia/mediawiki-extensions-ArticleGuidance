@@ -9,5 +9,15 @@
 	"articleguidance-specialnewarticle-checking": "Проверавам...",
 	"articleguidance-sources-invalid-url": "Неисправан URL",
 	"articleguidance-sources-continue": "Настави",
-	"articleguidance-navigation-back": "Назад"
+	"articleguidance-sources-unreliable-warning-title": "Не препоручује заједница",
+	"articleguidance-navigation-back": "Назад",
+	"articleguidance-notability-restrictions-title": "Ограничен значај",
+	"articleguidance-notability-option-wikidata-title": "Додај ову тему на Википодатке",
+	"articleguidance-notability-option-wikidata-description": "Направите структуиран податковни унос који цела Википедија може користити",
+	"articleguidance-notability-option-learn-title": "Научите шта овај вики тражи у новим чланцима",
+	"articleguidance-notability-option-learn-description": "Разумите шта заједница тражи",
+	"articleguidance-notability-tag-wikidata": "Само теме које постоје на Википодацима могу бити направљене.",
+	"articleguidance-notability-tag-crosswiki": "Само теме доступне на {{PLURAL:$1|другим језицима}} могу бити направљене.",
+	"articleguidance-notability-tag-draft": "Објављивање дозвољено само у именским просторима нацрт и корисник.",
+	"articleguidance-notability-tag-draft-location": "Ваш чланак ће бити направљен овде „$1”."
 }

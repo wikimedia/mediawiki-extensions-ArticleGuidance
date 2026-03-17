@@ -28,6 +28,7 @@
 	"articleguidance-sources-helper": "Vous pourrez ajouter des sources pendant la rédaction de l'article.",
 	"articleguidance-sources-unreliable-warning-title": "Déconseillé par la communauté",
 	"articleguidance-sources-unreliable-warning-description": "Ce type de source est rarement accepté pour ce type d'article.",
+	"articleguidance-sources-check-failed": "La vérification de la source a échoué. Veuillez réessayer.",
 	"articleguidance-instructions-guidance-heading": "Partir sur cet article",
 	"articleguidance-instructions-guidance-intro": "Voici quelques conseils pour vous aider à rédiger un bon article.",
 	"articleguidance-instructions-source-guidance": "Assurez-vous de disposer de sources fiables et indépendantes sur ce sujet avant de commencer.",

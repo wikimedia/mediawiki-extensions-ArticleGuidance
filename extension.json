@@ -145,6 +145,7 @@
 				"utils/notability.js",
 				"utils/draft.js",
 				"utils/articleUrl.js",
+				"utils/scroll.js",
 				"logging/notability.js",
 				{
 					"name": "icons.json",

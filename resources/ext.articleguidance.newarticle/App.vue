@@ -8,13 +8,14 @@
 </template>
 
 <script>
-const { defineComponent } = require( 'vue' );
+const { defineComponent, watch } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const useArticleGuidanceStore = require( './stores/useArticleGuidanceStore.js' );
 const SearchStep = require( './components/SearchStep.vue' );
 const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
 const NotabilityStep = require( './components/NotabilityStep.vue' );
+const { scrollToTop } = require( './utils/scroll.js' );
 
 module.exports = defineComponent( {
 	name: 'App',
@@ -37,6 +38,10 @@ module.exports = defineComponent( {
 		if ( props.initialTitle ) {
 			store.setSearchQuery( props.initialTitle );
 		}
+
+		watch( currentStep, () => {
+			scrollToTop();
+		} );
 
 		return { currentStep };
 	}

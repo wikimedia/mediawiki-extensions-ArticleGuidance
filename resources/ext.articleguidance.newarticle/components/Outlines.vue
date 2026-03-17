@@ -37,6 +37,7 @@ const { defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxMessage } = require( '../codex.js' );
 const { cdxIconArticle } = require( '../icons.json' );
+const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
@@ -55,6 +56,7 @@ module.exports = defineComponent( {
 
 		onMounted( () => {
 			store.loadOutlines();
+			scrollToTop();
 		} );
 
 		const handleSelectOutline = ( outlineItem ) => {

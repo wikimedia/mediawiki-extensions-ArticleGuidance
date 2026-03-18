@@ -38,6 +38,9 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ArticleGuidance\\": "src/"
 	},
+	"TestAutoloadNamespaces": {
+		"MediaWiki\\Extension\\ArticleGuidance\\Tests\\Unit\\": "tests/phpunit/unit/"
+	},
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],

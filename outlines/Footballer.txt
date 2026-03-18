@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q937857" notability-risk="sources wikidata crosswiki">
 Ensure the subject meets Wikipedia's [[WP:FOOTBALLER|notability guidelines for footballers]]. Professional players at the top level of national leagues, or those with significant international caps, generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox football biography}}
 
 [Full Name] (born [birth date] in [birthplace]) is a [nationality] professional footballer who plays as a [position] for [current club] and the [country] national team.

@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q430">
 Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use peer-reviewed palaeontological sources. Ensure proper taxonomic classification and note that taxonomy may be contested or subject to revision. Avoid speculation beyond what sources support. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Speciesbox}}
 
 ''[Genus species]'' is a genus of [taxonomic group, e.g., theropod / sauropod / ornithopod] dinosaur from the [geological period, e.g., Late Cretaceous] period (approximately [age range] million years ago). Fossils have been found in [geographic region / formation], and the genus is known from [holotype description, e.g., a partial skull and vertebrae].

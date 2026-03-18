@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q2066131" notability-risk="sources wikidata crosswiki">
 Ensure the subject meets Wikipedia's [[WP:ATHLETE|notability guidelines for athletes]]. Significant professional or international competition is generally required. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox sportsperson}}
 
 [Full Name] (born [birth date] in [birthplace]) is a [nationality] [sport] athlete. [He/She/They] competes for [team / country] and is known for [primary achievements].

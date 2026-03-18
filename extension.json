@@ -88,6 +88,9 @@
 			"services": [
 				"ChangeTagsStore"
 			]
+		},
+		"PreloadCleanup": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
 		}
 	},
 	"Hooks": {
@@ -96,7 +99,8 @@
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
-		"RecentChange_save": "EditTag"
+		"RecentChange_save": "EditTag",
+		"EditFormPreloadText": "PreloadCleanup"
 	},
 	"ExtensionMessagesFiles": {
 		"ArticleGuidanceAlias": "ArticleGuidance.alias.php"

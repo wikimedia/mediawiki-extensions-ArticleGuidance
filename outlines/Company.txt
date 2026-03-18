@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q4830453" notability-risk="sources draft">
 Ensure the company meets Wikipedia's [[WP:CORP|notability guidelines for organizations]]. Use reliable, independent sources. Avoid promotional language and maintain [[WP:NPOV|neutral point of view]]. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox company}}
 
 [Company Name] is a [country] [industry] company founded in [year] by [Founder Name], headquartered in [City, Country]. The company [main products or services] and employed approximately [number] people as of [year].

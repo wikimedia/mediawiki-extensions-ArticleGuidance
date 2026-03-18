@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q3914" notability-risk="sources draft">
 Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organizations]]. Most primary and secondary schools are not considered notable unless they have received significant coverage in reliable, independent sources beyond routine school listings or local news. The school must be described by multiple independent, reliable secondary sources—not the school's own website, yearbooks, or local directories. Avoid promotional or boosterish language; describe the school factually and neutrally per [[WP:NPOV]]. Do not include lists of current students, staff rosters, recent sports results, or routine school events. Focus on what makes the school historically, architecturally, or culturally significant. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox school}}
 
 [School Name] is a [type, e.g., state secondary/independent grammar] school located in [City, Country], founded in [year]. It is notable for [reason for notability supported by independent sources].

@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q10833314" notability-risk="sources wikidata crosswiki">
 Ensure the subject meets Wikipedia's [[WP:TENNIS|notability guidelines for tennis players]]. Players who have won an ATP/WTA title, competed at a Grand Slam, or reached a significant ranking generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox tennis biography}}
 
 [Full Name] (born [birth date] in [birthplace]) is a [nationality] professional tennis player. [He/She/They] competes on the [ATP / WTA] Tour and has achieved a career-high ranking of world No. [ranking].

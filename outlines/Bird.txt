@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q5113">
 Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification and use the correct [[WP:BIRDS|bird article conventions]] including IOC-aligned taxonomy. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Speciesbox}}
 
 The [common name] (''[Genus species]'') is a [taxonomic group, e.g., passerine / raptor / seabird] in the family [Family Name], native to [geographic region]. It is distinguished by [plumage feature] and [physical feature], and is listed as [conservation status] by the IUCN.

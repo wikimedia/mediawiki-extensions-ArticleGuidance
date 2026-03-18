@@ -1,8 +1,6 @@
-<noinclude>
 <article-guidance article-type="Q33999" notability-risk="sources wikidata crosswiki">
 Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors]]. Living persons must be handled with particular care per [[WP:BLP]]. Coverage should focus on significant professional work rather than personal life. [[Documentation]]
 </article-guidance>
-</noinclude>
 {{Infobox person}}
 
 [Full Name] (born [birth date] in [birthplace]) is a [nationality] actor known for [primary role or work]. [He/She/They] first gained recognition in [year] with [notable role or production], and has since appeared in [notable works].

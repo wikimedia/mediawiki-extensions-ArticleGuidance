@@ -25,6 +25,14 @@
 					"exclude": "Q5"
 				}
 			]
+		},
+		"ArticleGuidanceExperimentRefererTitles": {
+			"value": [ "Main_Page" ],
+			"description": "Page titles (with optional namespace prefix, e.g. 'Wikipedia:Articles to create') whose red-links are in scope."
+		},
+		"ArticleGuidanceExperimentRefererCategories": {
+			"value": [],
+			"description": "Category names (without 'Category:' prefix) whose pages' red-links are in scope."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -63,7 +71,9 @@
 		"RedLinkRedirect": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\RedLinkRedirectHandler",
 			"services": [
-				"ArticleGuidanceTitleExtractor"
+				"ArticleGuidanceTitleExtractor",
+				"MainConfig",
+				"TitleFactory"
 			]
 		},
 		"ArticleGuidanceTag": {

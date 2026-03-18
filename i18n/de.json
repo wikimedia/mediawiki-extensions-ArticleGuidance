@@ -26,6 +26,8 @@
 	"articleguidance-sources-duplicate": "Dieser Einzelnachweis wurde bereits hinzugefügt.",
 	"articleguidance-sources-continue": "Fortfahren",
 	"articleguidance-sources-helper": "Du kannst während des Schreibens Einzelnachweise hinzufügen.",
+	"articleguidance-sources-helper-required": "$1 Artikel auf diesem Wiki benötigen Einzelnachweise.",
+	"articleguidance-sources-helper-progress": "$1 von {{PLURAL:$2|$2 Einzelnachweis| $2 Einzelnachweisen}} hinzugefügt.",
 	"articleguidance-sources-unreliable-warning-title": "Von der Community nicht empfohlen.",
 	"articleguidance-sources-unreliable-warning-description": "Dieser Quellentyp wird für diesen Artikeltyp nur selten akzeptiert.",
 	"articleguidance-sources-check-failed": "Die Prüfung des Einzelnachweises ist fehlgeschlagen. Bitte versuche es erneut.",

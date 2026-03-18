@@ -26,6 +26,8 @@
 	"articleguidance-sources-duplicate": "Cette source a déjà été ajoutée",
 	"articleguidance-sources-continue": "Continuer",
 	"articleguidance-sources-helper": "Vous pourrez ajouter des sources pendant la rédaction de l'article.",
+	"articleguidance-sources-helper-required": "Les articles de type « $1 » nécessitent des sources.",
+	"articleguidance-sources-helper-progress": "$1 de {{PLURAL:$2|$2source|$2sources}} {{PLURAL:$1|ajoutée|ajoutées}}.",
 	"articleguidance-sources-unreliable-warning-title": "Déconseillé par la communauté",
 	"articleguidance-sources-unreliable-warning-description": "Ce type de source est rarement accepté pour ce type d'article.",
 	"articleguidance-sources-check-failed": "La vérification de la source a échoué. Veuillez réessayer.",

@@ -35,13 +35,11 @@ The [common name]'s song consists of [description of song]. Its call is a [descr
 
 The [common name] is classified as [IUCN status] by the IUCN, with an estimated population of [number] individuals. Primary threats include [threat such as habitat loss / invasive predators / climate change] and [threat]. Conservation measures include [measure].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

@@ -44,13 +44,11 @@ Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors
 
 [Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

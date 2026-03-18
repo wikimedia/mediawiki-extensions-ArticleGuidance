@@ -45,13 +45,11 @@ Based on [dentition / skull shape / stomach contents], ''[Genus]'' is interprete
 
 ''[Genus]'' lived in [environment description, e.g., a semi-arid floodplain / coastal forest] during the [geological period]. It shared its environment with [other taxa or fauna described in sources].
 
-== Further reading ==
-
-$1
-
 == References ==
 
-<references />
+<references>
+$1
+</references>
 
 == External links ==
 

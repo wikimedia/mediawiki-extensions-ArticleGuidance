@@ -4,68 +4,98 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
-use DOMDocument;
-use DOMXPath;
 use MediaWiki\Category\Category;
 use MediaWiki\Page\ParserOutputAccess;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * Service for managing article guidance outlines
  */
 class OutlineService {
 
+	private const CACHE_VERSION = 'v2';
+
 	public function __construct(
 		private readonly TitleFactory $titleFactory,
 		private readonly WikiPageFactory $wikiPageFactory,
 		private readonly ParserOutputAccess $parserOutputAccess,
+		private readonly WANObjectCache $cache,
 	) {
 	}
 
 	/**
-	 * Get all outlines in the wiki
+	 * Invalidate the outlines list cache.
+	 * Called by the tag handler whenever a page's guidance data is written.
+	 */
+	public function touchOutlinesCheckKey(): void {
+		$this->cache->touchCheckKey( $this->makeOutlinesCheckKey() );
+	}
+
+	/**
+	 * Get all outlines in the wiki.
+	 * Result is cached in WAN; cache is invalidated when any outline page is saved.
 	 *
-	 * @return array Array of outline data with id, name, notabilityRisk (string[]), and summary fields
+	 * @return array Array of outline data
 	 */
 	public function getOutlines(): array {
-		// Get the tracking category name from the message
-		$categoryName = wfMessage( 'articleguidance-tracking-category' )
-			->inContentLanguage()
-			->text();
+		return $this->getCachedData()['outlines'];
+	}
 
-		// Use MediaWiki's Category system instead of raw database queries
-		$categoryTitle = $this->titleFactory->makeTitle( NS_CATEGORY, $categoryName );
+	/**
+	 * Get the timestamp of the most recently touched category member.
+	 * Used by the REST handler for Last-Modified / 304 support.
+	 *
+	 * @return string|null MW timestamp, or null if the category is empty
+	 */
+	public function getLastModified(): ?string {
+		return $this->getCachedData()['lastModified'];
+	}
 
-		// Get category members using the Category class
+	/**
+	 * Get the cached outlines data, computing it if necessary.
+	 *
+	 * @return array{outlines: array, lastModified: string|null}
+	 */
+	private function getCachedData(): array {
+		return $this->cache->getWithSetCallback(
+			$this->cache->makeKey( 'articleguidance-outlines', self::CACHE_VERSION ),
+			WANObjectCache::TTL_WEEK,
+			fn () => $this->fetchData(),
+			[ 'checkKeys' => [ $this->makeOutlinesCheckKey() ] ]
+		);
+	}
+
+	/**
+	 * Fetch all outlines and the max page_touched timestamp from the parser cache.
+	 *
+	 * @return array{outlines: array, lastModified: string|null}
+	 */
+	private function fetchData(): array {
+		$categoryTitle = $this->titleFactory->makeTitle( NS_CATEGORY, $this->getCategoryName() );
 		$category = Category::newFromTitle( $categoryTitle );
 		$members = $category->getMembers();
 
 		$outlines = [];
+		$lastModified = null;
 
 		foreach ( $members as $member ) {
-			if ( !$member instanceof Title ) {
-				continue;
+			$touched = $member->getTouched();
+			if ( $touched !== null && ( $lastModified === null || $touched > $lastModified ) ) {
+				$lastModified = $touched;
 			}
 
-			// Get all page data in a single ParserOutput fetch
 			$pageData = $this->getPageData( $member );
 
-			if ( $pageData && isset( $pageData['articleType'] ) ) {
-				$wikidataId = $pageData['articleType'];
-
-				$description = $pageData['description'] ?? '';
-				if ( $description !== '' ) {
-					$description = ucfirst( $description );
-				}
-
+			if ( $pageData ) {
 				$outlines[] = [
 					'title' => $member->getPrefixedText(),
-					'label' => $pageData['label'] ?? $wikidataId,
-					'description' => $description,
-					'articleType' => $wikidataId,
+					'label' => $pageData['label'] ?? $pageData['articleType'],
+					'description' => $pageData['description'] ?? '',
+					'articleType' => $pageData['articleType'],
 					'matchVia' => $pageData['matchVia'] ?? null,
 					'instructions' => $pageData['instructions'] ?? null,
 					'thumbnail' => $pageData['image'] ?? null,
@@ -76,17 +106,17 @@ class OutlineService {
 			}
 		}
 
-		return $outlines;
+		return [ 'outlines' => $outlines, 'lastModified' => $lastModified ];
 	}
 
 	/**
-	 * Get all page data from a single ParserOutput fetch
+	 * Get article guidance data for a page from its parser output.
 	 *
-	 * Fetches ParserOutput once and extracts guidance data, sections, and instructions
+	 * Uses the parser cache when warm (fast). Falls back to a fresh parse when
+	 * the cache is cold; WikidataInfoFetcher's own cache keeps this fast.
 	 *
-	 * @param Title $title Page title
-	 * @return array|null Array with articleType, label, description, image,
-	 * 	notabilityRisk (string[]), hierarchyDepth, sections, instructions or null if not found
+	 * @param Title $title
+	 * @return array|null null if the page has no article-guidance tag or parse fails
 	 */
 	private function getPageData( Title $title ): ?array {
 		if ( !$title->exists() ) {
@@ -94,49 +124,28 @@ class OutlineService {
 		}
 
 		$wikiPage = $this->wikiPageFactory->newFromTitle( $title );
-		$parserOptions = ParserOptions::newFromAnon();
-
 		$status = $this->parserOutputAccess->getParserOutput(
 			$wikiPage,
-			$parserOptions
+			ParserOptions::newFromAnon(),
+			null,
+			ParserOutputAccess::OPT_FOR_ARTICLE_VIEW
 		);
 
 		if ( !$status->isOK() ) {
 			return null;
 		}
 
-		$parserOutput = $status->getValue();
+		$guidanceData = $status->getValue()->getExtensionData( 'ArticleGuidance:data' );
+		return is_array( $guidanceData ) ? $guidanceData : null;
+	}
 
-		// Extract article guidance data (includes articleType, label, description, image)
-		$guidanceData = $parserOutput->getExtensionData( 'ArticleGuidance:data' );
-		if ( !is_array( $guidanceData ) ) {
-			return null;
-		}
+	private function getCategoryName(): string {
+		return wfMessage( 'articleguidance-tracking-category' )
+			->inContentLanguage()
+			->text();
+	}
 
-		// Extract instructions from HTML using DOMDocument
-		$instructions = null;
-		$html = $parserOutput->getContentHolderText();
-		if ( $html ) {
-			$dom = new DOMDocument();
-			$dom->loadHTML( '<?xml encoding="utf-8" ?>' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-			$xpath = new DOMXPath( $dom );
-
-			// Find the div with class ext-articleguidance-content
-			$nodes = $xpath->query( '//div[@class="ext-articleguidance-content"]' );
-			if ( $nodes && $nodes->length > 0 ) {
-				// Get the inner HTML content
-				$contentNode = $nodes->item( 0 );
-				$innerHTML = '';
-				foreach ( $contentNode->childNodes as $child ) {
-					$innerHTML .= $dom->saveHTML( $child );
-				}
-				$instructions = trim( $innerHTML );
-			}
-		}
-
-		// Merge guidance data (already includes image) with sections and instructions
-		return array_merge( $guidanceData, [
-			'instructions' => $instructions
-		] );
+	private function makeOutlinesCheckKey(): string {
+		return $this->cache->makeKey( 'articleguidance-outlines-check', self::CACHE_VERSION );
 	}
 }

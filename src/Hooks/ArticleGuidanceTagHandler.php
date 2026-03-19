@@ -5,10 +5,10 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
+use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\PPFrame;
 
 /**
@@ -28,6 +28,7 @@ class ArticleGuidanceTagHandler implements
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
+		private readonly OutlineService $outlineService,
 	) {
 	}
 
@@ -56,10 +57,8 @@ class ArticleGuidanceTagHandler implements
 		Parser $parser,
 		PPFrame $frame
 	): string {
-		$output = $parser->getOutput();
-
 		// Add CSS module styles (loaded in <head>)
-		$output->addModuleStyles( [ 'ext.articleguidance.tag.styles' ] );
+		$parser->getOutput()->addModuleStyles( [ 'ext.articleguidance.tag.styles' ] );
 
 		// Add page to tracking category
 		$parser->addTrackingCategory( 'articleguidance-tracking-category' );
@@ -83,10 +82,9 @@ class ArticleGuidanceTagHandler implements
 		// Parse instructions for display in the tag
 		$instructionsHtml = null;
 		if ( $content !== null && trim( $content ) !== '' ) {
-			$instructionsHtml = $parser->recursiveTagParse( $content, $frame );
+			$instructionsHtml = $parser->recursiveTagParseFully( $content, $frame );
 		}
 
-		// Validate article-type format (Q12345)
 		$wikidataId = null;
 		$wikidataLabel = null;
 		$wikidataDescription = null;
@@ -101,7 +99,9 @@ class ArticleGuidanceTagHandler implements
 					// Get user language
 					$language = $parser->getContentLanguage()->getCode();
 
-					$entityData = $this->fetchWikidataEntity( $wikidataId, $language, $explicitMatchVia );
+					$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
+						$wikidataId, $language, $explicitMatchVia
+					);
 					if ( $entityData ) {
 						$wikidataLabel = $entityData['label'] ?? null;
 						$wikidataDescription = $entityData['description'] ?? null;
@@ -111,15 +111,19 @@ class ArticleGuidanceTagHandler implements
 						$matchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
 					}
 
-					$this->storeGuidanceData(
-						$output, $wikidataId, $wikidataLabel, $wikidataDescription,
-						$wikidataImage, $validTags, $hierarchyDepth, $matchVia
-					);
-				} else {
-					// In preview mode, don't fetch from Wikidata; inference is unavailable
-					$this->storeGuidanceData(
-						$output, $wikidataId, null, null, null, $validTags, null, $explicitMatchVia
-					);
+					$description = $wikidataDescription !== null ? ucfirst( $wikidataDescription ) : null;
+					$parser->getOutput()->setExtensionData( 'ArticleGuidance:data', [
+						'articleType' => $wikidataId,
+						'label' => $wikidataLabel,
+						'description' => $description,
+						'image' => $wikidataImage,
+						'notabilityRisk' => $validTags,
+						'hierarchyDepth' => $hierarchyDepth,
+						'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
+						'matchVia' => $matchVia,
+						'instructions' => $instructionsHtml,
+					] );
+					$this->outlineService->touchOutlinesCheckKey();
 				}
 			}
 		}
@@ -159,52 +163,6 @@ class ArticleGuidanceTagHandler implements
 	 */
 	private function isValidWikidataPropertyId( string $id ): bool {
 		return (bool)preg_match( '/^P\d+$/', trim( $id ) );
-	}
-
-	/**
-	 * Fetch Wikidata entity information
-	 *
-	 * @param string $wikidataId Wikidata ID
-	 * @param string $language Language code
-	 * @param string|null $matchVia Wikidata property ID used for outline matching, or null for default
-	 * @return array|null Array with 'label', 'description', 'image', and 'hierarchyDepth', or null
-	 */
-	private function fetchWikidataEntity( string $wikidataId, string $language, ?string $matchVia = null ): ?array {
-		return $this->wikidataInfoFetcher->fetchEntityCached( $wikidataId, $language, $matchVia );
-	}
-
-	/**
-	 * Store article guidance data in parser output
-	 *
-	 * @param ParserOutput $output
-	 * @param string $wikidataId
-	 * @param string|null $label
-	 * @param string|null $description
-	 * @param string|null $image
-	 * @param array $notabilityRisk Valid notability-risk tags
-	 * @param int|null $hierarchyDepth
-	 * @param string|null $matchVia Wikidata property ID used for matching (e.g. 'P106'), or null for default
-	 */
-	private function storeGuidanceData(
-		ParserOutput $output,
-		string $wikidataId,
-		?string $label,
-		?string $description,
-		?string $image,
-		array $notabilityRisk,
-		?int $hierarchyDepth,
-		?string $matchVia = null
-	): void {
-		$output->setExtensionData( 'ArticleGuidance:data', [
-			'articleType' => $wikidataId,
-			'label' => $label,
-			'description' => $description,
-			'image' => $image,
-			'notabilityRisk' => $notabilityRisk,
-			'hierarchyDepth' => $hierarchyDepth,
-			'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
-			'matchVia' => $matchVia
-		] );
 	}
 
 	/**

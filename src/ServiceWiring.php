@@ -19,6 +19,7 @@ return [
 			$services->getTitleFactory(),
 			$services->getWikiPageFactory(),
 			$services->getParserOutputAccess(),
+			$services->getMainWANObjectCache(),
 		);
 	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {

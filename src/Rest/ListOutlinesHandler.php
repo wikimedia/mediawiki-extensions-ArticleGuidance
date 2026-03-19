@@ -22,16 +22,16 @@ class ListOutlinesHandler extends Handler {
 	 * @return Response
 	 */
 	public function execute(): Response {
-		try {
-			$outlines = $this->outlineService->getOutlines();
-			return $this->getResponseFactory()->createJson( [
-				'outlines' => $outlines
-			] );
-		} catch ( \Exception $e ) {
-			return $this->getResponseFactory()->createHttpError( 500, [
-				'message' => 'Failed to fetch outlines: ' . $e->getMessage()
-			] );
-		}
+		$response = $this->getResponseFactory()->createJson( [
+			'outlines' => $this->outlineService->getOutlines()
+		] );
+		$response->setHeader( 'Cache-Control', 'public, s-maxage=300' );
+		return $response;
+	}
+
+	/** @inheritDoc */
+	protected function getLastModified() {
+		return $this->outlineService->getLastModified();
 	}
 
 	/**

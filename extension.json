@@ -83,7 +83,8 @@
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\ArticleGuidanceTagHandler",
 			"services": [
 				"ArticleGuidanceWikidataInfoFetcher",
-				"ArticleGuidanceRenderer"
+				"ArticleGuidanceRenderer",
+				"ArticleGuidanceOutlineService"
 			]
 		},
 		"EditTag": {

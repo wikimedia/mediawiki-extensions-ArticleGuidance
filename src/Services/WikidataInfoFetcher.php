@@ -79,7 +79,7 @@ class WikidataInfoFetcher {
 
 		return $this->cache->getWithSetCallback(
 			$cacheKey,
-			WANObjectCache::TTL_DAY,
+			WANObjectCache::TTL_WEEK,
 			function ( $oldValue, &$ttl, &$setOpts ) use ( $wikidataId, $languageCode, $matchVia, $method ) {
 				$multiClient = $this->httpRequestFactory->createMultiClient();
 

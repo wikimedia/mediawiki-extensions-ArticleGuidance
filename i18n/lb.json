@@ -7,5 +7,7 @@
 	"articleguidance-specialnewarticle-title": "Neien Artikel",
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
+	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
+	"articleguidance-sources-helper-progress": "$1 vu(n) {{PLURAL:$2|$2 Sourcen}} derbäigesat.",
 	"articleguidance-notability-tag-draft-location": "Ären Artikel wäert ënner „$1“ ugeluecht ginn."
 }

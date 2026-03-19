@@ -10,7 +10,9 @@ use MediaWiki\EditPage\EditPage;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Hook\AlternateEditHook;
 use MediaWiki\Hook\BeforeInitializeHook;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
@@ -21,6 +23,8 @@ class RedLinkRedirectHandler implements
 	AlternateEditHook,
 	BeforeInitializeHook
 {
+
+	private const MAX_JUNIOR_EDIT_COUNT = 99;
 
 	public function __construct(
 		private readonly TitleExtractor $titleExtractor,
@@ -48,14 +52,14 @@ class RedLinkRedirectHandler implements
 	 *
 	 * @param Title $title
 	 * @param WebRequest $request
+	 * @param User $user
 	 * @return bool True if should redirect
 	 */
-	private function shouldRedirect( Title $title, WebRequest $request ): bool {
-		if ( !$this->isArticleRedLink( $title, $request ) ) {
-			return false;
-		}
-
-		return $this->isInScope( $request );
+	private function shouldRedirect( Title $title, WebRequest $request, User $user ): bool {
+		return $this->isArticleRedLink( $title, $request )
+			&& $this->isMobile()
+			&& $this->isUserInScope( $user )
+			&& $this->isRefererInScope( $request );
 	}
 
 	/**
@@ -82,7 +86,7 @@ class RedLinkRedirectHandler implements
 	 * @param WebRequest $request
 	 * @return bool
 	 */
-	private function isInScope( WebRequest $request ): bool {
+	private function isRefererInScope( WebRequest $request ): bool {
 		$refererTitles = $this->mainConfig->get( 'ArticleGuidanceExperimentRefererTitles' );
 		$refererCategories = $this->mainConfig->get( 'ArticleGuidanceExperimentRefererCategories' );
 
@@ -130,6 +134,37 @@ class RedLinkRedirectHandler implements
 	}
 
 	/**
+	 * Check whether the current request is a mobile web view.
+	 *
+	 * Requires MobileFrontend; returns false if that extension is not loaded.
+	 *
+	 * @return bool
+	 */
+	private function isMobile(): bool {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) ) {
+			return false;
+		}
+		$mobileContext = MediaWikiServices::getInstance()->getService( 'MobileFrontend.Context' );
+		return $mobileContext->shouldDisplayMobileView();
+	}
+
+	/**
+	 * Check whether the user is within the experiment's target audience.
+	 *
+	 * The user must be logged in, have fewer than 100 edits, not be blocked,
+	 * and have permission to create pages on this wiki.
+	 *
+	 * @param User $user
+	 * @return bool
+	 */
+	private function isUserInScope( User $user ): bool {
+		return $user->isRegistered()
+			&& $user->getEditCount() <= self::MAX_JUNIOR_EDIT_COUNT
+			&& $user->getBlock() === null
+			&& $user->isAllowed( 'createpage' );
+	}
+
+	/**
 	 * Perform redirect to Special:NewArticle
 	 *
 	 * @param Title $title
@@ -158,7 +193,7 @@ class RedLinkRedirectHandler implements
 		if ( $title === null ) {
 			return;
 		}
-		if ( $this->shouldRedirect( $title, $request ) ) {
+		if ( $this->shouldRedirect( $title, $request, $user ) ) {
 			$this->performRedirect( $title, $output );
 			return false;
 		}
@@ -174,8 +209,9 @@ class RedLinkRedirectHandler implements
 		$title = $editPage->getTitle();
 		$context = $editPage->getContext();
 		$request = $context->getRequest();
+		$user = $context->getUser();
 
-		if ( $this->shouldRedirect( $title, $request ) ) {
+		if ( $this->shouldRedirect( $title, $request, $user ) ) {
 			$this->performRedirect( $title, $context->getOutput() );
 			return false;
 		}

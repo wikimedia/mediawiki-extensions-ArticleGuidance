@@ -13,6 +13,7 @@ use MediaWiki\User\UserFactory;
 class SourceValidator {
 
 	public function __construct(
+		private readonly PageMetadataFetcher $pageMetadataFetcher,
 		private readonly ?SpamBlacklist $spamBlacklist,
 		private readonly UserFactory $userFactory,
 		private readonly OutlineService $outlineService,
@@ -20,11 +21,11 @@ class SourceValidator {
 	}
 
 	/**
-	 * Validate a URL and return a result array with domain and classification.
+	 * Validate a URL and return a result array with domain, classification, and title.
 	 *
 	 * @param string $url
 	 * @param string|null $outlineQId Q-ID of the selected outline, for domain classification
-	 * @return array{domain: string, classification: string}
+	 * @return array{domain: string, classification: string, title: string|null}
 	 */
 	public function validate( string $url, ?string $outlineQId = null ): array {
 		$domain = strtolower( preg_replace( '/^www\./i', '', parse_url( $url, PHP_URL_HOST ) ?? '' ) );
@@ -37,13 +38,27 @@ class SourceValidator {
 				return [
 					'domain' => $domain,
 					'classification' => 'spam',
+					'title' => null,
 				];
 			}
+		}
+
+		// Unreachable URLs are accepted as neutral sources: we do not want to block editors
+		// from citing a URL just because our server cannot reach it (firewall rules, geo-blocking,
+		// paywalls that reject server-side requests, etc.). The title will be absent.
+		$metadata = $this->pageMetadataFetcher->fetch( $url );
+		if ( $metadata === null ) {
+			return [
+				'domain' => $domain,
+				'classification' => 'neutral',
+				'title' => null,
+			];
 		}
 
 		return [
 			'domain' => $domain,
 			'classification' => $this->classifyDomain( $domain, $outlineQId ),
+			'title' => $metadata['title'],
 		];
 	}
 

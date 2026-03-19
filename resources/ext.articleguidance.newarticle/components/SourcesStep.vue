@@ -84,28 +84,21 @@
 		</div>
 
 		<!-- Verified sources list -->
-		<div v-if="verifiedSources.length > 0" class="ext-articleguidance-verified-sources">
-			<cdx-message
-				v-for="( source, index ) in verifiedSources"
-				:key="index"
-				:type="source.classification === 'recommended' ? 'success' : 'notice'"
-				class="ext-articleguidance-source-message"
-			>
-				<div class="ext-articleguidance-source-message-content">
-					<div class="ext-articleguidance-source-message-text">
-						<span class="ext-articleguidance-source-domain">{{ source.domain }}</span>
-					</div>
-					<cdx-button
-						weight="quiet"
-						class="ext-articleguidance-source-close"
-						:aria-label="$i18n( 'articleguidance-navigation-back' ).text()"
-						@click="removeSource( index )"
-					>
-						<cdx-icon :icon="cdxIconClose"></cdx-icon>
-					</cdx-button>
-				</div>
-			</cdx-message>
-		</div>
+		<cdx-message
+			v-for="( source, index ) in verifiedSources"
+			:key="source.url"
+			:type="source.classification === 'recommended' ? 'success' : 'notice'"
+			class="ext-articleguidance-source-message"
+			allow-user-dismiss
+			@user-dismissed="removeSource( index )"
+		>
+			<p class="ext-articleguidance-source-domain">
+				{{ source.domain }}
+			</p>
+			<p v-if="source.title" class="ext-articleguidance-source-title">
+				{{ source.title }}
+			</p>
+		</cdx-message>
 
 		<!-- Tips accordion -->
 		<cdx-accordion
@@ -191,7 +184,7 @@ const {
 	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
-const { cdxIconAdd, cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
+const { cdxIconAdd, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { validateSource } = require( '../api/Sources.js' );
@@ -298,7 +291,8 @@ module.exports = defineComponent( {
 					verifiedSources.value.push( {
 						url: url,
 						domain: result.domain,
-						classification: result.classification || 'neutral'
+						classification: result.classification || 'neutral',
+						title: result.title
 					} );
 				}
 			} catch ( e ) {
@@ -392,7 +386,6 @@ module.exports = defineComponent( {
 			handleContinue,
 			handleBack,
 			cdxIconAdd,
-			cdxIconClose,
 			cdxIconInfoFilled,
 			tipsOpen,
 			recommendedSources,
@@ -494,16 +487,6 @@ module.exports = defineComponent( {
 	font-size: @font-size-small;
 }
 
-.ext-articleguidance-verified-sources {
-	display: flex;
-	flex-direction: column;
-	margin: 16px 0;
-
-	.cdx-message {
-		align-items: center;
-	}
-}
-
 .ext-articleguidance-source-message {
 	&.cdx-message {
 		background-color: @background-color-base;
@@ -517,28 +500,16 @@ module.exports = defineComponent( {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
 	}
 
-	.ext-articleguidance-source-message-content {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
-		width: 100%;
-	}
-
-	.ext-articleguidance-source-message-text {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		min-width: 0;
-	}
-
 	.ext-articleguidance-source-domain {
+		margin: 0;
 		font-weight: @font-weight-bold;
 		word-break: break-all;
 	}
 
-	.ext-articleguidance-source-close {
-		flex-shrink: 0;
+	.ext-articleguidance-source-title {
+		margin: 0;
+		font-size: @font-size-small;
+		color: @color-subtle;
 	}
 }
 

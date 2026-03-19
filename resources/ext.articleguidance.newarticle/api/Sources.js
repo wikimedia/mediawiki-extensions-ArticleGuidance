@@ -8,7 +8,7 @@
  * @param {string} url - The URL to validate
  * @param {string} [subjectQId] - Wikidata Q-ID of the article subject
  * @param {string} [outlineQId] - Q-ID of the selected outline/article type
- * @return {Promise<Object>} Promise resolving to { status, domain, reason }
+ * @return {Promise<Object>} Promise resolving to { domain, classification, title }
  * @throws {Error} If the API request fails
  */
 async function validateSource( url, subjectQId, outlineQId ) {

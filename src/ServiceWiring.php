@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
+use MediaWiki\Extension\ArticleGuidance\Services\PageMetadataFetcher;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
@@ -29,6 +30,11 @@ return [
 			$services->getPageProps(),
 		);
 	},
+	'ArticleGuidancePageMetadataFetcher' => static function ( MediaWikiServices $services ): PageMetadataFetcher {
+		return new PageMetadataFetcher(
+			$services->getHttpRequestFactory(),
+		);
+	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
 		return new ArticleGuidanceRenderer();
 	},
@@ -37,6 +43,7 @@ return [
 			? BaseBlacklist::getSpamBlacklist()
 			: null;
 		return new SourceValidator(
+			$services->getService( 'ArticleGuidancePageMetadataFetcher' ),
 			$spamBlacklist,
 			$services->getUserFactory(),
 			$services->getService( 'ArticleGuidanceOutlineService' ),

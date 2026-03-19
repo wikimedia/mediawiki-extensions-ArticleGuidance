@@ -8,6 +8,7 @@ use MediaWiki\Actions\ActionEntryPoint;
 use MediaWiki\Config\Config;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManagerInterface;
 use MediaWiki\Hook\AlternateEditHook;
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\MediaWikiServices;
@@ -28,6 +29,7 @@ class RedLinkRedirectHandler implements
 		private readonly TitleExtractor $titleExtractor,
 		private readonly Config $mainConfig,
 		private readonly TitleFactory $titleFactory,
+		private readonly ?ExperimentManagerInterface $experimentManager = null,
 	) {
 	}
 
@@ -57,7 +59,26 @@ class RedLinkRedirectHandler implements
 		return $this->isArticleRedLink( $title, $request )
 			&& $this->isMobile()
 			&& $this->isUserInScope( $user )
-			&& $this->isRefererInScope( $request );
+			&& $this->isRefererInScope( $request )
+			&& $this->isInTreatmentGroup();
+	}
+
+	/**
+	 * Check whether the user is in the experiment treatment group, or whether
+	 * traffic splitting is disabled (no experiment configured or TestKitchen unavailable).
+	 *
+	 * @return bool
+	 */
+	private function isInTreatmentGroup(): bool {
+		$experimentName = $this->mainConfig->get( 'ArticleGuidanceExperimentName' );
+		if ( $this->experimentManager === null || $experimentName === '' ) {
+			// For temporary testing only
+			return true;
+		}
+
+		return $this->experimentManager
+			->getExperiment( $experimentName )
+			->isAssignedGroup( 'treatment' );
 	}
 
 	/**

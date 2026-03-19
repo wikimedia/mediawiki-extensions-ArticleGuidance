@@ -146,6 +146,7 @@
 				"utils/draft.js",
 				"utils/articleUrl.js",
 				"utils/scroll.js",
+				"utils/missingTypeFeedback.js",
 				"logging/notability.js",
 				{
 					"name": "icons.json",
@@ -156,6 +157,7 @@
 						"cdxIconBook",
 						"cdxIconClose",
 						"cdxIconInfoFilled",
+						"cdxIconLinkExternal",
 						"cdxIconLogoWikidata",
 						"cdxIconSandbox"
 					]
@@ -215,7 +217,9 @@
 				"articleguidance-notability-tag-crosswiki",
 				"articleguidance-notability-tag-junior",
 				"articleguidance-notability-tag-draft",
-				"articleguidance-notability-tag-draft-location"
+				"articleguidance-notability-tag-draft-location",
+				"articleguidance-specialnewarticle-no-matching-type",
+				"articleguidance-specialnewarticle-missing-type-feedback"
 			],
 			"dependencies": [
 				"vue",

@@ -53,6 +53,8 @@
 	"articleguidance-notability-tag-draft": "Publication allowed only under the draft or user namespace.",
 	"articleguidance-notability-tag-sources": "Only topics for which the user provided reliable sources not discouraged by the community can be created.",
 	"articleguidance-notability-tag-draft-location": "Your article will be created at \"$1\".",
+	"articleguidance-specialnewarticle-no-matching-type": "Can't find the right type?",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Suggest a new type",
 	"articleguidance-tracking-category": "Pages using article guidance",
 	"articleguidance-tracking-category-desc": "Pages in this category use the <article-guidance> tag to provide structured guidance for article creation.",
 	"tag-articleguidance": "Article Guidance",

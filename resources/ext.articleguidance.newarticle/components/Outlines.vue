@@ -29,22 +29,43 @@
 			>
 			</article-card>
 		</div>
+
+		<!-- Exit path: no matching type -->
+		<div
+			v-if="!loading && outlinesList.length > 0"
+			class="ext-articleguidance-outlines-no-match"
+		>
+			<span class="ext-articleguidance-outlines-no-match-prefix">
+				{{ $i18n( 'articleguidance-specialnewarticle-no-matching-type' ).text() }}
+			</span>
+			<a
+				class="ext-articleguidance-outlines-no-match-link"
+				:href="missingTypeFeedbackUrl"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{{ $i18n( 'articleguidance-specialnewarticle-missing-type-feedback' ).text() }}
+				<cdx-icon :icon="cdxIconLinkExternal"></cdx-icon>
+			</a>
+		</div>
 	</div>
 </template>
 
 <script>
 const { defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
-const { CdxMessage } = require( '../codex.js' );
-const { cdxIconArticle } = require( '../icons.json' );
+const { CdxIcon, CdxMessage } = require( '../codex.js' );
+const { cdxIconArticle, cdxIconLinkExternal } = require( '../icons.json' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { getMissingTypeFeedbackUrl } = require( '../utils/missingTypeFeedback.js' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
 
 module.exports = defineComponent( {
 	name: 'OutlinesStep',
 	components: {
+		CdxIcon,
 		CdxMessage,
 		ArticleCard,
 		StateMessage
@@ -68,7 +89,9 @@ module.exports = defineComponent( {
 			loading,
 			error,
 			handleSelectOutline,
-			articleIcon: cdxIconArticle
+			articleIcon: cdxIconArticle,
+			cdxIconLinkExternal,
+			missingTypeFeedbackUrl: getMissingTypeFeedbackUrl()
 		};
 	}
 } );
@@ -95,6 +118,46 @@ module.exports = defineComponent( {
 	.ext-articleguidance-article-card {
 		.cdx-card__text__title {
 			text-transform: capitalize;
+		}
+	}
+}
+
+.ext-articleguidance-outlines-no-match {
+	margin-top: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 4px;
+	text-align: center;
+}
+
+.ext-articleguidance-outlines-no-match-prefix {
+	color: @color-subtle;
+}
+
+.ext-articleguidance-outlines-no-match-link {
+	.cdx-mixin-link();
+
+	.cdx-icon {
+		color: inherit;
+	}
+
+	&:visited {
+		.cdx-icon {
+			color: @color-link--visited;
+		}
+
+		&:hover {
+			.cdx-icon {
+				color: @color-link--visited--hover;
+			}
+		}
+
+		&:active {
+			.cdx-icon {
+				color: @color-link--visited--active;
+			}
 		}
 	}
 }

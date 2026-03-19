@@ -17,6 +17,8 @@
 	"articleguidance-specialnewarticle-disambiguation-title": "Heading shown above the topic match cards and the article type outlines list",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "First part of the button text to browse all available article type outlines when the user cannot find what they are looking for in the search results",
 	"articleguidance-specialnewarticle-browse-outlines-link": "Second part of the button text to browse all available article type outlines when the user cannot find what they are looking for in the search results",
+	"articleguidance-specialnewarticle-no-matching-type": "Standalone helper text shown below the article type list when the user cannot find an appropriate type.",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Standalone action label for opening a new feedback topic on the \"Talk:Article guidance\" page to suggest a new type.",
 	"articleguidance-sources-title": "Title of the sources step where users add references",
 	"articleguidance-sources-subtitle": "Subtitle of the sources step explaining why sources are important",
 	"articleguidance-sources-notability-title": "Heading for the notability warning section shown when an article type has notability risk",

@@ -1,0 +1,9 @@
+# Search and match pipeline
+
+When a user types in the search box, `useWikidataSearch` debounces the input and calls `searchWikidata`, which hits the `wbsearchentities` Wikidata API and returns up to 20 candidate entities as Q-IDs. In parallel, the configured outlines are fetched once from the local `/articleguidance/v0/outlines` REST endpoint and cached in the Pinia store; each outline declares an `articleType` (a Wikidata Q-ID) and an optional `matchVia` property (e.g. `P106` for occupations, `P171` for biological taxa, or defaulting to `P31` instance-of).
+
+The outlines are grouped by `matchVia`, which determines which Wikidata property to inspect on each search result. A single `wbgetentities` call then fetches the relevant claims (P31, P106, P171, etc.) for all 20 candidate Q-IDs at once, producing a `directTypesByGroup` map: for each group, which direct property values each candidate entity has.
+
+Zero-hop matches are resolved immediately in JavaScript — if a candidate's Q-ID or its direct property value is itself an outline's `articleType`, it is recorded without any further network call. For the remaining candidates, `checkHierarchyMatches` fires one SPARQL query per distinct property path (`P279+` for subclass chains, `P171+` for taxon chains) in parallel against the Wikidata Query Service; each query checks whether the deduplicated set of direct types reaches any of the configured outline types via the relevant transitive property. The SPARQL results are merged back into the matches map by `applyHierarchyMatches`.
+
+Finally, `selectBestMatches` resolves ambiguity when a candidate matches multiple outlines: it first prefers outlines matched via a non-default `matchVia` strategy (preventing a broad type like Q5/human from drowning out a specific occupation match), then among survivors keeps only the highest-`hierarchyDepth` match, which corresponds to the most specific outline in the configured taxonomy.

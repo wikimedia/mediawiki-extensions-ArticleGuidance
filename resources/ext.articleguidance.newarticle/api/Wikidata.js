@@ -73,7 +73,57 @@ async function fetchSitelinkCount( qid ) {
 		.length;
 }
 
+/**
+ * Fetch claims for multiple Wikidata entities in a single request.
+ *
+ * @param {string[]} qids Array of Wikidata Q IDs (e.g. ['Q42', 'Q937'])
+ * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
+ * @return {Promise<Object>} Map of { qid: { propertyId: string[] } }
+ */
+async function fetchEntityClaims( qids, properties ) {
+	if ( !qids || qids.length === 0 ) {
+		return {};
+	}
+
+	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
+		action: 'wbgetentities',
+		ids: qids.join( '|' ),
+		props: 'claims',
+		format: 'json',
+		origin: '*'
+	} );
+
+	const response = await fetch( url );
+	if ( !response.ok ) {
+		throw new Error( `wbgetentities request failed: ${ response.status }` );
+	}
+
+	const data = await response.json();
+	const result = {};
+
+	if ( !data.entities ) {
+		return result;
+	}
+
+	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
+		if ( entity.missing !== undefined ) {
+			continue;
+		}
+		result[ qid ] = {};
+		for ( const prop of properties ) {
+			const statements = ( entity.claims && entity.claims[ prop ] ) || [];
+			result[ qid ][ prop ] = statements
+				.filter( ( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
+					s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'wikibase-entityid' )
+				.map( ( s ) => s.mainsnak.datavalue.value.id );
+		}
+	}
+
+	return result;
+}
+
 module.exports = {
 	searchWikidata,
-	fetchSitelinkCount
+	fetchSitelinkCount,
+	fetchEntityClaims
 };

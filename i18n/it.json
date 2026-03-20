@@ -24,7 +24,7 @@
 	"articleguidance-sources-continue": "Continua",
 	"articleguidance-sources-helper": "Puoi aggiungere fonti mentre scrivi.",
 	"articleguidance-sources-helper-required": "Gli articoli da $1 su questa wiki richiedono le fonti.",
-	"articleguidance-sources-helper-progress": "$1 di {{PLURAL:$2| $2 source| $2 sources}} aggiunto.",
+	"articleguidance-sources-helper-progress": "$1 di {{PLURAL:$2|$2 sorgente aggiunta|$2 sorgenti aggiunte}}",
 	"articleguidance-sources-unreliable-warning-title": "Sconsigliato dalla comunità",
 	"articleguidance-sources-unreliable-warning-description": "Questo tipo di fonte è raramente accettato per questa tipologia di voce.",
 	"articleguidance-sources-check-failed": "Verifica della fonte non riuscita. Riprova.",
@@ -37,14 +37,14 @@
 	"articleguidance-notability-options-heading": "Ecco come puoi invece contribuire",
 	"articleguidance-notability-option-wikidata-title": "Aggiungi questo argomento a Wikidata",
 	"articleguidance-notability-option-wikidata-description": "Crea una voce di dati strutturata che possano utilizzare tutti su Wikipedia",
-	"articleguidance-notability-option-sandbox-title": "inizia nella tua area di prova",
+	"articleguidance-notability-option-sandbox-title": "Inizia nella tua area di prova",
 	"articleguidance-notability-option-sandbox-description": "Redigere una bozza e perfezionarla prima della pubblicazione.",
 	"articleguidance-notability-option-learn-title": "Scopri cosa cerca questa wiki nei nuovi articoli",
 	"articleguidance-notability-option-learn-description": "Comprendi cosa cerca la comunità",
 	"articleguidance-notability-tag-wikidata": "È possibile creare solo argomenti già presenti su Wikidata.",
-	"articleguidance-notability-tag-crosswiki": "È possibile creare solo argomenti disponibili in {{PLURAL:$1| altra lingua|altre lingue}}.",
+	"articleguidance-notability-tag-crosswiki": "È possibile creare solo argomenti disponibili in {{PLURAL:$1|un'altra lingua|altre lingue}}.",
 	"articleguidance-notability-tag-junior": "Le restrizioni si applicano solo ai redattori junior.",
-	"articleguidance-notability-tag-draft": "Pubblicazione consentita solo in bozza o con il nome utente.",
+	"articleguidance-notability-tag-draft": "Pubblicazione consentita solo nei namespace bozza o utente.",
 	"articleguidance-notability-tag-sources": "È possibile creare solo argomenti per i quali l'utente abbia fornito fonti affidabili e non sconsigliate dalla community.",
-	"articleguidance-notability-tag-draft-location": "Il tuo articolo verrà creato al costo di \" $1 \"."
+	"articleguidance-notability-tag-draft-location": "La tua voce verrà creata come \"$1\""
 }

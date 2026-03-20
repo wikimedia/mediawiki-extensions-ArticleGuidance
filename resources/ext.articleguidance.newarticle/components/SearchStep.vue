@@ -64,7 +64,7 @@
 					</div>
 					<div class="ext-articleguidance-results-list">
 						<article-card
-							v-for="result in maxResultsWithOutlines"
+							v-for="result in maxResults"
 							:key="result.id"
 							:title="result.label"
 							:description="result.description"
@@ -116,6 +116,8 @@ const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
 const StateMessage = require( './StateMessage.vue' );
 
+const MAX_RESULTS = 5;
+
 module.exports = defineComponent( {
 	name: 'SearchStep',
 	components: {
@@ -132,7 +134,7 @@ module.exports = defineComponent( {
 		const selectedLanguage = ref( mw.config.get( 'wgUserLanguage' ) );
 
 		const store = useArticleGuidanceStore();
-		const { outlinesList, searchQuery, showOutlines } = storeToRefs( store );
+		const { searchQuery, showOutlines } = storeToRefs( store );
 
 		// Initialize search composable
 		const {
@@ -174,64 +176,7 @@ module.exports = defineComponent( {
 			window.location.href = editUrl;
 		};
 
-		// Computed property to group results and concatenate all matching outline names
-		// Since a single Wikidata item can match multiple outlines, we group by ID
-		// and display all matching outline names separated by commas
-		const resultsWithOutlines = computed( () => {
-			// Create a map from articleType Q ID to outline label
-			const outlineMap = {};
-			outlinesList.value.forEach( ( outline ) => {
-				if ( outline.articleType ) {
-					outlineMap[ outline.articleType ] = outline.label;
-				}
-			} );
-
-			// Group results by Wikidata ID and collect all outline names and QIds
-			const groupedResults = {};
-			results.value.forEach( ( result ) => {
-				if ( !groupedResults[ result.id ] ) {
-					groupedResults[ result.id ] = {
-						id: result.id,
-						label: result.label,
-						description: result.description,
-						url: result.url,
-						matchedQId: result.matchedQId,
-						hierarchyDepth: result.hierarchyDepth,
-						thumbnail: result.thumbnail,
-						outlineNames: [],
-						matchedQIds: []
-					};
-				}
-				// Add outline name if it exists and isn't already in the list
-				if ( result.matchedQId ) {
-					if ( !groupedResults[ result.id ].matchedQIds.includes( result.matchedQId ) ) {
-						groupedResults[ result.id ].matchedQIds.push( result.matchedQId );
-					}
-					if ( outlineMap[ result.matchedQId ] ) {
-						const outlineName = outlineMap[ result.matchedQId ];
-						if ( !groupedResults[ result.id ].outlineNames.includes( outlineName ) ) {
-							groupedResults[ result.id ].outlineNames.push( outlineName );
-						}
-					}
-				}
-			} );
-
-			// Convert grouped results to array and concatenate outline names
-			return Object.values( groupedResults ).map( ( result ) => ( {
-				id: result.id,
-				label: result.label,
-				description: result.description,
-				url: result.url,
-				matchedQId: result.matchedQId,
-				hierarchyDepth: result.hierarchyDepth,
-				thumbnail: result.thumbnail,
-				outlineNames: result.outlineNames,
-				matchedQIds: result.matchedQIds,
-				outlineName: result.outlineNames.length > 0 ? result.outlineNames.join( ', ' ) : null
-			} ) );
-		} );
-
-		const maxResultsWithOutlines = computed( () => resultsWithOutlines.value.slice( 0, 5 ) );
+		const maxResults = computed( () => results.value.slice( 0, MAX_RESULTS ) );
 
 		// Computed properties for display states
 		// Show warning when article exists
@@ -259,7 +204,7 @@ module.exports = defineComponent( {
 			showOutlines,
 			loading,
 			error,
-			maxResultsWithOutlines,
+			maxResults,
 			handleSelect,
 			handleBrowseOutlines,
 			handleHideOutlines,

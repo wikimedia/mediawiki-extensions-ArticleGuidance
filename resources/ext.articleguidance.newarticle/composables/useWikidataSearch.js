@@ -244,21 +244,32 @@ function useWikidataSearch( query, language ) {
 			const filteredResults = [];
 			wikidataResults.forEach( ( result ) => {
 				const matchedQIds = sparqlMatches[ result.id ];
-				if ( matchedQIds && matchedQIds.length > 0 ) {
-					matchedQIds.forEach( ( matchedQId ) => {
-						const outline = outlineByType[ matchedQId ];
-						filteredResults.push( {
-							id: result.id,
-							label: result.label,
-							description: result.description,
-							url: result.url,
-							matchedQId: matchedQId,
-							matchVia: outline.matchVia || null,
-							hierarchyDepth: outline.hierarchyDepth || 0,
-							thumbnail: outline.thumbnail || null
-						} );
-					} );
+				if ( !matchedQIds || matchedQIds.length === 0 ) {
+					return;
 				}
+				const outlineNames = [];
+				let thumbnail = null;
+				matchedQIds.forEach( ( matchedQId ) => {
+					const outline = outlineByType[ matchedQId ];
+					if ( !outline ) {
+						return;
+					}
+					if ( outline.label && !outlineNames.includes( outline.label ) ) {
+						outlineNames.push( outline.label );
+					}
+					if ( !thumbnail && outline.thumbnail ) {
+						thumbnail = outline.thumbnail;
+					}
+				} );
+				filteredResults.push( {
+					id: result.id,
+					label: result.label,
+					description: result.description,
+					url: result.url,
+					matchedQId: matchedQIds[ 0 ],
+					thumbnail: thumbnail,
+					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null
+				} );
 			} );
 
 			if ( requestId !== latestRequestId ) {

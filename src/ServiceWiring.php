@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
+use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
@@ -33,6 +34,11 @@ return [
 			$spamBlacklist,
 			$services->getUserFactory(),
 		);
+	},
+	'ArticleGuidanceTagContentExtractorService' => static function (
+		MediaWikiServices $services
+	): TagContentExtractorService {
+		return new TagContentExtractorService();
 	},
 	'ArticleGuidanceTitleExtractor' => static function ( MediaWikiServices $services ): TitleExtractor {
 		return new TitleExtractor();

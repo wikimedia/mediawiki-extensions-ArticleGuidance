@@ -1,5 +1,17 @@
 <article-guidance article-type="Q5" notability-risk="sources wikidata crosswiki">
-Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability guidelines]]. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	<instructions>
+		Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability guidelines]]. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Major national newspapers (e.g., The New York Times, The Guardian)</info>
+		<info>Books published by academic presses</info>
+		<info>Peer-reviewed journal articles</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Social media profiles</info>
+		<info>Self-published blogs</info>
+		<info>Press releases from the subject</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox person}}
 

@@ -84,7 +84,8 @@
 			"services": [
 				"ArticleGuidanceWikidataInfoFetcher",
 				"ArticleGuidanceRenderer",
-				"ArticleGuidanceOutlineService"
+				"ArticleGuidanceOutlineService",
+				"ArticleGuidanceTagContentExtractorService"
 			]
 		},
 		"EditTag": {
@@ -164,6 +165,7 @@
 				}
 			],
 			"codexComponents": [
+				"CdxAccordion",
 				"CdxButton",
 				"CdxCard",
 				"CdxIcon",
@@ -200,6 +202,9 @@
 				"articleguidance-sources-unreliable-warning-title",
 				"articleguidance-sources-unreliable-warning-description",
 				"articleguidance-sources-check-failed",
+				"articleguidance-sources-tips-title",
+				"articleguidance-sources-tips-content-recommended",
+				"articleguidance-sources-tips-content-discouraged",
 				"articleguidance-instructions-guidance-heading",
 				"articleguidance-instructions-guidance-intro",
 				"articleguidance-instructions-source-guidance",

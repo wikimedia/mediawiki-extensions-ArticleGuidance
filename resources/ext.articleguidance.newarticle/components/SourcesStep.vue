@@ -102,6 +102,66 @@
 			</cdx-message>
 		</div>
 
+		<!-- Tips accordion -->
+		<cdx-accordion
+			v-if="hasTips"
+			v-model="tipsOpen"
+			class="ext-articleguidance-tips-accordion"
+			separation="outline"
+		>
+			<template #title>
+				<cdx-icon
+					:icon="cdxIconInfoFilled"
+					class="ext-articleguidance-tips-info-icon"
+				></cdx-icon>
+				{{
+					$i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text()
+				}}
+			</template>
+			<div class="ext-articleguidance-tips-content">
+				<div>
+					<div v-if="recommendedSources.length">
+						<div
+							:class="{
+								'ext-articleguidance-tips-title-success':
+									hasBothRecommendedAndDiscouragedTips
+							}"
+						>
+							{{ $i18n( 'articleguidance-sources-tips-content-recommended' ).text() }}
+						</div>
+						<ul class="ext-articleguidance-tip-list">
+							<!-- eslint-disable vue/no-v-html -->
+							<li
+								v-for="( item, i ) in recommendedSources"
+								:key="'rec-' + i"
+								v-html="item"
+							></li>
+							<!-- eslint-enable vue/no-v-html -->
+						</ul>
+					</div>
+					<div v-if="discouragedSources.length">
+						<div
+							:class="{
+								'ext-articleguidance-tips-title-warning':
+									hasBothRecommendedAndDiscouragedTips
+							}"
+						>
+							{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
+						</div>
+						<ul class="ext-articleguidance-tip-list">
+							<!-- eslint-disable vue/no-v-html -->
+							<li
+								v-for="( item, i ) in discouragedSources"
+								:key="'disc-' + i"
+								v-html="item"
+							></li>
+							<!-- eslint-enable vue/no-v-html -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</cdx-accordion>
+
 		<!-- Actions -->
 		<div class="ext-articleguidance-sources-actions">
 			<cdx-button
@@ -123,10 +183,10 @@
 const { defineComponent, ref, watch, nextTick, computed } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const {
-	CdxButton, CdxIcon, CdxMessage,
+	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
-const { cdxIconClose } = require( '../icons.json' );
+const { cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { validateSource } = require( '../api/Sources.js' );
@@ -137,6 +197,7 @@ module.exports = defineComponent( {
 	name: 'SourcesStep',
 	components: {
 		ArticleInfo,
+		CdxAccordion,
 		CdxButton,
 		CdxIcon,
 		CdxMessage,
@@ -147,6 +208,19 @@ module.exports = defineComponent( {
 	setup() {
 		const store = useArticleGuidanceStore();
 		const { selectedOutline, minRequiredSources } = storeToRefs( store );
+		const recommendedSources = computed(
+			() => selectedOutline.value.recommendedSources.info || []
+		);
+
+		const discouragedSources = computed(
+			() => selectedOutline.value.discouragedSources.info || []
+		);
+		const hasTips = computed(
+			() => recommendedSources.value.length > 0 || discouragedSources.value.length > 0
+		);
+		const hasBothRecommendedAndDiscouragedTips = computed(
+			() => recommendedSources.value.length > 0 && discouragedSources.value.length > 0
+		);
 
 		// Ref for the URL text input component
 		const urlInput = ref( null );
@@ -158,6 +232,8 @@ module.exports = defineComponent( {
 		const validationError = ref( null );
 		// Unreliable source warning (null or { domain })
 		const unreliableWarning = ref( null );
+		// Tips accordion open state (expanded by default)
+		const tipsOpen = ref( true );
 
 		// Clear unreliable warning when user modifies the input
 		watch( currentUrl, () => {
@@ -306,6 +382,13 @@ module.exports = defineComponent( {
 			handleContinue,
 			handleBack,
 			cdxIconClose,
+			cdxIconInfoFilled,
+			tipsOpen,
+			recommendedSources,
+			discouragedSources,
+			hasTips,
+			hasBothRecommendedAndDiscouragedTips,
+			selectedOutline,
 			hasNotabilityRisk
 		};
 	}
@@ -428,6 +511,63 @@ module.exports = defineComponent( {
 	}
 	&.cdx-message--warning {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
+	}
+}
+
+.ext-articleguidance-tips-accordion {
+	margin-top: 16px;
+
+	&.cdx-accordion > summary {
+		position: relative;
+		padding-right: 32px;
+		border-bottom: @border-color-subtle solid 1px;
+		background-color: @background-color-neutral-subtle;
+
+		&::before {
+			position: absolute;
+			right: 12px;
+		}
+	}
+
+	&.cdx-accordion > summary h3 {
+		font-weight: @font-weight-normal;
+		color: @color-subtle;
+	}
+}
+
+.ext-articleguidance-tips-info-icon {
+	color: @color-subtle;
+	margin-right: 8px;
+}
+
+.ext-articleguidance-tips-content {
+	color: @color-subtle;
+	line-height: @line-height-medium;
+}
+
+.ext-articleguidance-tips-title-success {
+	color: @color-success;
+	font-weight: bold;
+}
+.ext-articleguidance-tips-title-warning {
+	color: @color-warning;
+	font-weight: bold;
+}
+
+.ext-articleguidance-tip-list {
+	margin: 0 0 4px 0;
+	padding-left: 1.2em;
+	color: @color-subtle;
+	font-size: inherit;
+	line-height: @line-height-medium;
+}
+
+.ext-articleguidance-tip-list li {
+	margin-bottom: 4px;
+	list-style-type: disc;
+
+	p {
+		margin: 0;
 	}
 }
 

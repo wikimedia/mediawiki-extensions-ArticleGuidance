@@ -123,7 +123,6 @@ module.exports = defineComponent( {
 .ext-articleguidance-guidance-tips {
 	color: @color-base;
 	margin-bottom: 12px;
-	padding-top: 12px;
 }
 
 .ext-articleguidance-instructions-actions {

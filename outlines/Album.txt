@@ -1,5 +1,17 @@
 <article-guidance article-type="Q482994" notability-risk="sources">
-Follow Wikipedia's [[WP:ALBUM|album guidelines]]. Use reliable music sources and reviews. Ensure proper attribution for production credits and chart data. [[Documentation]]
+	<instructions>
+		Follow Wikipedia's [[WP:ALBUM|album guidelines]]. Use reliable music sources and reviews. Ensure proper attribution for production credits and chart data. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Reviews from established music magazines (e.g., Rolling Stone, Pitchfork)</info>
+		<info>Interviews with the artist in reputable media</info>
+		<info>Chart data from official organizations (e.g., Billboard)</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>User-generated review sites (e.g., RateYourMusic)</info>
+		<info>Fan blogs or forums</info>
+		<info>Press releases from the record label</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox album}}
 

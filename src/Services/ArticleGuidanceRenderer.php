@@ -22,7 +22,11 @@ class ArticleGuidanceRenderer {
 	 * @param array $notabilityRisk Valid notability-risk tags
 	 * @param array $invalidNotabilityRisk Unknown notability-risk tags
 	 * @param string|null $instructionsHtml Parsed instructions HTML
-	 * @param string|null $wikidataImage Image URL from Wikidata
+	 * @param array|null $recommendedSourcesHtml List of recommended sources HTML
+	 * @param array|null $discouragedSourcesHtml List of discouraged sources HTML
+	 * @param string|null $wikidataImage Wikidata image URL
+	 * @param array $notabilityThresholds Notability thresholds
+	 * @param string|null $matchVia Match-via property for tooltip info
 	 * @return string Rendered HTML
 	 */
 	public function render(
@@ -33,6 +37,8 @@ class ArticleGuidanceRenderer {
 		array $notabilityRisk,
 		array $invalidNotabilityRisk,
 		?string $instructionsHtml,
+		?array $recommendedSourcesHtml,
+		?array $discouragedSourcesHtml,
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
 		?string $matchVia = null
@@ -150,6 +156,57 @@ class ArticleGuidanceRenderer {
 			$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-content' ],
 				$instructionsHtml
 			);
+		}
+
+		// Recommended and discouraged sources
+		if ( is_array( $recommendedSourcesHtml ) && count( $recommendedSourcesHtml ) === 2 ) {
+			[ $infoHtmlArray, $urlsHtmlArray ] = $recommendedSourcesHtml;
+			$allItems = array_merge( $infoHtmlArray ?? [], $urlsHtmlArray ?? [] );
+			if ( count( $allItems ) > 0 ) {
+				$listHtml = '';
+				foreach ( $allItems as $item ) {
+					$listHtml .= Html::rawElement( 'li', [], $item );
+				}
+				$html .= Html::rawElement(
+					'div',
+					[ 'class' => 'ext-articleguidance-sources-recommended' ],
+					Html::element(
+						'div',
+						[ 'class' => 'ext-articleguidance-sources-title' ],
+						wfMessage( 'articleguidance-sources-tips-content-recommended' )->text()
+					 ) .
+					Html::rawElement(
+						'ul',
+						[ 'class' => 'ext-articleguidance-sources-list' ],
+						$listHtml
+					 )
+				);
+			}
+		}
+
+		if ( is_array( $discouragedSourcesHtml ) && count( $discouragedSourcesHtml ) === 2 ) {
+			[ $infoHtmlArray, $urlsHtmlArray ] = $discouragedSourcesHtml;
+			$allItems = array_merge( $infoHtmlArray ?? [], $urlsHtmlArray ?? [] );
+			if ( count( $allItems ) > 0 ) {
+				$listHtml = '';
+				foreach ( $allItems as $item ) {
+					$listHtml .= Html::rawElement( 'li', [], $item );
+				}
+				$html .= Html::rawElement(
+					'div',
+					[ 'class' => 'ext-articleguidance-sources-discouraged' ],
+					Html::element(
+						'div',
+						[ 'class' => 'ext-articleguidance-sources-title' ],
+						wfMessage( 'articleguidance-sources-tips-content-discouraged' )->text()
+					 ) .
+					Html::rawElement(
+						'ul',
+						[ 'class' => 'ext-articleguidance-sources-list' ],
+						$listHtml
+					 )
+				);
+			}
 		}
 
 		$html .= Html::closeElement( 'div' );

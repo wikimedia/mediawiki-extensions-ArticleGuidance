@@ -1,5 +1,17 @@
 <article-guidance article-type="Q33999" notability-risk="sources wikidata crosswiki">
-Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors]]. Living persons must be handled with particular care per [[WP:BLP]]. Coverage should focus on significant professional work rather than personal life. [[Documentation]]
+	<instructions>
+		Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors]]. Living persons must be handled with particular care per [[WP:BLP]]. Coverage should focus on significant professional work rather than personal life. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Reviews from major newspapers or film journals</info>
+		<info>Interviews in reputable media outlets</info>
+		<info>Books or academic works on film or theatre</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Fan sites or blogs</info>
+		<info>Social media posts</info>
+		<info>Press releases from the subject or their agent</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox person}}
 

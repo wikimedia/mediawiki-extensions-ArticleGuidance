@@ -1,5 +1,12 @@
 <article-guidance article-type="Q4830453" notability-risk="sources draft">
-Ensure the company meets Wikipedia's [[WP:CORP|notability guidelines for organizations]]. Use reliable, independent sources. Avoid promotional language and maintain [[WP:NPOV|neutral point of view]]. [[Documentation]]
+	<instructions>
+		Ensure the company meets Wikipedia's [[WP:CORP|notability guidelines for organizations]]. Use reliable, independent sources. Avoid promotional language and maintain [[WP:NPOV|neutral point of view]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Articles from major business newspapers (e.g., The Wall Street Journal, Financial Times)</info>
+		<info>Industry reports from reputable analysts</info>
+		<info>Books or academic case studies on the company or sector</info>
+	</recommended-sources>
 </article-guidance>
 {{Infobox company}}
 

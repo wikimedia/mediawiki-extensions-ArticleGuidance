@@ -1,5 +1,17 @@
 <article-guidance article-type="Q430">
-Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use peer-reviewed palaeontological sources. Ensure proper taxonomic classification and note that taxonomy may be contested or subject to revision. Avoid speculation beyond what sources support. [[Documentation]]
+	<instructions>
+		Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use peer-reviewed palaeontological sources. Ensure proper taxonomic classification and note that taxonomy may be contested or subject to revision. Avoid speculation beyond what sources support. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Peer-reviewed paleontology journals (e.g., Journal of Vertebrate Paleontology)</info>
+		<info>Academic books on dinosaurs or prehistoric life</info>
+		<info>Official museum or university research publications</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Dinosaur enthusiast blogs or forums</info>
+		<info>Unverified fossil dealer websites</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Speciesbox}}
 

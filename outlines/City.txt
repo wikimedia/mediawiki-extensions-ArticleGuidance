@@ -1,5 +1,18 @@
 <article-guidance article-type="Q515" notability-risk="wikidata">
-Make sure you provide comprehensive coverage of the [[city]]'s geography, history, and demographics using reliable sources. [[Documentation]]
+	<instructions>
+		Make sure you provide comprehensive coverage of the [[city]]'s geography, history, and demographics using reliable sources. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Official government census data</info>
+		<info>Academic studies on urban development</info>
+		<info>Articles from reputable news organizations</info>
+		<source>https://journals.sagepub.com/home/usj</source>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Travel blogs</info>
+		<info>Real estate advertisements</info>
+		<info>Unverified online forums</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox settlement}}
 

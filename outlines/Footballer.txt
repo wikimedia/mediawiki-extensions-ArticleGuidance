@@ -1,5 +1,17 @@
 <article-guidance article-type="Q937857" notability-risk="sources wikidata crosswiki">
-Ensure the subject meets Wikipedia's [[WP:FOOTBALLER|notability guidelines for footballers]]. Professional players at the top level of national leagues, or those with significant international caps, generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	<instructions>
+		Ensure the subject meets Wikipedia's [[WP:FOOTBALLER|notability guidelines for footballers]]. Professional players at the top level of national leagues, or those with significant international caps, generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Match reports from major sports news outlets (e.g., BBC Sport, ESPN)</info>
+		<info>Official league or club statistics</info>
+		<info>Interviews in reputable sports magazines</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Fan forums or blogs</info>
+		<info>Social media posts</info>
+		<info>Unofficial statistics websites</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox football biography}}
 

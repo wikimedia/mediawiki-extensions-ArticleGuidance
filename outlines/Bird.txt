@@ -1,5 +1,12 @@
 <article-guidance article-type="Q5113">
-Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification and use the correct [[WP:BIRDS|bird article conventions]] including IOC-aligned taxonomy. [[Documentation]]
+	<instructions>
+		Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification and use the correct [[WP:BIRDS|bird article conventions]] including IOC-aligned taxonomy. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Peer-reviewed ornithology journals (e.g., The Auk, Ibis)</info>
+		<info>Field guides published by reputable organizations</info>
+		<info>Official conservation status reports (e.g., BirdLife International)</info>
+	</recommended-sources>
 </article-guidance>
 {{Speciesbox}}
 

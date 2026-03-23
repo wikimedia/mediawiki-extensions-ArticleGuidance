@@ -1,5 +1,5 @@
 <article-guidance article-type="Q11424" notability-risk="sources crosswiki">
-Follow Wikipedia's [[WP:FILM|film guidelines]]. Keep plot summaries concise per [[WP:PLOT]]. Use reliable film sources and reviews. Avoid excessive detail and maintain encyclopedic tone. [[Documentation]]
+	Follow Wikipedia's [[WP:FILM|film guidelines]]. Keep plot summaries concise per [[WP:PLOT]]. Use reliable film sources and reviews. Avoid excessive detail and maintain encyclopedic tone. [[Documentation]]
 </article-guidance>
 {{Infobox film}}
 

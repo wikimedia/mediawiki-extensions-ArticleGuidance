@@ -1,5 +1,17 @@
 <article-guidance article-type="Q3918" notability-risk="wikidata">
-Accredited universities and colleges are generally considered notable under Wikipedia's [[WP:ORG|organizational notability guidelines]]. Focus on what makes this institution distinctive: its research output, academic reputation, historical significance, or cultural contributions. Maintain a [[WP:NPOV|neutral point of view]]—avoid promotional language, cherry-picked rankings, or presenting the institution in an unduly favorable light. Use reliable, independent secondary sources such as academic publications, government accreditation reports, and established news media rather than the university's own marketing materials. Avoid listing every degree programme, all faculty members, or exhaustive student organisation directories—focus on what is notable and well-documented. For research universities, provide specific, sourced examples of research achievements rather than vague claims of excellence. [[Documentation]]
+	<instructions>
+		Accredited universities and colleges are generally considered notable under Wikipedia's [[WP:ORG|organizational notability guidelines]]. Focus on what makes this institution distinctive: its research output, academic reputation, historical significance, or cultural contributions. Maintain a [[WP:NPOV|neutral point of view]]—avoid promotional language, cherry-picked rankings, or presenting the institution in an unduly favorable light. Use reliable, independent secondary sources such as academic publications, government accreditation reports, and established news media rather than the university's own marketing materials. Avoid listing every degree programme, all faculty members, or exhaustive student organisation directories—focus on what is notable and well-documented. For research universities, provide specific, sourced examples of research achievements rather than vague claims of excellence. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Articles from major newspapers or education magazines</info>
+		<info>Academic publications or university rankings from reputable organizations</info>
+		<info>Official government accreditation or audit reports</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>University press releases or marketing materials</info>
+		<info>Alumni association blogs</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox university}}
 

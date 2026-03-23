@@ -102,6 +102,8 @@ class OutlineService {
 					'notabilityRisk' => $pageData['notabilityRisk'] ?? [],
 					'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
 					'notabilityThresholds' => $pageData['notabilityThresholds'] ?? [],
+					'recommendedSources' => $pageData['recommendedSources'] ?? [],
+					'discouragedSources' => $pageData['discouragedSources'] ?? [],
 				];
 			}
 		}

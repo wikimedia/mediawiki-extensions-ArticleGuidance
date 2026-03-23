@@ -1,5 +1,17 @@
 <article-guidance article-type="Q82955" notability-risk="sources wikidata crosswiki">
-Ensure the subject meets Wikipedia's [[WP:POLITICIAN|notability guidelines for politicians]]. Living persons must be handled with particular care per [[WP:BLP]]. Maintain a neutral point of view per [[WP:NPOV]] when covering political positions and controversies. [[Documentation]]
+	<instructions>
+		Ensure the subject meets Wikipedia's [[WP:POLITICIAN|notability guidelines for politicians]]. Living persons must be handled with particular care per [[WP:BLP]]. Maintain a neutral point of view per [[WP:NPOV]] when covering political positions and controversies. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Articles from major national newspapers (e.g., The Washington Post, The Times)</info>
+		<info>Books or academic works on politics or government</info>
+		<info>Official government records or voting records</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Campaign websites or press releases</info>
+		<info>Partisan blogs or opinion pieces</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox officeholder}}
 

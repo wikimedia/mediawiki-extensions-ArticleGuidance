@@ -1,5 +1,17 @@
 <article-guidance article-type="Q3914" notability-risk="sources draft">
-Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organizations]]. Most primary and secondary schools are not considered notable unless they have received significant coverage in reliable, independent sources beyond routine school listings or local news. The school must be described by multiple independent, reliable secondary sources—not the school's own website, yearbooks, or local directories. Avoid promotional or boosterish language; describe the school factually and neutrally per [[WP:NPOV]]. Do not include lists of current students, staff rosters, recent sports results, or routine school events. Focus on what makes the school historically, architecturally, or culturally significant. [[Documentation]]
+	<instructions>
+		Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organizations]]. Most primary and secondary schools are not considered notable unless they have received significant coverage in reliable, independent sources beyond routine school listings or local news. The school must be described by multiple independent, reliable secondary sources—not the school's own website, yearbooks, or local directories. Avoid promotional or boosterish language; describe the school factually and neutrally per [[WP:NPOV]]. Do not include lists of current students, staff rosters, recent sports results, or routine school events. Focus on what makes the school historically, architecturally, or culturally significant. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Articles from local or national newspapers</info>
+		<info>Books or academic studies on education or local history</info>
+		<info>Official government inspection or accreditation reports</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>School's own website or newsletters</info>
+		<info>Alumni association blogs</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox school}}
 

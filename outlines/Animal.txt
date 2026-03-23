@@ -1,5 +1,17 @@
 <article-guidance article-type="Q729" notability-risk="wikidata">
-Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification. [[Documentation]]
+	<instructions>
+		Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Peer-reviewed journal articles on zoology or taxonomy</info>
+		<info>Books from academic publishers on animal biology</info>
+		<info>Official conservation status reports (e.g., IUCN Red List)</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Pet care websites</info>
+		<info>User-edited wikis or forums</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Speciesbox}}
 

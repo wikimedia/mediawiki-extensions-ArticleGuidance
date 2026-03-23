@@ -1,5 +1,17 @@
 <article-guidance article-type="Q10833314" notability-risk="sources wikidata crosswiki">
-Ensure the subject meets Wikipedia's [[WP:TENNIS|notability guidelines for tennis players]]. Players who have won an ATP/WTA title, competed at a Grand Slam, or reached a significant ranking generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	<instructions>
+		Ensure the subject meets Wikipedia's [[WP:TENNIS|notability guidelines for tennis players]]. Players who have won an ATP/WTA title, competed at a Grand Slam, or reached a significant ranking generally meet the threshold. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Match reports from major sports news outlets (e.g., BBC Sport, ESPN)</info>
+		<info>Official ATP/WTA statistics and rankings</info>
+		<info>Interviews in reputable sports magazines</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Fan forums or blogs</info>
+		<info>Social media posts</info>
+		<info>Unofficial statistics websites</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox tennis biography}}
 

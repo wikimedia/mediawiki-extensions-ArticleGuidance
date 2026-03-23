@@ -1,5 +1,12 @@
 <article-guidance article-type="Q571" notability-risk="sources wikidata">
-Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. Use reliable secondary sources for criticism and reception. Avoid excessive plot detail per [[WP:PLOTSUM]]. [[Documentation]]
+	<instructions>
+		Ensure the book meets Wikipedia's [[WP:NBOOK|notability guidelines for books]]. Use reliable secondary sources for criticism and reception. Avoid excessive plot detail per [[WP:PLOTSUM]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Reviews in major literary journals (e.g., The New York Review of Books)</info>
+		<info>Academic analyses or citations</info>
+		<info>Coverage in national newspapers</info>
+	</recommended-sources>
 </article-guidance>
 {{Infobox book}}
 

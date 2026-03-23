@@ -1,5 +1,17 @@
 <article-guidance article-type="Q33506" notability-risk="sources wikidata">
-Make sure you are not personally affiliated with the [[museum]] in any way, shape or form! [[Documentation]]
+	<instructions>
+		Make sure you are not personally affiliated with the [[museum]] in any way, shape or form! [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Articles from major newspapers or art/culture magazines</info>
+		<info>Academic publications on museum studies or art history</info>
+		<info>Official government or cultural institution reports</info>
+	</recommended-sources>
+	<discouraged-sources>
+		<info>Museum's own promotional materials</info>
+		<info>Personal blogs or travel websites</info>
+		<info>Social media posts</info>
+	</discouraged-sources>
 </article-guidance>
 {{Infobox museum}}
 

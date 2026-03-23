@@ -1,5 +1,12 @@
 <article-guidance article-type="Q2066131" notability-risk="sources wikidata crosswiki">
-Ensure the subject meets Wikipedia's [[WP:ATHLETE|notability guidelines for athletes]]. Significant professional or international competition is generally required. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	<instructions>
+		Ensure the subject meets Wikipedia's [[WP:ATHLETE|notability guidelines for athletes]]. Significant professional or international competition is generally required. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
+	</instructions>
+	<recommended-sources>
+		<info>Match reports from major sports news outlets (e.g., BBC Sport, ESPN)</info>
+		<info>Official competition or federation statistics</info>
+		<info>Interviews in reputable sports magazines</info>
+	</recommended-sources>
 </article-guidance>
 {{Infobox sportsperson}}
 

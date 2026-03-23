@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
+use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
@@ -29,6 +30,7 @@ class ArticleGuidanceTagHandler implements
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
 		private readonly OutlineService $outlineService,
+		private readonly TagContentExtractorService $tagContentExtractorService,
 	) {
 	}
 
@@ -79,10 +81,18 @@ class ArticleGuidanceTagHandler implements
 		}
 		$matchVia = $explicitMatchVia;
 
-		// Parse instructions for display in the tag
+		// Parse instructions and sources for display in the tag
 		$instructionsHtml = null;
+		$recommendedSourcesHtml = [];
+		$discouragedSourcesHtml = [];
 		if ( $content !== null && trim( $content ) !== '' ) {
-			$instructionsHtml = $parser->recursiveTagParseFully( $content, $frame );
+			$extractedInstructions = $this->tagContentExtractorService->extractInstructions( $content );
+			if ( is_string( $extractedInstructions ) && trim( $extractedInstructions ) !== '' ) {
+				$instructionsHtml = $parser->recursiveTagParseFully( $extractedInstructions, $frame );
+			}
+
+			$recommendedSourcesHtml = $this->extractAndParseSources( $content, 'recommended-sources', $parser, $frame );
+			$discouragedSourcesHtml = $this->extractAndParseSources( $content, 'discouraged-sources', $parser, $frame );
 		}
 
 		$wikidataId = null;
@@ -122,6 +132,14 @@ class ArticleGuidanceTagHandler implements
 						'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
 						'matchVia' => $matchVia,
 						'instructions' => $instructionsHtml,
+						'recommendedSources' => [
+							'info' => $recommendedSourcesHtml[0] ?? [],
+							'urls' => $recommendedSourcesHtml[1] ?? [],
+						],
+						'discouragedSources' => [
+							'info' => $discouragedSourcesHtml[0] ?? [],
+							'urls' => $discouragedSourcesHtml[1] ?? [],
+						],
 					] );
 					$this->outlineService->touchOutlinesCheckKey();
 				}
@@ -137,6 +155,8 @@ class ArticleGuidanceTagHandler implements
 			$validTags,
 			$invalidTags,
 			$instructionsHtml,
+			$recommendedSourcesHtml,
+			$discouragedSourcesHtml,
 			$wikidataImage,
 			self::NOTABILITY_TAG_THRESHOLDS,
 			$matchVia
@@ -187,5 +207,35 @@ class ArticleGuidanceTagHandler implements
 			}
 		}
 		return $tags;
+	}
+
+	/**
+	 * Extracts sources of a given type from content, filters out null/empty, and parses with the parser.
+	 *
+	 * @param string $content Raw wikitext content
+	 * @param string $sourceType 'recommended-sources' or 'discouraged-sources'
+	 * @param Parser $parser Parser object
+	 * @param PPFrame $frame PPFrame object
+	 * @return array Array containing two arrays: parsed info HTML strings and parsed URL HTML strings
+	 */
+	private function extractAndParseSources(
+		string $content,
+		string $sourceType,
+		Parser $parser,
+		PPFrame $frame
+	): array {
+		[ $infoArray, $urlsArray ] = $this->tagContentExtractorService->extractSources( $content, $sourceType );
+
+		$infoHtmlArray = array_map(
+			static fn ( $info ) => $parser->recursiveTagParseFully( $info, $frame ),
+			array_filter( $infoArray, static fn ( $info ) => is_string( $info ) && trim( $info ) !== '' )
+		);
+
+		$urlsHtmlArray = array_map(
+			static fn ( $url ) => $parser->recursiveTagParseFully( $url, $frame ),
+			array_filter( $urlsArray, static fn ( $url ) => is_string( $url ) && trim( $url ) !== '' )
+		);
+
+		return [ $infoHtmlArray, $urlsHtmlArray ];
 	}
 }

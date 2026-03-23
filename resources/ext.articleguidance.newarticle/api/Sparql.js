@@ -5,6 +5,10 @@
 const PROP_SUBCLASS_OF = 'P279';
 const PROP_PARENT_TAXON = 'P171';
 
+// Queries with a single VALUES ?outlineType entry time out on the Wikidata SPARQL
+// endpoint. Padding to two fixes this. Q1 never matches and is ignored in results.
+const OUTLINE_SENTINEL_QID = 'Q1';
+
 /**
  * Build the hierarchy traversal path used in checkHierarchyMatches.
  *
@@ -96,7 +100,10 @@ async function checkHierarchyMatches( groups, directTypesByGroup ) {
 
 		const path = buildHierarchyPath( matchVia );
 		const directTypeValues = allDirectTypes.map( ( qid ) => `wd:${ qid }` ).join( ' ' );
-		const outlineValues = outlineQIds.map( ( qid ) => `wd:${ qid }` ).join( ' ' );
+		const paddedOutlineQIds = outlineQIds.length === 1 ?
+			[ ...outlineQIds, OUTLINE_SENTINEL_QID ] :
+			outlineQIds;
+		const outlineValues = paddedOutlineQIds.map( ( qid ) => `wd:${ qid }` ).join( ' ' );
 		const branch =
 			`  VALUES ?directType { ${ directTypeValues } }\n` +
 			`  VALUES ?outlineType { ${ outlineValues } }\n` +

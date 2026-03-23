@@ -37,8 +37,7 @@ async function executeSparql( query ) {
 	} );
 	const response = await fetch( url, {
 		headers: {
-			Accept: 'application/sparql-results+json',
-			'User-Agent': 'MediaWiki ArticleGuidance Extension'
+			Accept: 'application/sparql-results+json'
 		}
 	} );
 	if ( !response.ok ) {

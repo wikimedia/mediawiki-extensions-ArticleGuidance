@@ -82,7 +82,7 @@ async function fetchSitelinkCount( qid ) {
  */
 async function fetchEntityClaims( qids, properties ) {
 	if ( !qids || qids.length === 0 ) {
-		return {};
+		return { claims: {}, imageFilenames: {} };
 	}
 
 	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
@@ -100,9 +100,10 @@ async function fetchEntityClaims( qids, properties ) {
 
 	const data = await response.json();
 	const result = {};
+	const imageFilenames = {};
 
 	if ( !data.entities ) {
-		return result;
+		return { claims: result, imageFilenames };
 	}
 
 	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
@@ -117,9 +118,17 @@ async function fetchEntityClaims( qids, properties ) {
 					s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'wikibase-entityid' )
 				.map( ( s ) => s.mainsnak.datavalue.value.id );
 		}
+		const p18Statements = ( entity.claims && entity.claims.P18 ) || [];
+		const imageStatement = p18Statements.find(
+			( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
+				s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'string'
+		);
+		if ( imageStatement ) {
+			imageFilenames[ qid ] = imageStatement.mainsnak.datavalue.value;
+		}
 	}
 
-	return result;
+	return { claims: result, imageFilenames };
 }
 
 module.exports = {

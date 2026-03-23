@@ -1,5 +1,6 @@
 const { ref, watch } = require( 'vue' );
 const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
+const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
 const { checkHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 
@@ -175,7 +176,8 @@ function useWikidataSearch( query, language ) {
 
 			// Fetch direct property values (P31/P106/P171) for all search results
 			// via wbgetentities — replaces SPARQL Query 1
-			const claimsData = await fetchEntityClaims( searchQIds, properties );
+			const { claims: claimsData, imageFilenames } =
+				await fetchEntityClaims( searchQIds, properties );
 
 			if ( requestId !== latestRequestId ) {
 				return;
@@ -261,13 +263,15 @@ function useWikidataSearch( query, language ) {
 						thumbnail = outline.thumbnail;
 					}
 				} );
+				const entityFilename = imageFilenames[ result.id ];
 				filteredResults.push( {
 					id: result.id,
 					label: result.label,
 					description: result.description,
 					url: result.url,
 					matchedQId: matchedQIds[ 0 ],
-					thumbnail: thumbnail,
+					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) ||
+						thumbnail,
 					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null
 				} );
 			} );

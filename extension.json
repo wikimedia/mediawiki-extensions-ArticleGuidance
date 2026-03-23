@@ -142,6 +142,8 @@
 				"components/ArticleInfo.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
+				"utils/md5.js",
+				"utils/commonsThumb.js",
 				"utils/sources.js",
 				"utils/notability.js",
 				"utils/draft.js",

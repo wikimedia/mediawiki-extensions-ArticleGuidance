@@ -1,23 +1,20 @@
 /**
- * Pure evaluation utilities for notability tags.
- * No side effects, no imports from the store or logging layer.
+ * Evaluation utilities for notability tags.
+ * Thresholds are read from mw.config (wgArticleGuidanceJuniorEditorThreshold,
+ * wgArticleGuidanceCrossWikiThreshold).
  */
 
 /**
  * Evaluate a single notability tag against the current state.
  *
  * @param {string} tag
- * @param {Object} outline
  * @param {Object} state
  * @param {Object|null} state.selectedResult
  * @param {number|null} state.sitelinkCount
- * @param {Array} state.references
- * @param {number} state.editCount
- * @param {number} state.juniorThreshold
+ * @param {number} state.userEditCount
  * @return {{ active: boolean, detail: string }}
  */
-function evaluateTag( tag, outline, state ) {
-	const thresholds = outline.notabilityThresholds || {};
+function evaluateTag( tag, state ) {
 	switch ( tag ) {
 		case 'wikidata': {
 			const active = !state.selectedResult;
@@ -29,7 +26,7 @@ function evaluateTag( tag, outline, state ) {
 			};
 		}
 		case 'crosswiki': {
-			const min = thresholds.crosswiki !== undefined ? thresholds.crosswiki : 5;
+			const min = mw.config.get( 'wgArticleGuidanceCrossWikiThreshold' );
 			const count = state.sitelinkCount;
 			const active = count === null || count < min;
 			const countLabel = count === null ? 'null' : String( count );
@@ -47,12 +44,13 @@ function evaluateTag( tag, outline, state ) {
 			};
 		}
 		case 'junior': {
-			const active = state.editCount < state.juniorThreshold;
+			const threshold = mw.config.get( 'wgArticleGuidanceJuniorEditorThreshold' );
+			const active = state.userEditCount < threshold;
 			return {
 				active,
 				detail: active ?
-					`editCount (${ state.editCount }) < threshold (${ state.juniorThreshold })` :
-					`editCount (${ state.editCount }) >= threshold (${ state.juniorThreshold })`
+					`userEditCount (${ state.userEditCount }) < threshold (${ threshold })` :
+					`userEditCount (${ state.userEditCount }) >= threshold (${ threshold })`
 			};
 		}
 		case 'draft': {
@@ -78,7 +76,7 @@ function evaluateNotabilityTags( outline, state ) {
 		return { tagResults: [], willShow: false };
 	}
 	const tagResults = outline.notabilityRisk.map( ( tag ) => {
-		const evaluation = evaluateTag( tag, outline, state );
+		const evaluation = evaluateTag( tag, state );
 		return { tag: tag, active: evaluation.active, detail: evaluation.detail };
 	} );
 	const willShow = tagResults.some( ( r ) => r.active && r.tag !== 'sources' );

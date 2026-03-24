@@ -20,8 +20,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlinesList = computed( () => outlines.value || [] );
 	const showOutlines = ref( false );
 
-	const JUNIOR_EDIT_THRESHOLD = 100;
-
 	function goTo( step ) {
 		currentStep.value = step;
 		history.value.push( step );
@@ -117,9 +115,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return {
 			selectedResult: selectedResult.value,
 			sitelinkCount: sitelinkCount.value,
-			references: references.value,
-			editCount: mw.config.get( 'wgUserEditCount' ) || 0,
-			juniorThreshold: JUNIOR_EDIT_THRESHOLD
+			userEditCount: mw.config.get( 'wgUserEditCount' ) || 0
 		};
 	}
 
@@ -147,15 +143,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const minRequiredSources = computed( () => {
 		const outline = selectedOutline.value;
 		if ( outline && outline.notabilityRisk && outline.notabilityRisk.includes( 'sources' ) ) {
-			const thresholds = outline.notabilityThresholds || {};
-			return thresholds.sources !== undefined ? thresholds.sources : 2;
+			return mw.config.get( 'wgArticleGuidanceSourcesThreshold' );
 		}
 		return 0;
 	} );
-
-	const notabilityThresholds = computed(
-		() => ( selectedOutline.value && selectedOutline.value.notabilityThresholds ) || {}
-	);
 
 	const creationTitle = computed( () => {
 		if ( !getActiveNotabilityTags().includes( 'draft' ) ) {
@@ -192,7 +183,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		showOutlines,
 		sitelinkCount,
 		minRequiredSources,
-		notabilityThresholds,
 		creationTitle,
 		getActiveNotabilityTags,
 		getNonSourcesNotabilityTags,

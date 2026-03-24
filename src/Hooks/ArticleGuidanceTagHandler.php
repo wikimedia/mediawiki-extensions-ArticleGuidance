@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
@@ -21,16 +22,12 @@ class ArticleGuidanceTagHandler implements
 
 	private const KNOWN_NOTABILITY_TAGS = [ 'wikidata', 'crosswiki', 'sources', 'junior', 'draft' ];
 
-	private const NOTABILITY_TAG_THRESHOLDS = [
-		'crosswiki' => 5,
-		'sources' => 2,
-	];
-
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
 		private readonly OutlineService $outlineService,
 		private readonly TagContentExtractorService $tagContentExtractorService,
+		private readonly Config $mainConfig,
 	) {
 	}
 
@@ -95,6 +92,11 @@ class ArticleGuidanceTagHandler implements
 			$discouragedSourcesHtml = $this->extractAndParseSources( $content, 'discouraged-sources', $parser, $frame );
 		}
 
+		$notabilityThresholds = [
+			'crosswiki' => $this->mainConfig->get( 'ArticleGuidanceCrossWikiThreshold' ),
+			'sources' => $this->mainConfig->get( 'ArticleGuidanceSourcesThreshold' ),
+		];
+
 		$wikidataId = null;
 		$wikidataLabel = null;
 		$wikidataDescription = null;
@@ -129,7 +131,6 @@ class ArticleGuidanceTagHandler implements
 						'image' => $wikidataImage,
 						'notabilityRisk' => $validTags,
 						'hierarchyDepth' => $hierarchyDepth,
-						'notabilityThresholds' => self::NOTABILITY_TAG_THRESHOLDS,
 						'matchVia' => $matchVia,
 						'instructions' => $instructionsHtml,
 						'recommendedSources' => [
@@ -158,7 +159,7 @@ class ArticleGuidanceTagHandler implements
 			$recommendedSourcesHtml,
 			$discouragedSourcesHtml,
 			$wikidataImage,
-			self::NOTABILITY_TAG_THRESHOLDS,
+			$notabilityThresholds,
 			$matchVia
 		);
 

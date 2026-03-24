@@ -13,6 +13,18 @@
 		"MediaWiki": ">= 1.46.0"
 	},
 	"config": {
+		"ArticleGuidanceJuniorEditorThreshold": {
+			"value": 100,
+			"description": "Minimum number of edits before a user is no longer considered a junior editor."
+		},
+		"ArticleGuidanceCrossWikiThreshold": {
+			"value": 5,
+			"description": "Minimum number of sitelinks required for a Wikidata item to satisfy the crosswiki notability criterion."
+		},
+		"ArticleGuidanceSourcesThreshold": {
+			"value": 2,
+			"description": "Minimum number of sources required to proceed past the sources step."
+		},
 		"ArticleGuidanceMatchViaRules": {
 			"value": [
 				{
@@ -66,7 +78,8 @@
 		"NewArticle": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Specials\\SpecialNewArticle",
 			"services": [
-				"ContentLanguage"
+				"ContentLanguage",
+				"MainConfig"
 			]
 		}
 	},
@@ -85,7 +98,8 @@
 				"ArticleGuidanceWikidataInfoFetcher",
 				"ArticleGuidanceRenderer",
 				"ArticleGuidanceOutlineService",
-				"ArticleGuidanceTagContentExtractorService"
+				"ArticleGuidanceTagContentExtractorService",
+				"MainConfig"
 			]
 		},
 		"EditTag": {

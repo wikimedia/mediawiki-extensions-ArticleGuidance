@@ -24,8 +24,6 @@ class RedLinkRedirectHandler implements
 	BeforeInitializeHook
 {
 
-	private const MAX_JUNIOR_EDIT_COUNT = 99;
-
 	public function __construct(
 		private readonly TitleExtractor $titleExtractor,
 		private readonly Config $mainConfig,
@@ -151,15 +149,16 @@ class RedLinkRedirectHandler implements
 	/**
 	 * Check whether the user is within the experiment's target audience.
 	 *
-	 * The user must be logged in, have fewer than 100 edits, not be blocked,
-	 * and have permission to create pages on this wiki.
+	 * The user must be logged in, have fewer edits than the configured junior editor
+	 * threshold, not be blocked, and have permission to create pages on this wiki.
 	 *
 	 * @param User $user
 	 * @return bool
 	 */
 	private function isUserInScope( User $user ): bool {
+		$juniorThreshold = $this->mainConfig->get( 'ArticleGuidanceJuniorEditorThreshold' );
 		return $user->isRegistered()
-			&& $user->getEditCount() <= self::MAX_JUNIOR_EDIT_COUNT
+			&& $user->getEditCount() < $juniorThreshold
 			&& $user->getBlock() === null
 			&& $user->isAllowed( 'createpage' );
 	}

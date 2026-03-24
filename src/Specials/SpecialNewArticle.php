@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
 
@@ -11,6 +12,7 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 
 	public function __construct(
 		private readonly Language $contentLanguage,
+		private readonly Config $config,
 	) {
 		parent::__construct( 'NewArticle' );
 	}
@@ -25,6 +27,18 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 		$out = $this->getOutput();
 		$out->setPageTitle( $this->msg( 'articleguidance-specialnewarticle-title' )->text() );
 		$out->addJsConfigVars( 'wgArticleGuidanceDraftTitlePrefix', $this->getDraftTitlePrefix() );
+		$out->addJsConfigVars(
+			'wgArticleGuidanceJuniorEditorThreshold',
+			$this->config->get( 'ArticleGuidanceJuniorEditorThreshold' )
+		);
+		$out->addJsConfigVars(
+			'wgArticleGuidanceCrossWikiThreshold',
+			$this->config->get( 'ArticleGuidanceCrossWikiThreshold' )
+		);
+		$out->addJsConfigVars(
+			'wgArticleGuidanceSourcesThreshold',
+			$this->config->get( 'ArticleGuidanceSourcesThreshold' )
+		);
 		$out->addModules( 'ext.articleguidance.newarticle' );
 		$out->addModuleStyles( [ 'ext.articleguidance.newarticle.styles' ] );
 	}

@@ -116,7 +116,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function buildNotabilityState() {
 		return {
-			selectedResult: selectedResult.value,
+			selectedWikidataItem: !!selectedResult.value,
 			sitelinkCount: sitelinkCount.value,
 			userEditCount: mw.config.get( 'wgUserEditCount' ) || 0
 		};
@@ -131,15 +131,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return tagResults.filter( ( r ) => r.active ).map( ( r ) => r.tag );
 	}
 
-	function getNonSourcesNotabilityTags() {
-		return getActiveNotabilityTags().filter( ( tag ) => tag !== 'sources' );
-	}
-
 	function shouldShowNotabilityStep() {
 		const outline = selectedOutline.value;
 		const state = buildNotabilityState();
 		const { tagResults, willShow } = evaluateNotabilityTags( outline, state );
-		reportNotabilityEvaluation( outline, tagResults, state.selectedResult );
+		reportNotabilityEvaluation( outline, tagResults, selectedResult.value );
 		return willShow;
 	}
 
@@ -188,7 +184,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		minRequiredSources,
 		creationTitle,
 		getActiveNotabilityTags,
-		getNonSourcesNotabilityTags,
 		shouldShowNotabilityStep,
 		loadOutlines,
 		selectArticle,

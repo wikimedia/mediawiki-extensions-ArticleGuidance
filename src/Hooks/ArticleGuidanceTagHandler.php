@@ -94,7 +94,6 @@ class ArticleGuidanceTagHandler implements
 
 		$notabilityThresholds = [
 			'crosswiki' => $this->mainConfig->get( 'ArticleGuidanceCrossWikiThreshold' ),
-			'sources' => $this->mainConfig->get( 'ArticleGuidanceSourcesThreshold' ),
 		];
 
 		$wikidataId = null;

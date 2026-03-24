@@ -63,7 +63,7 @@ module.exports = defineComponent( {
 	setup() {
 		const store = useArticleGuidanceStore();
 
-		const activeTags = computed( () => store.getNonSourcesNotabilityTags() );
+		const activeTags = computed( () => store.getActiveNotabilityTags() );
 
 		const contributionOptions = computed( () => {
 			const options = [];

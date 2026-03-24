@@ -9,7 +9,7 @@
  *
  * @param {string} tag
  * @param {Object} state
- * @param {Object|null} state.selectedResult
+ * @param {boolean} state.selectedWikidataItem
  * @param {number|null} state.sitelinkCount
  * @param {number} state.userEditCount
  * @return {{ active: boolean, detail: string }}
@@ -17,12 +17,10 @@
 function evaluateTag( tag, state ) {
 	switch ( tag ) {
 		case 'wikidata': {
-			const active = !state.selectedResult;
+			const active = !state.selectedWikidataItem;
 			return {
 				active,
-				detail: active ?
-					'no Wikidata match selected' :
-					`Wikidata match present (${ state.selectedResult.id })`
+				detail: active ? 'no Wikidata match selected' : 'Wikidata match present'
 			};
 		}
 		case 'crosswiki': {
@@ -35,12 +33,6 @@ function evaluateTag( tag, state ) {
 				detail: active ?
 					`sitelinkCount (${ countLabel }) < threshold (${ min })` :
 					`sitelinkCount (${ countLabel }) >= threshold (${ min })`
-			};
-		}
-		case 'sources': {
-			return {
-				active: false,
-				detail: 'Adding sources will be made mandatory in the sources step.'
 			};
 		}
 		case 'junior': {
@@ -79,7 +71,11 @@ function evaluateNotabilityTags( outline, state ) {
 		const evaluation = evaluateTag( tag, state );
 		return { tag: tag, active: evaluation.active, detail: evaluation.detail };
 	} );
-	const willShow = tagResults.some( ( r ) => r.active && r.tag !== 'sources' );
+	const juniorResult = tagResults.find( ( r ) => r.tag === 'junior' );
+	if ( juniorResult !== undefined && !juniorResult.active ) {
+		return { tagResults, willShow: false };
+	}
+	const willShow = tagResults.some( ( r ) => r.active );
 	return { tagResults, willShow };
 }
 

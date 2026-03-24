@@ -51,6 +51,8 @@
 	"articleguidance-notability-tag-draft": "Veröffentlichung nur im Entwurfs- oder Benutzer-Namensraum zulässig.",
 	"articleguidance-notability-tag-sources": "Es können nur Themen erstellt werden, zu denen der Nutzer zuverlässige Einzelnachweise angegeben hat, die von der Community nicht missbilligt werden.",
 	"articleguidance-notability-tag-draft-location": "Dein Artikel wird als „$1“ erstellt.",
+	"articleguidance-specialnewarticle-no-matching-type": "Kannst du den richtigen Typ nicht finden?",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Ein neuer Typ vorschlagen",
 	"articleguidance-tracking-category": "Seiten, die Artikelrichtlinien verwenden",
 	"articleguidance-tracking-category-desc": "Seiten in dieser Kategorie verwenden den <article-guidance>-Tag zur Bereitstellung einer strukturierten Anleitung für die Artikelerstellung.",
 	"tag-articleguidance": "Artikelleitfaden",

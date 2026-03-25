@@ -159,7 +159,7 @@ class RedLinkRedirectHandler implements
 	 *
 	 * @return bool
 	 */
-	private function isMobile(): bool {
+	protected function isMobile(): bool {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) ) {
 			return false;
 		}
@@ -187,15 +187,54 @@ class RedLinkRedirectHandler implements
 	/**
 	 * Perform redirect to Special:NewArticle
 	 *
-	 * @param Title $title
+	 * @param Title|null $title When non-null, pre-fills the newarticletitle param.
 	 * @param OutputPage $output
 	 * @return void
 	 */
-	private function performRedirect( Title $title, OutputPage $output ): void {
+	private function performRedirect( ?Title $title, OutputPage $output ): void {
 		$specialPage = SpecialPage::getTitleFor( 'NewArticle' );
 		if ( $specialPage ) {
-			$output->redirect( $specialPage->getFullURL( [ 'newarticletitle' => $title->getText() ] ) );
+			$params = $title !== null ? [ 'newarticletitle' => $title->getText() ] : [];
+			$output->redirect( $specialPage->getFullURL( $params ) );
 		}
+	}
+
+	/**
+	 * Check whether the current page is a configured entry-point title.
+	 *
+	 * @param Title $title
+	 * @return bool
+	 */
+	private function isEntryPointPage( Title $title ): bool {
+		$entryPointTitles = $this->mainConfig->get( 'ArticleGuidanceExperimentEntryPointTitles' );
+		if ( !is_array( $entryPointTitles ) || $entryPointTitles === [] ) {
+			return false;
+		}
+		$dbKey = $title->getPrefixedDBkey();
+		foreach ( $entryPointTitles as $configured ) {
+			if ( !is_string( $configured ) ) {
+				continue;
+			}
+			$configTitle = $this->titleFactory->newFromText( $configured );
+			if ( $configTitle !== null && $configTitle->getPrefixedDBkey() === $dbKey ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if we should redirect from an entry-point page to Special:NewArticle.
+	 *
+	 * @param Title $title
+	 * @param User $user
+	 * @return bool
+	 */
+	private function shouldRedirectFromEntryPoint( Title $title, User $user ): bool {
+		return $this->isEntryPointPage( $title )
+			&& $this->isMobile()
+			&& $this->isUserInScope( $user )
+			&& $this->isInTreatmentGroup();
 	}
 
 	/**
@@ -215,6 +254,10 @@ class RedLinkRedirectHandler implements
 		}
 		if ( $this->shouldRedirect( $title, $request, $user ) ) {
 			$this->performRedirect( $title, $output );
+			return false;
+		}
+		if ( $this->shouldRedirectFromEntryPoint( $title, $user ) ) {
+			$this->performRedirect( null, $output );
 			return false;
 		}
 	}

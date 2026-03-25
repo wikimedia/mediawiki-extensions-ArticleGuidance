@@ -49,6 +49,10 @@
 		"ArticleGuidanceExperimentRefererCategories": {
 			"value": [],
 			"description": "Category names (without 'Category:' prefix) whose pages' red-links are in scope."
+		},
+		"ArticleGuidanceExperimentEntryPointTitles": {
+			"value": [],
+			"description": "Special page or page titles (e.g. 'Special:ArticleWizard') that act as alternative entry points into Article Guidance: qualifying junior mobile users visiting these pages will be redirected to Special:NewArticle. Empty array disables this redirect."
 		}
 	},
 	"AutoloadNamespaces": {

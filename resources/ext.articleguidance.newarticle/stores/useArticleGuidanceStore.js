@@ -89,6 +89,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	async function selectArticle( result ) {
+		if ( selectedResult.value === null || selectedResult.value.id !== result.id ) {
+			references.value = [];
+		}
 		selectedResult.value = result;
 
 		const matchedOutline = outlines.value && outlines.value.find(
@@ -115,6 +118,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function selectOutline( outline ) {
+		const currentQId = selectedOutline.value && selectedOutline.value.articleType;
+		if ( currentQId !== outline.articleType ) {
+			references.value = [];
+		}
 		selectedOutline.value = outline;
 		if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );

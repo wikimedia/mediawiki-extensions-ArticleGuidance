@@ -36,6 +36,12 @@ class ValidateSourceHandler extends Handler {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
 			],
+			'outlineQId' => [
+				self::PARAM_SOURCE => 'query',
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_DEFAULT => null,
+			],
 		];
 	}
 
@@ -55,8 +61,10 @@ class ValidateSourceHandler extends Handler {
 			] );
 		}
 
+		$outlineQId = $this->getValidatedParams()['outlineQId'];
+
 		return $this->getResponseFactory()->createJson(
-			$this->sourceValidator->validate( $url )
+			$this->sourceValidator->validate( $url, $outlineQId )
 		);
 	}
 }

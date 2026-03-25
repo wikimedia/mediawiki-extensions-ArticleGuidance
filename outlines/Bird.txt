@@ -6,7 +6,16 @@
 		<info>Peer-reviewed ornithology journals (e.g., The Auk, Ibis)</info>
 		<info>Field guides published by reputable organizations</info>
 		<info>Official conservation status reports (e.g., BirdLife International)</info>
+		<source>iucnredlist.org</source>
+		<source>birdlife.org</source>
+		<source>allaboutbirds.org</source>
+		<source>xeno-canto.org</source>
 	</recommended-sources>
+	<discouraged-sources>
+		<info>General interest websites without scientific editorial oversight</info>
+		<source>wikipedia.org</source>
+		<source>birdwatchingdaily.com</source>
+	</discouraged-sources>
 </article-guidance>
 {{Speciesbox}}
 

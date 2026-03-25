@@ -88,15 +88,12 @@
 			<cdx-message
 				v-for="( source, index ) in verifiedSources"
 				:key="index"
-				type="success"
+				:type="source.classification === 'recommended' ? 'success' : 'notice'"
 				class="ext-articleguidance-source-message"
 			>
 				<div class="ext-articleguidance-source-message-content">
 					<div class="ext-articleguidance-source-message-text">
 						<span class="ext-articleguidance-source-domain">{{ source.domain }}</span>
-						<span class="ext-articleguidance-source-status">
-							{{ $i18n( 'articleguidance-sources-approved' ).text() }}
-						</span>
 					</div>
 					<cdx-button
 						weight="quiet"
@@ -286,8 +283,12 @@ module.exports = defineComponent( {
 			checking.value = true;
 
 			try {
-				const result = await validateSource( url );
-				if ( !result.reliable ) {
+				const result = await validateSource(
+					url,
+					null,
+					selectedOutline.value && selectedOutline.value.articleType
+				);
+				if ( result.classification === 'spam' || result.classification === 'discouraged' ) {
 					unreliableWarning.value = { domain: result.domain };
 					if ( urlInput.value ) {
 						urlInput.value.blur();
@@ -296,7 +297,8 @@ module.exports = defineComponent( {
 					currentUrl.value = '';
 					verifiedSources.value.push( {
 						url: url,
-						domain: result.domain
+						domain: result.domain,
+						classification: result.classification || 'neutral'
 					} );
 				}
 			} catch ( e ) {
@@ -496,6 +498,10 @@ module.exports = defineComponent( {
 	display: flex;
 	flex-direction: column;
 	margin: 16px 0;
+
+	.cdx-message {
+		align-items: center;
+	}
 }
 
 .ext-articleguidance-source-message {
@@ -506,7 +512,8 @@ module.exports = defineComponent( {
 		padding: 12px 0;
 	}
 
-	&.cdx-message--success {
+	&.cdx-message--success,
+	&.cdx-message--notice {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
 	}
 
@@ -528,11 +535,6 @@ module.exports = defineComponent( {
 	.ext-articleguidance-source-domain {
 		font-weight: @font-weight-bold;
 		word-break: break-all;
-	}
-
-	.ext-articleguidance-source-status {
-		font-size: @font-size-small;
-		color: @color-subtle;
 	}
 
 	.ext-articleguidance-source-close {

@@ -46,6 +46,21 @@ class OutlineService {
 	}
 
 	/**
+	 * Get a single outline by its Wikidata Q-ID, or null if not found.
+	 *
+	 * @param string $qId
+	 * @return array|null
+	 */
+	public function getOutlineByQId( string $qId ): ?array {
+		foreach ( $this->getOutlines() as $outline ) {
+			if ( ( $outline['articleType'] ?? null ) === $qId ) {
+				return $outline;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Get the timestamp of the most recently touched category member.
 	 * Used by the REST handler for Last-Modified / 304 support.
 	 *

@@ -160,8 +160,8 @@ class ArticleGuidanceRenderer {
 
 		// Recommended and discouraged sources
 		if ( is_array( $recommendedSourcesHtml ) && count( $recommendedSourcesHtml ) === 2 ) {
-			[ $infoHtmlArray, $urlsHtmlArray ] = $recommendedSourcesHtml;
-			$allItems = array_merge( $infoHtmlArray ?? [], $urlsHtmlArray ?? [] );
+			[ $infoHtmlArray, $urlsArray ] = $recommendedSourcesHtml;
+			$allItems = array_merge( $infoHtmlArray ?? [], $urlsArray ?? [] );
 			if ( count( $allItems ) > 0 ) {
 				$listHtml = '';
 				foreach ( $allItems as $item ) {
@@ -185,8 +185,8 @@ class ArticleGuidanceRenderer {
 		}
 
 		if ( is_array( $discouragedSourcesHtml ) && count( $discouragedSourcesHtml ) === 2 ) {
-			[ $infoHtmlArray, $urlsHtmlArray ] = $discouragedSourcesHtml;
-			$allItems = array_merge( $infoHtmlArray ?? [], $urlsHtmlArray ?? [] );
+			[ $infoHtmlArray, $urlsArray ] = $discouragedSourcesHtml;
+			$allItems = array_merge( $infoHtmlArray ?? [], $urlsArray ?? [] );
 			if ( count( $allItems ) > 0 ) {
 				$listHtml = '';
 				foreach ( $allItems as $item ) {

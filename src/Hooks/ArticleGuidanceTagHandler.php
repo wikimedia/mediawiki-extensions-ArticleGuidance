@@ -212,11 +212,15 @@ class ArticleGuidanceTagHandler implements
 	/**
 	 * Extracts sources of a given type from content, filters out null/empty, and parses with the parser.
 	 *
+	 * Returns two arrays:
+	 *   [0] info HTML strings (parsed, outer <p> stripped)
+	 *   [1] plain URL strings (for domain matching and display)
+	 *
 	 * @param string $content Raw wikitext content
 	 * @param string $sourceType 'recommended-sources' or 'discouraged-sources'
 	 * @param Parser $parser Parser object
 	 * @param PPFrame $frame PPFrame object
-	 * @return array Array containing two arrays: parsed info HTML strings and parsed URL HTML strings
+	 * @return array Array containing two arrays as described above
 	 */
 	private function extractAndParseSources(
 		string $content,
@@ -227,15 +231,24 @@ class ArticleGuidanceTagHandler implements
 		[ $infoArray, $urlsArray ] = $this->tagContentExtractorService->extractSources( $content, $sourceType );
 
 		$infoHtmlArray = array_map(
-			static fn ( $info ) => $parser->recursiveTagParseFully( $info, $frame ),
+			fn ( $info ) => self::stripOuterParagraph( $parser->recursiveTagParseFully( $info, $frame ) ),
 			array_filter( $infoArray, static fn ( $info ) => is_string( $info ) && trim( $info ) !== '' )
 		);
 
-		$urlsHtmlArray = array_map(
-			static fn ( $url ) => $parser->recursiveTagParseFully( $url, $frame ),
+		$cleanUrlsArray = array_values(
 			array_filter( $urlsArray, static fn ( $url ) => is_string( $url ) && trim( $url ) !== '' )
 		);
 
-		return [ $infoHtmlArray, $urlsHtmlArray ];
+		return [ $infoHtmlArray, $cleanUrlsArray ];
+	}
+
+	/**
+	 * Strip a single wrapping <p>...</p> from parsed HTML output.
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	private static function stripOuterParagraph( string $html ): string {
+		return preg_replace( '/^\s*<p>(.*)<\/p>\s*$/s', '$1', trim( $html ) ) ?? $html;
 	}
 }

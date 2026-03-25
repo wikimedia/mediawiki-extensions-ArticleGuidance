@@ -41,6 +41,7 @@ return [
 		return new SourceValidator(
 			$spamBlacklist,
 			$services->getUserFactory(),
+			$services->getService( 'ArticleGuidanceOutlineService' ),
 		);
 	},
 	'ArticleGuidanceTagContentExtractorService' => static function (

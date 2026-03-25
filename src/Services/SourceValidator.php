@@ -15,16 +15,18 @@ class SourceValidator {
 	public function __construct(
 		private readonly ?SpamBlacklist $spamBlacklist,
 		private readonly UserFactory $userFactory,
+		private readonly OutlineService $outlineService,
 	) {
 	}
 
 	/**
-	 * Validate a URL and return a result array with reliable, domain, and reason.
+	 * Validate a URL and return a result array with domain and classification.
 	 *
 	 * @param string $url
-	 * @return array{reliable: bool, domain: string, reason: ?string}
+	 * @param string|null $outlineQId Q-ID of the selected outline, for domain classification
+	 * @return array{domain: string, classification: string}
 	 */
-	public function validate( string $url ): array {
+	public function validate( string $url, ?string $outlineQId = null ): array {
 		$domain = strtolower( preg_replace( '/^www\./i', '', parse_url( $url, PHP_URL_HOST ) ?? '' ) );
 
 		if ( $this->spamBlacklist !== null ) {
@@ -33,17 +35,53 @@ class SourceValidator {
 			);
 			if ( $matches !== false ) {
 				return [
-					'reliable' => false,
 					'domain' => $domain,
-					'reason' => 'blocklisted',
+					'classification' => 'spam',
 				];
 			}
 		}
 
 		return [
-			'reliable' => true,
 			'domain' => $domain,
-			'reason' => null,
+			'classification' => $this->classifyDomain( $domain, $outlineQId ),
 		];
+	}
+
+	/**
+	 * @param string $domain
+	 * @param string|null $outlineQId
+	 * @return string 'recommended', 'discouraged', or 'neutral'
+	 */
+	private function classifyDomain( string $domain, ?string $outlineQId ): string {
+		if ( $outlineQId === null ) {
+			return 'neutral';
+		}
+		$outline = $this->outlineService->getOutlineByQId( $outlineQId );
+		if ( $outline === null ) {
+			return 'neutral';
+		}
+		$recommendedUrls = $outline['recommendedSources']['urls'] ?? [];
+		$discouragedUrls = $outline['discouragedSources']['urls'] ?? [];
+		if ( $this->domainMatches( $domain, $recommendedUrls ) ) {
+			return 'recommended';
+		}
+		if ( $this->domainMatches( $domain, $discouragedUrls ) ) {
+			return 'discouraged';
+		}
+		return 'neutral';
+	}
+
+	/**
+	 * @param string $domain
+	 * @param string[] $allowedDomains
+	 * @return bool
+	 */
+	private function domainMatches( string $domain, array $allowedDomains ): bool {
+		foreach ( $allowedDomains as $allowed ) {
+			if ( $domain === $allowed || str_ends_with( $domain, '.' . $allowed ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

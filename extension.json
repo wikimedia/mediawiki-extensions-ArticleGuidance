@@ -123,6 +123,9 @@
 		},
 		"PreloadCleanup": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
+		},
+		"PublishFollowUp": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PublishFollowUpHandler"
 		}
 	},
 	"Hooks": {
@@ -132,7 +135,8 @@
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
 		"RecentChange_save": "EditTag",
-		"EditFormPreloadText": "PreloadCleanup"
+		"EditFormPreloadText": "PreloadCleanup",
+		"BeforePageDisplay": "PublishFollowUp"
 	},
 	"ExtensionMessagesFiles": {
 		"ArticleGuidanceAlias": "ArticleGuidance.alias.php"
@@ -282,6 +286,7 @@
 				"init.js"
 			],
 			"dependencies": [
+				"mediawiki.storage",
 				"mediawiki.util"
 			]
 		},
@@ -290,6 +295,40 @@
 			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle.styles",
 			"styles": [
 				"styles.less"
+			]
+		},
+		"ext.articleguidance.publishingfollowup": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"localBasePath": "resources/ext.articleguidance.publishingfollowup",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.publishingfollowup",
+			"codexComponents": [
+				"CdxButton",
+				"CdxIcon"
+			],
+			"packageFiles": [
+				"init.js",
+				"PublishFollowUp.vue",
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconClose",
+						"cdxIconEdit",
+						"cdxIconInfoFilled",
+						"cdxIconSuccess"
+					]
+				}
+			],
+			"messages": [
+				"articleguidance-publish-followup-confirmation-title",
+				"articleguidance-publish-followup-community-review",
+				"articleguidance-publish-followup-edit-more-button",
+				"articleguidance-publish-followup-close-button"
+			],
+			"dependencies": [
+				"vue",
+				"mediawiki.storage",
+				"mediawiki.util"
 			]
 		}
 	},

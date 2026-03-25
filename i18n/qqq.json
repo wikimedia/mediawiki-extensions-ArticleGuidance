@@ -68,5 +68,9 @@
 	"articleguidance-titleconflict-viewexisting": "Button label to view the existing article that has the same title as the one the user entered.",
 	"tag-articleguidance": "Display name for the 'articleguidance' edit tag shown in recent changes, history, and log pages.",
 	"tag-articleguidance-description": "Description of the 'articleguidance' edit tag shown on [[Special:Tags]].",
-	"tag-articleguidance-helppage": "URL of the help page linked from the 'articleguidance' edit tag on [[Special:Tags]] and other tag display contexts. Do not translate the URL; translate the target page instead."
+	"tag-articleguidance-helppage": "URL of the help page linked from the 'articleguidance' edit tag on [[Special:Tags]] and other tag display contexts. Do not translate the URL; translate the target page instead.",
+	"articleguidance-publish-followup-confirmation-title": "Heading shown in the post-publish follow-up panel after a user successfully publishes a new article through the Article Guidance workflow.",
+	"articleguidance-publish-followup-community-review": "Message in the post-publish follow-up panel informing the user that the editor community will review their newly published article.",
+	"articleguidance-publish-followup-edit-more-button": "Message for the button in the post-publish follow-up panel to encourage the user to continue editing and improving their article.",
+	"articleguidance-publish-followup-close-button": "Label for a close button used in the post-publish follow-up panel and other modals in the Article Guidance workflow."
 }

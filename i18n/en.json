@@ -68,5 +68,9 @@
 	"articleguidance-titleconflict-viewexisting": "View existing article",
 	"tag-articleguidance": "Article Guidance",
 	"tag-articleguidance-description": "Edit was made using the Article Guidance workflow",
-	"tag-articleguidance-helppage": "https://www.mediawiki.org/wiki/Special:MyLanguage/Article_guidance"
+	"tag-articleguidance-helppage": "https://www.mediawiki.org/wiki/Special:MyLanguage/Article_guidance",
+	"articleguidance-publish-followup-confirmation-title": "Article has been published!",
+	"articleguidance-publish-followup-community-review": "Other editors will review this article. Meanwhile, take another look at the suggestions to improve it.",
+	"articleguidance-publish-followup-edit-more-button": "Improve article",
+	"articleguidance-publish-followup-close-button": "Close"
 }

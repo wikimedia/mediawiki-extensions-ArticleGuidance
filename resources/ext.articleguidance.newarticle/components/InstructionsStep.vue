@@ -22,7 +22,7 @@
 				class="ext-articleguidance-guidance-tips"
 			>
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div v-html="selectedOutline.instructions"></div>
+				<div class="content" v-html="selectedOutline.instructions"></div>
 			</div>
 
 			<!-- Source guidance -->

@@ -17,7 +17,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlinesLoading = ref( false );
 	const outlinesError = ref( null );
 	const sitelinkCount = ref( null );
-	const outlinesList = computed( () => outlines.value || [] );
+	const outlinesList = computed( () => ( outlines.value || [] )
+		.slice()
+		.sort( ( a, b ) => a.label.localeCompare( b.label ) )
+	);
 	const showOutlines = ref( false );
 
 	function goTo( step ) {

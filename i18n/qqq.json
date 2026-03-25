@@ -22,6 +22,7 @@
 	"articleguidance-sources-notability-title": "Heading for the notability warning section shown when an article type has notability risk",
 	"articleguidance-sources-notability-description": "Description text explaining why references are particularly important for article types with notability concerns",
 	"articleguidance-sources-url-placeholder": "Placeholder text for the URL input field where users paste source URLs",
+	"articleguidance-sources-add-source": "Button label to submit the URL entered in the source input field",
 	"articleguidance-sources-approved": "Success message displayed when a source URL passes reliability checks",
 	"articleguidance-sources-not-recommended": "Warning message displayed when a source URL is from a discouraged domain",
 	"articleguidance-sources-invalid-url": "Inline validation error displayed below the input when the entered text is not a valid URL",

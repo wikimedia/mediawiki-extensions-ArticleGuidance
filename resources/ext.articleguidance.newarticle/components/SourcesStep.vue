@@ -44,6 +44,14 @@
 				@paste="handlePaste"
 			>
 			</cdx-text-input>
+			<cdx-button
+				:disabled="!currentUrl.trim() || checking"
+				:aria-label="$i18n( 'articleguidance-sources-add-source' ).text()"
+				class="ext-articleguidance-add-source-button"
+				@click="handleVerifyUrl"
+			>
+				<cdx-icon :icon="cdxIconAdd"></cdx-icon>
+			</cdx-button>
 		</div>
 
 		<!-- Inline validation error -->
@@ -186,7 +194,7 @@ const {
 	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
-const { cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
+const { cdxIconAdd, cdxIconClose, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { validateSource } = require( '../api/Sources.js' );
@@ -381,6 +389,7 @@ module.exports = defineComponent( {
 			removeSource,
 			handleContinue,
 			handleBack,
+			cdxIconAdd,
 			cdxIconClose,
 			cdxIconInfoFilled,
 			tipsOpen,
@@ -424,10 +433,47 @@ module.exports = defineComponent( {
 }
 
 .ext-articleguidance-url-input-wrapper {
+	display: flex;
+	flex-direction: row;
 	margin-bottom: 4px;
+	border: @border-width-base @border-style-base @border-color-base;
+	border-radius: @border-radius-base;
+	background-color: @background-color-base;
+
+	&:focus-within {
+		border-color: @color-progressive;
+	}
 
 	.ext-articleguidance-url-input {
-		width: 100%;
+		flex: 1;
+		min-width: 0;
+
+		.cdx-text-input__input {
+			border: 0;
+			border-radius: 0;
+			background: transparent;
+
+			&:focus {
+				outline: 0;
+				box-shadow: none;
+			}
+		}
+	}
+
+	.ext-articleguidance-add-source-button {
+		flex-shrink: 0;
+		border: 0;
+		border-inline-start: @border-width-base @border-style-base @border-color-base;
+		border-radius: 0 @border-radius-base @border-radius-base 0;
+		background-color: @background-color-neutral-subtle;
+
+		&:hover:not( :disabled ) {
+			background-color: @background-color-interactive;
+		}
+
+		&:disabled {
+			background-color: @background-color-neutral-subtle;
+		}
 	}
 }
 

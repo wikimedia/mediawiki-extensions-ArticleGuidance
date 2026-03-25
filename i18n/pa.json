@@ -4,5 +4,8 @@
 			"Cabal"
 		]
 	},
-	"articleguidance-specialnewarticle-title-placeholder": "ਲੇਖ ਦਾ ਸਿਰਲੇਖ"
+	"articleguidance-specialnewarticle-title-placeholder": "ਲੇਖ ਦਾ ਸਿਰਲੇਖ",
+	"articleguidance-sources-tips-title": "$1 ਲੇਖਾਂ ਲਈ ਸੁਝਾਅ",
+	"articleguidance-sources-tips-content-recommended": "ਇਹ ਸਰੋਤ ਕਿਸਮਾਂ ਵਧੀਆ ਚੱਲਦੇ ਨੇ:",
+	"articleguidance-sources-tips-content-discouraged": "ਇਹ ਬਹੁਤ ਵਿਰਲੇ ਹੀ ਮੰਨੇ ਜਾਂਦੇ ਨੇ:"
 }

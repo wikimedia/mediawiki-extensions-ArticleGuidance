@@ -27,6 +27,7 @@
 	"articleguidance-sources-helper-progress": "$1 di {{PLURAL:$2|$2 sorgente aggiunta|$2 sorgenti aggiunte}}",
 	"articleguidance-sources-unreliable-warning-title": "Sconsigliato dalla comunità",
 	"articleguidance-sources-unreliable-warning-description": "Questo tipo di fonte è raramente accettato per questa tipologia di voce.",
+	"articleguidance-sources-tips-title": "Suggerimenti per trovare buone fonti",
 	"articleguidance-sources-check-failed": "Verifica della fonte non riuscita. Riprova.",
 	"articleguidance-instructions-guidance-heading": "Come iniziare con questa voce",
 	"articleguidance-instructions-guidance-intro": "Ecco alcuni suggerimenti per aiutarti a scrivere un'ottima voce.",
@@ -46,5 +47,7 @@
 	"articleguidance-notability-tag-junior": "Le restrizioni si applicano solo ai redattori junior.",
 	"articleguidance-notability-tag-draft": "Pubblicazione consentita solo nei namespace bozza o utente.",
 	"articleguidance-notability-tag-sources": "È possibile creare solo argomenti per i quali l'utente abbia fornito fonti affidabili e non sconsigliate dalla community.",
-	"articleguidance-notability-tag-draft-location": "La tua voce verrà creata come \"$1\""
+	"articleguidance-notability-tag-draft-location": "La tua voce verrà creata come \"$1\"",
+	"articleguidance-specialnewarticle-no-matching-type": "Non riesci a trovare il tipo giusto?",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerisci un nuovo tipo"
 }

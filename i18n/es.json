@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kookoriko",
 			"Monicapozo03"
 		]
 	},
+	"articleguidance-specialnewarticle-no-matching-type": "¿No puedes encontrar el tipo correcto?",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Sugiera un nuevo tipo",
 	"tag-articleguidance": "Guía de artículos",
 	"tag-articleguidance-description": "La edición se realizó usando el flujo de trabajo de la guía de artículo"
 }

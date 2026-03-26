@@ -1,0 +1,19 @@
+<article-guidance article-type="Q2424752" notability-risk="sources crosswiki">
+Articles about products are among the most frequently deleted on Wikipedia. A product needs significant, independent coverage in reliable sources, not press releases, advertising, or the manufacturer's own website. Coverage must be substantive and address the product itself, not just the company that makes it.
+Quick considerations:
+*Write about what the product is and why it is notable, using independent sources.
+*Avoid copying from the manufacturer's website or promotional materials, this reads as advertising and will be flagged for deletion.
+*Do not write about a product you, your family, or your friends created or sell.
+*If the product is part of a larger product line, consider whether a separate article is needed or whether it should be covered within the company or product line article.
+</article-guidance>
+{{Infobox product}}
+[Product name] is a [type of product] produced by [manufacturer]. {{Citation needed}} It was first released in [year] and is known for [key feature or purpose]. {{Citation needed}}
+== History ==
+[Product name] was introduced in [year] by [company]. [Description of development history and key milestones, based on independent sources.] {{Citation needed}}
+== Features ==
+[Description of the product's main features and specifications, based on independent sources.] {{Citation needed}}
+== Reception ==
+[Product name] received [description of critical and commercial reception, based on independent reviews and sales data.] {{Citation needed}}
+== References ==
+<references />
+[[Category:Products]]

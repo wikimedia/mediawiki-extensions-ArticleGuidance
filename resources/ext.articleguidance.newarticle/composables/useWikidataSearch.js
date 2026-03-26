@@ -182,7 +182,7 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
-			// Build directTypesByGroup structure expected by checkHierarchyMatches
+			// Build directTypesByGroup from all search results upfront
 			const directTypesByGroup = {};
 			Object.keys( groups ).forEach( ( key ) => {
 				const prop = propForGroup( key );
@@ -197,6 +197,36 @@ function useWikidataSearch( query, language ) {
 				directTypesByGroup[ key ] = itemTypeMap;
 			} );
 
+			// Merge exclusion types as a special group so both checks run in one SPARQL query
+			const EXCLUDED_KEY = '__excluded__';
+			const excludedItemTypesList =
+				mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
+			const queryGroups = Object.assign( {}, groups );
+			const queryDirectTypes = Object.assign( {}, directTypesByGroup );
+			if ( excludedItemTypesList.length > 0 ) {
+				queryGroups[ EXCLUDED_KEY ] = excludedItemTypesList;
+				queryDirectTypes[ EXCLUDED_KEY ] = directTypesByGroup.default || {};
+			}
+
+			// Single SPARQL query: hierarchy matching and exclusion combined
+			const queryResult = await checkHierarchyMatches( queryGroups, queryDirectTypes );
+
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
+
+			// Exclude items whose P31 is (directly or via P279+) a configured excluded type
+			const excludedTypeSet = new Set( excludedItemTypesList );
+			const exclusionMap = queryResult[ EXCLUDED_KEY ] || {};
+			const filteredQIds = searchQIds.filter( ( qid ) => {
+				const p31Values =
+					( entityData[ qid ] && entityData[ qid ].claims[ PROP_INSTANCE_OF ] ) || [];
+				return !p31Values.some( ( v ) => excludedTypeSet.has( v ) || exclusionMap[ v ] );
+			} );
+			const filteredWikidataResults = wikidataResults.filter(
+				( r ) => filteredQIds.includes( r.id )
+			);
+
 			// Collect matches, starting with 0-hop cases
 			const outlineQIdSet = new Set(
 				validOutlines.map( ( o ) => o.articleType ).filter( Boolean )
@@ -204,7 +234,7 @@ function useWikidataSearch( query, language ) {
 			const matches = {};
 
 			// Pre-check: item is itself an outline type (e.g. searching for 'Animalia')
-			searchQIds.forEach( ( qid ) => {
+			filteredQIds.forEach( ( qid ) => {
 				if ( outlineQIdSet.has( qid ) ) {
 					matches[ qid ] = [ qid ];
 				}
@@ -212,27 +242,25 @@ function useWikidataSearch( query, language ) {
 
 			// Direct P31 → outline-type match (cross-group 0-hop)
 			const defaultItemTypeMap = directTypesByGroup.default || {};
-			Object.entries( defaultItemTypeMap ).forEach( ( [ itemQId, directTypes ] ) => {
+			filteredQIds.forEach( ( qid ) => {
+				const directTypes = defaultItemTypeMap[ qid ];
+				if ( !directTypes ) {
+					return;
+				}
 				directTypes.forEach( ( directType ) => {
 					if ( outlineQIdSet.has( directType ) ) {
-						if ( !matches[ itemQId ] ) {
-							matches[ itemQId ] = [];
+						if ( !matches[ qid ] ) {
+							matches[ qid ] = [];
 						}
-						if ( !matches[ itemQId ].includes( directType ) ) {
-							matches[ itemQId ].push( directType );
+						if ( !matches[ qid ].includes( directType ) ) {
+							matches[ qid ].push( directType );
 						}
 					}
 				} );
 			} );
 
-			// SPARQL Query 2: hierarchy traversal from direct types to outline types
-			const hierarchyMatches = await checkHierarchyMatches( groups, directTypesByGroup );
-
-			if ( requestId !== latestRequestId ) {
-				return;
-			}
-
-			applyHierarchyMatches( matches, directTypesByGroup, hierarchyMatches );
+			delete queryResult[ EXCLUDED_KEY ];
+			applyHierarchyMatches( matches, directTypesByGroup, queryResult );
 			const sparqlMatches = selectBestMatches( matches, validOutlines );
 
 			// Build outline lookup and map SPARQL results to display objects
@@ -244,7 +272,7 @@ function useWikidataSearch( query, language ) {
 			} );
 
 			const filteredResults = [];
-			wikidataResults.forEach( ( result ) => {
+			filteredWikidataResults.forEach( ( result ) => {
 				const matchedQIds = sparqlMatches[ result.id ];
 				if ( !matchedQIds || matchedQIds.length === 0 ) {
 					return;

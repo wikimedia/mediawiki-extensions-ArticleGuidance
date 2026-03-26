@@ -38,6 +38,10 @@
 				}
 			]
 		},
+		"ArticleGuidanceExcludedItemTypes": {
+			"value": [ "Q4167410", "Q13406463", "Q11266439", "Q4167836" ],
+			"description": "Wikidata Q IDs whose P31 presence causes an item to be excluded from article guidance search results. Q4167410 is the Wikimedia disambiguation page type."
+		},
 		"ArticleGuidanceExperimentName": {
 			"value": "",
 			"description": "TestKitchen experiment name used for A/B traffic splitting. When set, only users assigned to the 'treatment' group are redirected to Special:NewArticle. An empty string disables splitting and redirects all eligible traffic."

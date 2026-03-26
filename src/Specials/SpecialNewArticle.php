@@ -39,6 +39,10 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 			'wgArticleGuidanceSourcesThreshold',
 			$this->config->get( 'ArticleGuidanceSourcesThreshold' )
 		);
+		$out->addJsConfigVars(
+			'wgArticleGuidanceExcludedItemTypes',
+			$this->config->get( 'ArticleGuidanceExcludedItemTypes' )
+		);
 		$out->addModules( 'ext.articleguidance.newarticle' );
 		$out->addModuleStyles( [ 'ext.articleguidance.newarticle.styles' ] );
 	}

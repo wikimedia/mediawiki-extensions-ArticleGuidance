@@ -49,46 +49,22 @@ async function searchWikidata( query, language, limit = 20 ) {
 }
 
 /**
- * Fetch the number of Wikipedia sitelinks for a Wikidata entity
- *
- * @param {string} qid Wikidata entity ID (e.g. Q42)
- * @return {Promise<number>} Number of Wikipedia sitelinks
- */
-async function fetchSitelinkCount( qid ) {
-	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
-		action: 'wbgetentities',
-		ids: qid,
-		props: 'sitelinks/urls',
-		format: 'json',
-		origin: '*'
-	} );
-	const response = await fetch( url );
-	const data = await response.json();
-	const entity = data.entities && data.entities[ qid ];
-	if ( !entity || !entity.sitelinks ) {
-		return 0;
-	}
-	return Object.values( entity.sitelinks )
-		.filter( ( sitelink ) => sitelink.url && sitelink.url.includes( 'wikipedia.org' ) )
-		.length;
-}
-
-/**
  * Fetch claims for multiple Wikidata entities in a single request.
  *
  * @param {string[]} qids Array of Wikidata Q IDs (e.g. ['Q42', 'Q937'])
  * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
- * @return {Promise<Object>} Map of { qid: { propertyId: string[] } }
+ * @return {Promise<Object>} Map of qid to entity data, each with claims, imageFilename,
+ *   sitelinkCount, and localSitelink for the current wiki
  */
 async function fetchEntityClaims( qids, properties ) {
 	if ( !qids || qids.length === 0 ) {
-		return { claims: {}, imageFilenames: {} };
+		return {};
 	}
 
 	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
 		action: 'wbgetentities',
 		ids: qids.join( '|' ),
-		props: 'claims',
+		props: 'claims|sitelinks/urls',
 		format: 'json',
 		origin: '*'
 	} );
@@ -99,21 +75,21 @@ async function fetchEntityClaims( qids, properties ) {
 	}
 
 	const data = await response.json();
-	const result = {};
-	const imageFilenames = {};
 
 	if ( !data.entities ) {
-		return { claims: result, imageFilenames };
+		return {};
 	}
 
+	const wiki = mw.config.get( 'wgDBname' );
+	const result = {};
 	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
 		if ( entity.missing !== undefined ) {
 			continue;
 		}
-		result[ qid ] = {};
+		const claims = {};
 		for ( const prop of properties ) {
 			const statements = ( entity.claims && entity.claims[ prop ] ) || [];
-			result[ qid ][ prop ] = statements
+			claims[ prop ] = statements
 				.filter( ( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
 					s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'wikibase-entityid' )
 				.map( ( s ) => s.mainsnak.datavalue.value.id );
@@ -123,16 +99,28 @@ async function fetchEntityClaims( qids, properties ) {
 			( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
 				s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'string'
 		);
-		if ( imageStatement ) {
-			imageFilenames[ qid ] = imageStatement.mainsnak.datavalue.value;
+		let sitelinkCount = 0;
+		let localSitelink = null;
+		for ( const [ key, sitelink ] of Object.entries( entity.sitelinks || {} ) ) {
+			if ( sitelink.url && sitelink.url.includes( 'wikipedia.org' ) ) {
+				sitelinkCount++;
+				if ( key === wiki ) {
+					localSitelink = sitelink;
+				}
+			}
 		}
+		result[ qid ] = {
+			claims,
+			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,
+			sitelinkCount,
+			localSitelink
+		};
 	}
 
-	return { claims: result, imageFilenames };
+	return result;
 }
 
 module.exports = {
 	searchWikidata,
-	fetchSitelinkCount,
 	fetchEntityClaims
 };

@@ -61,6 +61,9 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggest a new type",
 	"articleguidance-tracking-category": "Pages using article guidance",
 	"articleguidance-tracking-category-desc": "Pages in this category use the <article-guidance> tag to provide structured guidance for article creation.",
+	"articleguidance-subjectcovered-title": "Article already exists",
+	"articleguidance-subjectcovered-description": "This subject already has an article on this wiki. You can read it or improve it.",
+	"articleguidance-subjectcovered-button": "Improve article",
 	"tag-articleguidance": "Article Guidance",
 	"tag-articleguidance-description": "Edit was made using the Article Guidance workflow",
 	"tag-articleguidance-helppage": "https://www.mediawiki.org/wiki/Special:MyLanguage/Article_guidance"

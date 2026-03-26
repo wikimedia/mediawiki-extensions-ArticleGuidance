@@ -61,6 +61,9 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Standalone action label for opening a new feedback topic on the \"Talk:Article guidance\" page to suggest a new type.",
 	"articleguidance-tracking-category": "Tracking category name for pages that use the article-guidance tag. See [[Special:TrackingCategories]].",
 	"articleguidance-tracking-category-desc": "Description of the tracking category for pages using article-guidance tags, shown on [[Special:TrackingCategories]].",
+	"articleguidance-subjectcovered-title": "Header for the step shown when the subject already exists on the wiki.",
+	"articleguidance-subjectcovered-description": "Description for the step shown when the subject already exists on the wiki.",
+	"articleguidance-subjectcovered-button": "Button label for improving the existing article when the subject already exists.",
 	"tag-articleguidance": "Display name for the 'articleguidance' edit tag shown in recent changes, history, and log pages.",
 	"tag-articleguidance-description": "Description of the 'articleguidance' edit tag shown on [[Special:Tags]].",
 	"tag-articleguidance-helppage": "URL of the help page linked from the 'articleguidance' edit tag on [[Special:Tags]] and other tag display contexts. Do not translate the URL; translate the target page instead."

@@ -1,6 +1,7 @@
 <template>
 	<div class="ext-articleguidance-newarticle">
 		<search-step v-if="currentStep === 'search'"></search-step>
+		<subject-covered-step v-else-if="currentStep === 'subjectcovered'"></subject-covered-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
 		<notability-step v-else-if="currentStep === 'notability'"></notability-step>
 		<instructions-step v-else-if="currentStep === 'instructions'"></instructions-step>
@@ -15,12 +16,14 @@ const SearchStep = require( './components/SearchStep.vue' );
 const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
 const NotabilityStep = require( './components/NotabilityStep.vue' );
+const SubjectCoveredStep = require( './components/SubjectCoveredStep.vue' );
 const { scrollToTop } = require( './utils/scroll.js' );
 
 module.exports = defineComponent( {
 	name: 'App',
 	components: {
 		SearchStep,
+		SubjectCoveredStep,
 		SourcesStep,
 		NotabilityStep,
 		InstructionsStep

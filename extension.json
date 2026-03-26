@@ -162,6 +162,7 @@
 				"components/SourcesStep.vue",
 				"components/NotabilityStep.vue",
 				"components/InstructionsStep.vue",
+				"components/SubjectCoveredStep.vue",
 				"components/ArticleInfo.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
@@ -250,7 +251,10 @@
 				"articleguidance-notability-tag-draft",
 				"articleguidance-notability-tag-draft-location",
 				"articleguidance-specialnewarticle-no-matching-type",
-				"articleguidance-specialnewarticle-missing-type-feedback"
+				"articleguidance-specialnewarticle-missing-type-feedback",
+				"articleguidance-subjectcovered-title",
+				"articleguidance-subjectcovered-description",
+				"articleguidance-subjectcovered-button"
 			],
 			"dependencies": [
 				"vue",

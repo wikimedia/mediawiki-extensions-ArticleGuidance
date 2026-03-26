@@ -19,4 +19,17 @@ function getCreateArticleUrl( title, outlineTitle, references ) {
 	return mw.util.getUrl( title, params );
 }
 
-module.exports = { getCreateArticleUrl };
+/**
+ * Build the URL for editing an existing article.
+ *
+ * @param {string} title Article title
+ * @return {string}
+ */
+function getEditArticleUrl( title ) {
+	return mw.util.getUrl( title, { veaction: 'edit' } );
+}
+
+module.exports = {
+	getCreateArticleUrl,
+	getEditArticleUrl
+};

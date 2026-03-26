@@ -1,7 +1,7 @@
 const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
 const { fetchOutlines } = require( '../api/Outlines.js' );
-const { fetchSitelinkCount } = require( '../api/Wikidata.js' );
+const { fetchLocalArticleData } = require( '../api/MediaWiki.js' );
 const { evaluateNotabilityTags } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
 const { getDraftTitle } = require( '../utils/draft.js' );
@@ -16,7 +16,26 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlines = ref( null );
 	const outlinesLoading = ref( false );
 	const outlinesError = ref( null );
-	const sitelinkCount = ref( null );
+	const localArticle = ref( null );
+
+	const localArticleInfo = computed( () => ( {
+		title: ( localArticle.value && localArticle.value.title ) ||
+			( selectedResult.value && selectedResult.value.localSitelink &&
+			selectedResult.value.localSitelink.title ) || '',
+		description: ( localArticle.value && localArticle.value.description ) ||
+			( selectedResult.value && selectedResult.value.description ) || '',
+		thumbnail: ( localArticle.value && localArticle.value.thumbnail ) ||
+			( selectedResult.value && selectedResult.value.thumbnail ) || null
+	} ) );
+
+	const sitelinkCount = computed(
+		() => selectedResult.value ? selectedResult.value.sitelinkCount : null
+	);
+
+	const topicExistsOnWiki = computed(
+		() => !!( selectedResult.value && selectedResult.value.localSitelink )
+	);
+
 	const outlinesList = computed( () => ( outlines.value || [] )
 		.slice()
 		.sort( ( a, b ) => a.label.localeCompare( b.label ) )
@@ -58,29 +77,28 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return loadingPromise;
 	}
 
-	async function loadSitelinkCount() {
-		if ( !selectedResult.value ) {
-			sitelinkCount.value = null;
-			return;
+	async function loadLocalArticle() {
+		localArticle.value = null;
+		try {
+			localArticle.value = await fetchLocalArticleData(
+				selectedResult.value.localSitelink.title
+			);
+		} catch ( err ) {
+			// Wikidata fallback data will be used instead
 		}
-		sitelinkCount.value = await fetchSitelinkCount( selectedResult.value.id );
 	}
 
 	async function selectArticle( result ) {
 		selectedResult.value = result;
-		searchQuery.value = result.label;
 
-		const allOutlines = await loadOutlines();
-		const matchedOutline = allOutlines.find(
+		const matchedOutline = outlines.value && outlines.value.find(
 			( o ) => o.articleType === result.matchedQId
 		);
 		selectedOutline.value = matchedOutline;
-		sitelinkCount.value = null;
-		if ( matchedOutline && matchedOutline.notabilityRisk &&
-			matchedOutline.notabilityRisk.includes( 'crosswiki' ) ) {
-			await loadSitelinkCount();
-		}
-		if ( shouldShowNotabilityStep() ) {
+		if ( topicExistsOnWiki.value ) {
+			await loadLocalArticle();
+			goTo( 'subjectcovered' );
+		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
 			goTo( 'sources' );
@@ -98,7 +116,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function selectOutline( outline ) {
 		selectedOutline.value = outline;
-		sitelinkCount.value = null;
 		if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
@@ -181,6 +198,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		outlinesError,
 		showOutlines,
 		sitelinkCount,
+		topicExistsOnWiki,
+		localArticleInfo,
 		minRequiredSources,
 		creationTitle,
 		getActiveNotabilityTags,

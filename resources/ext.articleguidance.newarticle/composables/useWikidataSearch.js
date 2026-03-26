@@ -176,8 +176,7 @@ function useWikidataSearch( query, language ) {
 
 			// Fetch direct property values (P31/P106/P171) for all search results
 			// via wbgetentities — replaces SPARQL Query 1
-			const { claims: claimsData, imageFilenames } =
-				await fetchEntityClaims( searchQIds, properties );
+			const entityData = await fetchEntityClaims( searchQIds, properties );
 
 			if ( requestId !== latestRequestId ) {
 				return;
@@ -189,7 +188,8 @@ function useWikidataSearch( query, language ) {
 				const prop = propForGroup( key );
 				const itemTypeMap = {};
 				searchQIds.forEach( ( qid ) => {
-					const typeValues = ( claimsData[ qid ] && claimsData[ qid ][ prop ] ) || [];
+					const typeValues =
+					( entityData[ qid ] && entityData[ qid ].claims[ prop ] ) || [];
 					if ( typeValues.length > 0 ) {
 						itemTypeMap[ qid ] = new Set( typeValues );
 					}
@@ -263,7 +263,8 @@ function useWikidataSearch( query, language ) {
 						thumbnail = outline.thumbnail;
 					}
 				} );
-				const entityFilename = imageFilenames[ result.id ];
+				const entity = entityData[ result.id ];
+				const entityFilename = entity && entity.imageFilename;
 				filteredResults.push( {
 					id: result.id,
 					label: result.label,
@@ -272,7 +273,9 @@ function useWikidataSearch( query, language ) {
 					matchedQId: matchedQIds[ 0 ],
 					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) ||
 						thumbnail,
-					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null
+					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
+					sitelinkCount: entity ? entity.sitelinkCount : 0,
+					localSitelink: entity ? entity.localSitelink : null
 				} );
 			} );
 

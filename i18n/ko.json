@@ -1,9 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bisang",
 			"Ykhwong"
 		]
 	},
 	"articleguidance-sources-invalid-url": "유효한 URL을 입력하세요",
+	"articleguidance-sources-tips-title": "$1 관련 문서 작성 팁",
+	"articleguidance-sources-tips-content-recommended": "다음 종류의 출처들이 효과적입니다:",
+	"articleguidance-sources-tips-content-discouraged": "다음은 거의 받아들여지지 않습니다:",
 	"articleguidance-notability-option-wikidata-title": "이 주제를 위키데이터에 추가"
 }

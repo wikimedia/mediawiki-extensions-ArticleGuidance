@@ -62,6 +62,10 @@
 	"articleguidance-subjectcovered-title": "Header for the step shown when the subject already exists on the wiki.",
 	"articleguidance-subjectcovered-description": "Description for the step shown when the subject already exists on the wiki.",
 	"articleguidance-subjectcovered-button": "Button label for improving the existing article when the subject already exists.",
+	"articleguidance-titleconflict-suggestion-prefix": "Text preceding the suggested alternative title link in the title conflict step.",
+	"articleguidance-titleconflict-continue": "Button label to proceed past the title conflict step once the user has chosen a free title.",
+	"articleguidance-titleconflict-selected-subject": "Label shown above the selected Wikidata subject card in the title conflict step.",
+	"articleguidance-titleconflict-viewexisting": "Button label to view the existing article that has the same title as the one the user entered.",
 	"tag-articleguidance": "Display name for the 'articleguidance' edit tag shown in recent changes, history, and log pages.",
 	"tag-articleguidance-description": "Description of the 'articleguidance' edit tag shown on [[Special:Tags]].",
 	"tag-articleguidance-helppage": "URL of the help page linked from the 'articleguidance' edit tag on [[Special:Tags]] and other tag display contexts. Do not translate the URL; translate the target page instead."

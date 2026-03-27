@@ -3,30 +3,56 @@
  */
 
 /**
- * Check if a page exists on the local wiki
+ * Check if multiple pages exist on the local wiki in a single API call.
  *
- * @param {string} title - The page title to check
- * @return {Promise<boolean>} True if page exists, false if it doesn't
+ * @param {string[]} titles - Page titles to check
+ * @return {Promise<Object>} Map of input title → boolean existence
  * @throws {Error} If the API call fails
  */
-async function checkPageExists( title ) {
-	// Validate input
-	if ( !title || typeof title !== 'string' || !title.trim() ) {
-		return false;
+async function checkPagesExist( titles ) {
+	if ( !titles ) {
+		return {};
+	}
+
+	titles = titles.map( ( t ) => t.trim() ).filter( Boolean );
+	if ( titles.length === 0 ) {
+		return {};
 	}
 
 	try {
 		const api = new mw.Api();
 		const response = await api.get( {
 			action: 'query',
-			titles: title.trim(),
+			titles: titles.join( '|' ),
 			formatversion: 2
 		} );
 
-		// Check if page exists by looking for 'missing' property
-		// If missing is undefined, the page exists
-		const page = response.query.pages[ 0 ];
-		return !page.missing;
+		// Build normalization map from input title to canonical title
+		const normalMap = {};
+		if ( response.query.normalized ) {
+			for ( let i = 0; i < response.query.normalized.length; i++ ) {
+				const n = response.query.normalized[ i ];
+				normalMap[ n.from ] = n.to;
+			}
+		}
+
+		// Collect existing page titles
+		const existingTitles = {};
+		for ( let i = 0; i < response.query.pages.length; i++ ) {
+			const page = response.query.pages[ i ];
+			if ( !page.missing ) {
+				existingTitles[ page.title ] = true;
+			}
+		}
+
+		// Map each input title to its existence status
+		const result = {};
+		for ( let i = 0; i < titles.length; i++ ) {
+			const title = titles[ i ];
+			const canonical = normalMap[ title ] || title;
+			result[ title ] = !!existingTitles[ canonical ];
+		}
+		return result;
 	} catch ( error ) {
 		throw new Error( 'Failed to check page existence: ' + error.message );
 	}
@@ -57,6 +83,6 @@ async function fetchLocalArticleData( title ) {
 }
 
 module.exports = {
-	checkPageExists,
+	checkPagesExist,
 	fetchLocalArticleData
 };

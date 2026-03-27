@@ -1,7 +1,7 @@
 const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
 const { fetchOutlines } = require( '../api/Outlines.js' );
-const { fetchLocalArticleData } = require( '../api/MediaWiki.js' );
+const { checkPagesExist, fetchLocalArticleData } = require( '../api/MediaWiki.js' );
 const { evaluateNotabilityTags } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
 const { getDraftTitle } = require( '../utils/draft.js' );
@@ -17,6 +17,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const outlinesLoading = ref( false );
 	const outlinesError = ref( null );
 	const localArticle = ref( null );
+	const articleTitle = ref( null );
+	const titleSuggestion = ref( null );
 
 	const localArticleInfo = computed( () => ( {
 		title: ( localArticle.value && localArticle.value.title ) ||
@@ -88,7 +90,36 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		}
 	}
 
-	async function selectArticle( result ) {
+	async function findTitleSuggestion( result ) {
+		const candidates = [];
+
+		if ( result.label &&
+			result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
+			candidates.push( result.label );
+		}
+
+		if ( selectedOutline.value && selectedOutline.value.label ) {
+			candidates.push( searchQuery.value + ' (' + selectedOutline.value.label + ')' );
+		}
+
+		if ( candidates.length === 0 ) {
+			return null;
+		}
+
+		const existenceMap = await checkPagesExist( candidates );
+
+		for ( let i = 0; i < candidates.length; i++ ) {
+			if ( !existenceMap[ candidates[ i ] ] ) {
+				return candidates[ i ];
+			}
+		}
+
+		return null;
+	}
+
+	async function selectArticle( result, titleTaken ) {
+		articleTitle.value = null;
+		titleSuggestion.value = null;
 		if ( selectedResult.value === null || selectedResult.value.id !== result.id ) {
 			references.value = [];
 		}
@@ -101,6 +132,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		if ( topicExistsOnWiki.value ) {
 			await loadLocalArticle();
 			goTo( 'subjectcovered' );
+		} else if ( titleTaken ) {
+			articleTitle.value = searchQuery.value;
+			titleSuggestion.value = await findTitleSuggestion( result );
+			goTo( 'titleconflict' );
 		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
@@ -172,11 +207,29 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	} );
 
 	const creationTitle = computed( () => {
+		const title = articleTitle.value || searchQuery.value;
 		if ( !getActiveNotabilityTags().includes( 'draft' ) ) {
-			return searchQuery.value;
+			return title;
 		}
-		return getDraftTitle( searchQuery.value );
+		return getDraftTitle( title );
 	} );
+
+	function setArticleTitle( title ) {
+		articleTitle.value = title;
+	}
+
+	function confirmTitle() {
+		if ( shouldShowNotabilityStep() ) {
+			goTo( 'notability' );
+		} else {
+			goTo( 'sources' );
+		}
+	}
+
+	function resetTitleConflict() {
+		articleTitle.value = null;
+		titleSuggestion.value = null;
+	}
 
 	function confirmNotability() {
 		goTo( 'sources' );
@@ -208,6 +261,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		topicExistsOnWiki,
 		localArticleInfo,
 		minRequiredSources,
+		articleTitle,
+		titleSuggestion,
 		creationTitle,
 		getActiveNotabilityTags,
 		shouldShowNotabilityStep,
@@ -218,6 +273,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		selectOutline,
 		setReferences,
 		setSearchQuery,
+		setArticleTitle,
+		confirmTitle,
+		resetTitleConflict,
 		confirmNotability,
 		confirmSources,
 		goBack

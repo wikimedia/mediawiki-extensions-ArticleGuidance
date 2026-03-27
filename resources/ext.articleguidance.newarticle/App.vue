@@ -2,6 +2,7 @@
 	<div class="ext-articleguidance-newarticle">
 		<search-step v-if="currentStep === 'search'"></search-step>
 		<subject-covered-step v-else-if="currentStep === 'subjectcovered'"></subject-covered-step>
+		<title-conflict-step v-else-if="currentStep === 'titleconflict'"></title-conflict-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
 		<notability-step v-else-if="currentStep === 'notability'"></notability-step>
 		<instructions-step v-else-if="currentStep === 'instructions'"></instructions-step>
@@ -17,6 +18,7 @@ const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
 const NotabilityStep = require( './components/NotabilityStep.vue' );
 const SubjectCoveredStep = require( './components/SubjectCoveredStep.vue' );
+const TitleConflictStep = require( './components/TitleConflictStep.vue' );
 const { scrollToTop } = require( './utils/scroll.js' );
 
 module.exports = defineComponent( {
@@ -24,6 +26,7 @@ module.exports = defineComponent( {
 	components: {
 		SearchStep,
 		SubjectCoveredStep,
+		TitleConflictStep,
 		SourcesStep,
 		NotabilityStep,
 		InstructionsStep

@@ -1,7 +1,7 @@
 <template>
 	<div v-if="selectedOutline" class="ext-articleguidance-article-info">
 		<h2 class="ext-articleguidance-article-title">
-			{{ searchQuery }}
+			{{ creationTitle }}
 		</h2>
 		<cdx-info-chip>
 			{{ selectedOutline.label }}
@@ -22,11 +22,11 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, searchQuery } = storeToRefs( store );
+		const { selectedOutline, creationTitle } = storeToRefs( store );
 
 		return {
 			selectedOutline,
-			searchQuery
+			creationTitle
 		};
 	}
 } );

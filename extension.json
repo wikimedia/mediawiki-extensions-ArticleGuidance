@@ -167,6 +167,7 @@
 				"components/NotabilityStep.vue",
 				"components/InstructionsStep.vue",
 				"components/SubjectCoveredStep.vue",
+				"components/TitleConflictStep.vue",
 				"components/ArticleInfo.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
@@ -256,7 +257,11 @@
 				"articleguidance-specialnewarticle-missing-type-feedback",
 				"articleguidance-subjectcovered-title",
 				"articleguidance-subjectcovered-description",
-				"articleguidance-subjectcovered-button"
+				"articleguidance-subjectcovered-button",
+				"articleguidance-titleconflict-suggestion-prefix",
+				"articleguidance-titleconflict-continue",
+				"articleguidance-titleconflict-selected-subject",
+				"articleguidance-titleconflict-viewexisting"
 			],
 			"dependencies": [
 				"vue",

@@ -34,28 +34,7 @@
 					{{ error }}
 				</cdx-message>
 
-				<!-- Article exists warning -->
-				<div v-if="showExistsWarning" class="ext-articleguidance-exists-container">
-					<cdx-message
-						type="warning"
-						class="ext-articleguidance-exists-warning"
-					>
-						{{
-							$i18n(
-								'articleguidance-specialnewarticle-exists-warning',
-								searchQuery
-							).text()
-						}}
-					</cdx-message>
-					<cdx-button
-						action="progressive"
-						@click="handleEditExisting"
-					>
-						{{ $i18n( 'articleguidance-specialnewarticle-edit-existing' ).text() }}
-					</cdx-button>
-				</div>
-
-				<!-- Results list (only shown if article doesn't exist) -->
+				<!-- Results list -->
 				<template v-if="showResults">
 					<div class="ext-articleguidance-results-heading">
 						{{
@@ -138,13 +117,14 @@ module.exports = defineComponent( {
 
 		// Initialize search composable
 		const {
-			results, loading, error, performSearch, articleExist
+			results, loading, error, performSearch, articleExist, checkExistence
 		} = useSearch( searchQuery, selectedLanguage );
 
 		onMounted( () => {
 			store.loadOutlines();
 			if ( searchQuery.value && searchQuery.value.trim().length >= 1 ) {
 				performSearch( searchQuery.value );
+				checkExistence();
 			}
 		} );
 
@@ -157,7 +137,7 @@ module.exports = defineComponent( {
 
 		// Handle result selection
 		const handleSelect = ( result ) => {
-			store.selectArticle( result );
+			store.selectArticle( result, articleExist.value === true );
 		};
 
 		// Handle browse outlines
@@ -170,23 +150,12 @@ module.exports = defineComponent( {
 			store.hideOutlines();
 		};
 
-		// Handle editing existing article
-		const handleEditExisting = () => {
-			const editUrl = mw.util.getUrl( searchQuery.value, { action: 'edit' } );
-			window.location.href = editUrl;
-		};
-
 		const maxResults = computed( () => results.value.slice( 0, MAX_RESULTS ) );
 
 		// Computed properties for display states
-		// Show warning when article exists
-		const showExistsWarning = computed(
-			() => articleExist.value === true && searchQuery.value.trim().length > 0
-		);
-
-		// Hide Wikidata results when article exists
+		// Show Wikidata results even when a title already exists
 		const showResults = computed(
-			() => !loading.value && results.value.length > 0 && !articleExist.value
+			() => !loading.value && results.value.length > 0
 		);
 
 		// Only show "no results" if article doesn't exist
@@ -208,8 +177,6 @@ module.exports = defineComponent( {
 			handleSelect,
 			handleBrowseOutlines,
 			handleHideOutlines,
-			handleEditExisting,
-			showExistsWarning,
 			showResults,
 			showNoResults
 		};
@@ -257,17 +224,6 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-error {
 	margin-bottom: 16px;
-}
-
-.ext-articleguidance-exists-container {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-	margin-bottom: 16px;
-}
-
-.ext-articleguidance-exists-warning {
-	margin: 0;
 }
 
 .ext-articleguidance-results-list {

@@ -30,5 +30,9 @@
 	"articleguidance-instructions-guidance-intro": "Tässä on muutamia vinkkejä, joiden avulla voit kirjoittaa laadukkaan artikkelin.",
 	"articleguidance-instructions-source-guidance": "Varmista, että sinulla on luotettavia ja riippumattomia lähteitä tästä aiheesta ennen kirjoittamisen aloittamista.",
 	"articleguidance-instructions-start-writing": "Aloita kirjoittaminen",
-	"articleguidance-navigation-back": "Takaisin"
+	"articleguidance-navigation-back": "Takaisin",
+	"articleguidance-notability-option-wikidata-title": "Lisää tämä aihe Wikidataan",
+	"articleguidance-notability-option-sandbox-title": "Aloita hiekkalaatikollasi",
+	"articleguidance-specialnewarticle-no-matching-type": "Etkö löydä oikeaa tyyppiä?",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Ehdota uutta tyyppiä"
 }

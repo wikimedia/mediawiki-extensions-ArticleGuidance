@@ -15,7 +15,8 @@ function getCreateArticleUrl( title, outlineTitle, references ) {
 		veaction: 'edit',
 		preload: outlineTitle,
 		preloadparams: [ preloadParams.join( '\n' ) ],
-		articleguidance: 1
+		articleguidance: 1,
+		cxhidebetapopup: 1
 	};
 
 	if ( isMobile() ) {

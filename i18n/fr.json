@@ -59,6 +59,9 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggérer un nouveau type",
 	"articleguidance-tracking-category": "Page utilisant Article guidance",
 	"articleguidance-tracking-category-desc": "Les pages de cette catégorie utilisent la balise <article-guidance> permettant de fournir des directives structurées pour la création d'articles.",
+	"articleguidance-subjectcovered-title": "Cet article existe déjà",
+	"articleguidance-subjectcovered-description": "Ce sujet possède déjà un article sur ce wiki. Vous pouvez le lire ou l'améliorer.",
+	"articleguidance-subjectcovered-button": "Améliorer l'article",
 	"tag-articleguidance": "Accompagnement à la création d'articles",
 	"tag-articleguidance-description": "La modification a été effectuée à l'aide des outils fournis par l'extension d'aide à la rédaction Article Guidance."
 }

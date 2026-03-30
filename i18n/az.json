@@ -59,6 +59,9 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Yeni bir növ təklif et",
 	"articleguidance-tracking-category": "Məqalə təlimatlarından istifadə edən səhifələr",
 	"articleguidance-tracking-category-desc": "Bu kateqoriyadakı səhifələr  məqalənin yaradılması üçün strukturlaşdırılmış rəhbərlik təmin edən <article-guidance> teqindən istifadə edir.",
+	"articleguidance-subjectcovered-title": "Məqalə artıq mövcuddur",
+	"articleguidance-subjectcovered-description": "Bu mövzu ilə bağlı artıq bu vikidə məqalə var. Onu oxuya və ya təkmilləşdirə bilərsiniz.",
+	"articleguidance-subjectcovered-button": "Məqaləni təkmilləşdir",
 	"tag-articleguidance": "Məqalə təlimatı",
 	"tag-articleguidance-description": "Məqalə təlimatı iş axınından istifadə edilərək edilən redaktə"
 }

@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"ARI",
-			"Yahya"
+			"Yahya",
+			"আফতাবুজ্জামান"
 		]
 	},
 	"articleguidance-desc": "ব্যবহারকারীদের একটি নির্দেশিত ও সহায়তাপ্রাপ্ত প্রক্রিয়ার মাধ্যমে নিবন্ধ তৈরি করতে সক্ষম করে",
@@ -21,6 +22,7 @@
 	"articleguidance-sources-notability-title": "উল্লেখযোগ্যতা সম্পর্কিত উদ্বেগ",
 	"articleguidance-sources-notability-description": "এই ধরনের নিবন্ধ উল্লেখযোগ্যতা সংক্রান্ত উদ্বেগের সম্মুখীন হতে পারে। অনুগ্রহ করে এমন নির্ভরযোগ্য সূত্র প্রদান করুন যা প্রমাণ করে যে বিষয়টি উইকিপিডিয়ার উল্লেখযোগ্যতার নির্দেশিকা পূরণ করে।",
 	"articleguidance-sources-url-placeholder": "উৎসের একটি লিঙ্ক প্রদান করুন",
+	"articleguidance-sources-add-source": "উৎস যোগ করুন",
 	"articleguidance-sources-approved": "এই উৎসটি ব্যবহারযোগ্য বলে মনে হচ্ছে",
 	"articleguidance-sources-not-recommended": "এই উৎসটি ব্যবহারের ব্যাপারে সুপারিশ করা হচ্ছে না",
 	"articleguidance-sources-invalid-url": "একটি বৈধ URL লিখুন",
@@ -28,7 +30,7 @@
 	"articleguidance-sources-continue": "অব্যাহত রাখুন",
 	"articleguidance-sources-helper": "লেখার সময় আপনি উৎস যোগ করতে পারেন।",
 	"articleguidance-sources-helper-required": "এই উইকিতে থাকা $1 নিবন্ধগুলোর জন্য উৎসের প্রয়োজন।",
-	"articleguidance-sources-helper-progress": "{{PLURAL:$2|$2 টি উৎসের}} মধ্যে $1টি যোগ করা হয়েছে।",
+	"articleguidance-sources-helper-progress": "{{PLURAL:$2|$2টি উৎসের}} মধ্যে $1টি যোগ করা হয়েছে।",
 	"articleguidance-sources-unreliable-warning-title": "সম্প্রদায় এই উৎসটি ব্যবহারের ব্যাপারে নিরুৎসাহিত করছে",
 	"articleguidance-sources-unreliable-warning-description": "এই ধরনের নিবন্ধের জন্য এই ধরণের উৎস খুব কমই গৃহীত হয়।",
 	"articleguidance-sources-tips-title": "$1 নিবন্ধের জন্য পরামর্শ",
@@ -57,8 +59,11 @@
 	"articleguidance-notability-tag-draft-location": "আপনার নিবন্ধটি \"$1\"-এ তৈরি করা হবে।",
 	"articleguidance-specialnewarticle-no-matching-type": "সঠিক ধরনটি খুঁজে পাচ্ছেন না?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "একটি নতুন ধরন/টাইপের পরামর্শ দিন",
-	"articleguidance-tracking-category": "আর্টিকেল গাইডেন্স ব্যবহার করা পাতাগুলো",
+	"articleguidance-tracking-category": "আর্টিকেল গাইডেন্স ব্যবহার করা পাতা",
 	"articleguidance-tracking-category-desc": "এই বিষয়শ্রেণীর পাতাগুলো নিবন্ধ তৈরির জন্য কাঠামোবদ্ধ নির্দেশনা দিতে <article-guidance> ট্যাগ ব্যবহার করে।",
+	"articleguidance-subjectcovered-title": "নিবন্ধটি ইতিমধ্যেই বিদ্যমান",
+	"articleguidance-subjectcovered-description": "এই উইকিতে এই বিষয়টি নিয়ে ইতিমধ্যেই একটি নিবন্ধ রয়েছে। আপনি সেটি পড়তে পারেন অথবা সেটিকে আরও উন্নত করতে পারেন।",
+	"articleguidance-subjectcovered-button": "নিবন্ধের উন্নতি করুন",
 	"tag-articleguidance": "আর্টিকেল গাইডেন্স",
-	"tag-articleguidance-description": "আর্টিকেল গাইডেন্স ওয়ার্কফ্লো ব্যবহার করে সম্পাদনাটি করা হয়েছে"
+	"tag-articleguidance-description": "আর্টিকেল গাইডেন্স কর্মপ্রবাহ ব্যবহার করে সম্পাদনাটি করা হয়েছে"
 }

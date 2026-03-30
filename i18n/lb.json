@@ -5,9 +5,15 @@
 		]
 	},
 	"articleguidance-specialnewarticle-title": "Neien Artikel",
+	"articleguidance-specialnewarticle-no-results": "Fir „$1“ goufe keng Sujete fonnt",
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
 	"articleguidance-sources-helper-progress": "$1 vu(n) {{PLURAL:$2|$2 Sourcen}} derbäigesat.",
-	"articleguidance-notability-tag-draft-location": "Ären Artikel wäert ënner „$1“ ugeluecht ginn."
+	"articleguidance-notability-tag-wikidata": "Et kënnen nëmme Sujeten ugeluecht ginn, déi op Wikidata existéieren.",
+	"articleguidance-notability-tag-crosswiki": "Et kënnen nëmme Sujeten ugeluecht ginn, déi an {{PLURAL:$1|enger anerer Sprooch|anere Sproochen}} disponibel sinn.",
+	"articleguidance-notability-tag-draft-location": "Ären Artikel wäert ënner „$1“ ugeluecht ginn.",
+	"articleguidance-subjectcovered-title": "Et gëtt den Artikel schonn",
+	"articleguidance-subjectcovered-description": "Dëse Sujet huet schonn en Artikel op dëser Wiki. Dir kënnt e liesen oder verbesseren.",
+	"articleguidance-subjectcovered-button": "Artikel verbesseren"
 }

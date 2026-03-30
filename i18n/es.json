@@ -7,6 +7,9 @@
 	},
 	"articleguidance-specialnewarticle-no-matching-type": "¿No puedes encontrar el tipo correcto?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Sugiera un nuevo tipo",
+	"articleguidance-subjectcovered-title": "El artículo ya existe",
+	"articleguidance-subjectcovered-description": "Este tema ya cuenta con un artículo en esta wiki. Puedes leerlo o mejorarlo.",
+	"articleguidance-subjectcovered-button": "Mejorar artículo",
 	"tag-articleguidance": "Guía de artículos",
 	"tag-articleguidance-description": "La edición se realizó usando el flujo de trabajo de la guía de artículo"
 }

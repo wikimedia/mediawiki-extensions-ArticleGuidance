@@ -20,6 +20,7 @@
 	"articleguidance-sources-notability-title": "Notabilidade dubidosa",
 	"articleguidance-sources-notability-description": "Este tipo de artigo pode suscitar dúbidas sobre a súa notabilidade. Proporciona fontes fiables que demostren que o tema cumpre as directrices de notabilidade da Wikipedia.",
 	"articleguidance-sources-url-placeholder": "Pega a ligazón a unha fonte",
+	"articleguidance-sources-add-source": "Engadir a fonte",
 	"articleguidance-sources-approved": "Esta fonte semella utilizable",
 	"articleguidance-sources-not-recommended": "Non se recomenda esta fonte",
 	"articleguidance-sources-invalid-url": "Introduce un enderezo URL válido",
@@ -58,6 +59,9 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suxerir un tipo novo",
 	"articleguidance-tracking-category": "Páxinas que usan a guía de creación de artigos",
 	"articleguidance-tracking-category-desc": "As páxinas desta categoría usan a etiqueta <article-guidance> para proporcionar unha guía estruturada para a creación de artigos.",
+	"articleguidance-subjectcovered-title": "O artigo xa existe",
+	"articleguidance-subjectcovered-description": "Este tema xa ten un artigo neste wiki. Podes lelo ou melloralo.",
+	"articleguidance-subjectcovered-button": "Mellorar o artigo",
 	"tag-articleguidance": "Guía de creación de artigos",
 	"tag-articleguidance-description": "A edición realizouse usando o fluxo de traballo da guía de creación de artigos"
 }

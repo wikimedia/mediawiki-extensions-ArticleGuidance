@@ -95,6 +95,16 @@ const notabilityCases = {
 		state: BASE_STATE,
 		expected: { activeTags: [], willShow: false }
 	},
+	'only junior → willShow false': {
+		outline: { notabilityRisk: [ 'junior' ] },
+		state: BASE_STATE,
+		expected: { activeTags: [ 'junior' ], willShow: false }
+	},
+	'sources and junior → willShow false': {
+		outline: { notabilityRisk: [ 'sources', 'junior' ] },
+		state: BASE_STATE,
+		expected: { activeTags: [ 'junior' ], willShow: false }
+	},
 	'multiple tags all inactive → willShow false': {
 		outline: { notabilityRisk: [ 'wikidata', 'crosswiki' ] },
 		state: { ...BASE_STATE, selectedWikidataItem: true, sitelinkCount: 10 },

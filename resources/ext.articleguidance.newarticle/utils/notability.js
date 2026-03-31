@@ -75,7 +75,7 @@ function evaluateNotabilityTags( outline, state ) {
 	if ( juniorResult !== undefined && !juniorResult.active ) {
 		return { tagResults, willShow: false };
 	}
-	const willShow = tagResults.some( ( r ) => r.active );
+	const willShow = tagResults.some( ( r ) => r.active && r.tag !== 'junior' );
 	return { tagResults, willShow };
 }
 

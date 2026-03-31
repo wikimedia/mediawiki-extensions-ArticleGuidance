@@ -72,7 +72,7 @@ module.exports = defineComponent( {
 
 		// Navigate to article creation page
 		const handleStartWriting = () => {
-			window.location.href = buildCreateArticleUrl();
+			location.href = buildCreateArticleUrl();
 		};
 
 		// Handle back navigation

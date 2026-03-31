@@ -50,12 +50,12 @@ module.exports = defineComponent( {
 			store.goBack();
 		};
 		const handleImproveArticle = () => {
-			window.location.href = getEditArticleUrl(
+			location.href = getEditArticleUrl(
 				localArticleInfo.value.title
 			);
 		};
 		const handleReadArticle = () => {
-			window.open( mw.util.getUrl( localArticleInfo.value.title ), '_blank' );
+			open( mw.util.getUrl( localArticleInfo.value.title ), '_blank' );
 		};
 		return {
 			localArticleInfo,

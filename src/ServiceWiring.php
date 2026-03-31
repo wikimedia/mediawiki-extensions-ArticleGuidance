@@ -26,9 +26,7 @@ return [
 	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {
 		return new OutlineService(
 			$services->getTitleFactory(),
-			$services->getWikiPageFactory(),
-			$services->getParserOutputAccess(),
-			$services->getMainWANObjectCache(),
+			$services->getPageProps(),
 		);
 	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {

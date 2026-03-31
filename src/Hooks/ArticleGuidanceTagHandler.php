@@ -6,7 +6,6 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
-use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
@@ -25,7 +24,6 @@ class ArticleGuidanceTagHandler implements
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
-		private readonly OutlineService $outlineService,
 		private readonly TagContentExtractorService $tagContentExtractorService,
 		private readonly Config $mainConfig,
 	) {
@@ -123,25 +121,39 @@ class ArticleGuidanceTagHandler implements
 					}
 
 					$description = $wikidataDescription !== null ? ucfirst( $wikidataDescription ) : null;
-					$parser->getOutput()->setExtensionData( 'ArticleGuidance:data', [
-						'articleType' => $wikidataId,
-						'label' => $wikidataLabel,
-						'description' => $description,
-						'image' => $wikidataImage,
-						'notabilityRisk' => $validTags,
-						'hierarchyDepth' => $hierarchyDepth,
-						'matchVia' => $matchVia,
-						'instructions' => $instructionsHtml,
-						'recommendedSources' => [
-							'info' => $recommendedSourcesHtml[0] ?? [],
-							'urls' => $recommendedSourcesHtml[1] ?? [],
-						],
-						'discouragedSources' => [
-							'info' => $discouragedSourcesHtml[0] ?? [],
-							'urls' => $discouragedSourcesHtml[1] ?? [],
-						],
-					] );
-					$this->outlineService->touchOutlinesCheckKey();
+					$data = [ 'articleType' => $wikidataId ];
+					if ( $wikidataLabel !== null && $wikidataLabel !== '' ) {
+						$data['label'] = $wikidataLabel;
+					}
+					if ( $description !== null && $description !== '' ) {
+						$data['description'] = $description;
+					}
+					if ( $wikidataImage !== null ) {
+						$data['image'] = $wikidataImage;
+					}
+					if ( $validTags !== [] ) {
+						$data['notabilityRisk'] = $validTags;
+					}
+					if ( $hierarchyDepth !== null ) {
+						$data['hierarchyDepth'] = $hierarchyDepth;
+					}
+					if ( $matchVia !== null ) {
+						$data['matchVia'] = $matchVia;
+					}
+					if ( $instructionsHtml !== null && $instructionsHtml !== '' ) {
+						$data['instructions'] = $instructionsHtml;
+					}
+					$recInfo = $recommendedSourcesHtml[0] ?? [];
+					$recUrls = $recommendedSourcesHtml[1] ?? [];
+					if ( $recInfo !== [] || $recUrls !== [] ) {
+						$data['recommendedSources'] = [ 'info' => $recInfo, 'urls' => $recUrls ];
+					}
+					$disInfo = $discouragedSourcesHtml[0] ?? [];
+					$disUrls = $discouragedSourcesHtml[1] ?? [];
+					if ( $disInfo !== [] || $disUrls !== [] ) {
+						$data['discouragedSources'] = [ 'info' => $disInfo, 'urls' => $disUrls ];
+					}
+					$parser->getOutput()->setPageProperty( 'articleguidance-data', json_encode( $data ) );
 				}
 			}
 		}

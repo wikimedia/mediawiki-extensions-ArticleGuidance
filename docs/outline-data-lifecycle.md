@@ -9,11 +9,10 @@ re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
    via `WikidataInfoFetcher`, which caches results for 24 hours.
 2. Parses the tag's inner content into fully-resolved HTML using `Parser::recursiveTagParseFully()`,
    resolving all strip markers (links, etc.) inline.
-3. Writes the structured outline data to the `ParserOutput` extension data slot
-   `ArticleGuidance:data` via `ParserOutput::setExtensionData()`. This data is stored as part of
-   the normal parser cache and is automatically invalidated whenever the page is re-parsed or saved.
-4. Touches the outlines WAN check key via `OutlineService::touchOutlinesCheckKey()`, which
-   immediately invalidates the cached outlines list so the next API request sees fresh data.
+3. Writes the structured outline data as a page property (`articleguidance-data`) via
+   `ParserOutput::setPageProperty()`. The property is written to the `page_props` database table
+   by `LinksUpdate` after the save completes, making it persistent across parser cache expiry and
+   server restarts.
 
 Storage only occurs on full saves, not previews.
 
@@ -21,15 +20,15 @@ Storage only occurs on full saves, not previews.
 
 The `/articleguidance/v0/outlines` REST endpoint calls `OutlineService::getOutlines()`, which:
 
-1. Returns the result from the outlines WAN cache if valid (fast path).
-2. On a cache miss (first request after save, or after a check key touch), fetches fresh data:
-   - Gets category members via a single database query.
-   - For each member page, reads its `ArticleGuidance:data` extension data slot from the parser
-     cache via `ParserOutputAccess::getParserOutput()`. When the parser cache is warm (normal
-     operation), this is a fast read. When cold, a fresh parse is triggered;
-     `WikidataInfoFetcher`'s own cache keeps this fast.
-   - Pages with no `ArticleGuidance:data` entry are omitted from the response.
-3. Stores the result in the outlines WAN cache for up to 24 hours, subject to the check key.
+1. Gets category members via a single database query on `categorylinks`.
+2. Batch-loads the `articleguidance-data` property for all members in a single `page_props` query
+   via `PageProps::getProperties()`.
+3. JSON-decodes each value and assembles the outlines list. Pages with no property (not yet saved
+   since deploy) are omitted.
+
+The result is memoized on the service instance, so `getLastModified()` (called by the framework
+for 304 checking) and `getOutlines()` (called in `execute()`) share the same two DB queries within
+a single request.
 
 ## HTTP caching
 
@@ -41,3 +40,5 @@ members, enabling 304 Not Modified responses for clients that send `If-Modified-
 
 The tag handler also passes the metadata to `ArticleGuidanceRenderer`, which produces the HTML
 displayed inline on the outline page. This runs on every parse, independently of the above.
+Notability thresholds (e.g. the crosswiki sitelink count) are read from wiki config at render time
+and are not stored in the page property.

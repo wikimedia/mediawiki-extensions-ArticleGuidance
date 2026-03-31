@@ -120,10 +120,10 @@
 				<div>
 					<div v-if="recommendedSources.length">
 						<div
-							:class="{
-								'ext-articleguidance-tips-title-success':
-									hasBothRecommendedAndDiscouragedTips
-							}"
+							:class="unreliableWarning ?
+								'ext-articleguidance-tips-title-highlighted' :
+								'ext-articleguidance-tips-title-regular'
+							"
 						>
 							{{ $i18n( 'articleguidance-sources-tips-content-recommended' ).text() }}
 						</div>
@@ -137,12 +137,9 @@
 							<!-- eslint-enable vue/no-v-html -->
 						</ul>
 					</div>
-					<div v-if="discouragedSources.length">
+					<div v-if="unreliableWarning && discouragedSources.length">
 						<div
-							:class="{
-								'ext-articleguidance-tips-title-warning':
-									hasBothRecommendedAndDiscouragedTips
-							}"
+							class="ext-articleguidance-tips-title-warning"
 						>
 							{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
 						</div>
@@ -215,9 +212,6 @@ module.exports = defineComponent( {
 		);
 		const hasTips = computed(
 			() => recommendedSources.value.length > 0 || discouragedSources.value.length > 0
-		);
-		const hasBothRecommendedAndDiscouragedTips = computed(
-			() => recommendedSources.value.length > 0 && discouragedSources.value.length > 0
 		);
 
 		// Ref for the URL text input component
@@ -391,7 +385,6 @@ module.exports = defineComponent( {
 			recommendedSources,
 			discouragedSources,
 			hasTips,
-			hasBothRecommendedAndDiscouragedTips,
 			selectedOutline,
 			hasNotabilityRisk
 		};
@@ -564,13 +557,18 @@ module.exports = defineComponent( {
 	line-height: @line-height-medium;
 }
 
-.ext-articleguidance-tips-title-success {
+.ext-articleguidance-tips-title-regular {
+	color: @color-subtle;
+	font-weight: @font-weight-normal;
+}
+
+.ext-articleguidance-tips-title-highlighted {
 	color: @color-success;
-	font-weight: bold;
+	font-weight: @font-weight-bold;
 }
 .ext-articleguidance-tips-title-warning {
 	color: @color-warning;
-	font-weight: bold;
+	font-weight: @font-weight-bold;
 }
 
 .ext-articleguidance-tip-list {

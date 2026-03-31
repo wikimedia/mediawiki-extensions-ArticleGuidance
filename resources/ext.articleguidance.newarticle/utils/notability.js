@@ -51,6 +51,12 @@ function evaluateTag( tag, state ) {
 				detail: 'Editor will be invited to start article in draft or user space.'
 			};
 		}
+		case 'sources': {
+			return {
+				active: false,
+				detail: 'Editor will be required to add at least two sources.'
+			};
+		}
 		default:
 			return { active: false, detail: 'unknown tag' };
 	}

@@ -1,3 +1,7 @@
+// Page-scoped cache: cleared automatically on page reload.
+// Key: qid, Value: entity data object (claims, imageFilename, sitelinkCount, localSitelink)
+const entityClaimsCache = new Map();
+
 /**
  * Search Wikidata entities
  *
@@ -61,9 +65,24 @@ async function fetchEntityClaims( qids, properties ) {
 		return {};
 	}
 
+	const cachedResult = {};
+	const uncachedQIds = [];
+
+	qids.forEach( ( qid ) => {
+		if ( entityClaimsCache.has( qid ) ) {
+			cachedResult[ qid ] = entityClaimsCache.get( qid );
+		} else {
+			uncachedQIds.push( qid );
+		}
+	} );
+
+	if ( uncachedQIds.length === 0 ) {
+		return cachedResult;
+	}
+
 	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
 		action: 'wbgetentities',
-		ids: qids.join( '|' ),
+		ids: uncachedQIds.join( '|' ),
 		props: 'claims|sitelinks/urls',
 		format: 'json',
 		origin: '*'
@@ -77,11 +96,11 @@ async function fetchEntityClaims( qids, properties ) {
 	const data = await response.json();
 
 	if ( !data.entities ) {
-		return {};
+		return cachedResult;
 	}
 
 	const wiki = mw.config.get( 'wgDBname' );
-	const result = {};
+	const freshResult = {};
 	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
 		if ( entity.missing !== undefined ) {
 			continue;
@@ -109,15 +128,16 @@ async function fetchEntityClaims( qids, properties ) {
 				}
 			}
 		}
-		result[ qid ] = {
+		freshResult[ qid ] = {
 			claims,
 			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,
 			sitelinkCount,
 			localSitelink
 		};
+		entityClaimsCache.set( qid, freshResult[ qid ] );
 	}
 
-	return result;
+	return Object.assign( {}, cachedResult, freshResult );
 }
 
 module.exports = {

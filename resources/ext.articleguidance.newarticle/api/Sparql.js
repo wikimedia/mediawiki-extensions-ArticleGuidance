@@ -2,6 +2,7 @@
  * SPARQL query utilities for Wikidata
  */
 
+const PROP_INSTANCE_OF = 'P31';
 const PROP_SUBCLASS_OF = 'P279';
 const PROP_PARENT_TAXON = 'P171';
 
@@ -9,24 +10,9 @@ const PROP_PARENT_TAXON = 'P171';
 // endpoint. Padding to two fixes this. Q1 never matches and is ignored in results.
 const OUTLINE_SENTINEL_QID = 'Q1';
 
-/**
- * Build the hierarchy traversal path used in checkHierarchyMatches.
- *
- * Uses + (one or more hops) rather than * to exclude self-matches, since
- * zero-hop matches (directType === outlineType) are pre-handled by the caller.
- *
- * - 'P171' → wdt:P171+ (parent-taxon chain for biological taxons)
- * - null/default or any other P-id → wdt:P279+ (subclass chain)
- *
- * @param {string|null} matchVia - Wikidata property ID or null for default
- * @return {string} SPARQL property path
- */
-function buildHierarchyPath( matchVia ) {
-	if ( matchVia === PROP_PARENT_TAXON ) {
-		return `wdt:${ PROP_PARENT_TAXON }+`;
-	}
-	return `wdt:${ PROP_SUBCLASS_OF }+`;
-}
+// Page-scoped cache: cleared automatically on page reload.
+// Key: `${pathKey}|${itemQId}`, Value: Set<outlineQId>
+const hierarchyCache = new Map();
 
 /**
  * Execute a SPARQL query against the Wikidata Query Service.
@@ -61,94 +47,142 @@ function extractQId( uri ) {
 }
 
 /**
- * Check which outline types each direct type reaches via hierarchy traversal.
+ * Check which outline types each item reaches via hierarchy traversal.
  *
- * Runs one query per matchVia group in parallel rather than a single UNION query,
- * allowing the SPARQL endpoint to process independent groups concurrently.
- * Direct types are deduplicated within each group and pre-filtered to exclude
- * types that are already outlineTypes (zero-hop matches handled by the caller).
+ * Accepts item QIDs directly (from wbsearchentities results), avoiding the need
+ * to wait for wbgetentities P31 values before querying. Runs one query per group
+ * in parallel, skipping items already present in the page-scoped cache.
  *
- * @param {Object} groups Map of groupKey → outlineQIds
- * @param {Object} directTypesByGroup Map of { groupKey: { itemQId: Set<directTypeQId> } }
- * @return {Promise<Object>} Map of { groupKey: { directTypeQId: Set<outlineQId> } }
+ * Uses `+` (one or more hops) for normal groups to avoid redundancy with zero-hop
+ * checks performed by the caller. Uses `*` (zero or more) for the excluded group
+ * so that direct P31 matches are also caught.
+ *
+ * @param {string[]} itemQIds Array of Wikidata item Q IDs
+ * @param {Object} groups Map of groupKey → outlineQId[]
+ * @param {string[]} excludedItemTypes Array of excluded item type Q IDs
+ * @return {Promise<Object>} Map of { groupKey: { itemQId: Set<outlineQId> } }
  */
-async function checkHierarchyMatches( groups, directTypesByGroup ) {
-	// Build a branch per group, tagged with its path, and a reverse map for demuxing results
-	const outlineToGroup = {};
-	const branchesByPath = {};
+async function checkItemHierarchyMatches( itemQIds, groups, excludedItemTypes ) {
+	const EXCLUDED_KEY = '__excluded__';
 
-	Object.entries( groups ).forEach( ( [ key, outlineQIds ] ) => {
-		const matchVia = key === 'default' ? null : key;
-		const itemTypeMap = directTypesByGroup[ key ] || {};
-		const outlineQIdSet = new Set( outlineQIds );
-		const allDirectTypes = [];
-		Object.values( itemTypeMap ).forEach( ( typeSet ) => {
-			typeSet.forEach( ( type ) => {
-				if ( !allDirectTypes.includes( type ) && !outlineQIdSet.has( type ) ) {
-					allDirectTypes.push( type );
-				}
-			} );
-		} );
-
-		if ( allDirectTypes.length === 0 || outlineQIds.length === 0 ) {
-			return;
-		}
-
-		outlineQIds.forEach( ( qid ) => {
-			outlineToGroup[ qid ] = key;
-		} );
-
-		const path = buildHierarchyPath( matchVia );
-		const directTypeValues = allDirectTypes.map( ( qid ) => `wd:${ qid }` ).join( ' ' );
-		const paddedOutlineQIds = outlineQIds.length === 1 ?
-			[ ...outlineQIds, OUTLINE_SENTINEL_QID ] :
-			outlineQIds;
-		const outlineValues = paddedOutlineQIds.map( ( qid ) => `wd:${ qid }` ).join( ' ' );
-		const branch =
-			`  VALUES ?directType { ${ directTypeValues } }\n` +
-			`  VALUES ?outlineType { ${ outlineValues } }\n` +
-			`  ?directType ${ path } ?outlineType .`;
-
-		if ( !branchesByPath[ path ] ) {
-			branchesByPath[ path ] = [];
-		}
-		branchesByPath[ path ].push( branch );
-	} );
-
-	if ( Object.keys( branchesByPath ).length === 0 ) {
+	if ( !itemQIds || itemQIds.length === 0 ) {
 		return {};
 	}
 
-	// One query per distinct path, run in parallel
-	const queryPromises = Object.entries( branchesByPath ).map( async ( [ , branches ] ) => {
-		const body = branches.map( ( b ) => `{\n${ b }\n}` ).join( '\nUNION\n' );
-		const query = 'SELECT ?directType ?outlineType WHERE {\n' + body + '\n}';
-		const data = await executeSparql( query );
-		return ( data.results && data.results.bindings ) || [];
+	const allGroups = Object.assign( {}, groups );
+	if ( excludedItemTypes && excludedItemTypes.length > 0 ) {
+		allGroups[ EXCLUDED_KEY ] = excludedItemTypes;
+	}
+
+	if ( Object.keys( allGroups ).length === 0 ) {
+		return {};
+	}
+
+	const result = {};
+	const queryTasks = [];
+
+	Object.entries( allGroups ).forEach( ( [ key, outlineQIds ] ) => {
+		if ( !outlineQIds || outlineQIds.length === 0 ) {
+			return;
+		}
+
+		const isExcluded = key === EXCLUDED_KEY;
+
+		let pathExpr, pathKey;
+		if ( isExcluded ) {
+			pathExpr = 'wdt:' + PROP_INSTANCE_OF + '/wdt:' + PROP_SUBCLASS_OF + '*';
+			pathKey = PROP_INSTANCE_OF + '/' + PROP_SUBCLASS_OF + '*';
+		} else if ( key === PROP_PARENT_TAXON ) {
+			pathExpr = 'wdt:' + PROP_PARENT_TAXON + '+';
+			pathKey = PROP_PARENT_TAXON + '+';
+		} else {
+			const prop = key === 'default' ? PROP_INSTANCE_OF : key;
+			pathExpr = 'wdt:' + prop + '/wdt:' + PROP_SUBCLASS_OF + '+';
+			pathKey = prop + '/' + PROP_SUBCLASS_OF + '+';
+		}
+
+		const cachedForGroup = {};
+		const uncachedItemQIds = [];
+
+		itemQIds.forEach( ( itemQId ) => {
+			const cacheKey = pathKey + '|' + itemQId;
+			if ( hierarchyCache.has( cacheKey ) ) {
+				const cached = hierarchyCache.get( cacheKey );
+				if ( cached.size > 0 ) {
+					cachedForGroup[ itemQId ] = cached;
+				}
+			} else {
+				uncachedItemQIds.push( itemQId );
+			}
+		} );
+
+		if ( Object.keys( cachedForGroup ).length > 0 ) {
+			result[ key ] = Object.assign( {}, cachedForGroup );
+		}
+
+		if ( uncachedItemQIds.length > 0 ) {
+			queryTasks.push( { key, pathKey, pathExpr, outlineQIds, uncachedItemQIds } );
+		}
 	} );
 
-	const allBindings = await Promise.all( queryPromises );
-	const result = {};
+	if ( queryTasks.length === 0 ) {
+		return result;
+	}
 
-	allBindings.forEach( ( bindings ) => {
-		bindings.forEach( ( binding ) => {
-			const type = extractQId( binding.directType.value );
-			const outline = extractQId( binding.outlineType.value );
-			const key = outlineToGroup[ outline ];
-			if ( !key ) {
-				return;
-			}
-			if ( !result[ key ] ) {
-				result[ key ] = {};
-			}
-			if ( !result[ key ][ type ] ) {
-				result[ key ][ type ] = new Set();
-			}
-			result[ key ][ type ].add( outline );
+	const queryPromises = queryTasks.map( ( task ) => {
+		const itemValues = task.uncachedItemQIds.map( ( qid ) => 'wd:' + qid ).join( ' ' );
+		const paddedOutlines = task.outlineQIds.length === 1 ?
+			task.outlineQIds.concat( [ OUTLINE_SENTINEL_QID ] ) :
+			task.outlineQIds;
+		const outlineValues = paddedOutlines.map( ( qid ) => 'wd:' + qid ).join( ' ' );
+
+		const query =
+			'SELECT ?item ?outlineType WHERE {\n' +
+			'  VALUES ?item { ' + itemValues + ' }\n' +
+			'  VALUES ?outlineType { ' + outlineValues + ' }\n' +
+			'  ?item ' + task.pathExpr + ' ?outlineType .\n' +
+			'}';
+
+		return executeSparql( query ).then( ( data ) => {
+			const bindings = ( data.results && data.results.bindings ) || [];
+			const itemOutlineMap = {};
+
+			bindings.forEach( ( binding ) => {
+				const itemQId = extractQId( binding.item.value );
+				const outlineQId = extractQId( binding.outlineType.value );
+				if ( outlineQId === OUTLINE_SENTINEL_QID ) {
+					return;
+				}
+				if ( !itemOutlineMap[ itemQId ] ) {
+					itemOutlineMap[ itemQId ] = new Set();
+				}
+				itemOutlineMap[ itemQId ].add( outlineQId );
+			} );
+
+			task.uncachedItemQIds.forEach( ( itemQId ) => {
+				const cacheKey = task.pathKey + '|' + itemQId;
+				hierarchyCache.set( cacheKey, itemOutlineMap[ itemQId ] || new Set() );
+			} );
+
+			return { key: task.key, itemOutlineMap };
+		} );
+	} );
+
+	const queryResults = await Promise.all( queryPromises );
+
+	queryResults.forEach( ( queryResult ) => {
+		if ( Object.keys( queryResult.itemOutlineMap ).length === 0 ) {
+			return;
+		}
+		if ( !result[ queryResult.key ] ) {
+			result[ queryResult.key ] = {};
+		}
+		Object.entries( queryResult.itemOutlineMap ).forEach( ( [ itemQId, outlineSet ] ) => {
+			result[ queryResult.key ][ itemQId ] = outlineSet;
 		} );
 	} );
 
 	return result;
 }
 
-module.exports = { checkHierarchyMatches };
+module.exports = { checkItemHierarchyMatches };

@@ -1,7 +1,7 @@
 const { ref, watch } = require( 'vue' );
 const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
 const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
-const { checkHierarchyMatches } = require( '../api/Sparql.js' );
+const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 
 const PROP_INSTANCE_OF = 'P31';
@@ -69,29 +69,25 @@ function selectBestMatches( matches, outlines ) {
 }
 
 /**
- * Merge hierarchy match results into the item→outlineQIds matches map.
+ * Merge item-level hierarchy match results into the item→outlineQIds matches map.
  *
  * @param {Object} matches Mutable map of { itemQId: outlineQId[] }
- * @param {Object} directTypesByGroup Map of { groupKey: { itemQId: Set<directTypeQId> } }
- * @param {Object} hierarchyMatches Map of { groupKey: { directTypeQId: Set<outlineQId> } }
+ * @param {Object} itemHierarchyMatches Map of { groupKey: { itemQId: Set<outlineQId> } }
  */
-function applyHierarchyMatches( matches, directTypesByGroup, hierarchyMatches ) {
-	Object.entries( directTypesByGroup ).forEach( ( [ key, itemTypeMap ] ) => {
-		const typeOutlineMap = hierarchyMatches[ key ] || {};
-		Object.entries( itemTypeMap ).forEach( ( [ itemQId, directTypes ] ) => {
-			directTypes.forEach( ( directType ) => {
-				const outlineTypes = typeOutlineMap[ directType ];
-				if ( !outlineTypes ) {
-					return;
+function applyHierarchyMatches( matches, itemHierarchyMatches ) {
+	const EXCLUDED_KEY = '__excluded__';
+	Object.entries( itemHierarchyMatches ).forEach( ( [ key, itemOutlineMap ] ) => {
+		if ( key === EXCLUDED_KEY ) {
+			return;
+		}
+		Object.entries( itemOutlineMap ).forEach( ( [ itemQId, outlineSet ] ) => {
+			if ( !matches[ itemQId ] ) {
+				matches[ itemQId ] = [];
+			}
+			outlineSet.forEach( ( outlineQId ) => {
+				if ( !matches[ itemQId ].includes( outlineQId ) ) {
+					matches[ itemQId ].push( outlineQId );
 				}
-				if ( !matches[ itemQId ] ) {
-					matches[ itemQId ] = [];
-				}
-				outlineTypes.forEach( ( outlineQId ) => {
-					if ( !matches[ itemQId ].includes( outlineQId ) ) {
-						matches[ itemQId ].push( outlineQId );
-					}
-				} );
 			} );
 		} );
 	} );
@@ -137,8 +133,11 @@ function useWikidataSearch( query, language ) {
 		error.value = null;
 
 		try {
-			// Get Wikidata search results
-			const wikidataResults = await searchWikidata( searchQuery, language.value );
+			// Run Wikidata search and outline load in parallel
+			const [ wikidataResults, outlines ] = await Promise.all( [
+				searchWikidata( searchQuery, language.value ),
+				store.loadOutlines()
+			] );
 
 			if ( requestId !== latestRequestId ) {
 				return;
@@ -146,16 +145,6 @@ function useWikidataSearch( query, language ) {
 
 			if ( wikidataResults.length === 0 ) {
 				results.value = [];
-				return;
-			}
-
-			// Extract Q IDs from search results
-			const searchQIds = wikidataResults.map( ( result ) => result.id );
-
-			// Get all outlines (cached after first fetch)
-			const outlines = await store.loadOutlines();
-
-			if ( requestId !== latestRequestId ) {
 				return;
 			}
 
@@ -168,28 +157,35 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
+			// Extract Q IDs from search results
+			const searchQIds = wikidataResults.map( ( result ) => result.id );
+
 			// Group outlines by matchVia and collect the properties to look up
 			const groups = groupOutlinesByMatchVia( validOutlines );
 			const properties = Object.keys( groups ).map( propForGroup ).filter(
 				( p, i, arr ) => arr.indexOf( p ) === i
 			);
+			const excludedItemTypesList =
+				mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
 
-			// Fetch direct property values (P31/P106/P171) for all search results
-			// via wbgetentities — replaces SPARQL Query 1
-			const entityData = await fetchEntityClaims( searchQIds, properties );
+			// Run wbgetentities and SPARQL hierarchy check in parallel
+			const [ entityData, itemHierarchyMatches ] = await Promise.all( [
+				fetchEntityClaims( searchQIds, properties ),
+				checkItemHierarchyMatches( searchQIds, groups, excludedItemTypesList )
+			] );
 
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 
-			// Build directTypesByGroup from all search results upfront
+			// Build directTypesByGroup for 0-hop checks (uses wbgetentities data)
 			const directTypesByGroup = {};
 			Object.keys( groups ).forEach( ( key ) => {
 				const prop = propForGroup( key );
 				const itemTypeMap = {};
 				searchQIds.forEach( ( qid ) => {
 					const typeValues =
-					( entityData[ qid ] && entityData[ qid ].claims[ prop ] ) || [];
+						( entityData[ qid ] && entityData[ qid ].claims[ prop ] ) || [];
 					if ( typeValues.length > 0 ) {
 						itemTypeMap[ qid ] = new Set( typeValues );
 					}
@@ -197,31 +193,17 @@ function useWikidataSearch( query, language ) {
 				directTypesByGroup[ key ] = itemTypeMap;
 			} );
 
-			// Merge exclusion types as a special group so both checks run in one SPARQL query
-			const EXCLUDED_KEY = '__excluded__';
-			const excludedItemTypesList =
-				mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
-			const queryGroups = Object.assign( {}, groups );
-			const queryDirectTypes = Object.assign( {}, directTypesByGroup );
-			if ( excludedItemTypesList.length > 0 ) {
-				queryGroups[ EXCLUDED_KEY ] = excludedItemTypesList;
-				queryDirectTypes[ EXCLUDED_KEY ] = directTypesByGroup.default || {};
-			}
-
-			// Single SPARQL query: hierarchy matching and exclusion combined
-			const queryResult = await checkHierarchyMatches( queryGroups, queryDirectTypes );
-
-			if ( requestId !== latestRequestId ) {
-				return;
-			}
-
 			// Exclude items whose P31 is (directly or via P279+) a configured excluded type
+			const EXCLUDED_KEY = '__excluded__';
 			const excludedTypeSet = new Set( excludedItemTypesList );
-			const exclusionMap = queryResult[ EXCLUDED_KEY ] || {};
+			const exclusionByItem = itemHierarchyMatches[ EXCLUDED_KEY ] || {};
 			const filteredQIds = searchQIds.filter( ( qid ) => {
 				const p31Values =
 					( entityData[ qid ] && entityData[ qid ].claims[ PROP_INSTANCE_OF ] ) || [];
-				return !p31Values.some( ( v ) => excludedTypeSet.has( v ) || exclusionMap[ v ] );
+				const isDirectlyExcluded = p31Values.some( ( v ) => excludedTypeSet.has( v ) );
+				const isHierarchyExcluded =
+					exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
+				return !isDirectlyExcluded && !isHierarchyExcluded;
 			} );
 			const filteredWikidataResults = wikidataResults.filter(
 				( r ) => filteredQIds.includes( r.id )
@@ -240,7 +222,7 @@ function useWikidataSearch( query, language ) {
 				}
 			} );
 
-			// Direct P31 → outline-type match (cross-group 0-hop)
+			// Direct P31 → outline-type match (0-hop via wbgetentities)
 			const defaultItemTypeMap = directTypesByGroup.default || {};
 			filteredQIds.forEach( ( qid ) => {
 				const directTypes = defaultItemTypeMap[ qid ];
@@ -259,8 +241,7 @@ function useWikidataSearch( query, language ) {
 				} );
 			} );
 
-			delete queryResult[ EXCLUDED_KEY ];
-			applyHierarchyMatches( matches, directTypesByGroup, queryResult );
+			applyHierarchyMatches( matches, itemHierarchyMatches );
 			const sparqlMatches = selectBestMatches( matches, validOutlines );
 
 			// Build outline lookup and map SPARQL results to display objects

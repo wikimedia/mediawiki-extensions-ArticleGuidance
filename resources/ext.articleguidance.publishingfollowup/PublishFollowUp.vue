@@ -56,7 +56,11 @@ module.exports = exports = defineComponent( {
 	setup() {
 		const showPanel = ref( true );
 		const handleImproveArticle = () => {
-			location.href = mw.util.getUrl( mw.config.get( 'wgPageName' ), { action: 'edit' } );
+			const params = { veaction: 'edit' };
+			if ( mw.config.get( 'wgMFMode' ) !== null ) {
+				params.action = 'edit';
+			}
+			location.href = mw.util.getUrl( mw.config.get( 'wgPageName' ), params );
 		};
 		return {
 			showPanel,

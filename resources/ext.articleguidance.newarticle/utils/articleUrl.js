@@ -1,3 +1,5 @@
+const { isMobile } = require( './mobile.js' );
+
 /**
  * Build the VisualEditor URL for creating or editing an article.
  *
@@ -16,6 +18,10 @@ function getCreateArticleUrl( title, outlineTitle, references ) {
 		articleguidance: 1
 	};
 
+	if ( isMobile() ) {
+		params.action = 'edit';
+	}
+
 	return mw.util.getUrl( title, params );
 }
 
@@ -26,7 +32,13 @@ function getCreateArticleUrl( title, outlineTitle, references ) {
  * @return {string}
  */
 function getEditArticleUrl( title ) {
-	return mw.util.getUrl( title, { veaction: 'edit' } );
+	const params = { veaction: 'edit' };
+
+	if ( isMobile() ) {
+		params.action = 'edit';
+	}
+
+	return mw.util.getUrl( title, params );
 }
 
 module.exports = {

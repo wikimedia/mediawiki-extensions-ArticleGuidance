@@ -179,6 +179,7 @@
 				"utils/sources.js",
 				"utils/notability.js",
 				"utils/draft.js",
+				"utils/mobile.js",
 				"utils/articleUrl.js",
 				"utils/scroll.js",
 				"utils/missingTypeFeedback.js",

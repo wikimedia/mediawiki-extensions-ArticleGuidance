@@ -1,9 +1,13 @@
 #!/usr/bin/env node
-// purge-outlines.js — Force-refresh the parser cache for all ArticleGuidance
-// outline pages on a target wiki via the Action API (built-in fetch, Node 18+).
+// refresh-outlines.js — Force-refresh the parser cache and page_props for all
+// ArticleGuidance outline pages on a target wiki via the Action API.
+//
+// Each page is first purged (to invalidate the parser cache) and then fetched
+// via a plain GET request (to trigger a fresh parse and LinksUpdate, which
+// writes up-to-date Wikidata data into page_props).
 //
 // Usage:
-//   node scripts/purge-outlines.js \
+//   node scripts/refresh-outlines.js \
 //     --url https://wiki.example.org \
 //     [--category "Pages using ArticleGuidance"] \
 //     [--user Admin@SeedBot] \
@@ -43,7 +47,7 @@ for ( let i = 0; i < args.length; i++ ) {
 			break;
 		default:
 			console.error( `Unknown argument: ${ args[ i ] }` );
-			console.error( 'Usage: node purge-outlines.js --url <url> [--category <name>] [--user <user>] [--password <password>] [--dry-run]' );
+			console.error( 'Usage: node refresh-outlines.js --url <url> [--category <name>] [--user <user>] [--password <password>] [--dry-run]' );
 			throw new Error( 'Invalid arguments' );
 	}
 }
@@ -61,7 +65,9 @@ if ( ( opts.user && !opts.password ) || ( !opts.user && opts.password ) ) {
 	opts.password = '';
 }
 
-const apiUrl = opts.url.replace( /\/$/, '' ) + '/w/api.php';
+const baseUrl = opts.url.replace( /\/$/, '' );
+const apiUrl = baseUrl + '/w/api.php';
+const indexUrl = baseUrl + '/w/index.php';
 
 // ---------------------------------------------------------------------------
 // HTTP helpers
@@ -117,6 +123,20 @@ async function apiPost( params ) {
 		throw new Error( `HTTP ${ response.status } ${ response.statusText } for POST ${ apiUrl }` );
 	}
 	return response.json();
+}
+
+async function pageGet( title ) {
+	const url = new URL( indexUrl );
+	url.searchParams.set( 'title', title );
+	url.searchParams.set( 'action', 'view' );
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	const response = await fetch( url.toString(), {
+		headers: { Cookie: serializeCookies() }
+	} );
+	storeCookies( response );
+	if ( !response.ok ) {
+		throw new Error( `HTTP ${ response.status } ${ response.statusText } for GET ${ url }` );
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -209,7 +229,7 @@ async function main() {
 	console.log( `  Found ${ titles.length } page(s).` );
 
 	if ( titles.length === 0 ) {
-		console.log( 'Nothing to purge.' );
+		console.log( 'Nothing to refresh.' );
 		return;
 	}
 
@@ -217,7 +237,7 @@ async function main() {
 	// Step 4: Dry-run gate
 	// -------------------------------------------------------------------------
 	if ( opts.dryRun ) {
-		console.log( '[dry-run] Pages that would be purged:' );
+		console.log( '[dry-run] Pages that would be purged and refreshed:' );
 		for ( const title of titles ) {
 			console.log( `  ${ title }` );
 		}
@@ -225,45 +245,58 @@ async function main() {
 	}
 
 	// -------------------------------------------------------------------------
-	// Step 5: Purge in batches of 50
+	// Step 5: Purge then re-parse each page sequentially
 	// -------------------------------------------------------------------------
-	const BATCH_SIZE = 50;
 	let purgedCount = 0;
 	let missingCount = 0;
 	let errorCount = 0;
+	let refreshedCount = 0;
 
-	for ( let i = 0; i < titles.length; i += BATCH_SIZE ) {
-		const batch = titles.slice( i, i + BATCH_SIZE );
-		const batchLabel = `${ i + 1 }–${ Math.min( i + BATCH_SIZE, titles.length ) } / ${ titles.length }`;
-		console.log( `Purging pages ${ batchLabel }…` );
+	for ( let i = 0; i < titles.length; i++ ) {
+		const title = titles[ i ];
+		const progress = `[${ i + 1 }/${ titles.length }]`;
+		console.log( `${ progress } ${ title }` );
 
-		let data;
+		// Purge
+		let purgeOk = false;
 		try {
-			data = await apiPost( {
+			const data = await apiPost( {
 				action: 'purge',
-				titles: batch.join( '|' ),
+				titles: title,
 				format: 'json'
 			} );
+			const item = data.purge && data.purge[ 0 ];
+			if ( !item || item.invalid ) {
+				console.error( '  ✗ purge failed — invalid title' );
+				errorCount++;
+			} else if ( item.missing !== undefined ) {
+				console.warn( '  ! page not found, skipping' );
+				missingCount++;
+			} else if ( item.purged !== undefined ) {
+				console.log( '  purged' );
+				purgedCount++;
+				purgeOk = true;
+			} else {
+				console.error( '  ✗ purge failed — unexpected response' );
+				errorCount++;
+			}
 		} catch ( err ) {
-			console.error( `  Error: ${ err.message }` );
-			errorCount += batch.length;
+			console.error( `  ✗ purge error: ${ err.message }` );
+			errorCount++;
+		}
+
+		if ( !purgeOk ) {
 			continue;
 		}
 
-		const results = data.purge || [];
-		for ( const item of results ) {
-			if ( item.invalid ) {
-				console.error( `  ✗ ${ item.title } — invalid title, skipped` );
-				errorCount++;
-			} else if ( item.missing !== undefined ) {
-				console.warn( `  ! ${ item.title } — page not found` );
-				missingCount++;
-			} else if ( item.purged !== undefined ) {
-				purgedCount++;
-			} else {
-				console.error( `  ✗ ${ item.title } — unexpected response` );
-				errorCount++;
-			}
+		// Re-parse via GET
+		try {
+			await pageGet( title );
+			console.log( '  refreshed' );
+			refreshedCount++;
+		} catch ( err ) {
+			console.error( `  ✗ refresh error: ${ err.message }` );
+			errorCount++;
 		}
 	}
 
@@ -271,10 +304,10 @@ async function main() {
 	// Step 6: Summary
 	// -------------------------------------------------------------------------
 	console.log( '' );
-	console.log( `Done. ${ purgedCount } page(s) purged, ${ missingCount } not found, ${ errorCount } error(s).` );
+	console.log( `Done. ${ purgedCount } page(s) purged, ${ refreshedCount } refreshed, ${ missingCount } not found, ${ errorCount } error(s).` );
 
 	if ( errorCount > 0 ) {
-		throw new Error( `${ errorCount } purge error(s) encountered.` );
+		throw new Error( `${ errorCount } error(s) encountered.` );
 	}
 }
 

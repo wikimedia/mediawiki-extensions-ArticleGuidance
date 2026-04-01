@@ -4,20 +4,14 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
-use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
-use MediaWiki\RecentChanges\Hook\RecentChange_saveHook;
+use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 
-class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, RecentChange_saveHook {
+class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, RevisionFromEditCompleteHook {
 
 	private const TAG = 'articleguidance';
-
-	public function __construct(
-		private readonly ChangeTagsStore $changeTagsStore,
-	) {
-	}
 
 	/**
 	 * @inheritDoc
@@ -36,14 +30,10 @@ class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, R
 	/**
 	 * @inheritDoc
 	 */
-	public function onRecentChange_save( $recentChange ): void {
+	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ): void {
 		$request = RequestContext::getMain()->getRequest();
-		if ( !$request->getCheck( 'articleguidance' ) ) {
-			return;
+		if ( $request->getCheck( 'articleguidance' ) ) {
+			$tags[] = self::TAG;
 		}
-
-		$rcId = $recentChange->getAttribute( 'rc_id' ) ?: null;
-		$revId = $recentChange->getAttribute( 'rc_this_oldid' ) ?: null;
-		$this->changeTagsStore->addTags( [ self::TAG ], $rcId, $revId );
 	}
 }

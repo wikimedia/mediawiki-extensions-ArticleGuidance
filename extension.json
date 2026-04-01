@@ -115,10 +115,7 @@
 			]
 		},
 		"EditTag": {
-			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler",
-			"services": [
-				"ChangeTagsStore"
-			]
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler"
 		},
 		"PreloadCleanup": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
@@ -133,7 +130,7 @@
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
-		"RecentChange_save": "EditTag",
+		"RevisionFromEditComplete": "EditTag",
 		"EditFormPreloadText": "PreloadCleanup",
 		"BeforePageDisplay": "PublishFollowUp"
 	},

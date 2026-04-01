@@ -11,9 +11,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManagerInterface;
 use MediaWiki\Hook\AlternateEditHook;
 use MediaWiki\Hook\BeforeInitializeHook;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
-use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
@@ -57,7 +55,6 @@ class RedLinkRedirectHandler implements
 	 */
 	private function shouldRedirect( Title $title, WebRequest $request, User $user ): bool {
 		return $this->isArticleRedLink( $title, $request )
-			&& $this->isMobile()
 			&& $this->isUserInScope( $user )
 			&& $this->isRefererInScope( $request )
 			&& $this->isInTreatmentGroup();
@@ -153,21 +150,6 @@ class RedLinkRedirectHandler implements
 	}
 
 	/**
-	 * Check whether the current request is a mobile web view.
-	 *
-	 * Requires MobileFrontend; returns false if that extension is not loaded.
-	 *
-	 * @return bool
-	 */
-	protected function isMobile(): bool {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) ) {
-			return false;
-		}
-		$mobileContext = MediaWikiServices::getInstance()->getService( 'MobileFrontend.Context' );
-		return $mobileContext->shouldDisplayMobileView();
-	}
-
-	/**
 	 * Check whether the user is within the experiment's target audience.
 	 *
 	 * The user must be logged in, have fewer edits than the configured junior editor
@@ -232,7 +214,6 @@ class RedLinkRedirectHandler implements
 	 */
 	private function shouldRedirectFromEntryPoint( Title $title, User $user ): bool {
 		return $this->isEntryPointPage( $title )
-			&& $this->isMobile()
 			&& $this->isUserInScope( $user )
 			&& $this->isInTreatmentGroup();
 	}

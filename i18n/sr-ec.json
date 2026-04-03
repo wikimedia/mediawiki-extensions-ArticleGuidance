@@ -7,6 +7,7 @@
 	"articleguidance-specialnewarticle-title": "Нови чланак",
 	"articleguidance-specialnewarticle-title-placeholder": "Наслов чланка",
 	"articleguidance-specialnewarticle-checking": "Проверавам...",
+	"articleguidance-specialnewarticle-exists-warning": "Чланак са насловом [[$1]] већ постоји.",
 	"articleguidance-sources-invalid-url": "Неисправан URL",
 	"articleguidance-sources-continue": "Настави",
 	"articleguidance-sources-unreliable-warning-title": "Не препоручује заједница",
@@ -19,5 +20,10 @@
 	"articleguidance-notability-tag-wikidata": "Само теме које постоје на Википодацима могу бити направљене.",
 	"articleguidance-notability-tag-crosswiki": "Само теме доступне на {{PLURAL:$1|другим језицима}} могу бити направљене.",
 	"articleguidance-notability-tag-draft": "Објављивање дозвољено само у именским просторима нацрт и корисник.",
-	"articleguidance-notability-tag-draft-location": "Ваш чланак ће бити направљен овде „$1”."
+	"articleguidance-notability-tag-draft-location": "Ваш чланак ће бити направљен овде „$1”.",
+	"articleguidance-titleconflict-suggestion-prefix": "Сугестија:",
+	"articleguidance-titleconflict-continue": "Настави",
+	"articleguidance-publish-followup-confirmation-title": "Чланак је објављен!",
+	"articleguidance-publish-followup-edit-more-button": "Унапредите чланак",
+	"articleguidance-publish-followup-close-button": "Затвори"
 }

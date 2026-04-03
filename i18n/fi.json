@@ -9,7 +9,7 @@
 	"articleguidance-specialnewarticle-loading": "Haetaan...",
 	"articleguidance-specialnewarticle-checking": "Tarkistetaan...",
 	"articleguidance-specialnewarticle-no-results": "Ei aiheita haulle ”$1”",
-	"articleguidance-specialnewarticle-exists-warning": "Artikkeli nimeltä ”$1” löytyy jo tästä wikistä.",
+	"articleguidance-specialnewarticle-exists-warning": "Artikkeli nimeltä [[$1]] on jo olemassa.",
 	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
 	"articleguidance-specialnewarticle-disambiguation-title": "Mikä tämä on?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ei mikään näistä?",
@@ -19,8 +19,6 @@
 	"articleguidance-sources-notability-title": "Ota huomioon merkittävyys",
 	"articleguidance-sources-url-placeholder": "Syötä lähteen linkki",
 	"articleguidance-sources-add-source": "Lisää lähde",
-	"articleguidance-sources-approved": "Tämä lähde näyttää käyttökelpoiselta",
-	"articleguidance-sources-not-recommended": "Tätä lähdettä ei suositella",
 	"articleguidance-sources-invalid-url": "Syötä kelvollinen URL",
 	"articleguidance-sources-duplicate": "Tämä lähde on jo lisätty",
 	"articleguidance-sources-continue": "Jatka",
@@ -49,5 +47,11 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Ehdota uutta tyyppiä",
 	"articleguidance-subjectcovered-title": "Artikkeli on jo olemassa",
 	"articleguidance-subjectcovered-description": "Tästä aiheesta on jo artikkeli tässä wikissä. Voit lukea tai parantaa sitä.",
-	"articleguidance-subjectcovered-button": "Paranna artikkelia"
+	"articleguidance-subjectcovered-button": "Paranna artikkelia",
+	"articleguidance-titleconflict-suggestion-prefix": "Ehdotus:",
+	"articleguidance-titleconflict-continue": "Jatka",
+	"articleguidance-titleconflict-selected-subject": "Valittu aihe",
+	"articleguidance-titleconflict-viewexisting": "Näytä olemassa oleva artikkeli",
+	"articleguidance-publish-followup-edit-more-button": "Paranna artikkelia",
+	"articleguidance-publish-followup-close-button": "Sulje"
 }

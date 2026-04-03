@@ -8,5 +8,8 @@
 	"articleguidance-sources-invalid-url": "غلط یوآرایل",
 	"articleguidance-sources-continue": "جاری رکھو",
 	"articleguidance-instructions-start-writing": "لکھݨ شروع کرو",
-	"articleguidance-navigation-back": "پچھوں"
+	"articleguidance-navigation-back": "پچھوں",
+	"articleguidance-titleconflict-suggestion-prefix": "صلاح:",
+	"articleguidance-titleconflict-continue": "جاری رکھو",
+	"articleguidance-publish-followup-close-button": "بند کرو"
 }

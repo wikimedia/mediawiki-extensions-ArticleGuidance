@@ -10,7 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Axtarılır...",
 	"articleguidance-specialnewarticle-checking": "Yoxlanılır...",
 	"articleguidance-specialnewarticle-no-results": "\"$1\" üçün mövzu tapılmadı",
-	"articleguidance-specialnewarticle-exists-warning": "Bu vikidə \"$1\" adlı məqalə mövcuddur.",
+	"articleguidance-specialnewarticle-exists-warning": "[[$1]] adlı məqalə artıq mövcuddur.",
 	"articleguidance-specialnewarticle-edit-existing": "Mövcud məqaləni redaktə et",
 	"articleguidance-specialnewarticle-disambiguation-title": "Bu nədir?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Bunlardan heç biri?",
@@ -21,8 +21,6 @@
 	"articleguidance-sources-notability-description": "Bu növ məqalələr ensiklopedik əhəmiyyətlilik ilə bağlı narahatlıqlarla üzləşə bilər. Mövzunun Vikipediyanın əhəmiyyətlilik qaydalarına cavab verdiyini göstərən etibarlı mənbələr təqdim edin.",
 	"articleguidance-sources-url-placeholder": "Mənbə linkini daxil et",
 	"articleguidance-sources-add-source": "Mənbə əlavə et",
-	"articleguidance-sources-approved": "Bu mənbə istifadəyə yararlı görünür",
-	"articleguidance-sources-not-recommended": "Bu mənbə tövsiyə edilmir",
 	"articleguidance-sources-invalid-url": "Etibarlı URL daxil et",
 	"articleguidance-sources-duplicate": "Bu mənbə artıq əlavə edilib",
 	"articleguidance-sources-continue": "Davam et",
@@ -62,6 +60,14 @@
 	"articleguidance-subjectcovered-title": "Məqalə artıq mövcuddur",
 	"articleguidance-subjectcovered-description": "Bu mövzu ilə bağlı artıq bu vikidə məqalə var. Onu oxuya və ya təkmilləşdirə bilərsiniz.",
 	"articleguidance-subjectcovered-button": "Məqaləni təkmilləşdir",
+	"articleguidance-titleconflict-suggestion-prefix": "Təklif:",
+	"articleguidance-titleconflict-continue": "Davam et",
+	"articleguidance-titleconflict-selected-subject": "Seçilmiş mövzu",
+	"articleguidance-titleconflict-viewexisting": "Mövcud məqaləyə bax",
 	"tag-articleguidance": "Məqalə təlimatı",
-	"tag-articleguidance-description": "Məqalə təlimatı iş axınından istifadə edilərək edilən redaktə"
+	"tag-articleguidance-description": "Məqalə təlimatı iş axınından istifadə edilərək edilən redaktə",
+	"articleguidance-publish-followup-confirmation-title": "Məqalə yayımlandı!",
+	"articleguidance-publish-followup-community-review": "Digər istifadəçilər bu məqaləni yoxlayacaqlar. Bu müddət ərzində onu yaxşılaşdırmaq üçün verilən təkliflərə baxın.",
+	"articleguidance-publish-followup-edit-more-button": "Məqaləni təkmilləşdir",
+	"articleguidance-publish-followup-close-button": "Bağla"
 }

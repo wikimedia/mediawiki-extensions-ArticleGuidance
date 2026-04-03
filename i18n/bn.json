@@ -12,7 +12,7 @@
 	"articleguidance-specialnewarticle-loading": "অনুসন্ধান করা হচ্ছে...",
 	"articleguidance-specialnewarticle-checking": "পরীক্ষা করা হচ্ছে...",
 	"articleguidance-specialnewarticle-no-results": "\"$1\"-এর জন্য কোনো বিষয় পাওয়া যায়নি",
-	"articleguidance-specialnewarticle-exists-warning": "এই উইকিতে \"$1\" শিরোনামে একটি নিবন্ধ ইতিমধ্যেই বিদ্যমান।",
+	"articleguidance-specialnewarticle-exists-warning": "[[$1]] শিরোনামে একটি নিবন্ধ ইতিমধ্যেই বিদ্যমান।",
 	"articleguidance-specialnewarticle-edit-existing": "বিদ্যমান নিবন্ধটি সম্পাদনা করুন",
 	"articleguidance-specialnewarticle-disambiguation-title": "এটি কী?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "এগুলোর কোনোটিই নয়?",
@@ -23,8 +23,6 @@
 	"articleguidance-sources-notability-description": "এই ধরনের নিবন্ধ উল্লেখযোগ্যতা সংক্রান্ত উদ্বেগের সম্মুখীন হতে পারে। অনুগ্রহ করে এমন নির্ভরযোগ্য সূত্র প্রদান করুন যা প্রমাণ করে যে বিষয়টি উইকিপিডিয়ার উল্লেখযোগ্যতার নির্দেশিকা পূরণ করে।",
 	"articleguidance-sources-url-placeholder": "উৎসের একটি লিঙ্ক প্রদান করুন",
 	"articleguidance-sources-add-source": "উৎস যোগ করুন",
-	"articleguidance-sources-approved": "এই উৎসটি ব্যবহারযোগ্য বলে মনে হচ্ছে",
-	"articleguidance-sources-not-recommended": "এই উৎসটি ব্যবহারের ব্যাপারে সুপারিশ করা হচ্ছে না",
 	"articleguidance-sources-invalid-url": "একটি বৈধ URL লিখুন",
 	"articleguidance-sources-duplicate": "এই উৎসটি ইতিমধ্যেই যোগ করা হয়েছে",
 	"articleguidance-sources-continue": "অব্যাহত রাখুন",
@@ -64,6 +62,8 @@
 	"articleguidance-subjectcovered-title": "নিবন্ধটি ইতিমধ্যেই বিদ্যমান",
 	"articleguidance-subjectcovered-description": "এই উইকিতে এই বিষয়টি নিয়ে ইতিমধ্যেই একটি নিবন্ধ রয়েছে। আপনি সেটি পড়তে পারেন অথবা সেটিকে আরও উন্নত করতে পারেন।",
 	"articleguidance-subjectcovered-button": "নিবন্ধের উন্নতি করুন",
+	"articleguidance-titleconflict-selected-subject": "নির্বাচিত বিষয়",
+	"articleguidance-titleconflict-viewexisting": "বিদ্যমান নিবন্ধটি দেখুন",
 	"tag-articleguidance": "আর্টিকেল গাইডেন্স",
 	"tag-articleguidance-description": "আর্টিকেল গাইডেন্স কর্মপ্রবাহ ব্যবহার করে সম্পাদনাটি করা হয়েছে"
 }

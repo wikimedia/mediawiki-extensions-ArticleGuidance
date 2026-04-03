@@ -6,6 +6,7 @@
 	},
 	"articleguidance-specialnewarticle-title": "Neien Artikel",
 	"articleguidance-specialnewarticle-no-results": "Fir „$1“ goufe keng Sujete fonnt",
+	"articleguidance-specialnewarticle-exists-warning": "Et gëtt schonn en Artikel mam Titel [[$1]].",
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
@@ -15,5 +16,10 @@
 	"articleguidance-notability-tag-draft-location": "Ären Artikel wäert ënner „$1“ ugeluecht ginn.",
 	"articleguidance-subjectcovered-title": "Et gëtt den Artikel schonn",
 	"articleguidance-subjectcovered-description": "Dëse Sujet huet schonn en Artikel op dëser Wiki. Dir kënnt e liesen oder verbesseren.",
-	"articleguidance-subjectcovered-button": "Artikel verbesseren"
+	"articleguidance-subjectcovered-button": "Artikel verbesseren",
+	"articleguidance-titleconflict-suggestion-prefix": "Virschlag:",
+	"articleguidance-titleconflict-continue": "Weider",
+	"articleguidance-publish-followup-confirmation-title": "Den Artikel gouf verëffentlecht!",
+	"articleguidance-publish-followup-edit-more-button": "Artikel verbesseren",
+	"articleguidance-publish-followup-close-button": "Zoumaachen"
 }

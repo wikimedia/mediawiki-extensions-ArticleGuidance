@@ -10,7 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Procurando...",
 	"articleguidance-specialnewarticle-checking": "Comprobando...",
 	"articleguidance-specialnewarticle-no-results": "Non se atoparon temas para «$1»",
-	"articleguidance-specialnewarticle-exists-warning": "Xa existe un artigo titulado «$1» neste wiki.",
+	"articleguidance-specialnewarticle-exists-warning": "Xa existe un artigo titulado «[[$1]]».",
 	"articleguidance-specialnewarticle-edit-existing": "Editar o artigo existente",
 	"articleguidance-specialnewarticle-disambiguation-title": "Que é isto?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ningún destes?",
@@ -21,8 +21,6 @@
 	"articleguidance-sources-notability-description": "Este tipo de artigo pode suscitar dúbidas sobre a súa notabilidade. Proporciona fontes fiables que demostren que o tema cumpre as directrices de notabilidade da Wikipedia.",
 	"articleguidance-sources-url-placeholder": "Pega a ligazón a unha fonte",
 	"articleguidance-sources-add-source": "Engadir a fonte",
-	"articleguidance-sources-approved": "Esta fonte semella utilizable",
-	"articleguidance-sources-not-recommended": "Non se recomenda esta fonte",
 	"articleguidance-sources-invalid-url": "Introduce un enderezo URL válido",
 	"articleguidance-sources-duplicate": "Esta fonte xa se engadiu",
 	"articleguidance-sources-continue": "Continuar",
@@ -62,6 +60,14 @@
 	"articleguidance-subjectcovered-title": "O artigo xa existe",
 	"articleguidance-subjectcovered-description": "Este tema xa ten un artigo neste wiki. Podes lelo ou melloralo.",
 	"articleguidance-subjectcovered-button": "Mellorar o artigo",
+	"articleguidance-titleconflict-suggestion-prefix": "Suxestión:",
+	"articleguidance-titleconflict-continue": "Continuar",
+	"articleguidance-titleconflict-selected-subject": "Tema seleccionado",
+	"articleguidance-titleconflict-viewexisting": "Ver o artigo existente",
 	"tag-articleguidance": "Guía de creación de artigos",
-	"tag-articleguidance-description": "A edición realizouse usando o fluxo de traballo da guía de creación de artigos"
+	"tag-articleguidance-description": "A edición realizouse usando o fluxo de traballo da guía de creación de artigos",
+	"articleguidance-publish-followup-confirmation-title": "Publicouse o artigo!",
+	"articleguidance-publish-followup-community-review": "Os demais editores revisarán este artigo. Mentres tanto, bótalle unha ollada ás suxestións para melloralo.",
+	"articleguidance-publish-followup-edit-more-button": "Mellorar o artigo",
+	"articleguidance-publish-followup-close-button": "Pechar"
 }

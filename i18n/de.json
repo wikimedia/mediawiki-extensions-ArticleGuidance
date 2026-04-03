@@ -10,7 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Suche …",
 	"articleguidance-specialnewarticle-checking": "Überprüfung...",
 	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden.",
-	"articleguidance-specialnewarticle-exists-warning": "Auf diesem Wiki existiert bereits ein Artikel mit dem Titel „$1“.",
+	"articleguidance-specialnewarticle-exists-warning": "Ein Artikel mit dem Titel [[$1]] existiert bereits.",
 	"articleguidance-specialnewarticle-edit-existing": "Vorhandenen Artikel bearbeiten",
 	"articleguidance-specialnewarticle-disambiguation-title": "Was bedeutet dies?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Keines davon?",
@@ -21,8 +21,6 @@
 	"articleguidance-sources-notability-description": "Dieser Artikeltyp könnte Relevanzprobleme aufweisen. Bitte gib verlässliche Quellen an, die belegen, dass das Thema die Relevanzkriterien von Wikipedia erfüllt.",
 	"articleguidance-sources-url-placeholder": "Füge einen Link zu einem Einzelnachweis hinzu.",
 	"articleguidance-sources-add-source": "Einzelnachweis hinzufügen",
-	"articleguidance-sources-approved": "Dieser Einzelnachweis sieht brauchbar aus.",
-	"articleguidance-sources-not-recommended": "Dieser Einzelnachweis wird nicht empfohlen.",
 	"articleguidance-sources-invalid-url": "Gib eine gültige URL ein.",
 	"articleguidance-sources-duplicate": "Dieser Einzelnachweis wurde bereits hinzugefügt.",
 	"articleguidance-sources-continue": "Fortfahren",
@@ -62,6 +60,14 @@
 	"articleguidance-subjectcovered-title": "Der Artikel existiert bereits.",
 	"articleguidance-subjectcovered-description": "Zu diesem Thema gibt es bereits einen Artikel in diesem Wiki. Du kannst ihn lesen oder verbessern.",
 	"articleguidance-subjectcovered-button": "Artikel verbessern",
+	"articleguidance-titleconflict-suggestion-prefix": "Vorschlag:",
+	"articleguidance-titleconflict-continue": "Fortfahren",
+	"articleguidance-titleconflict-selected-subject": "Ausgewähltes Thema",
+	"articleguidance-titleconflict-viewexisting": "Vorhandenen Artikel ansehen",
 	"tag-articleguidance": "Artikelleitfaden",
-	"tag-articleguidance-description": "Die Bearbeitung erfolgte mithilfe des Artikelleitfaden-Workflows."
+	"tag-articleguidance-description": "Die Bearbeitung erfolgte mithilfe des Artikelleitfaden-Workflows.",
+	"articleguidance-publish-followup-confirmation-title": "Der Artikel wurde veröffentlicht!",
+	"articleguidance-publish-followup-community-review": "Andere Benutzer werden diesen Artikel prüfen. Sieh dir in der Zwischenzeit die Verbesserungsvorschläge noch einmal an.",
+	"articleguidance-publish-followup-edit-more-button": "Artikel verbessern",
+	"articleguidance-publish-followup-close-button": "Schließen"
 }

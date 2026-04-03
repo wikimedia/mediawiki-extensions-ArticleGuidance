@@ -3,6 +3,7 @@
 		"authors": [
 			"Asteralee",
 			"Beta16",
+			"Daimona Eaytoy",
 			"FL2226",
 			"Neonsn0w"
 		]
@@ -11,6 +12,7 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Titolo della voce",
 	"articleguidance-specialnewarticle-checking": "Controllo in corso...",
 	"articleguidance-specialnewarticle-no-results": "Nessun soggetto trovato per \"$1\"",
+	"articleguidance-specialnewarticle-exists-warning": "Una voce intitolata [[$1]] esiste già.",
 	"articleguidance-specialnewarticle-edit-existing": "Modifica voce esistente",
 	"articleguidance-specialnewarticle-disambiguation-title": "Cos'è questo?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Nessuno di questi?",
@@ -18,13 +20,11 @@
 	"articleguidance-sources-title": "Aggiungi fonti",
 	"articleguidance-sources-subtitle": "Le fonti aiutano i lettori a verificare i fatti e mostrano perché questo soggetto è importante.",
 	"articleguidance-sources-url-placeholder": "Incolla un collegamento a una fonte",
-	"articleguidance-sources-approved": "Questa fonte sembra utilizzabile",
-	"articleguidance-sources-not-recommended": "Questa fonte non è consigliata",
 	"articleguidance-sources-invalid-url": "Inserisci un URL valido",
 	"articleguidance-sources-duplicate": "Questa fonte è già stata aggiunta",
 	"articleguidance-sources-continue": "Continua",
 	"articleguidance-sources-helper": "Puoi aggiungere fonti mentre scrivi.",
-	"articleguidance-sources-helper-required": "Gli articoli da $1 su questa wiki richiedono le fonti.",
+	"articleguidance-sources-helper-required": "$1 voci su questo wiki richiedono delle fonti.",
 	"articleguidance-sources-helper-progress": "$1 di {{PLURAL:$2|$2 sorgente aggiunta|$2 sorgenti aggiunte}}",
 	"articleguidance-sources-unreliable-warning-title": "Sconsigliato dalla comunità",
 	"articleguidance-sources-unreliable-warning-description": "Questo tipo di fonte è raramente accettato per questa tipologia di voce.",
@@ -39,7 +39,7 @@
 	"articleguidance-notability-warning": "I nuovi articoli di questo tipo vengono spesso eliminati da questa wiki. Iniziare con una delle opzioni seguenti offre ai nuovi collaboratori maggiori possibilità di successo.",
 	"articleguidance-notability-options-heading": "Ecco come puoi invece contribuire",
 	"articleguidance-notability-option-wikidata-title": "Aggiungi questo soggetto a Wikidata",
-	"articleguidance-notability-option-wikidata-description": "Crea una voce di dati strutturata che possano utilizzare tutti su Wikipedia",
+	"articleguidance-notability-option-wikidata-description": "Crea dei dati strutturati che possano essere utilizzati su tutte le edizioni di Wikipedia",
 	"articleguidance-notability-option-sandbox-title": "Inizia nella tua area di prova",
 	"articleguidance-notability-option-sandbox-description": "Redigere una bozza e perfezionarla prima della pubblicazione.",
 	"articleguidance-notability-option-learn-title": "Scopri cosa cerca questa wiki nei nuovi articoli",
@@ -51,5 +51,11 @@
 	"articleguidance-notability-tag-sources": "È possibile creare solo soggetti per i quali l'utente abbia fornito fonti affidabili e non sconsigliate dalla comunità.",
 	"articleguidance-notability-tag-draft-location": "La tua voce verrà creata come \"$1\"",
 	"articleguidance-specialnewarticle-no-matching-type": "Non riesci a trovare il tipo giusto?",
-	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerisci un nuovo tipo"
+	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerisci un nuovo tipo",
+	"articleguidance-titleconflict-suggestion-prefix": "Suggerimento:",
+	"articleguidance-titleconflict-continue": "Continua",
+	"articleguidance-titleconflict-viewexisting": "Visualizza voce esistente",
+	"articleguidance-publish-followup-confirmation-title": "La voce è stata pubblicata!",
+	"articleguidance-publish-followup-edit-more-button": "Migliora voce",
+	"articleguidance-publish-followup-close-button": "Chiudi"
 }

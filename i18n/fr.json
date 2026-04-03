@@ -10,7 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Recherche…",
 	"articleguidance-specialnewarticle-checking": "Vérification…",
 	"articleguidance-specialnewarticle-no-results": "Aucune correspondance trouvée pour « $1 »",
-	"articleguidance-specialnewarticle-exists-warning": "Un article intitulé « $1 » existe déjà sur ce wiki.",
+	"articleguidance-specialnewarticle-exists-warning": "Un article intitulé « [[$1]] » existe.",
 	"articleguidance-specialnewarticle-edit-existing": "Modifier l'article existant",
 	"articleguidance-specialnewarticle-disambiguation-title": "Qu’est-ce ?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Rien de tout ça ?",
@@ -21,8 +21,6 @@
 	"articleguidance-sources-notability-description": "Cet article doit vérifier les critères de notoriété de Wikipédia. Veuillez fournir des sources fiables démontrant que le sujet répond à ces critères.",
 	"articleguidance-sources-url-placeholder": "Collez un lien vers une source",
 	"articleguidance-sources-add-source": "Ajouter une source",
-	"articleguidance-sources-approved": "Cette source semble utilisable",
-	"articleguidance-sources-not-recommended": "Cette source n'est pas recommandée",
 	"articleguidance-sources-invalid-url": "Saisissez une URL valide",
 	"articleguidance-sources-duplicate": "Cette source a déjà été ajoutée",
 	"articleguidance-sources-continue": "Continuer",
@@ -62,6 +60,14 @@
 	"articleguidance-subjectcovered-title": "Cet article existe déjà",
 	"articleguidance-subjectcovered-description": "Ce sujet possède déjà un article sur ce wiki. Vous pouvez le lire ou l'améliorer.",
 	"articleguidance-subjectcovered-button": "Améliorer l'article",
+	"articleguidance-titleconflict-suggestion-prefix": "Suggestion :",
+	"articleguidance-titleconflict-continue": "Continuer",
+	"articleguidance-titleconflict-selected-subject": "Sujet sélectionné",
+	"articleguidance-titleconflict-viewexisting": "Voir l'article existant",
 	"tag-articleguidance": "Accompagnement à la création d'articles",
-	"tag-articleguidance-description": "La modification a été effectuée à l'aide des outils fournis par l'extension d'aide à la rédaction Article Guidance."
+	"tag-articleguidance-description": "La modification a été effectuée à l'aide des outils fournis par l'extension d'aide à la rédaction Article Guidance.",
+	"articleguidance-publish-followup-confirmation-title": "L'article a été publié !",
+	"articleguidance-publish-followup-community-review": "D'autres rédacteurs reliront cet article. En attendant, vous pouvez relire les suggestions pour l’améliorer.",
+	"articleguidance-publish-followup-edit-more-button": "Améliorer l'article",
+	"articleguidance-publish-followup-close-button": "Fermer"
 }

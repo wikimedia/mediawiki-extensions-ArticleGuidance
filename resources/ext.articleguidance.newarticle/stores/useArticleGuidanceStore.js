@@ -2,7 +2,7 @@ const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
 const { fetchOutlines } = require( '../api/Outlines.js' );
 const { checkPagesExist, fetchLocalArticleData } = require( '../api/MediaWiki.js' );
-const { evaluateNotabilityTags } = require( '../utils/notability.js' );
+const { evaluateNotabilityTags, getBlockingRestrictionType } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
 const { getDraftTitle } = require( '../utils/draft.js' );
 
@@ -198,6 +198,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return willShow;
 	}
 
+	function getBlockingRestriction() {
+		return getBlockingRestrictionType( getActiveNotabilityTags() );
+	}
+
 	const minRequiredSources = computed( () => {
 		const outline = selectedOutline.value;
 		if ( outline && outline.notabilityRisk && outline.notabilityRisk.includes( 'sources' ) ) {
@@ -265,6 +269,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		titleSuggestion,
 		creationTitle,
 		getActiveNotabilityTags,
+		getBlockingRestriction,
 		shouldShowNotabilityStep,
 		loadOutlines,
 		selectArticle,

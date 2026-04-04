@@ -24,10 +24,7 @@
 			type="warning"
 			class="ext-articleguidance-notability-warning"
 		>
-			<strong>{{ $i18n( 'articleguidance-sources-notability-title' ).text() }}</strong>
-			<div class="ext-articleguidance-notability-description">
-				{{ $i18n( 'articleguidance-sources-notability-description' ).text() }}
-			</div>
+			{{ $i18n( 'articleguidance-sources-notability-description' ).text() }}
 		</cdx-message>
 
 		<!-- URL input field -->

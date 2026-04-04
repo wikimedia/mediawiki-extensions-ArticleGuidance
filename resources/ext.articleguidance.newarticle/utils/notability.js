@@ -85,4 +85,26 @@ function evaluateNotabilityTags( outline, state ) {
 	return { tagResults, willShow };
 }
 
-module.exports = { evaluateTag, evaluateNotabilityTags };
+/**
+ * Given a list of active notability tag names, return the highest-priority
+ * restriction type that should drive the warning message.
+ *
+ * Priority: crosswiki > wikidata > draft.
+ *
+ * @param {string[]} activeTags
+ * @return {string|null}
+ */
+function getBlockingRestrictionType( activeTags ) {
+	if ( activeTags.includes( 'crosswiki' ) ) {
+		return 'crosswiki';
+	}
+	if ( activeTags.includes( 'wikidata' ) ) {
+		return 'wikidata';
+	}
+	if ( activeTags.includes( 'draft' ) ) {
+		return 'draft';
+	}
+	return null;
+}
+
+module.exports = { evaluateTag, evaluateNotabilityTags, getBlockingRestrictionType };

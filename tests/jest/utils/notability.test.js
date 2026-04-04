@@ -1,6 +1,6 @@
 'use strict';
 
-const { evaluateTag, evaluateNotabilityTags } = require( '../../../resources/ext.articleguidance.newarticle/utils/notability.js' );
+const { evaluateTag, evaluateNotabilityTags, getBlockingRestrictionType } = require( '../../../resources/ext.articleguidance.newarticle/utils/notability.js' );
 
 const BASE_STATE = {
 	selectedWikidataItem: false,
@@ -132,4 +132,47 @@ test.each( Object.entries( notabilityCases ) )( 'evaluateNotabilityTags: %s', ( 
 	const activeTags = tagResults.filter( ( r ) => r.active ).map( ( r ) => r.tag );
 	expect( activeTags ).toEqual( expected.activeTags );
 	expect( willShow ).toBe( expected.willShow );
+} );
+
+// ---------------------------------------------------------------------------
+// getBlockingRestrictionType — priority: crosswiki > wikidata > draft
+// ---------------------------------------------------------------------------
+
+const blockingCases = {
+	'crosswiki takes priority over wikidata and draft': {
+		activeTags: [ 'crosswiki', 'wikidata', 'draft' ],
+		expected: 'crosswiki'
+	},
+	'crosswiki alone': {
+		activeTags: [ 'crosswiki' ],
+		expected: 'crosswiki'
+	},
+	'wikidata takes priority over draft': {
+		activeTags: [ 'wikidata', 'draft' ],
+		expected: 'wikidata'
+	},
+	'wikidata alone': {
+		activeTags: [ 'wikidata' ],
+		expected: 'wikidata'
+	},
+	'draft alone': {
+		activeTags: [ 'draft' ],
+		expected: 'draft'
+	},
+	'empty tags → null': {
+		activeTags: [],
+		expected: null
+	},
+	'only junior → null': {
+		activeTags: [ 'junior' ],
+		expected: null
+	},
+	'crosswiki and junior → crosswiki': {
+		activeTags: [ 'crosswiki', 'junior' ],
+		expected: 'crosswiki'
+	}
+};
+
+test.each( Object.entries( blockingCases ) )( 'getBlockingRestrictionType: %s', ( label, { activeTags, expected } ) => {
+	expect( getBlockingRestrictionType( activeTags ) ).toBe( expected );
 } );

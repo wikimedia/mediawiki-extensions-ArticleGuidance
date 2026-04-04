@@ -8,7 +8,7 @@
 		<article-info></article-info>
 
 		<cdx-message type="warning" class="ext-articleguidance-notability-warning">
-			{{ $i18n( 'articleguidance-notability-warning' ).text() }}
+			{{ warningMessage }}
 		</cdx-message>
 
 		<div class="ext-articleguidance-notability-options">
@@ -65,6 +65,14 @@ module.exports = defineComponent( {
 
 		const activeTags = computed( () => store.getActiveNotabilityTags() );
 
+		const warningMessage = computed( () => {
+			const type = store.getBlockingRestriction();
+			if ( type ) {
+				return mw.message( 'articleguidance-notability-warning-' + type ).text();
+			}
+			return mw.message( 'articleguidance-notability-warning' ).text();
+		} );
+
 		const contributionOptions = computed( () => {
 			const options = [];
 
@@ -105,6 +113,7 @@ module.exports = defineComponent( {
 
 		return {
 			contributionOptions,
+			warningMessage,
 			handleBack
 		};
 	}

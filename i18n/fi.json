@@ -41,6 +41,7 @@
 	"articleguidance-notability-option-sandbox-description": "Luonnostele ja viimeistele ennen julkaisemista",
 	"articleguidance-notability-tag-wikidata": "Vain Wikidatassa olevista aiheista voi luoda artikkeleita.",
 	"articleguidance-notability-tag-crosswiki": "Vain aiheista, jotka ovat saatavilla {{PLURAL:$1|muulla kielellä|muilla kielillä}}, voi luoda artikkeleita.",
+	"articleguidance-notability-tag-junior": "Rajoitukset koskevat vain tulokasmuokkaajia.",
 	"articleguidance-notability-tag-draft": "Julkaiseminen sallittu vain luonnoksena tai käyttäjänimiavaruudessa.",
 	"articleguidance-notability-tag-draft-location": "Artikkelesi luodaan sivulle ”$1”.",
 	"articleguidance-specialnewarticle-no-matching-type": "Etkö löydä oikeaa tyyppiä?",
@@ -52,6 +53,8 @@
 	"articleguidance-titleconflict-continue": "Jatka",
 	"articleguidance-titleconflict-selected-subject": "Valittu aihe",
 	"articleguidance-titleconflict-viewexisting": "Näytä olemassa oleva artikkeli",
+	"articleguidance-publish-followup-confirmation-title": "Artikkeli on julkaistu!",
+	"articleguidance-publish-followup-community-review": "Muut muokkaajat arvioivat tämän artikkelin. Voit sillä välin katsoa uudelleen ehdotuksia artikkelin parantamiseksi.",
 	"articleguidance-publish-followup-edit-more-button": "Paranna artikkelia",
 	"articleguidance-publish-followup-close-button": "Sulje"
 }

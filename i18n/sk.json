@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"KormiSK"
+		]
+	},
+	"articleguidance-specialnewarticle-exists-warning": "Článok s názvom [[$1]] už existuje.",
+	"articleguidance-titleconflict-suggestion-prefix": "Návrh:",
+	"articleguidance-titleconflict-continue": "Pokračovať",
+	"articleguidance-titleconflict-viewexisting": "Zobraziť existujúci článok",
+	"articleguidance-publish-followup-confirmation-title": "Článok bol zverejnený!",
+	"articleguidance-publish-followup-community-review": "Tento článok skontrolujú iní redaktori. Medzitým si môžete znovu pozrieť návrhy na jeho vylepšenie.",
+	"articleguidance-publish-followup-edit-more-button": "Vylepšiť článok",
+	"articleguidance-publish-followup-close-button": "Zavrieť"
+}

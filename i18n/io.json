@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joao Xavier"
+		]
+	},
+	"articleguidance-specialnewarticle-exists-warning": "Artiklo kun titulo [[$1]] ja existas.",
+	"articleguidance-titleconflict-suggestion-prefix": "Sugestoː",
+	"articleguidance-titleconflict-continue": "Durigez",
+	"articleguidance-titleconflict-selected-subject": "Temo selektita",
+	"articleguidance-titleconflict-viewexisting": "Vidar existanta artiklo",
+	"articleguidance-publish-followup-confirmation-title": "L'artiklo publikigesisǃ",
+	"articleguidance-publish-followup-edit-more-button": "Plubonigez l'artiklo",
+	"articleguidance-publish-followup-close-button": "Klozez"
+}

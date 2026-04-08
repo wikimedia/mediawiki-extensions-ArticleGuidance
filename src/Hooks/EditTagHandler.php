@@ -34,6 +34,9 @@ class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, R
 		$request = RequestContext::getMain()->getRequest();
 		if ( $request->getCheck( 'articleguidance' ) ) {
 			$tags[] = self::TAG;
+			$request->response()->setCookie( 'ag-published', '1', time() + 120, [
+				'httpOnly' => true,
+			] );
 		}
 	}
 }

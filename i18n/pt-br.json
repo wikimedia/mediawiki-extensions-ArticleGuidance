@@ -6,7 +6,7 @@
 	},
 	"articleguidance-desc": "Permite que os usuários criem artigos por meio de um fluxo de trabalho guiado e assistido.",
 	"articleguidance-specialnewarticle-title": "Novo artigo",
-	"articleguidance-specialnewarticle-title-placeholder": "Digite o título do artigo",
+	"articleguidance-specialnewarticle-title-placeholder": "Título do artigo",
 	"articleguidance-specialnewarticle-loading": "Pesquisando...",
 	"articleguidance-specialnewarticle-checking": "Verificando...",
 	"articleguidance-sources-title": "Adicionar fontes",
@@ -14,5 +14,7 @@
 	"articleguidance-sources-continue": "Continuar",
 	"articleguidance-instructions-start-writing": "Comece a escrever",
 	"articleguidance-navigation-back": "Voltar",
-	"tag-articleguidance": "Orientação do artigo"
+	"articleguidance-titleconflict-continue": "Continuar",
+	"tag-articleguidance": "Orientação do artigo",
+	"articleguidance-publish-followup-close-button": "Fechar"
 }

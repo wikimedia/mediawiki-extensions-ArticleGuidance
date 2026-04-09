@@ -21,8 +21,10 @@
 	"articleguidance-notability-tag-crosswiki": "Само теме доступне на {{PLURAL:$1|другим језицима}} могу бити направљене.",
 	"articleguidance-notability-tag-draft": "Објављивање дозвољено само у именским просторима нацрт и корисник.",
 	"articleguidance-notability-tag-draft-location": "Ваш чланак ће бити направљен овде „$1”.",
+	"articleguidance-subjectcovered-button": "Унапређење чланка",
 	"articleguidance-titleconflict-suggestion-prefix": "Сугестија:",
 	"articleguidance-titleconflict-continue": "Настави",
+	"articleguidance-titleconflict-viewexisting": "Видети постојећи чланак",
 	"articleguidance-publish-followup-confirmation-title": "Чланак је објављен!",
 	"articleguidance-publish-followup-edit-more-button": "Унапредите чланак",
 	"articleguidance-publish-followup-close-button": "Затвори"

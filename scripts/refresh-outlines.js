@@ -2,9 +2,9 @@
 // refresh-outlines.js — Force-refresh the parser cache and page_props for all
 // ArticleGuidance outline pages on a target wiki via the Action API.
 //
-// Each page is first purged (to invalidate the parser cache) and then fetched
-// via a plain GET request (to trigger a fresh parse and LinksUpdate, which
-// writes up-to-date Wikidata data into page_props).
+// Each page is purged with forcelinkupdate=1, which invalidates the parser
+// cache AND forces MediaWiki to re-parse the page and run a LinksUpdate
+// (writing up-to-date Wikidata data into page_props).
 //
 // Usage:
 //   node scripts/refresh-outlines.js \
@@ -67,7 +67,6 @@ if ( ( opts.user && !opts.password ) || ( !opts.user && opts.password ) ) {
 
 const baseUrl = opts.url.replace( /\/$/, '' );
 const apiUrl = baseUrl + '/w/api.php';
-const indexUrl = baseUrl + '/w/index.php';
 
 // ---------------------------------------------------------------------------
 // HTTP helpers
@@ -123,20 +122,6 @@ async function apiPost( params ) {
 		throw new Error( `HTTP ${ response.status } ${ response.statusText } for POST ${ apiUrl }` );
 	}
 	return response.json();
-}
-
-async function pageGet( title ) {
-	const url = new URL( indexUrl );
-	url.searchParams.set( 'title', title );
-	url.searchParams.set( 'action', 'view' );
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	const response = await fetch( url.toString(), {
-		headers: { Cookie: serializeCookies() }
-	} );
-	storeCookies( response );
-	if ( !response.ok ) {
-		throw new Error( `HTTP ${ response.status } ${ response.statusText } for GET ${ url }` );
-	}
 }
 
 // ---------------------------------------------------------------------------
@@ -250,7 +235,6 @@ async function main() {
 	let purgedCount = 0;
 	let missingCount = 0;
 	let errorCount = 0;
-	let refreshedCount = 0;
 
 	for ( let i = 0; i < titles.length; i++ ) {
 		const title = titles[ i ];
@@ -263,6 +247,7 @@ async function main() {
 			const data = await apiPost( {
 				action: 'purge',
 				titles: title,
+				forcelinkupdate: '1',
 				format: 'json'
 			} );
 			const item = data.purge && data.purge[ 0 ];
@@ -288,26 +273,43 @@ async function main() {
 		if ( !purgeOk ) {
 			continue;
 		}
-
-		// Re-parse via GET
-		try {
-			await pageGet( title );
-			console.log( '  refreshed' );
-			refreshedCount++;
-		} catch ( err ) {
-			console.error( `  ✗ refresh error: ${ err.message }` );
-			errorCount++;
-		}
 	}
 
 	// -------------------------------------------------------------------------
 	// Step 6: Summary
 	// -------------------------------------------------------------------------
 	console.log( '' );
-	console.log( `Done. ${ purgedCount } page(s) purged, ${ refreshedCount } refreshed, ${ missingCount } not found, ${ errorCount } error(s).` );
+	console.log( `Done. ${ purgedCount } page(s) purged, ${ missingCount } not found, ${ errorCount } error(s).` );
 
 	if ( errorCount > 0 ) {
 		throw new Error( `${ errorCount } error(s) encountered.` );
+	}
+
+	// -------------------------------------------------------------------------
+	// Step 7: Verify outlines are served by the REST API
+	// -------------------------------------------------------------------------
+	console.log( '' );
+	console.log( 'Verifying outlines REST API…' );
+	try {
+		const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v0/outlines`;
+		// eslint-disable-next-line n/no-unsupported-features/node-builtins
+		const restResponse = await fetch( restUrl, {
+			headers: { Cookie: serializeCookies() }
+		} );
+		if ( !restResponse.ok ) {
+			console.warn( `  ⚠ REST API returned HTTP ${ restResponse.status }` );
+		} else {
+			const restData = await restResponse.json();
+			const outlineCount = restData.outlines ? restData.outlines.length : 0;
+			if ( outlineCount === 0 ) {
+				console.warn( '  ⚠ REST API returned 0 outlines — link updates may still be queued.' );
+				console.warn( '    Try running: php maintenance/runJobs.php on the wiki server.' );
+			} else {
+				console.log( `  ✓ REST API returned ${ outlineCount } outline(s).` );
+			}
+		}
+	} catch ( err ) {
+		console.warn( `  ⚠ Could not verify REST API: ${ err.message }` );
 	}
 }
 

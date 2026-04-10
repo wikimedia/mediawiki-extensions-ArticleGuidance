@@ -7,7 +7,11 @@
 	>
 		<article-info></article-info>
 
-		<cdx-message type="warning" class="ext-articleguidance-notability-warning">
+		<cdx-message
+			class="ext-articleguidance-notability-warning"
+			inline
+			type="warning"
+		>
 			{{ warningMessage }}
 		</cdx-message>
 
@@ -68,6 +72,10 @@ module.exports = defineComponent( {
 		const warningMessage = computed( () => {
 			const type = store.getBlockingRestriction();
 			if ( type ) {
+				// Messages that can be used here:
+				// * articleguidance-notability-warning-wikidata
+				// * articleguidance-notability-warning-draft
+				// * articleguidance-notability-warning-crosswiki
 				return mw.message( 'articleguidance-notability-warning-' + type ).text();
 			}
 			return mw.message( 'articleguidance-notability-warning' ).text();

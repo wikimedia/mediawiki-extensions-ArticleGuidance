@@ -15,17 +15,8 @@
 			>*</span>
 		</h3>
 		<p class="ext-articleguidance-sources-subtitle">
-			{{ $i18n( 'articleguidance-sources-subtitle' ).text() }}
+			{{ subtitleMessage }}
 		</p>
-
-		<!-- Notability warning (if applicable) -->
-		<cdx-message
-			v-if="hasNotabilityRisk"
-			type="warning"
-			class="ext-articleguidance-notability-warning"
-		>
-			{{ $i18n( 'articleguidance-sources-notability-description' ).text() }}
-		</cdx-message>
 
 		<!-- URL input field -->
 		<div class="ext-articleguidance-url-input-wrapper">
@@ -361,6 +352,13 @@ module.exports = defineComponent( {
 				selectedOutline.value.notabilityRisk &&
 				selectedOutline.value.notabilityRisk.includes( 'sources' ) );
 
+		const subtitleMessage = computed( () => {
+			if ( hasNotabilityRisk.value ) {
+				return mw.message( 'articleguidance-sources-subtitle-notability-risk' ).text();
+			}
+			return mw.message( 'articleguidance-sources-subtitle' ).text();
+		} );
+
 		return {
 			urlInput,
 			currentUrl,
@@ -383,7 +381,7 @@ module.exports = defineComponent( {
 			discouragedSources,
 			hasTips,
 			selectedOutline,
-			hasNotabilityRisk
+			subtitleMessage
 		};
 	}
 } );
@@ -407,14 +405,6 @@ module.exports = defineComponent( {
 .ext-articleguidance-sources-subtitle {
 	margin: 0 0 16px 0;
 	color: @color-subtle;
-}
-
-.ext-articleguidance-notability-warning {
-	margin-bottom: 16px;
-
-	.ext-articleguidance-notability-description {
-		margin: 8px 0 0 0;
-	}
 }
 
 .ext-articleguidance-url-input-wrapper {

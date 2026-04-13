@@ -8,6 +8,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Extension\ArticleGuidance\Services\UrlAsciiEncoder;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
 use MediaWiki\Logger\LoggerFactory;
@@ -43,6 +44,7 @@ return [
 			$spamBlacklist,
 			$services->getUserFactory(),
 			$services->getService( 'ArticleGuidanceOutlineService' ),
+			new UrlAsciiEncoder(),
 		);
 	},
 	'ArticleGuidanceTagContentExtractorService' => static function (

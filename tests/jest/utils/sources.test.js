@@ -14,6 +14,18 @@ describe( 'isValidUrl', () => {
 	it( 'prepends https:// when scheme is missing', () => {
 		expect( isValidUrl( 'en.wikipedia.org' ) ).toBe( true );
 	} );
+
+	it( 'returns true for a Latin IDN domain', () => {
+		expect( isValidUrl( 'https://bücher.example' ) ).toBe( true );
+	} );
+
+	it( 'returns true for a Greek IDN domain without scheme', () => {
+		expect( isValidUrl( 'ουτοπία.δπθ.gr' ) ).toBe( true );
+	} );
+
+	it( 'returns true for a Bengali IDN domain without scheme', () => {
+		expect( isValidUrl( 'উইকিপিডিয়া.বাংলা' ) ).toBe( true );
+	} );
 } );
 
 describe( 'isDuplicate', () => {

@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Rest;
 
+use InvalidArgumentException;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\Response;
@@ -50,21 +51,16 @@ class ValidateSourceHandler extends Handler {
 	 */
 	public function execute(): Response {
 		$url = $this->getValidatedParams()['url'];
+		$outlineQId = $this->getValidatedParams()['outlineQId'];
 
-		if ( !str_contains( $url, '://' ) ) {
-			$url = 'https://' . $url;
-		}
-
-		if ( !filter_var( $url, FILTER_VALIDATE_URL ) ) {
+		try {
+			$result = $this->sourceValidator->validate( $url, $outlineQId );
+		} catch ( InvalidArgumentException ) {
 			return $this->getResponseFactory()->createHttpError( 400, [
 				'message' => 'Invalid URL'
 			] );
 		}
 
-		$outlineQId = $this->getValidatedParams()['outlineQId'];
-
-		return $this->getResponseFactory()->createJson(
-			$this->sourceValidator->validate( $url, $outlineQId )
-		);
+		return $this->getResponseFactory()->createJson( $result );
 	}
 }

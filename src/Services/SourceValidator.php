@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
+use InvalidArgumentException;
 use MediaWiki\Extension\SpamBlacklist\SpamBlacklist;
 use MediaWiki\User\UserFactory;
 
@@ -16,6 +17,7 @@ class SourceValidator {
 		private readonly ?SpamBlacklist $spamBlacklist,
 		private readonly UserFactory $userFactory,
 		private readonly OutlineService $outlineService,
+		private readonly UrlAsciiEncoder $urlAsciiEncoder,
 	) {
 	}
 
@@ -25,8 +27,16 @@ class SourceValidator {
 	 * @param string $url
 	 * @param string|null $outlineQId Q-ID of the selected outline, for domain classification
 	 * @return array{domain: string, classification: string, title: string|null}
+	 * @throws InvalidArgumentException if the URL is not valid
 	 */
 	public function validate( string $url, ?string $outlineQId = null ): array {
+		if ( !str_contains( $url, '://' ) ) {
+			$url = 'https://' . $url;
+		}
+		if ( !filter_var( $this->urlAsciiEncoder->encode( $url ), FILTER_VALIDATE_URL ) ) {
+			throw new InvalidArgumentException( 'Invalid URL' );
+		}
+
 		$domain = strtolower( preg_replace( '/^www\./i', '', parse_url( $url, PHP_URL_HOST ) ?? '' ) );
 
 		if ( $this->spamBlacklist !== null ) {

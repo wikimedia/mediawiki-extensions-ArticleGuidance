@@ -23,22 +23,25 @@
 				:title="requestTitle"
 				:description="requestDescription"
 				:url="requestSupportUrl"
+				:log="logRequestSupport"
 			></action-option>
 			<action-option
 				:icon="cdxIconArticle"
 				:title="startTitle"
 				:description="startDescription"
 				:url="startWritingUrl"
+				:log="logStartWriting"
 			></action-option>
 		</div>
 	</step>
 </template>
 
 <script>
-const { defineComponent, computed } = require( 'vue' );
+const { defineComponent, computed, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { cdxIconUserTalk, cdxIconArticle } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const ActionOption = require( './ActionOption.vue' );
@@ -88,6 +91,10 @@ module.exports = defineComponent( {
 			() => mw.message( 'articleguidance-unsupported-subject-start-description' ).text()
 		);
 
+		onMounted( () => {
+			instrument.logUnsupportedSubjectShown();
+		} );
+
 		const handleBack = () => {
 			store.goBack();
 		};
@@ -102,7 +109,9 @@ module.exports = defineComponent( {
 			startDescription,
 			cdxIconUserTalk,
 			cdxIconArticle,
-			handleBack
+			handleBack,
+			logRequestSupport: () => instrument.logUnsupportedSubjectAction( 'request_support' ),
+			logStartWriting: () => instrument.logUnsupportedSubjectAction( 'start_writing' )
 		};
 	}
 } );

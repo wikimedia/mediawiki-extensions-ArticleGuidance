@@ -173,6 +173,7 @@ const { cdxIconAdd, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { validateSource } = require( '../api/Sources.js' );
+const instrument = require( '../logging/instrument.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
@@ -263,12 +264,19 @@ module.exports = defineComponent( {
 					null,
 					selectedOutline.value && selectedOutline.value.articleType
 				);
+				const mandatory = minRequiredSources.value > 0;
 				if ( result.classification === 'spam' || result.classification === 'discouraged' ) {
+					instrument.logAddSource(
+						false, url, result.domain, result.classification, mandatory
+					);
 					unreliableWarning.value = { domain: result.domain };
 					if ( urlInput.value ) {
 						urlInput.value.blur();
 					}
 				} else {
+					instrument.logAddSource(
+						true, url, result.domain, result.classification, mandatory
+					);
 					currentUrl.value = '';
 					verifiedSources.value.push( {
 						url: url,

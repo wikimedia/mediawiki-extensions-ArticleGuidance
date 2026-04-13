@@ -185,6 +185,13 @@
 				"utils/scroll.js",
 				"utils/missingTypeFeedback.js",
 				"logging/notability.js",
+				"logging/instrument.js",
+				{
+					"name": "config.json",
+					"config": [
+						"ArticleGuidanceExperimentName"
+					]
+				},
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
@@ -278,7 +285,8 @@
 			],
 			"dependencies": [
 				"vue",
-				"pinia"
+				"pinia",
+				"mediawiki.util"
 			]
 		},
 		"ext.articleguidance.tag.styles": {

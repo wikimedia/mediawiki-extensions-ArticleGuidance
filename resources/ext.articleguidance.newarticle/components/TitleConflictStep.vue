@@ -88,6 +88,7 @@ const { CdxTextInput, CdxMessage, CdxButton, CdxIcon } = require( '../codex.js' 
 const { cdxIconLinkExternal } = require( '../icons.json' );
 const useArticleExist = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 
@@ -111,6 +112,7 @@ module.exports = defineComponent( {
 		const { exists: titleExists, checkExistence } = useArticleExist( localTitle );
 
 		onMounted( () => {
+			instrument.logTitleConflictShown();
 			if ( localTitle.value ) {
 				checkExistence();
 			}
@@ -130,14 +132,17 @@ module.exports = defineComponent( {
 		};
 
 		const handleContinue = () => {
+			instrument.logTitleConflictAction( 'continue' );
 			store.confirmTitle();
 		};
 
 		const handleUseSuggestion = () => {
+			instrument.logTitleConflictAction( 'use_suggestion' );
 			localTitle.value = titleSuggestion.value;
 		};
 
 		const handleReadArticle = () => {
+			instrument.logTitleConflictAction( 'view_existing' );
 			window.open( mw.util.getUrl( existingArticleTitle ), '_blank' );
 		};
 

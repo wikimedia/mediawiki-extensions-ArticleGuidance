@@ -60,6 +60,7 @@ const { cdxIconArticle, cdxIconLinkExternal } = require( '../icons.json' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getMissingTypeFeedbackUrl } = require( '../utils/missingTypeFeedback.js' );
+const instrument = require( '../logging/instrument.js' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
 
@@ -82,6 +83,10 @@ module.exports = defineComponent( {
 		} );
 
 		const handleSelectOutline = ( outlineItem ) => {
+			instrument.logSelectManualTopic( {
+				title: outlineItem.title,
+				qid: outlineItem.articleType
+			} );
 			store.selectOutline( outlineItem );
 		};
 

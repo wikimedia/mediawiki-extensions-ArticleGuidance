@@ -9,7 +9,7 @@
 				:is="url ? 'a' : 'button'"
 				v-bind="url ? { href: url, target: isExternal ? '_blank' : undefined } : {}"
 				class="ext-articleguidance-action-option-title"
-				@click="action && action()"
+				@click="log && log(); action && action()"
 			>
 				{{ title }}
 			</component>
@@ -45,6 +45,10 @@ module.exports = defineComponent( {
 			default: null
 		},
 		action: {
+			type: Function,
+			default: null
+		},
+		log: {
 			type: Function,
 			default: null
 		}

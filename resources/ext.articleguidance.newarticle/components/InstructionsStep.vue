@@ -45,11 +45,12 @@
 </template>
 
 <script>
-const { defineComponent } = require( 'vue' );
+const { defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxButton } = require( '../codex.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
+const instrument = require( '../logging/instrument.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
 
@@ -70,8 +71,16 @@ module.exports = defineComponent( {
 			references.value.map( ( r ) => r.url )
 		);
 
+		onMounted( () => {
+			instrument.logGuidanceShown();
+		} );
+
 		// Navigate to article creation page
 		const handleStartWriting = () => {
+			instrument.logWriteStart( {
+				title: selectedOutline.value && selectedOutline.value.title,
+				qid: selectedOutline.value && selectedOutline.value.articleType
+			} );
 			location.href = buildCreateArticleUrl();
 		};
 

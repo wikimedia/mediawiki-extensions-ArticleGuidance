@@ -28,6 +28,7 @@
 					:description="option.description"
 					:url="option.url || null"
 					:action="option.action || null"
+					:log="option.log"
 				></action-option>
 			</div>
 		</div>
@@ -35,10 +36,11 @@
 </template>
 
 <script>
-const { defineComponent, computed } = require( 'vue' );
+const { defineComponent, computed, onMounted } = require( 'vue' );
 const { CdxMessage } = require( '../codex.js' );
 const { cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const ActionOption = require( './ActionOption.vue' );
@@ -77,7 +79,8 @@ module.exports = defineComponent( {
 					icon: cdxIconLogoWikidata,
 					title: mw.message( 'articleguidance-notability-option-wikidata-title' ).text(),
 					description: mw.message( 'articleguidance-notability-option-wikidata-description' ).text(),
-					url: 'https://www.wikidata.org/wiki/Special:NewItem'
+					url: 'https://www.wikidata.org/wiki/Special:NewItem',
+					log: () => instrument.logNotabilityAction( 'wikidata_item' )
 				} );
 			}
 
@@ -87,7 +90,8 @@ module.exports = defineComponent( {
 					icon: cdxIconSandbox,
 					title: mw.message( 'articleguidance-notability-option-sandbox-title' ).text(),
 					description: mw.message( 'articleguidance-notability-option-sandbox-description' ).text(),
-					action: () => store.confirmNotability()
+					action: () => store.confirmNotability(),
+					log: () => instrument.logNotabilityAction( 'sandbox' )
 				} );
 			}
 
@@ -96,10 +100,15 @@ module.exports = defineComponent( {
 				icon: cdxIconBook,
 				title: mw.message( 'articleguidance-notability-option-learn-title' ).text(),
 				description: mw.message( 'articleguidance-notability-option-learn-description' ).text(),
-				url: mw.util.getUrl( 'Help:Contents' )
+				url: mw.util.getUrl( 'Help:Contents' ),
+				log: () => instrument.logNotabilityAction( 'learn' )
 			} );
 
 			return options;
+		} );
+
+		onMounted( () => {
+			instrument.logNotabilityCheckShown( activeTags.value );
 		} );
 
 		const handleBack = () => {

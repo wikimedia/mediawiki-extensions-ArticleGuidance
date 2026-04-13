@@ -91,6 +91,7 @@ const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton, CdxProgressIndicator } = require( '../codex.js' );
 const { useSearch } = require( '../composables/useSearch.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
@@ -129,6 +130,12 @@ module.exports = defineComponent( {
 			}
 		} );
 
+		watch( loading, ( isLoading ) => {
+			if ( !isLoading && searchQuery.value ) {
+				instrument.logWriteTitle( searchQuery.value, results.value.length );
+			}
+		} );
+
 		// Dismiss outlines immediately when the user modifies the query
 		watch( searchQuery, () => {
 			if ( showOutlines.value ) {
@@ -138,6 +145,10 @@ module.exports = defineComponent( {
 
 		// Handle result selection
 		const handleSelect = ( result ) => {
+			instrument.logSelectSuggestedTopic( result.id, {
+				title: result.outlineName,
+				qid: result.matchedQId
+			} );
 			store.selectArticle( result, articleExist.value === true );
 		};
 

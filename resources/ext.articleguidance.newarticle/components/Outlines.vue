@@ -25,6 +25,7 @@
 				:title="outlineItem.label"
 				:description="outlineItem.description"
 				:icon="articleIcon"
+				:interactive="true"
 				@click="handleSelectOutline( outlineItem )"
 			>
 			</article-card>

@@ -283,6 +283,28 @@ function useWikidataSearch( query, language ) {
 					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) ||
 						thumbnail,
 					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
+					supported: true,
+					sitelinkCount: entity ? entity.sitelinkCount : 0,
+					localSitelink: entity ? entity.localSitelink : null
+				} );
+			} );
+
+			filteredWikidataResults.forEach( ( result ) => {
+				const matchedQIds = sparqlMatches[ result.id ];
+				if ( matchedQIds && matchedQIds.length > 0 ) {
+					return;
+				}
+				const entity = entityData[ result.id ];
+				const entityFilename = entity && entity.imageFilename;
+				filteredResults.push( {
+					id: result.id,
+					label: ( entity && entity.label ) || result.id,
+					description: ( entity && entity.description ) || '',
+					url: result.url,
+					matchedQId: null,
+					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) || null,
+					outlineName: null,
+					supported: false,
 					sitelinkCount: entity ? entity.sitelinkCount : 0,
 					localSitelink: entity ? entity.localSitelink : null
 				} );

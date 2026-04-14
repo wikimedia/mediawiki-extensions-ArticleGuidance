@@ -43,12 +43,13 @@
 					</div>
 					<div class="ext-articleguidance-results-list">
 						<article-card
-							v-for="result in maxResults"
+							v-for="result in visibleResults"
 							:key="result.id"
 							:title="result.label"
 							:description="result.description"
 							:thumbnail="result.thumbnail"
 							:outline-name="result.outlineName"
+							:interactive="true"
 							@click="handleSelect( result )"
 						>
 						</article-card>
@@ -150,7 +151,18 @@ module.exports = defineComponent( {
 			store.hideOutlines();
 		};
 
-		const maxResults = computed( () => results.value.slice( 0, MAX_RESULTS ) );
+		const MAX_SUPPORTED = MAX_RESULTS;
+		const MAX_UNSUPPORTED = 3;
+
+		const supportedResults = computed(
+			() => results.value.filter( ( r ) => r.supported ).slice( 0, MAX_SUPPORTED )
+		);
+		const unsupportedResults = computed(
+			() => results.value.filter( ( r ) => !r.supported ).slice( 0, MAX_UNSUPPORTED )
+		);
+		const visibleResults = computed(
+			() => supportedResults.value.concat( unsupportedResults.value )
+		);
 
 		// Computed properties for display states
 		// Show Wikidata results even when a title already exists
@@ -173,7 +185,7 @@ module.exports = defineComponent( {
 			showOutlines,
 			loading,
 			error,
-			maxResults,
+			visibleResults,
 			handleSelect,
 			handleBrowseOutlines,
 			handleHideOutlines,

@@ -20,29 +20,15 @@
 				{{ $i18n( 'articleguidance-notability-options-heading' ).text() }}
 			</h3>
 			<div class="ext-articleguidance-notability-options-list">
-				<div
+				<action-option
 					v-for="option in contributionOptions"
 					:key="option.key"
-					class="ext-articleguidance-notability-option"
-				>
-					<cdx-icon
-						:icon="option.icon"
-						class="ext-articleguidance-notability-option-icon"
-					></cdx-icon>
-					<div class="ext-articleguidance-notability-option-content">
-						<component
-							:is="option.action ? 'button' : 'a'"
-							v-bind="option.url ? { href: option.url, target: '_blank' } : {}"
-							class="ext-articleguidance-notability-option-title"
-							@click="option.action && option.action()"
-						>
-							{{ option.title }}
-						</component>
-						<p class="ext-articleguidance-notability-option-description">
-							{{ option.description }}
-						</p>
-					</div>
-				</div>
+					:icon="option.icon"
+					:title="option.title"
+					:description="option.description"
+					:url="option.url || null"
+					:action="option.action || null"
+				></action-option>
 			</div>
 		</div>
 	</step>
@@ -50,19 +36,20 @@
 
 <script>
 const { defineComponent, computed } = require( 'vue' );
-const { CdxIcon, CdxMessage } = require( '../codex.js' );
+const { CdxMessage } = require( '../codex.js' );
 const { cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const Step = require( './Step.vue' );
 const ArticleInfo = require( './ArticleInfo.vue' );
+const ActionOption = require( './ActionOption.vue' );
 
 module.exports = defineComponent( {
 	name: 'NotabilityStep',
 	components: {
-		CdxIcon,
 		CdxMessage,
 		Step,
-		ArticleInfo
+		ArticleInfo,
+		ActionOption
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
@@ -144,50 +131,5 @@ module.exports = defineComponent( {
 .ext-articleguidance-notability-options-list {
 	display: flex;
 	flex-direction: column;
-}
-
-.ext-articleguidance-notability-option {
-	display: flex;
-	align-items: flex-start;
-	gap: 12px;
-	padding: 12px 0;
-	border-bottom: 1px solid @border-color-subtle;
-
-	&:first-child {
-		border-top: 1px solid @border-color-subtle;
-	}
-}
-
-.ext-articleguidance-notability-option-icon {
-	color: @color-progressive;
-	flex-shrink: 0;
-	margin-top: 2px;
-}
-
-.ext-articleguidance-notability-option-content {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-}
-
-.ext-articleguidance-notability-option-title {
-	font-weight: @font-weight-bold;
-	color: @color-progressive;
-
-	&:is( button ) {
-		background: none;
-		border: 0;
-		padding: 0;
-		cursor: pointer;
-		font-size: inherit;
-		font-family: inherit;
-		text-align: start;
-	}
-}
-
-.ext-articleguidance-notability-option-description {
-	margin: 0;
-	color: @color-subtle;
-	font-size: @font-size-small;
 }
 </style>

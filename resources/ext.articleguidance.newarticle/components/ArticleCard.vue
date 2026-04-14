@@ -1,13 +1,14 @@
 <template>
 	<cdx-card
 		class="ext-articleguidance-article-card"
+		:class="{ 'ext-articleguidance-article-card--interactive': interactive }"
 		:thumbnail="cardThumbnail"
 		:icon="icon"
-		role="button"
-		tabindex="0"
-		@keydown.enter.prevent="$emit( 'click' )"
-		@keydown.space.prevent="$emit( 'click' )"
-		@click="$emit( 'click' )"
+		:role="interactive ? 'button' : undefined"
+		:tabindex="interactive ? 0 : undefined"
+		@keydown.enter.prevent="interactive && $emit( 'click' )"
+		@keydown.space.prevent="interactive && $emit( 'click' )"
+		@click="interactive && $emit( 'click' )"
 	>
 		<template #title>
 			<span class="ext-articleguidance-article-card-title">
@@ -50,6 +51,10 @@ module.exports = defineComponent( {
 			type: [ String, Object ],
 			default: null
 		},
+		interactive: {
+			type: Boolean,
+			default: false
+		},
 		outlineName: {
 			type: String,
 			default: null
@@ -66,7 +71,7 @@ module.exports = defineComponent( {
 					url: props.thumbnail
 				};
 			}
-			return null;
+			return {};
 		} );
 
 		return { cardThumbnail };
@@ -78,7 +83,6 @@ module.exports = defineComponent( {
 @import 'mediawiki.skin.variables.less';
 
 .ext-articleguidance-article-card {
-	cursor: pointer;
 	transition: background-color 0.2s;
 
 	.ext-articleguidance-article-card-title {
@@ -124,17 +128,21 @@ module.exports = defineComponent( {
 		}
 	}
 
-	&:hover {
-		background-color: @background-color-interactive-subtle;
-	}
+	&.ext-articleguidance-article-card--interactive {
+		cursor: pointer;
 
-	&:active {
-		background-color: @background-color-interactive;
-	}
+		&:hover {
+			background-color: @background-color-interactive-subtle;
+		}
 
-	&:focus-visible {
-		outline: 2px solid @color-progressive;
-		outline-offset: 2px;
+		&:active {
+			background-color: @background-color-interactive;
+		}
+
+		&:focus-visible {
+			outline: 2px solid @color-progressive;
+			outline-offset: 2px;
+		}
 	}
 
 	.cdx-card__icon {

@@ -165,6 +165,8 @@
 				"components/Outlines.vue",
 				"components/SourcesStep.vue",
 				"components/NotabilityStep.vue",
+				"components/UnsupportedSubjectStep.vue",
+				"components/ActionOption.vue",
 				"components/InstructionsStep.vue",
 				"components/SubjectCoveredStep.vue",
 				"components/TitleConflictStep.vue",
@@ -188,6 +190,7 @@
 						"cdxIconAdd",
 						"cdxIconArrowPrevious",
 						"cdxIconArticle",
+						"cdxIconUserTalk",
 						"cdxIconBook",
 						"cdxIconClose",
 						"cdxIconInfoFilled",
@@ -264,7 +267,12 @@
 				"articleguidance-titleconflict-suggestion-prefix",
 				"articleguidance-titleconflict-continue",
 				"articleguidance-titleconflict-selected-subject",
-				"articleguidance-titleconflict-viewexisting"
+				"articleguidance-titleconflict-viewexisting",
+				"articleguidance-unsupported-subject-heading",
+				"articleguidance-unsupported-subject-request-title",
+				"articleguidance-unsupported-subject-request-description",
+				"articleguidance-unsupported-subject-start-title",
+				"articleguidance-unsupported-subject-start-description"
 			],
 			"dependencies": [
 				"vue",

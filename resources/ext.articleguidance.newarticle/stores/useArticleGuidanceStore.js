@@ -136,6 +136,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			articleTitle.value = searchQuery.value;
 			titleSuggestion.value = await findTitleSuggestion( result );
 			goTo( 'titleconflict' );
+		} else if ( !result.matchedQId ) {
+			goTo( 'unsupportedsubject' );
 		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {

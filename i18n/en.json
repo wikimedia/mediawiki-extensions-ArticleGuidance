@@ -74,5 +74,10 @@
 	"articleguidance-publish-followup-confirmation-title": "Article has been published!",
 	"articleguidance-publish-followup-community-review": "Other editors will review this article. Meanwhile, take another look at the suggestions to improve it.",
 	"articleguidance-publish-followup-edit-more-button": "Improve article",
-	"articleguidance-publish-followup-close-button": "Close"
+	"articleguidance-publish-followup-close-button": "Close",
+	"articleguidance-unsupported-subject-heading": "No guidance for this topic yet",
+	"articleguidance-unsupported-subject-request-title": "Request support for this type",
+	"articleguidance-unsupported-subject-request-description": "Ask the community to add guidance for this type of article.",
+	"articleguidance-unsupported-subject-start-title": "Start writing",
+	"articleguidance-unsupported-subject-start-description": "Write this article without article guidance."
 }

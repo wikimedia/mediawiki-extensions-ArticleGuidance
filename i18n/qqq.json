@@ -74,5 +74,10 @@
 	"articleguidance-publish-followup-confirmation-title": "Heading shown in the post-publish follow-up panel after a user successfully publishes a new article through the Article Guidance workflow.",
 	"articleguidance-publish-followup-community-review": "Message in the post-publish follow-up panel informing the user that the editor community will review their newly published article.",
 	"articleguidance-publish-followup-edit-more-button": "Message for the button in the post-publish follow-up panel to encourage the user to continue editing and improving their article.",
-	"articleguidance-publish-followup-close-button": "Label for a close button used in the post-publish follow-up panel and other modals in the Article Guidance workflow."
+	"articleguidance-publish-followup-close-button": "Label for a close button used in the post-publish follow-up panel and other modals in the Article Guidance workflow.",
+	"articleguidance-unsupported-subject-heading": "Heading shown in the unsupported subject step, displayed when the user selects a Wikidata item that has no matching outline.",
+	"articleguidance-unsupported-subject-request-title": "Title of the 'request support' option in the unsupported subject step. Clicking opens the Article Guidance talk page to request a new outline.",
+	"articleguidance-unsupported-subject-request-description": "Description of the 'request support' option in the unsupported subject step.",
+	"articleguidance-unsupported-subject-start-title": "Title of the 'start writing' option in the unsupported subject step. Clicking opens VisualEditor for the article title without guidance.",
+	"articleguidance-unsupported-subject-start-description": "Description of the 'start writing' option in the unsupported subject step."
 }

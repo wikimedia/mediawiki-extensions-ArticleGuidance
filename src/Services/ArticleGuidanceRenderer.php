@@ -164,8 +164,11 @@ class ArticleGuidanceRenderer {
 			$allItems = array_merge( $infoHtmlArray ?? [], $urlsArray ?? [] );
 			if ( count( $allItems ) > 0 ) {
 				$listHtml = '';
-				foreach ( $allItems as $item ) {
+				foreach ( $infoHtmlArray ?? [] as $item ) {
 					$listHtml .= Html::rawElement( 'li', [], $item );
+				}
+				foreach ( $urlsArray ?? [] as $item ) {
+					$listHtml .= Html::element( 'li', [], $item );
 				}
 				$html .= Html::rawElement(
 					'div',
@@ -189,8 +192,11 @@ class ArticleGuidanceRenderer {
 			$allItems = array_merge( $infoHtmlArray ?? [], $urlsArray ?? [] );
 			if ( count( $allItems ) > 0 ) {
 				$listHtml = '';
-				foreach ( $allItems as $item ) {
+				foreach ( $infoHtmlArray ?? [] as $item ) {
 					$listHtml .= Html::rawElement( 'li', [], $item );
+				}
+				foreach ( $urlsArray ?? [] as $item ) {
+					$listHtml .= Html::element( 'li', [], $item );
 				}
 				$html .= Html::rawElement(
 					'div',

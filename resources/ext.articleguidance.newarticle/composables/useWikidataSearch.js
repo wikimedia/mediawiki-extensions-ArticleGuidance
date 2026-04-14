@@ -314,6 +314,7 @@ function useWikidataSearch( query, language ) {
 
 		// Don't search if query is too short
 		if ( !newQuery || newQuery.trim().length < 1 ) {
+			latestRequestId++;
 			results.value = [];
 			loading.value = false;
 			return;

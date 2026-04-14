@@ -13,7 +13,6 @@ use MediaWiki\User\UserFactory;
 class SourceValidator {
 
 	public function __construct(
-		private readonly PageMetadataFetcher $pageMetadataFetcher,
 		private readonly ?SpamBlacklist $spamBlacklist,
 		private readonly UserFactory $userFactory,
 		private readonly OutlineService $outlineService,
@@ -43,23 +42,27 @@ class SourceValidator {
 			}
 		}
 
-		// Unreachable URLs are accepted as neutral sources: we do not want to block editors
-		// from citing a URL just because our server cannot reach it (firewall rules, geo-blocking,
-		// paywalls that reject server-side requests, etc.). The title will be absent.
-		$metadata = $this->pageMetadataFetcher->fetch( $url );
-		if ( $metadata === null ) {
-			return [
-				'domain' => $domain,
-				'classification' => 'neutral',
-				'title' => null,
-			];
-		}
-
 		return [
 			'domain' => $domain,
 			'classification' => $this->classifyDomain( $domain, $outlineQId ),
-			'title' => $metadata['title'],
+			'title' => $this->titleFromPath( $url ),
 		];
+	}
+
+	/**
+	 * Derive a human-readable title from the last path segment of a URL.
+	 * e.g. "/posts/my-article-slug" → "My article slug"
+	 *
+	 * @param string $url
+	 * @return string|null
+	 */
+	private function titleFromPath( string $url ): ?string {
+		$path = parse_url( $url, PHP_URL_PATH ) ?? '';
+		$slug = basename( $path );
+		if ( $slug === '' ) {
+			return null;
+		}
+		return ucfirst( str_replace( [ '-', '_' ], ' ', $slug ) );
 	}
 
 	/**

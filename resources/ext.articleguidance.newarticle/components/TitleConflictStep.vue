@@ -9,6 +9,7 @@
 			<!-- Editable title input -->
 			<cdx-text-input
 				v-model="localTitle"
+				:placeholder="$i18n( 'articleguidance-specialnewarticle-title-placeholder' ).text()"
 				class="ext-articleguidance-titleconflict-input"
 			>
 			</cdx-text-input>

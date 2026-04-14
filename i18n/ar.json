@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Meno25",
 			"Mohammed Qays",
 			"Sandra Hanbo"
 		]
@@ -10,8 +11,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "عنوان المقالة",
 	"articleguidance-specialnewarticle-loading": "جارٍ البحث...",
 	"articleguidance-specialnewarticle-checking": "جارٍ التحقق...",
-	"articleguidance-specialnewarticle-no-results": "لا توجد مواضيع ل\"$1\"",
-	"articleguidance-specialnewarticle-exists-warning": "توجد بالفعل مقالة بعنوان \"$1\" على هذا المشروع.",
+	"articleguidance-specialnewarticle-no-results": "لم يتم العثور على أي موضوعات لـ \"$1\"",
+	"articleguidance-specialnewarticle-exists-warning": "توجد بالفعل مقالة بعنوان [[$1]].",
 	"articleguidance-specialnewarticle-edit-existing": "تعديل المقالة الموجودة",
 	"articleguidance-specialnewarticle-disambiguation-title": "ما هذا؟",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "لا شيء من هذا؟",
@@ -19,7 +20,7 @@
 	"articleguidance-sources-title": "إضافة مصادر",
 	"articleguidance-sources-subtitle": "تساعد المصادر القراء على التحقق من الحقائق وتوضح سبب أهمية هذا الموضوع.",
 	"articleguidance-sources-notability-title": "اهتمام بالملحوظية",
-	"articleguidance-sources-notability-description": "قد يواجه هذا النوع من المقالات مخاوف بشأن مدى ملحوظيته. يُرجى تقديم مصادر موثوقة تُثبت أن الموضوع يستوفي معايير ويكيبيديا المتعلقة بالملحوظية.",
+	"articleguidance-sources-notability-description": "تطلب منك هذه الويكي مشاركة مصادرك قبل الكتابة.",
 	"articleguidance-sources-url-placeholder": "ألصق رابطًا إلى مصدر",
 	"articleguidance-sources-invalid-url": "أدخل عنوان مسار صالحًا",
 	"articleguidance-sources-duplicate": "هذا المصدر مُضاف بالفعل",
@@ -47,11 +48,11 @@
 	"articleguidance-notability-option-sandbox-description": "قم بصياغة المسودة وتنقيحها قبل النشر",
 	"articleguidance-notability-option-learn-title": "تعرّف على ما يبحث عنه هذا الموقع في المقالات الجديدة",
 	"articleguidance-notability-option-learn-description": "فهم ما يبحث عنه المجتمع",
-	"articleguidance-notability-tag-wikidata": "يمكن إنشاء مواضيع موجودة فقط على ويكي بيانات.",
-	"articleguidance-notability-tag-crosswiki": "لا يمكن إنشاء سوى المواضيع المتوفرة في {{PLURAL:$1|لغة أخرى|لغات أخرى}}.",
+	"articleguidance-notability-tag-wikidata": "لا يمكن إنشاء سوى المواضيع الموجودة على ويكي بيانات.",
+	"articleguidance-notability-tag-crosswiki": "لا يمكن إنشاء سوى المواضيع المتاحة في {{PLURAL:$1| لغة أخرى|لغات أخرى}}.",
 	"articleguidance-notability-tag-junior": "تنطبق القيود على المحررين المبتدئين فقط.",
 	"articleguidance-notability-tag-draft": "يُسمح بالنشر فقط ضمن نطاق المسودة أو المستخدم.",
-	"articleguidance-notability-tag-sources": "لا يمكن إنشاء سوى المواضيع التي قدم المستخدم مصادر موثوقة بشأنها ولم يحبطها أو يوقفها المجتمع.",
+	"articleguidance-notability-tag-sources": "لا يمكن إنشاء سوى المواضيع التي قدم المستخدم مصادر موثوقة بشأنها ولم يثنِ عنها المجتمع.",
 	"articleguidance-notability-tag-draft-location": "ستنشأ مقالتك في \"$1\".",
 	"articleguidance-specialnewarticle-no-matching-type": "لا يمكنك العثور على النوع المناسب؟",
 	"articleguidance-specialnewarticle-missing-type-feedback": "اقترح نوعًا جديدًا",

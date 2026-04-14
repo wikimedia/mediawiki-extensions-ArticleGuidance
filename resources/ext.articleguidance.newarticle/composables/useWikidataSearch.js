@@ -170,7 +170,7 @@ function useWikidataSearch( query, language ) {
 
 			// Run wbgetentities and SPARQL hierarchy check in parallel
 			const [ entityData, itemHierarchyMatches ] = await Promise.all( [
-				fetchEntityClaims( searchQIds, properties ),
+				fetchEntityClaims( searchQIds, properties, language.value ),
 				checkItemHierarchyMatches( searchQIds, groups, excludedItemTypesList )
 			] );
 
@@ -276,8 +276,8 @@ function useWikidataSearch( query, language ) {
 				const entityFilename = entity && entity.imageFilename;
 				filteredResults.push( {
 					id: result.id,
-					label: result.label,
-					description: result.description,
+					label: ( entity && entity.label ) || result.id,
+					description: ( entity && entity.description ) || '',
 					url: result.url,
 					matchedQId: matchedQIds[ 0 ],
 					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) ||

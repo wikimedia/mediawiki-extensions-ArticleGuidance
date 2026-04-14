@@ -1,14 +1,16 @@
 // Page-scoped cache: cleared automatically on page reload.
-// Key: qid, Value: entity data object (claims, imageFilename, sitelinkCount, localSitelink)
+// Key: qid, Value: entity data object (claims, label, description, imageFilename, sitelinkCount,
+//   localSitelink)
 const entityClaimsCache = new Map();
 
 /**
- * Search Wikidata entities
+ * Search Wikidata entities using the MediaWiki full-text search API (CirrusSearch),
+ * which matches labels, aliases, and descriptions — the same backend as Wikidata.org.
  *
  * @param {string} query Search query
  * @param {string} language Language code
- * @param {number} limit Maximum number of results (default: 10)
- * @return {Promise<Array>} Array of Wikidata entities
+ * @param {number} limit Maximum number of results (default: 20)
+ * @return {Promise<Array>} Array of Wikidata entities with id, label, description, url
  */
 async function searchWikidata( query, language, limit = 20 ) {
 	if ( !query || query.trim().length === 0 ) {
@@ -16,12 +18,12 @@ async function searchWikidata( query, language, limit = 20 ) {
 	}
 
 	const searchUrl = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
-		action: 'wbsearchentities',
-		type: 'item',
-		search: query.trim(),
-		language: language,
+		action: 'query',
+		list: 'search',
+		srsearch: query.trim(),
+		srnamespace: '0',
+		srlimit: limit.toString(),
 		uselang: language,
-		limit: limit.toString(),
 		format: 'json',
 		origin: '*'
 	} );
@@ -35,16 +37,18 @@ async function searchWikidata( query, language, limit = 20 ) {
 
 		const searchData = await searchResponse.json();
 
-		if ( !searchData.search || !Array.isArray( searchData.search ) ) {
+		if ( !searchData.query || !Array.isArray( searchData.query.search ) ) {
 			return [];
 		}
 
-		return searchData.search.map( ( item ) => ( {
-			id: item.id,
-			label: item.label || item.id,
-			description: item.description || '',
-			url: item.concepturi || `https://www.wikidata.org/wiki/${ item.id }`
-		} ) );
+		return searchData.query.search
+			.filter( ( item ) => /^Q\d+$/.test( item.title ) )
+			.map( ( item ) => ( {
+				id: item.title,
+				label: item.title,
+				description: '',
+				url: 'https://www.wikidata.org/wiki/' + item.title
+			} ) );
 	} catch ( error ) {
 		// eslint-disable-next-line no-console
 		console.error( 'Wikidata search error:', error );
@@ -53,14 +57,15 @@ async function searchWikidata( query, language, limit = 20 ) {
 }
 
 /**
- * Fetch claims for multiple Wikidata entities in a single request.
+ * Fetch claims, labels, and descriptions for multiple Wikidata entities in a single request.
  *
  * @param {string[]} qids Array of Wikidata Q IDs (e.g. ['Q42', 'Q937'])
  * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
- * @return {Promise<Object>} Map of qid to entity data, each with claims, imageFilename,
- *   sitelinkCount, and localSitelink for the current wiki
+ * @param {string} language Language code for labels and descriptions
+ * @return {Promise<Object>} Map of qid to entity data, each with claims, label, description,
+ *   imageFilename, sitelinkCount, and localSitelink for the current wiki
  */
-async function fetchEntityClaims( qids, properties ) {
+async function fetchEntityClaims( qids, properties, language ) {
 	if ( !qids || qids.length === 0 ) {
 		return {};
 	}
@@ -83,7 +88,8 @@ async function fetchEntityClaims( qids, properties ) {
 	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
 		action: 'wbgetentities',
 		ids: uncachedQIds.join( '|' ),
-		props: 'claims|sitelinks/urls',
+		props: 'claims|sitelinks/urls|labels|descriptions',
+		languages: language,
 		format: 'json',
 		origin: '*'
 	} );
@@ -128,8 +134,12 @@ async function fetchEntityClaims( qids, properties ) {
 				}
 			}
 		}
+		const labelEntry = entity.labels && entity.labels[ language ];
+		const descEntry = entity.descriptions && entity.descriptions[ language ];
 		freshResult[ qid ] = {
 			claims,
+			label: labelEntry ? labelEntry.value : qid,
+			description: descEntry ? descEntry.value : '',
 			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,
 			sitelinkCount,
 			localSitelink

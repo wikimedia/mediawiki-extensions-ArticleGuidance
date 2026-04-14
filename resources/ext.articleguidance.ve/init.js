@@ -4,9 +4,12 @@ if ( !mw.util.getParamValue( 'articleguidance' ) ) {
 
 mw.hook( 've.newTarget' ).add( ( target ) => {
 	target.saveFields.articleguidance = () => 1;
-	mw.hook( 'postEdit' ).add( () => {
-		mw.storage.session.setObject( 'articleguidance-published', {
-			title: mw.config.get( 'wgPageName' )
-		} );
+
+	mw.trackSubscribe( 'editAttemptStep', ( name, data ) => {
+		if ( data.action === 'saveSuccess' ) {
+			mw.storage.session.setObject( 'articleguidance-published', {
+				title: mw.config.get( 'wgPageName' )
+			} );
+		}
 	} );
 } );

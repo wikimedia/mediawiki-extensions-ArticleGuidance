@@ -69,8 +69,7 @@ class RedLinkRedirectHandler implements
 	private function isInTreatmentGroup(): bool {
 		$experimentName = $this->mainConfig->get( 'ArticleGuidanceExperimentName' );
 		if ( $this->experimentManager === null || $experimentName === '' ) {
-			// For temporary testing only
-			return true;
+			return false;
 		}
 
 		return $this->experimentManager

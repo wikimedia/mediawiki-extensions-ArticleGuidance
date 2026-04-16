@@ -1,0 +1,63 @@
+<article-guidance article-type="Q9174" notability-risk="sources wikidata">
+
+<instructions>
+Articles about religions and religious traditions are appropriate when the religion is documented in reliable, independent academic sources. New religious movements, informal spiritual communities, and personal belief systems described only in self-published sources are not appropriate for standalone Wikipedia articles. Religion articles must be written from a neutral point of view. Wikipedia does not take positions on religious truth claims. The article should describe what the religion teaches and how it is practised, not evaluate whether its beliefs are correct.
+Quick considerations:
+* Write from a strictly neutral perspective. Do not endorse, promote, or disparage any religion or its beliefs.
+* Distinguish clearly between what adherents believe and what scholarly sources have documented about the religion.
+* Base all claims about history, doctrine, and practice on peer-reviewed academic sources, not on religious texts used as the sole source.
+* Do not write about a religion you are a member of or have a personal interest in promoting.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed academic journals in religious studies, theology, and anthropology</info>
+  <info>Established scholarly reference works on world religions (e.g. Encyclopaedia of Religion, Oxford Dictionary of World Religions)</info>
+  <info>University press publications on religious history and comparative religion</info>
+  <info>Major newswires for factual reporting on religious organisations and events</info>
+  <source>oxfordreference.com</source>
+  <source>jstor.org</source>
+  <source>britannica.com</source>
+  <source>brill.com</source>
+  <source>cambridge.org</source>
+  <source>degruyter.com</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The religion's own scriptures, official websites, or promotional materials used as the sole source for factual claims</info>
+  <info>Atheist or anti-religion advocacy websites used as sources about religious beliefs</info>
+  <info>Social media and personal testimonial accounts used as primary sources</info>
+  <info>Content that argues for or against the truth of religious claims</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+  <source>youtube.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Religion name]''' is a [major world religion / religious tradition / new religious movement] that originated in [region] in [approximate period]. {{Citation needed}} It has approximately [number] adherents worldwide. {{Citation needed}} [One sentence on its central belief or distinguishing feature.] {{Citation needed}}
+
+== History ==
+[Description of the religion's origins and historical development, based on independent scholarly sources.] {{Citation needed}}
+
+== Beliefs and theology ==
+[Description of the religion's central beliefs, doctrines, and worldview, based on what scholars of religion have documented. Written in the third person and without evaluating the truth of the beliefs.] {{Citation needed}}
+
+== Practices ==
+[Description of the religion's main practices, rituals, and observances, based on academic sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Religions]]

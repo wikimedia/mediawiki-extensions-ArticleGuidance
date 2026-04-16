@@ -1,52 +1,65 @@
-<article-guidance article-type="Q5" notability-risk="sources wikidata crosswiki">
-	<instructions>
-		Make sure the subject meets Wikipedia's [[WP:BIOGRAPHIES|biographical notability guidelines]]. Living persons must be handled with particular care per [[WP:BLP]]. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Major national newspapers (e.g., The New York Times, The Guardian)</info>
-		<info>Books published by academic presses</info>
-		<info>Peer-reviewed journal articles</info>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>Social media profiles</info>
-		<info>Self-published blogs</info>
-		<info>Press releases from the subject</info>
-	</discouraged-sources>
+<article-guidance article-type="Q5" notability-risk="sources crosswiki">
+
+<instructions>
+Articles about people are among the most frequently deleted on Wikipedia. The person needs in-depth coverage from at least two articles published by renowned publishers, two years apart.
+
+Quick considerations:
+* Start with who this person is and why they are notable. Every claim needs a reliable, independent source that covers this person in depth; brief passing mentions or a single news story are not enough.
+* Write in the third person and keep a neutral tone throughout.
+* Don’t write about yourself, your family, or your friends.
+</instructions>
+
+<recommended-sources>
+  <info>Established encyclopaedias and biographical dictionaries</info>
+  <info>Official government or parliamentary records </info>
+  <info>Academic or peer-reviewed publications</info>
+  <info>Major newswires and outlets with editorial standards (e.g. Reuters, AP, BBC)</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Social media platforms and posts</info>
+  <info>Blogs and personal websites</info>
+  <info>Fan sites and fandom wikis</info>
+  <info>Promotional material, press releases and marketing content</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>linkedin.com</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>fandom.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>medium.com</source>
+  <source>imdb.com</source>
+  <source>substack.com</source>
+</discouraged-sources>
+
 </article-guidance>
-{{Infobox person}}
 
-[Full Name] (born [birth date] in [birthplace]) is a [nationality] [profession] known for [primary reason for notability]. [He/She/They] [brief additional notable fact, e.g., won the [Award Name] in [year] / directed [notable work] / led [organization]].
+'''[Full name]''' (born [date], [place of birth]) is a [nationality] [profession] known for [primary achievement or contribution]. {{Citation needed}} [He/She/They] [brief additional notable fact, e.g., won the [Award Name] in [year] / directed [notable work] / led [organization]]. {{Citation needed}}
 
-== Early life ==
-
-[Last Name] was born on [birth date] in [birthplace] to [parent description]. [He/She/They] attended [School Name] in [city], and later studied [subject] at [University Name], graduating in [year].
+== Early life==
+[Full name] was born on [date] in [place]. [He/She/They] grew up in [location]. {{Citation needed}} [Brief relevant detail about family background or upbringing if well sourced.]  {{Citation needed}}
+[Full name] attended [school or university], where [he/she/they] studied [subject], graduating in [year]. [He/She/They] first gained wider recognition in [year] when [early notable achievement]. {{Citation needed}}
 
 == Career ==
-
-=== Early career ===
-
-[Last Name] began [his/her/their] career at [Organization Name] in [year], where [he/she/they] [early role or contribution]. [He/She/They] first gained wider recognition in [year] when [early notable achievement].
-
-=== Major achievements ===
-
-[Last Name]'s most significant work is [work or achievement], which [impact or significance]. In [year], [he/she/they] received the [Award Name] for [reason].
-
-== Personal life ==
-
-[Last Name] married [Spouse Name] in [year] and has [number] children. [He/She/They] resides in [City, Country] and is known for [personal interest or charitable work].
+[Full name] began [his/her/their] career in [year] as [role or position]. [Key milestone or achievement]. [He/She/They] is best known for [notable work, contribution, or event, supported by sources]. {{Citation needed}}
 
 == Legacy ==
+[Full name] is recognised for [lasting contribution or impact]. [Any posthumous recognition or influence on the field.] {{Citation needed}}
 
-[Last Name] is regarded as [assessment of significance] in [field or discipline]. [His/Her/Their] work on [contribution] has influenced [subsequent developments or figures], and [he/she/they] is commemorated by [memorial, award, or institution named after them].
+
+
+
 
 == References ==
 
 <references>
 $1
 </references>
-
-== External links ==
-
-* [https://Official-Website-URL Official Website]
 
 [[Category:People]]

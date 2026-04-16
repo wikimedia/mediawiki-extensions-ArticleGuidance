@@ -1,0 +1,71 @@
+<article-guidance article-type="Q55215251" notability-risk="sources wikidata">
+
+<instructions>
+Articles about medical tests are appropriate only when the test is recognised in mainstream medical and scientific literature. Tests described only in non-peer-reviewed sources, promotional materials, or alternative medicine publications are not suitable for Wikipedia articles.
+Quick considerations:
+* Write from the perspective of established medical and scientific consensus.
+* Do not write in the second person. Wikipedia is a reference work, not a patient guide.
+* Cite peer-reviewed publications and clinical guidelines, not health journalism or patient information leaflets.
+* Distinguish clearly between what the test measures, what it is used to diagnose, and how it is performed.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed clinical and medical journals (e.g. The Lancet, NEJM, JAMA, BMJ)</info>
+  <info>World Health Organisation and national health authority guidance</info>
+  <info>Established medical reference works and clinical guidelines</info>
+  <info>Academic medical textbooks</info>
+  <source>who.int</source>
+  <source>nih.gov</source>
+  <source>pubmed.ncbi.nlm.nih.gov</source>
+  <source>nejm.org</source>
+  <source>thelancet.com</source>
+  <source>bmj.com</source>
+  <source>jamanetwork.com</source>
+  <source>nhs.uk</source>
+  <source>cdc.gov</source>
+  <source>cochranelibrary.com</source>
+  <source>emedicine.medscape.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Patient information websites used as primary sources</info>
+  <info>Health journalism used as a primary source</info>
+  <info>Alternative medicine websites</info>
+  <info>Manufacturer or laboratory websites used as the sole source</info>
+  <source>webmd.com</source>
+  <source>healthline.com</source>
+  <source>everydayhealth.com</source>
+  <source>verywellhealth.com</source>
+  <source>mayoclinic.org</source>
+  <source>drugs.com</source>
+  <source>naturalnews.com</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>patient.info</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Test name]''' is a medical test used to [purpose of the test: diagnose / screen for / monitor]. {{Citation needed}} It works by [brief description of the method or principle]. {{Citation needed}}
+
+== Medical uses ==
+[Test name] is used to [describe the clinical indications: what conditions it diagnoses, screens for, or monitors]. {{Citation needed}}
+
+== Procedure ==
+[Description of how the test is performed, based on clinical sources.] {{Citation needed}}
+
+== Interpretation ==
+[Description of what the results mean, including normal ranges and what abnormal results indicate, based on clinical sources.] {{Citation needed}}
+
+== Risks and limitations ==
+[Description of known limitations, false positive or negative rates, and any risks associated with the test.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Medical tests]]

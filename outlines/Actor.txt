@@ -1,68 +1,69 @@
-<article-guidance article-type="Q33999" notability-risk="sources wikidata crosswiki">
-	<instructions>
-		Ensure the subject meets Wikipedia's [[WP:ACTOR|notability guidelines for actors]]. Living persons must be handled with particular care per [[WP:BLP]]. Coverage should focus on significant professional work rather than personal life. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Reviews from major newspapers or film journals</info>
-		<info>Interviews in reputable media outlets</info>
-		<info>Books or academic works on film or theatre</info>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>Fan sites or blogs</info>
-		<info>Social media posts</info>
-		<info>Press releases from the subject or their agent</info>
-	</discouraged-sources>
-</article-guidance>
-{{Infobox person}}
+<article-guidance article-type="Q33999" notability-risk="wikidata junior">
 
-[Full Name] (born [birth date] in [birthplace]) is a [nationality] actor known for [primary role or work]. [He/She/They] first gained recognition in [year] with [notable role or production], and has since appeared in [notable works].
+<instructions>
+Articles about actors are frequently deleted unless the person has received significant coverage in reliable, independent sources. Appearing in a production, having an agent, or being credited in a film or series is not enough on its own. The person needs in-depth coverage from sources that are not connected to them or their work.
+Quick considerations:
+* Focus on the person's career and documented achievements, not their personal life.
+* Cite independent journalism and reviews, not the actor's own website, social media, or press releases from their management.
+* Do not write about yourself, your family, or your friends.
+* If the person is known primarily by a stage name, use that name as the article title and note their legal name in the introduction.
+</instructions>
+
+<recommended-sources>
+  <info>Established entertainment and film publications with editorial standards (e.g. Variety, The Hollywood Reporter, Screen International)</info>
+  <info>Major newswires and newspapers with arts coverage (e.g. The Guardian, AP, Reuters)</info>
+  <info>Peer-reviewed film studies or theatre publications</info>
+  <info>Official award body records (e.g. BAFTA, Academy Awards, Screen Actors Guild)</info>
+  <source>variety.com</source>
+  <source>hollywoodreporter.com</source>
+  <source>screendaily.com</source>
+  <source>theguardian.com/film</source>
+  <source>nytimes.com/section/arts</source>
+  <source>deadline.com</source>
+  <source>indiewire.com</source>
+  <source>empireonline.com</source>
+  <source>awardsdatabase.oscars.org</source>
+  <source>bafta.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The actor's own website, social media profiles, and press releases</info>
+  <info>Fan sites, fandom wikis, and follower-run accounts</info>
+  <info>Celebrity gossip websites and tabloids</info>
+  <info>IMDb used as a sole source (acceptable for factual credits only, not as evidence of notability)</info>
+  <source>imdb.com</source>
+  <source>tmz.com</source>
+  <source>pagesix.com</source>
+  <source>eonline.com</source>
+  <source>justjared.com</source>
+  <source>hollywoodlife.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>fandom.com</source>
+  <source>reddit.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Full name]''' (born [date], [place of birth]) is a [nationality] actor known for [primary role or notable work]. {{Citation needed}} [He/She/They] is best known for [key role or achievement]. {{Citation needed}}
 
 == Early life ==
-
-[Last Name] was born on [birth date] in [birthplace]. [He/She/They] developed an early interest in acting through [school plays / local theatre / drama school] and trained at [drama school or university] in [city].
+[Full name] was born on [date] in [place] and grew up in [location]. {{Citation needed}} [Brief relevant detail about background or early interest in acting if well sourced.] {{Citation needed}}
 
 == Career ==
+[Full name] began [his/her/their] acting career in [year]. [Description of key roles and career milestones in chronological order, based on independent sources.] {{Citation needed}}
 
-=== Early career ===
 
-[Last Name] began [his/her/their] professional career in [year] with [first notable role or production]. [He/She/They] built experience in [theatre / television / film] before achieving wider recognition.
 
-=== Breakthrough ===
 
-[Last Name] gained widespread attention in [year] for [his/her/their] role as [character] in [production]. The performance earned [him/her/them] [award nomination or critical acclaim].
-
-=== Notable works ===
-
-[Last Name]'s career has spanned [genres/media]. [His/Her/Their] most acclaimed performances include [work 1] ([year]) and [work 2] ([year]). [He/She/They] received the [Award Name] for [role] in [year].
-
-== Filmography ==
-
-=== Film ===
-
-* [Year] — ''[Film Title]'' as [Character Name]
-* [Year] — ''[Film Title]'' as [Character Name]
-
-=== Television ===
-
-* [Year–Year] — ''[Series Title]'' as [Character Name]
-
-=== Theatre ===
-
-* [Year] — ''[Play Title]'' as [Character Name] ([Theatre Name], [City])
-
-== Personal life ==
-
-[Last Name] [brief, encyclopedically relevant personal information if notable]. Avoid excessive personal detail per [[WP:BLP]].
 
 == References ==
-
 <references>
 $1
 </references>
-
-== External links ==
-
-* [https://IMDb-URL IMDb entry]
-* [https://Official-Website-URL Official Website]
-
 [[Category:Actors]]

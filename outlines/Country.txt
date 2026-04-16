@@ -1,0 +1,67 @@
+<article-guidance article-type="Q6256" notability-risk="wikidata">
+
+<instructions>
+Sovereign countries recognised by the United Nations or by a significant number of UN member states are considered notable and do not require additional sourcing to create an article. The article should accurately represent the country as described in reliable, independent sources.
+Quick considerations:
+* Write from a neutral perspective. Avoid language that takes sides in territorial disputes or political controversies.
+* Use the country's official name in the lead, followed by the commonly used name where they differ.
+* Demographic and economic data should be sourced from official national statistics, the UN, or the World Bank.
+* Do not use the article to advocate for any political position about the country's government or status.
+</instructions>
+
+<recommended-sources>
+  <info>United Nations publications and databases</info>
+  <info>World Bank and IMF economic data</info>
+  <info>National statistics offices and government publications for factual data</info>
+  <info>Established international news agencies and major newspapers for current events</info>
+  <info>Academic peer-reviewed publications for history, geography, and culture</info>
+  <source>un.org</source>
+  <source>worldbank.org</source>
+  <source>imf.org</source>
+  <source>cia.gov/the-world-factbook</source>
+  <source>britannica.com</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>bbc.com/news</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Government or state-controlled media used as the sole source for contested claims</info>
+  <info>Politically partisan sources for contested historical or territorial claims</info>
+  <info>Tourism promotion websites used as a primary source</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Country name]''', officially [official name], is a country in [region]. {{Citation needed}} It covers an area of [area] and has a population of approximately [population]. {{Citation needed}} The capital is [capital city] and the official language is [language]. {{Citation needed}}
+
+== History ==
+[Brief description of the country's historical origins and key periods, based on independent scholarly sources.] {{Citation needed}}
+
+== Geography ==
+[Country name] is located in [region], bordered by [neighbouring countries]. [Description of main geographical features and climate.] {{Citation needed}}
+
+== Politics ==
+[Country name] is a [form of government]. [Description of the current governmental system and key institutions.] {{Citation needed}}
+
+== Administrative divisions ==
+[Country name] is divided into [type of subdivisions, e.g. provinces / states / departments]. [Overview of the main subdivisions.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Countries]]

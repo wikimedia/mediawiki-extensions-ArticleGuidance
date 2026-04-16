@@ -1,0 +1,64 @@
+<article-guidance article-type="Q6999">
+<instructions>
+Astronomical objects (stars, planets, galaxies, nebulae, asteroids, comets, and other objects observed beyond Earth's atmosphere) are generally appropriate subjects for Wikipedia articles when they are catalogued in an authoritative astronomical database and have been the subject of peer-reviewed scientific publications.
+Quick considerations:
+* Use the object's standard catalogue designation as the article title (e.g. NGC 224, HD 40307). If the object has a widely used common name, use that and include the catalogue designation in the lead.
+* Base all physical and scientific claims on peer-reviewed publications or authoritative astronomical databases.
+* Do not include speculative content about extraterrestrial life or unverified discoveries.
+* Cite the discovery paper and catalogue entry for basic facts. Do not rely on news articles or popular science magazines as the sole source.
+* For Solar System objects, follow Wikipedia:WikiProject Solar System guidelines.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed astrophysics and astronomy journals (e.g. The Astrophysical Journal, Astronomy & Astrophysics, Monthly Notices of the Royal Astronomical Society)</info>
+  <info>NASA and ESA databases and mission publications</info>
+  <info>Authoritative astronomical catalogues (e.g. NGC, Messier, SIMBAD, VizieR)</info>
+  <info>IAU (International Astronomical Union) publications and circulars</info>
+  <info>Established astronomical reference works</info>
+  <source>simbad.u-strasbg.fr</source>
+  <source>vizier.u-strasbg.fr</source>
+  <source>nasa.gov</source>
+  <source>esa.int</source>
+  <source>iau.org</source>
+  <source>arxiv.org/astro-ph</source>
+  <source>adsabs.harvard.edu</source>
+  <source>aavso.org</source>
+  <source>minorplanetcenter.net</source>
+  <source>jpl.nasa.gov</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>General interest science journalism used as the sole source for physical data</info>
+  <info>Social media posts and amateur astronomy forums used as primary sources</info>
+  <info>Speculative or fringe claims about the object's nature</info>
+  <info>User-generated astronomy databases used as the sole source</info>
+  <source>space.com</source>
+  <source>universetoday.com</source>
+  <source>reddit.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>youtube.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Object name]''' ([catalogue designation]) is a [type: spiral galaxy / red giant / asteroid] located [in the constellation [Name] / at a distance of approximately [distance] from Earth]. {{Citation needed}} [One sentence on its most notable characteristic or significance.] {{Citation needed}}
+
+== Observation ==
+[Object name] was first observed [or catalogued] by [observer] in [year]. {{Citation needed}} [Description of how the object was discovered and documented.] {{Citation needed}}
+
+== Physical characteristics ==
+[Description of the object's key physical properties: size, mass, luminosity, temperature, spectral type, or composition, based on peer-reviewed sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Astronomical objects]]

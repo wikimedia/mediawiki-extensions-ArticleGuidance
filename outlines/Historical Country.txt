@@ -1,0 +1,69 @@
+<article-guidance article-type="Q3024240" notability-risk="wikidata">
+
+<instructions>
+Articles about historical countries, states, or territories that no longer exist are appropriate when they have received significant coverage in reliable, independent scholarly sources. The article should accurately represent the entity as documented in historical sources, not through speculation or original research.
+Quick considerations:
+* Use past tense throughout, as the country no longer exists.
+* Clearly state the dates of existence and the circumstances of foundation and dissolution.
+* Base the article on what historians have documented. Do not speculate about the country's nature or significance beyond what sources say.
+* Distinguish clearly between the historical territory and any modern country that may occupy the same geographic area.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed academic history journals and books</info>
+  <info>Established encyclopaedia entries on the historical entity</info>
+  <info>Primary sources used with appropriate scholarly interpretation</info>
+  <info>Major university press publications on the relevant period and region</info>
+  <source>britannica.com</source>
+  <source>jstor.org</source>
+  <source>oxfordreference.com</source>
+  <source>cambridge.org</source>
+  <source>brill.com</source>
+  <source>degruyter.com</source>
+  <source>history.com</source>
+  <source>worldhistory.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Nationalist or politically motivated sources that present contested historical claims as fact</info>
+  <info>User-generated encyclopaedias or wiki sites other than Wikipedia</info>
+  <info>Genealogy or heritage websites used as primary sources for historical claims</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>reddit.com</source>
+  <source>facebook.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>ancestry.com</source>
+  <source>fandom.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Country name]''' was a [type: kingdom / republic / empire] that existed from [start date] to [end date] in [region]. {{Citation needed}} It was founded [brief founding circumstances] and came to an end [brief dissolution circumstances]. {{Citation needed}}
+
+== History ==
+[Narrative of the country's history from foundation to dissolution, based on independent scholarly sources.] {{Citation needed}}
+
+== Geography ==
+[Description of the territory's geographic extent and main features during its existence.] {{Citation needed}}
+
+== Government and politics ==
+[Description of the country's governmental structure and political system during its existence.] {{Citation needed}}
+
+== Economy ==
+[Description of the country's main economic activities during its existence.] {{Citation needed}}
+
+== Legacy ==
+[Description of the country's historical legacy and influence on subsequent states or territories, based on scholarly sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Historical countries]]

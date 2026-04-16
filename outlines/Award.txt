@@ -1,0 +1,63 @@
+<article-guidance article-type="Q618779" notability-risk="sources">
+<instructions>
+Articles about awards are appropriate when the award has received significant coverage in reliable, independent sources. An award being given regularly, or being awarded by a notable organisation, does not by itself establish notability. Coverage must be substantive and address the award itself, not just list its recipients.
+Quick considerations:
+* Focus on what the award is for, who gives it, and why it is significant - not solely on listing recipients.
+* Cite independent sources that cover the award itself, not just press releases from the awarding body.
+* Do not write about an award given by an organisation you are affiliated with.
+* Avoid making the article a directory of past winners. If the list is long, it belongs in a separate list article.
+* If another article exists for the award name, adjust the title to include the awarding organisation or field in parentheses.
+</instructions>
+
+<recommended-sources>
+  <info>Established journalism and cultural publications that cover the award's field (e.g. arts, sciences, sports)</info>
+  <info>Major newswires for factual reporting on award ceremonies</info>
+  <info>Academic publications in the relevant field that discuss the award's significance</info>
+  <info>Official records of the awarding body used for factual data only (not as evidence of notability)</info>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>bbc.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+  <source>britannica.com</source>
+  <source>jstor.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The awarding organisation's own website used as the sole source</info>
+  <info>Press releases and promotional materials from the awarding body</info>
+  <info>Social media accounts of winners or the awarding organisation used as primary sources</info>
+  <info>Fan sites and community databases used as the sole source</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+</discouraged-sources>
+
+
+</article-guidance>
+
+The '''[award name]''' is an award given [annually / periodically] by [awarding body] to [recipients: individuals / organisations] in recognition of [criterion: achievement in / contribution to / excellence in]. {{Citation needed}} [One sentence on when it was established and its significance in its field.] {{Citation needed}}
+
+== History ==
+[Description of when and why the award was established, based on independent sources.] {{Citation needed}}
+
+== Selection and criteria ==
+[Description of how recipients are selected and what the award recognises, based on independent sources.] {{Citation needed}}
+
+== Recipients ==
+[Brief overview of notable recipients where independently documented. For long lists, link to a separate list article: {{main|List of [award name] recipients}}] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Awards]]

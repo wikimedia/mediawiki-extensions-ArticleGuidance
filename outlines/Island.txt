@@ -1,0 +1,64 @@
+<article-guidance article-type="Q23442">
+
+<instructions>
+Islands that are named, listed in authoritative databases, and historically relevant, are appropriate subjects for articles. Very small or uninhabited islands may be notable if they have received significant independent coverage or have geographic, historical, or ecological significance.
+Quick considerations:
+* State the island's location, size, and administrative status clearly in the lead.
+* Use authoritative geographic databases and national statistics for factual data.
+* Distinguish between the island as a geographic feature and any settlement or administrative unit on it.
+* Do not write about an island solely because you live there or have a personal connection to it.
+</instructions>
+
+<recommended-sources>
+  <info>Official national geographic surveys and mapping agencies</info>
+  <info>National statistics offices for population and administrative data</info>
+  <info>Peer-reviewed geography and earth sciences journals</info>
+  <info>Established reference works on geography</info>
+  <source>britannica.com</source>
+  <source>cia.gov/the-world-factbook</source>
+  <source>geographic.org</source>
+  <source>islands.unep.ch</source>
+  <source>bbc.com/news</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>jstor.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Tourism promotion websites used as a primary source</info>
+  <info>Social media and travel blogs</info>
+  <info>User-generated mapping platforms used as the sole source (e.g. Google Maps descriptions)</info>
+  <source>tripadvisor.com</source>
+  <source>lonelyplanet.com (as a primary source)</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Island name]''' is an island located in [body of water], [country or territory]. {{Citation needed}} It has an area of approximately [area] and a population of [population or uninhabited]. {{Citation needed}} [One sentence on notable characteristics such as administrative status, ecological significance, or historical role.] {{Citation needed}}
+
+== Geography ==
+[Island name] is situated at [coordinates] in [body of water]. [Description of the island's size, terrain, and geographic features.] {{Citation needed}}
+
+== History ==
+[Description of the island's documented history, based on independent sources.] {{Citation needed}}
+
+== Ecology ==
+[Description of the island's flora, fauna, and ecological features, based on scientific sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Islands]]

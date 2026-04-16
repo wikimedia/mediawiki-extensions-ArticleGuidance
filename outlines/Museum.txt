@@ -1,50 +1,72 @@
-<article-guidance article-type="Q33506" notability-risk="sources wikidata">
-	<instructions>
-		Make sure you are not personally affiliated with the [[museum]] in any way, shape or form! [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Articles from major newspapers or art/culture magazines</info>
-		<info>Academic publications on museum studies or art history</info>
-		<info>Official government or cultural institution reports</info>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>Museum's own promotional materials</info>
-		<info>Personal blogs or travel websites</info>
-		<info>Social media posts</info>
-	</discouraged-sources>
+<article-guidance article-type="Q33506" notability-risk="wikidata junior">
+
+<instructions>
+Articles about museums are appropriate when the museum has received significant coverage in reliable, independent sources. Being open to the public or holding a permanent collection does not by itself establish notability. Coverage must be substantive and come from sources that are not the museum's own promotional materials.
+
+Quick considerations:
+* State the museum's location, type, and founding date clearly in the introduction.
+* Describe the collection based on what independent sources say, not solely on the museum's own promotional materials.
+* Do not write about a museum you are employed by or affiliated with.
+* Avoid promotional language. Do not describe the museum as 'world-class' or 'one of the finest' unless directly supported by a cited independent source.
+</instructions>
+
+<recommended-sources>
+  <info>Established arts and culture publications with editorial standards</info>
+  <info>Major newspaper arts and culture sections</info>
+  <info>Peer-reviewed museum studies, art history, and heritage publications</info>
+  <info>Official government cultural bodies and arts councils for factual registration data</info>
+  <source>theguardian.com/culture</source>
+  <source>nytimes.com/section/arts</source>
+  <source>artnews.com</source>
+  <source>artforum.com</source>
+  <source>apollo-magazine.com</source>
+  <source>icom.museum</source>
+  <source>jstor.org</source>
+  <source>britannica.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The museum's own website, press releases, and promotional materials used as the sole source</info>
+  <info>Travel and tourism websites used as a primary source</info>
+  <info>Social media and visitor reviews</info>
+  <source>tripadvisor.com</source>
+  <source>lonelyplanet.com</source>
+  <source>timeout.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>yelp.com</source>
+</discouraged-sources>
+
 </article-guidance>
-{{Infobox museum}}
 
-The [Museum Name] is a [type, e.g., art/natural history/science] museum located in [City, Country]. Founded in [year], the museum holds a collection of [brief description of holdings].
-
-== Location ==
-
-The [Museum Name] is situated at [address] in [neighborhood], [City]. It is accessible by [public transport options] and is located [proximity to a landmark or city centre].
+The '''[museum name]''' is a [type:art museum / natural history museum / science museum] located in [city], [country]. {{Citation needed}} Founded in [year], it holds a collection of [brief description of collection focus]. {{Citation needed}} [One sentence on its significance or notable holdings, based on independent sources.] {{Citation needed}}
 
 == History ==
 
-The [Museum Name] was founded in [year] by [founder or institution]. Originally housed in [first location], it moved to its current premises in [year].
+The [Museum name] was founded in [year] by [founder or founding organisation]. [Description of key milestones in the museum's history, based on independent sources.] {{Citation needed}}
 
-{{Timeline}}
+== Collection ==
 
-== Collections ==
+The museum's collection includes [description of the main areas of the collection, based on independent coverage rather than solely the museum's own promotional materials]. {{Citation needed}}
 
-=== Permanent collections ===
+== Building ==
 
-The museum's permanent collection includes [collection name], comprising [number] works of [type]. Notable holdings include [specific work or artifact] by [creator], dating from [period].
+The museum is housed in [description of the building, its architecture, and history if well-sourced].] {{Citation needed}}
 
-=== Temporary exhibits ===
 
-The museum currently presents [Exhibition Name] ([opening date] – [closing date]), featuring [brief description of exhibit content and origin].
+
+
+
 
 == References ==
 
 <references>
 $1
 </references>
-
-== External links ==
-
-* [https://Official-Website-URL Official Website]
 
 [[Category:Museums]]

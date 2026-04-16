@@ -1,0 +1,76 @@
+<article-guidance article-type="Q639669" notability-risk="sources junior">
+
+<instructions>
+Articles about musicians are appropriate when the person has received significant coverage in reliable, independent sources. Being active as a musician, having released recordings, or having performed publicly does not by itself establish notability. The person needs in-depth coverage from sources that are not connected to them or their management.
+Quick considerations:
+* Focus on the person's career and documented achievements, not their personal life unless it is well-sourced and significant for general reference.
+* Cite established music publications and major news outlets, not the musician's own website, social media, or press releases.
+* Do not list every song or performance. Focus on significant works supported by independent sources.
+* Do not write about yourself, your family, or your friends.
+</instructions>
+
+<recommended-sources>
+  <info>Established music publications with editorial standards (e.g. Rolling Stone, Pitchfork, NME, Billboard, AllMusic)</info>
+  <info>Major newspapers and broadcasters with music criticism and arts coverage</info>
+  <info>Official award body records (e.g. Grammy Awards, Mercury Prize, BRIT Awards)</info>
+  <info>Peer-reviewed musicology publications</info>
+  <source>rollingstone.com</source>
+  <source>pitchfork.com</source>
+  <source>nme.com</source>
+  <source>billboard.com</source>
+  <source>allmusic.com</source>
+  <source>theguardian.com/music</source>
+  <source>nytimes.com/section/arts/music</source>
+  <source>bbc.co.uk/music</source>
+  <source>grammy.com</source>
+  <source>metacritic.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The musician's own website, social media profiles, and press releases</info>
+  <info>Fan sites and unofficial biography sites</info>
+  <info>Streaming platform data used as the sole evidence of notability</info>
+  <info>Music databases used as the sole source (e.g. Discogs, MusicBrainz)</info>
+  <source>discogs.com</source>
+  <source>musicbrainz.org</source>
+  <source>rateyourmusic.com</source>
+  <source>last.fm</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>soundcloud.com</source>
+  <source>spotify.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Full name]''' (born [date], [place of birth]) is a [nationality] [musician type: singer-songwriter / guitarist / composer] known for [primary genre or notable work]. {{Citation needed}} [He/She/They] is best known for [key achievement or work]. {{Citation needed}}
+
+== Early life ==
+[Full name] was born on [date] in [place]. {{Citation needed}} [Brief well-sourced background on early life and musical education or influences, if documented in independent sources.] {{Citation needed}}
+
+== Career ==
+[Full name] began [his/her/their] musical career in [year]. [Description of key career milestones, recordings, and performances in chronological order, based on independent sources.] {{Citation needed}}
+
+== Musical style ==
+[Full name]'s music is characterised by [description of style, genre, and notable musical features, based on what critics and music scholars have written.] {{Citation needed}}
+
+== Discography ==
+[Brief summary of major releases. A full discography is maintained in a separate article.]
+
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Musicians]]

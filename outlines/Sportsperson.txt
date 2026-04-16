@@ -1,0 +1,50 @@
+<article-guidance article-type="Q2066131" notability-risk="sources junior">
+
+<instructions>
+Articles about sportspeople are frequently deleted unless the person has received significant coverage in reliable, independent sources. Participation alone — even at a professional level — is generally not enough. The person needs in-depth coverage, not just statistics or match results in sports databases.
+
+Quick considerations:
+
+* Focus on what makes this person notable beyond their statistics.
+* Cite independent journalism, not just databases or club websites. Results and stats alone do not establish notability — the coverage around them does.
+* Don’t write about yourself, your family, or your friends.
+
+</instructions>
+
+<recommended-sources>
+  <info>Established sports journalism outlets with editorial standards (e.g. ESPN, BBC Sport, L'Équipe), </info>
+  <info>Official league, federation or governing body records, Peer-reviewed sports science or biographical publications</info>
+  <info>Major newswires covering sport (e.g. Reuters, AP)</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Sports statistics databases used as the sole source (e.g. Transfermarkt, Soccerway, Basketball-Reference) 	</info>
+  <info>Fan sites, supporter blogs and club forums</info>
+  <info>Social media accounts including the athlete's own profiles</info>
+  <info>Self-published sources including athlete websites and press releases</info>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Full name]''' (born [date], [place of birth]) is a [nationality] [profession] known for [primary achievement or contribution]. {{Citation needed}} [He/She/They] [brief additional notable fact, e.g., won the [Award Name] in [year] / directed [notable work] / led [organization]]. {{Citation needed}}
+
+== Early life ==
+[Full name] was born on [date] in [place]. [He/She/They] grew up in [location]. {{Citation needed}} [Brief relevant detail about family background or upbringing if well sourced.]  {{Citation needed}}
+
+== Professional career ==
+[Describe significant steps in the career] {{Citation needed}}
+
+== Honours and achievements ==
+* [Competition and year]  {{Citation needed}}
+* [Competition and year]  {{Citation needed}}
+
+
+
+== References ==
+
+<references>
+$1
+</references>
+
+[[Category:Sportspeople]]

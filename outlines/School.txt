@@ -1,48 +1,71 @@
-<article-guidance article-type="Q3914" notability-risk="sources draft">
-	<instructions>
-		Make sure the school meets Wikipedia's [[WP:ORG|notability guidelines for organizations]]. Most primary and secondary schools are not considered notable unless they have received significant coverage in reliable, independent sources beyond routine school listings or local news. The school must be described by multiple independent, reliable secondary sources—not the school's own website, yearbooks, or local directories. Avoid promotional or boosterish language; describe the school factually and neutrally per [[WP:NPOV]]. Do not include lists of current students, staff rosters, recent sports results, or routine school events. Focus on what makes the school historically, architecturally, or culturally significant. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Articles from local or national newspapers</info>
-		<info>Books or academic studies on education or local history</info>
-		<info>Official government inspection or accreditation reports</info>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>School's own website or newsletters</info>
-		<info>Alumni association blogs</info>
-		<info>Social media posts</info>
-	</discouraged-sources>
-</article-guidance>
-{{Infobox school}}
+<article-guidance article-type="Q112872396" notability-risk="sources junior">
 
-[School Name] is a [type, e.g., state secondary/independent grammar] school located in [City, Country], founded in [year]. It is notable for [reason for notability supported by independent sources].
+<instructions>
+Senior secondary schools (educating students to at least age 15) are generally considered notable. Primary and middle schools are typically not notable enough for their own Wikipedia article unless they have received significant independent coverage. The article must be based on reliable, third-party sources, not the school's own website.
+Quick considerations:
+*Explain what makes this school notable, its history, alumni, programmes, or achievements documented in independent sources.
+*Avoid promotional language: rankings claims, admissions boasts, and superlatives must be supported by cited independent sources.
+*Do not write about a school you attended, work at, or are affiliated with.
+*Primary and elementary schools do not normally meet notability requirements and should not have standalone articles.
+</instructions>
+
+<recommended-sources>
+  <info>Local and national news coverage of the school in established outlets</info>
+  <info>Government education authority records, Ofsted or equivalent inspection reports</info>
+  <info>Official exam results and league tables published by government bodies</info>
+  <info>Historical records and local heritage archives</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The school's own website, prospectus, or social media</info>
+  <info>Student or alumni blogs and personal accounts</info>
+  <info>Promotional content, press releases, and school newsletters</info>
+  <info>Unverified claims about rankings or awards</info>
+  <info>School ranking websites that compile data without editorial oversight</info>
+  <source>greatschools.org</source>
+  <source>schooldigger.com</source>
+  <source>niche.com</source>
+  <source>usnews.com/education</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>linkedin.com</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>fandom.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>medium.com</source>
+  <source>imdb.com</source>
+  <source>substack.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[School name]''' is a [type, e.g. state secondary school / private academy] located in [location]. {{Citation needed}} It was founded in [year] and serves [brief description of student population or age range]. {{Citation needed}}
 
 == History ==
+[School name] was established in [year]. [Description of key milestones in the school's history, based on independent sources.] {{Citation needed}}
 
-[School Name] was founded in [year] by [founder or authority] with the original purpose of [mission]. The school relocated to its current site in [year] and was expanded in [year] following [reason for expansion].
-
-== Campus and facilities ==
-
-The school occupies a [area] site in [location]. Its main building, constructed in [year] in [architectural style], has been listed as [heritage designation] since [year]. The campus also includes [notable facility].
-
-== Academics ==
-
-[School Name] follows the [curriculum framework] and specialises in [subject area or magnet programme]. In the [year] [inspection body] report, the school was rated [grade] overall, with inspectors noting [specific finding from report].
+== Curriculum and academics ==
+[Brief description of the curriculum and any distinctive academic programmes. Focus on aspects unique to the school and supported by sources.] {{Citation needed}}
 
 == Notable alumni ==
+*[Name], [brief description of notability], [years attended] {{Citation needed}}
+*[Name], [brief description of notability], [years attended] {{Citation needed}}
 
-* [[Alumni Name]], [brief description of notability]
-* [[Alumni Name]], [brief description of notability]
-* [[Alumni Name]], [brief description of notability]
+
+
+
 
 == References ==
-
 <references>
 $1
 </references>
-
 == External links ==
-
 * [https://Official-Website-URL Official Website]
-
 [[Category:Schools]]

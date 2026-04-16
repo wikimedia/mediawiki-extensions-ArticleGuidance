@@ -1,0 +1,69 @@
+<article-guidance article-type="Q756">
+
+<instructions>
+Any plant species that has been given a formal scientific name in a peer-reviewed publication is considered appropriate for a Wikipedia article. The article should accurately represent current scientific understanding based on peer-reviewed sources.
+Quick considerations:
+* Use the species' common name as the article title where one exists, and include the scientific name in the lead.
+* Plant species names (common names) are not capitalised unless they contain a proper noun.
+* Base all scientific claims on peer-reviewed publications and authoritative botanical references.
+* Conservation status should follow the IUCN Red List where available.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed botany, plant biology, and ecology journals</info>
+  <info>IUCN Red List for conservation status</info>
+  <info>Authoritative botanical databases (e.g. Plants of the World Online, Kew Gardens, USDA PLANTS)</info>
+  <info>Established botanical reference works and floras</info>
+  <source>powo.science.kew.org</source>
+  <source>iucnredlist.org</source>
+  <source>plants.usda.gov</source>
+  <source>catalogueoflife.org</source>
+  <source>jstor.org</source>
+  <source>nature.com</source>
+  <source>science.org</source>
+  <source>eol.org</source>
+  <source>britannica.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Gardening websites and horticultural retailers used as scientific sources</info>
+  <info>Alternative medicine or herbal remedy websites</info>
+  <info>Social media and plant photography sites used as scientific sources</info>
+  <source>gardenersworld.com</source>
+  <source>rhs.org.uk</source>
+  <source>naturalnews.com</source>
+  <source>healthline.com</source>
+  <source>reddit.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>youtube.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+The '''[common name]''' (''[scientific name]'') is a species of [plant type, e.g. flowering plant / fern / tree] in the family [family name]. {{Citation needed}} It is native to [geographic range]. {{Citation needed}} [One sentence on its most distinctive characteristic, use, or conservation status.] {{Citation needed}}
+
+== Taxonomy ==
+The [common name] was first formally described by [authority name] in [year]. {{Citation needed}} [Description of taxonomic history and classification.] {{Citation needed}}
+
+== Description ==
+[Description of the plant's physical characteristics including growth habit, leaves, flowers, and fruit, that distinguish it from closely related species.] {{Citation needed}}
+
+== Distribution and habitat ==
+The [common name] is native to [geographic range]. [Description of the habitats and conditions in which the species grows.] {{Citation needed}}
+
+== Ecology ==
+[Description of the plant's ecological relationships, including pollinators, seed dispersers, and interactions with its environment.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Plants]]

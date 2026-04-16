@@ -1,0 +1,68 @@
+<article-guidance article-type="Q112193867" notability-risk="sources wikidata">
+
+<instructions>
+Articles about diseases are only appropriate when the condition is recognised by mainstream medical sources. Self-diagnosed conditions, informal illness categories, and conditions described only in non-peer-reviewed sources are not suitable for Wikipedia articles.
+
+Quick considerations:
+
+*Write from the perspective of established medical and scientific consensus. Avoid fringe theories or unverified treatments.
+
+*Use medical terminology correctly and link technical terms on first use.
+
+*Do not write in the second person ("you may experience..."). Wikipedia is an encyclopaedia, not a patient information leaflet.
+
+*Cite peer-reviewed publications, clinical guidelines and recognised medical organisations, not news articles or personal accounts.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed journals and clinical publications (e.g. The Lancet, NEJM, JAMA, BMJ)</info>
+  <info>World Health Organisation and national health authorities</info>
+  <info>Established medical reference works (e.g. MeSH, ICD classifications)</info>
+  <info>Academic medical textbooks</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Patient forums and health support communities</info>
+  <info>News articles and health journalism used as primary sources</info>
+  <info>Alternative medicine websites</info>
+  <info>Social media and personal accounts</info>
+  <source>webmd.com</source>
+  <source>healthline.com</source>
+  <source>mayoclinic.org</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>medium.com</source>
+  <source>wordpress.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Disease name]''' is a [acute/chronic] [type of condition] characterised by [key defining features]. {{Citation needed}} It primarily affects [affected population or body system] and is caused by [main cause or mechanism, if known]. {{Citation needed}}
+
+== Signs and symptoms ==
+The most common signs and symptoms of [disease name] include [list key symptoms]. {{Citation needed}} In more severe cases, [complications or advanced symptoms]. {{Citation needed}}
+
+== Causes ==
+[Disease name] is caused by [main cause]. {{Citation needed}} Risk factors include [list of risk factors]. {{Citation needed}}
+
+== Diagnosis ==
+[Disease name] is typically diagnosed through [diagnostic method]. {{Citation needed}}
+
+== Treatment ==
+Treatment for [disease name] includes [main treatment approaches]. {{Citation needed}}
+
+== Prognosis ==
+The expected outcome for individuals with [disease name] is [general outlook]. {{Citation needed}} Factors that influence the prognosis include [list factors like age, comorbidities, or stage at diagnosis]. {{Citation needed}} Without treatment, the condition may lead to [long-term effects or mortality risk], while with appropriate management, [expected quality of life or recovery rate]. {{Citation needed}}
+
+== Epidemiology ==
+[Disease name] affects approximately [number or proportion] of [population]. {{Citation needed}}
+
+
+
+
+
+== References ==
+<references />
+
+[[Category:Diseases]]

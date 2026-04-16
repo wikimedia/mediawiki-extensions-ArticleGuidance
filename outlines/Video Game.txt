@@ -1,0 +1,75 @@
+<article-guidance article-type="Q7889" notability-risk="wikidata junior">
+
+<instructions>
+Articles about video games are appropriate when the game has received significant coverage in reliable, independent sources. Being available for download, having many players, or being listed in a store does not by itself establish notability. Coverage must be substantive and come from sources that are not the game's publisher or developer.
+Quick considerations:
+* Write from a neutral, encyclopedic perspective. Do not describe the game in promotional terms.
+* Cite independent game publications and reviews, not the publisher's own press releases or official game website.
+* Do not write about a game you have developed or are affiliated with.
+* If the game is part of a series, check whether a standalone article is needed or whether the information belongs in the series article.
+* Avoid in-universe writing. Describe the game's mechanics and plot from an outside perspective.
+* If another article exists for the game title, adjust the title to include the year in parentheses, for example: "[Game title] (2023 video game)".
+</instructions>
+
+<recommended-sources>
+  <info>Established games journalism publications with editorial standards (e.g. IGN, Eurogamer, PC Gamer, Kotaku, Polygon, Rock Paper Shotgun)</info>
+  <info>Major newspaper technology and culture sections</info>
+  <info>Peer-reviewed game studies and digital culture academic publications</info>
+  <info>Official sales data and chart organisations (e.g. NPD Group, GSD)</info>
+  <source>ign.com</source>
+  <source>eurogamer.net</source>
+  <source>pcgamer.com</source>
+  <source>polygon.com</source>
+  <source>kotaku.com</source>
+  <source>rockpapershotgun.com</source>
+  <source>gamespot.com</source>
+  <source>theguardian.com</source>
+  <source>metacritic.com</source>
+  <source>opencritic.com</source>
+  <source>gamesradar.com</source>
+  <source>edge-online.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The developer's or publisher's own website, press releases, and promotional materials used as the sole source</info>
+  <info>Fan wikis and player-community sites</info>
+  <info>User review aggregators used as the sole source (e.g. Steam user reviews, Metacritic user scores)</info>
+  <info>Streaming platforms and social media used as evidence of notability</info>
+  <source>steampowered.com</source>
+  <source>fandom.com</source>
+  <source>gamefaqs.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>reddit.com</source>
+  <source>youtube.com</source>
+  <source>tiktok.com</source>
+  <source>twitch.tv</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Game title]''' is a [year] [genre] video game developed by [developer] and published by [publisher]. {{Citation needed}} [One sentence on platform(s) and release context.] {{Citation needed}} [One sentence on reception or significance.] {{Citation needed}}
+
+== Gameplay ==
+[Description of the game's core mechanics, perspective, and player objectives, based on what independent sources have described. Do not reproduce in-game tutorials or official feature lists.] {{Citation needed}}
+
+== Plot ==
+[Summary of the game's narrative, written in the present tense. Keep to essential story beats. Avoid spoiler-style descriptions that withhold information.] {{Citation needed}}
+
+== Development ==
+[Description of how the game was developed: studio, engine, development timeline, and any notable production circumstances, based on independent sources.] {{Citation needed}}
+
+== Reception ==
+[Game title] received [description of critical and commercial reception, based on independent reviews. Include aggregate review scores and notable awards where relevant.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Video games]]

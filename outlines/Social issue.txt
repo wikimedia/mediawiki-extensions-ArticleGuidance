@@ -1,0 +1,86 @@
+<article-guidance article-type="Q1920219" notability-risk="sources wikidata">
+
+<instructions>
+Articles about social issues — poverty, discrimination, homelessness, inequality, and similar problems affecting communities or societies — are appropriate when the issue is documented in reliable, independent sources such as academic research, government reports, or established journalism. Wikipedia articles on social issues must present multiple perspectives neutrally and be grounded in evidence. They should not advocate for a particular political position or serve as a platform for activism.
+
+Quick considerations:
+* Write from a neutral point of view. Social issues are often contested — present the range of documented perspectives without taking sides.
+* Base the article on peer-reviewed research, government data, and established journalism. Avoid relying solely on advocacy organisations as sources.
+* Distinguish between documented facts (statistics, research findings) and contested claims (causes, solutions, policy positions).
+* Do not write the article as a call to action or use language that advocates for a particular political response.
+* If the issue is primarily local or affects a specific country, make that scope clear in the introduction rather than presenting it as a universal phenomenon.
+
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed academic journals in sociology, economics, public health, and related fields</info>
+  <info>Government statistical agencies and official reports (e.g. national census data, UN reports, World Bank data)</info>
+  <info>Established international organisations with research divisions (e.g. WHO, UNICEF, ILO, OECD)</info>
+  <info>Major newspapers and newswires with editorial standards and fact-checking</info>
+  <info>Established think tanks and research institutes where methodology is transparent and publicly documented</info>
+  <source>un.org</source>
+  <source>worldbank.org</source>
+  <source>who.int</source>
+  <source>oecd.org</source>
+  <source>unicef.org</source>
+  <source>ilo.org</source>
+  <source>jstor.org</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>bbc.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Advocacy organisations and NGOs used as the sole source for factual or statistical claims</info>
+  <info>Opinion pieces and editorials used as sources of fact</info>
+  <info>Social media posts and personal testimonials used as primary sources</info>
+  <info>Partisan political websites and campaign materials</info>
+  <info>Blogs and personal websites without editorial oversight</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>change.org</source>
+  <source>gofundme.com</source>
+  <source>substack.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Issue name]''' is a social issue characterised by [brief definition of the problem]. {{Citation needed}} It affects [affected population or communities] and has been documented across [scope: specific countries / regions / globally]. {{Citation needed}} [One sentence on scale or significance, based on research or official data.] {{Citation needed}}
+
+== Definition and scope ==
+
+[Description of how the issue is defined in academic and policy literature, including any variation in definition across contexts or disciplines.] {{Citation needed}}
+
+== Causes ==
+
+[Description of the documented causes and contributing factors, based on peer-reviewed research and official reports. Where causes are contested, present the range of scholarly perspectives.] {{Citation needed}}
+
+== Effects ==
+
+[Description of the documented effects on individuals, communities, and society, based on research and official data.] {{Citation needed}}
+
+== Responses and policy ==
+
+[Description of documented responses to the issue: government policies, international frameworks, community initiatives. Present factually and neutrally without advocating for any particular approach.] {{Citation needed}}
+
+== Prevalence and statistics ==
+
+[Key statistics on the scale and distribution of the issue, sourced from official government data, UN agencies, or peer-reviewed research. Include the date of the data and its source.] {{Citation needed}}
+
+== References ==
+
+<references>
+$1
+</references>
+
+[[Category:Social issues]]

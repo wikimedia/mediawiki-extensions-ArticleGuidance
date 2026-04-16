@@ -1,50 +1,75 @@
-<article-guidance article-type="Q729" notability-risk="wikidata">
-	<instructions>
-		Follow Wikipedia's [[WP:MOSORG|organism naming conventions]] and use scientific sources. Ensure proper taxonomic classification. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Peer-reviewed journal articles on zoology or taxonomy</info>
-		<info>Books from academic publishers on animal biology</info>
-		<info>Official conservation status reports (e.g., IUCN Red List)</info>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>Pet care websites</info>
-		<info>User-edited wikis or forums</info>
-		<info>Social media posts</info>
-	</discouraged-sources>
-</article-guidance>
-{{Speciesbox}}
+<article-guidance article-type="Q729" notability-risk="sources junior">
 
-The [common name] (''[Genus species]'') is a [taxonomic group] in the family [Family Name], native to [geographic region]. It is distinguished by [physical feature] and [physical feature], and is listed as [conservation status] by the IUCN.
+<instructions>
+Articles about animal species are appropriate when the species has been formally described in scientific literature and has a recognised scientific name. Any animal species that has been given a formal scientific name in a peer-reviewed publication is considered appropriate for a Wikipedia article. The article should accurately represent current scientific understanding based on peer-reviewed sources.
+
+Quick considerations:
+* Use the species' common name as the article title where one exists, and include the scientific name in the lead.
+* Species names (common names) are not capitalised unless they contain a proper noun.
+* Base all scientific claims on peer-reviewed publications. Do not speculate beyond what sources say.
+* Conservation status should follow the IUCN Red List, which is the preferred source.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed zoology, ecology, and biology journals</info>
+  <info>IUCN Red List for conservation status</info>
+  <info>Authoritative taxonomic databases (e.g. Mammal Species of the World, IOC World Bird List, FishBase)</info>
+  <info>Established natural history reference works</info>
+  <source>iucnredlist.org<source>
+  <source>ncbi.nlm.nih.gov<source>
+  <source>catalogueoflife.org<source>
+  <source>animaldiversity.org<source>
+  <source>jstor.org<source>
+  <source>nature.com<source>
+  <source>science.org<source>
+  <source>britannica.com<source>
+  <source>eol.org<source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Animal enthusiast websites and pet care sites</info>
+  <info>Social media and nature photography sites</info>
+  <info>Zoo or aquarium websites </info>
+  <source>nationalgeographic.com</source>
+  <source>livescience.com</source>
+  <source>reddit.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>youtube.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+The '''[common name]''' (''[scientific name]'') is a species of [taxonomic group] in the family [family name]. {{Citation needed}} It is native to [geographic range]. {{Citation needed}} [One sentence on its most distinctive characteristic or conservation status.] {{Citation needed}}
+
+== Taxonomy ==
+
+The [common name] was first described by [authority name] in [year]. {{Citation needed}} [Description of taxonomic history and classification, including any synonyms or subspecies.] {{Citation needed}}
 
 == Description ==
 
-The [common name] measures [length range] and weighs [weight range]. Its [coloration or markings] distinguish it from [closely related species]. [Males/Females] are [description of sexual dimorphism, if applicable].
+[Description of the animal's physical characteristics that distinguish it from closely related species.] {{Citation needed}}
 
 == Distribution and habitat ==
 
-The [common name] is found across [countries or regions], primarily inhabiting [habitat type] at elevations of [range]. Its range has [expanded/contracted/remained stable] due to [reason].
+The [common name] is found in [geographic range]. [Description of the habitats in which the species lives.] {{Citation needed}}
 
-== Behavior ==
+== Ecology and behaviour ==
 
-The [common name] is [solitary/social] and [diurnal/nocturnal], spending most of its time [typical activity].
+[Description of the animal's diet, reproduction, social behaviour, and interactions with its environment.] {{Citation needed}}
 
-=== Diet ===
 
-The [common name] feeds primarily on [food type], supplemented by [secondary food source]. It forages by [hunting or foraging method].
 
-== Conservation status ==
 
-The [common name] is classified as [IUCN status] by the IUCN, with an estimated population of [number] individuals. Primary threats include [threat] and [threat]. Conservation measures include [measure].
 
 == References ==
 
 <references>
 $1
 </references>
-
-== External links ==
-
-* [https://IUCN-Red-List-URL IUCN Red List entry]
 
 [[Category:Animals]]

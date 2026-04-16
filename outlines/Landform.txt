@@ -1,0 +1,70 @@
+<article-guidance article-type="Q271669">
+
+<instructions>
+Landforms (mountains, volcanoes, rivers, valleys, lakes, and other natural physical features of the Earth's surface) are generally considered notable when they are named, documented in authoritative geographic or scientific sources, and of sufficient size or significance to warrant a standalone article. Very minor or unnamed features typically do not need their own article.
+Quick considerations:
+* State the feature's location, country, and physical type clearly in the lead.
+* Use authoritative geographic databases and national mapping agencies for factual data such as elevation, length, or area.
+* Base scientific content on peer-reviewed geology, geography, or earth sciences publications.
+* Do not write about a feature solely because you live near it or have a personal connection to it.
+* If the feature is part of a larger system (a mountain range, river basin, or volcanic field), check whether a standalone article is needed or whether the information belongs in the parent article.
+</instructions>
+
+<recommended-sources>
+  <info>Authoritative national mapping agencies and geographic surveys (e.g. USGS, Ordnance Survey, IGN)</info>
+  <info>Peer-reviewed geology, physical geography, and earth sciences journals</info>
+  <info>Established reference works on physical geography and natural history</info>
+  <info>UN Environment Programme and national environment agencies for ecological data</info>
+  <info>Major newswires for notable events involving the feature (e.g. eruptions, floods)</info>
+  <source>britannica.com</source>
+  <source>cia.gov/the-world-factbook</source>
+  <source>geographic.org</source>
+  <source>usgs.gov</source>
+  <source>vulcaninstitute.org</source>
+  <source>volcano.oregonstate.edu</source>
+  <source>iucnredlist.org</source>
+  <source>jstor.org</source>
+  <source>nature.com</source>
+  <source>science.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Tourism promotion websites used as a primary source</info>
+  <info>Social media and travel blogs</info>
+  <info>User-generated mapping platforms used as the sole source (e.g. Google Maps descriptions)</info>
+  <source>tripadvisor.com</source>
+  <source>lonelyplanet.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Feature name]''' is a [type: mountain / volcano / river / valley / lake] located in [country/region]. {{Citation needed}} It [brief description of key physical characteristics, e.g. reaches an elevation of / extends for / is the longest]. {{Citation needed}} [One sentence on any notable characteristic: ecological significance, historical role, or record.] {{Citation needed}}
+
+== Geography ==
+[Feature name] is situated at [coordinates] in [region]. [Description of the feature's physical characteristics: elevation, length, area, terrain, and its relation to surrounding geography.] {{Citation needed}}
+
+== Geology ==
+[Description of the feature's geological origin and composition, based on peer-reviewed sources. Include age, formation process, and rock type where relevant.] {{Citation needed}}
+
+== Ecology ==
+[Description of the flora, fauna, and ecological significance of the feature, based on scientific sources.] {{Citation needed}}
+
+== History ==
+[Description of any historical, cultural, or human significance the feature has had, based on independent sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Landforms]]

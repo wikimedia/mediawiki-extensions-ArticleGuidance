@@ -1,0 +1,77 @@
+<article-guidance article-type="Q180684" notability-risk="sources wikidata">
+<instructions>
+Articles about armed conflicts (wars, battles, sieges, insurgencies, and other organised violent confrontations) are appropriate when the conflict has received significant coverage in reliable, independent sources. The article must present all sides of the conflict neutrally, based on verifiable facts from independent sources, not on the claims of any party to the conflict.
+Quick considerations:
+* Write from a strictly neutral perspective. Do not take sides, use loaded language, or present one party's framing of events as fact.
+* Cite multiple independent sources representing different perspectives where possible. Rely on established newswires, academic publications, and recognised international organisations.
+* Avoid primary sources produced by parties to the conflict (military communiqués, government statements, partisan press) unless attributed clearly and balanced against other sources.
+* Casualty figures and territorial claims are often contested. Present all credible estimates with attribution.
+* Do not describe an ongoing conflict in real time. Wikipedia is a reference work, not a news service.
+</instructions>
+
+<recommended-sources>
+  <info>Major international newswires with editorial standards (Reuters, AP, AFP)</info>
+  <info>Established newspapers and broadcasters with conflict reporting and fact-checking (e.g. BBC, The Guardian, New York Times)</info>
+  <info>Peer-reviewed academic journals in military history, political science, and conflict studies</info>
+  <info>Reports from recognised international organisations (UN, ICRC, Human Rights Watch, Amnesty International)</info>
+  <info>Published military histories from university presses and established academic publishers</info>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>afp.com</source>
+  <source>bbc.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+  <source>un.org</source>
+  <source>icrc.org</source>
+  <source>hrw.org</source>
+  <source>amnesty.org</source>
+  <source>jstor.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+<info>State-controlled or party-affiliated media used as the sole source for contested claims</info>
+  <info>Social media posts including eyewitness accounts used as the sole source</info>
+  <info>Partisan advocacy websites and propaganda sources</info>
+  <info>Unverified claims from parties to the conflict used as fact without attribution</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>facebook.com</source>
+  <source>telegram.org</source>
+  <source>reddit.com</source>
+  <source>rt.com</source>
+  <source>sputniknews.com</source>
+  <source>breitbart.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+The '''[conflict name]''' was [is] a [type: war / battle / insurgency / civil war] that [began / took place] in [year] [in/between] [location or parties]. {{Citation needed}} [One sentence on scale, outcome, or significance.] {{Citation needed}}
+
+== Background ==
+[Description of the political, historical, and social context that led to the conflict, based on scholarly and independent sources.] {{Citation needed}}
+
+== Course of the conflict ==
+[Chronological, factual account of the main phases and events of the conflict, based on multiple independent sources.] {{Citation needed}}
+
+== Casualties and displacement ==
+[Description of documented human costs: combatant and civilian casualties, displaced persons, and destruction of infrastructure. Present all credible estimates with full attribution.] {{Citation needed}}
+
+== International response ==
+[Description of reactions from governments, international organisations, and civil society, based on independent sources.] {{Citation needed}}
+
+== Aftermath ==
+[Description of the consequences and legacy of the conflict, based on independent scholarly sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+
+[[Category:Armed conflicts]]

@@ -1,0 +1,72 @@
+<article-guidance article-type="Q108586636" notability-risk="sources">
+
+<instructions>
+Wikipedia is not a news service. Articles about recent events are only appropriate when there is already substantial coverage in multiple independent reliable sources and when the event is likely to have lasting significance. Breaking news that has not yet been covered in depth should not be turned into a Wikipedia article.
+Quick considerations:
+*Write in the past tense, even if the event is ongoing. Wikipedia documents events for general reference, not in real time.
+*Stick to what is verifiable from reliable sources at the time of writing. Do not speculate about causes, consequences, or future developments.
+*Avoid copying from news articles. Paraphrase and cite.
+*If the event is still developing, consider whether it is too early to write a stable article.
+</instructions>
+
+<recommended-sources>
+  <info>Major international and national newswires (Reuters, AP, AFP)</info>
+  <info>Established newspapers and broadcasters with editorial standards and fact-checking processes</info>
+  <info>Official government or institutional statements and reports</info>
+  <info>Academic or policy analysis published after the event</info>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>afp.com</source>
+  <source>bbc.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+  <source>washingtonpost.com</source>
+  <source>ft.com</source>
+  <source>economist.com</source>
+  <source>aljazeera.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Social media posts, including eyewitness accounts used as the sole source</info>
+  <info>Blogs and personal commentary</info>
+  <info>Partisan, advocacy, or state-sponsored websites</info>
+  <info>Early unverified reports and breaking news without subsequent confirmation</info>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>substack.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>rt.com</source>
+  <source>sputniknews.com</source>
+  <source>breitbart.com</source>
+  <source>infowars.com</source>
+  <source>dailymail.co.uk</source>
+  <source>thesun.co.uk</source>
+  <source>nationalenquirer.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+The '''[event name]''' was a [brief description of what happened] that took place on [date] in [location]. {{Citation needed}} [One sentence on the immediate significance or scale of the event.] {{Citation needed}}
+== Background ==
+[Relevant context that helps the reader understand why the event occurred.] {{Citation needed}}
+== Event ==
+[Factual, chronological account of what happened, sourced throughout.] {{Citation needed}}
+== Responses ==
+[Reactions from relevant parties: governments, organisations, affected communities.] {{Citation needed}}
+== Aftermath ==
+[Documented consequences and developments following the event.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references />
+[[Category:Events]]

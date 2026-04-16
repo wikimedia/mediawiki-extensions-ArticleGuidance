@@ -1,38 +1,47 @@
-<article-guidance article-type="Q4830453" notability-risk="sources draft">
-	<instructions>
-		Ensure the company meets Wikipedia's [[WP:CORP|notability guidelines for organizations]]. Use reliable, independent sources. Avoid promotional language and maintain [[WP:NPOV|neutral point of view]]. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Articles from major business newspapers (e.g., The Wall Street Journal, Financial Times)</info>
-		<info>Industry reports from reputable analysts</info>
-		<info>Books or academic case studies on the company or sector</info>
-	</recommended-sources>
-</article-guidance>
-{{Infobox company}}
+<article-guidance article-type="Q4830453" notability-risk="sources crosswiki">
 
-[Company Name] is a [country] [industry] company founded in [year] by [Founder Name], headquartered in [City, Country]. The company [main products or services] and employed approximately [number] people as of [year].
+<instructions>
+Articles about businesses are among the most frequently deleted on Wikipedia. A company needs significant, independent coverage in reliable sources — not press releases, not its own website, and not directory listings. Coverage must be substantive, not just passing mentions.
+
+Quick considerations:
+
+* Write about what the company does and why it is notable, using independent sources.
+* Avoid copying from the company's own website or press materials — this reads as promotional and will be flagged for deletion.
+* Focus on what independent journalists and analysts have written about the company.
+* Don’t write about companies where you, your family, or your friends participate.
+</instructions>
+
+<recommended-sources>
+  <info>Major business and financial press with editorial standards (e.g. Financial Times, Reuters, Bloomberg, The Economist), </info>
+  <info>Official regulatory filings and government records (e.g. Companies House, SEC filings), </info>
+  <info>Peer-reviewed business or industry academic publications</info>
+  <info>Established industry trade press with editorial oversight</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Company websites, press releases and investor relations materials</info>
+  <info>PR and press release distribution services</info>
+  <info>Social media accounts and promotional content</info>
+  <info>Directory listings and aggregator databases used as the sole source</info>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Company name]''' is a [nationality] company that [company activity].{{Citation needed}}
+The company is known for [notable products, activities and achievements].{{Citation needed}}
+
 
 == History ==
+[Company Name] was founded in [location] in [year] by [Founder Name] with the goal of [original mission or product]. It launched its first [product/service] in [year], targeting [market].{{Citation needed}}
 
-=== Founding ===
 
-[Company Name] was incorporated in [location] in [year] by [Founder Name] with the goal of [original mission or product]. It launched its first [product/service] in [year], targeting [market].
+== Impact and legacy ==
+[Company name] is recognised for [lasting contribution or impact].{{Citation needed}}
+Criticism of [Company name] has arisen from various groups concerning [criticism or controversy]. {{Citation needed}}
 
-=== Growth and expansion ===
 
-By [year], [Company Name] had expanded into [new market or region]. The company acquired [Acquired Company] in [year], extending its operations into [sector].
 
-== Products and services ==
 
-[Company Name]'s primary offerings include [product/service], [product/service], and [product/service]. Its [flagship product] is used by [customer description] to [use case].
-
-== Corporate affairs ==
-
-[Company Name] is led by [CEO Name], who has served as chief executive since [year]. The company's board of directors includes [notable member] and [notable member].
-
-== Financial performance ==
-
-In [fiscal year], [Company Name] reported revenue of [amount] and a net [profit/loss] of [amount]. The company [trades on/is listed on] the [Stock Exchange] under the ticker symbol [[TICKER]].
 
 == References ==
 
@@ -42,6 +51,6 @@ $1
 
 == External links ==
 
-* [https://Official-Website-URL Official Website]
+* [Company official website]
 
 [[Category:Companies]]

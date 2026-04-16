@@ -1,0 +1,77 @@
+<article-guidance article-type="Q103994247" notability-risk="sources wikidata">
+
+<instructions>
+Articles about medical conditions are appropriate only when the condition is recognised in mainstream medical literature. Self-diagnosed conditions, informal illness categories, and conditions described only in non-peer-reviewed or alternative medicine sources are not suitable for Wikipedia articles.
+Quick considerations:
+*Write from the perspective of established medical and scientific consensus. Avoid fringe theories or unproven treatments.
+*Use medical terminology correctly. Link technical terms on first use.
+*Do not write in the second person ("you may experience..."). Wikipedia is an encyclopaedia, not a patient information leaflet.
+*Cite peer-reviewed publications, clinical guidelines, and recognised health authorities, not news articles or personal accounts.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed journals and clinical publications (e.g. The Lancet, NEJM, JAMA, BMJ)</info>
+  <info>World Health Organisation and national health authorities</info>
+  <info>Established medical reference works and classification systems (e.g. MeSH, ICD)</info>
+  <info>Academic medical textbooks and systematic reviews</info>
+  <info>Clinical practice guidelines from recognised professional bodies</info>
+  <source>who.int</source>
+  <source>nih.gov</source>
+  <source>pubmed.ncbi.nlm.nih.gov</source>
+  <source>cochranelibrary.com</source>
+  <source>nejm.org</source>
+  <source>thelancet.com</source>
+  <source>bmj.com</source>
+  <source>jamanetwork.com</source>
+  <source>nhs.uk</source>
+  <source>cdc.gov</source>
+  <source>emedicine.medscape.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Patient forums and health support communities</info>
+  <info>General health journalism used as a primary source</info>
+  <info>Alternative medicine websites and natural health publications</info>
+  <info>Social media and personal accounts</info>
+  <info>Pharmaceutical company websites used as the sole source</info>
+  <source>webmd.com</source>
+  <source>healthline.com</source>
+  <source>everydayhealth.com</source>
+  <source>verywellhealth.com</source>
+  <source>mayoclinic.org</source>
+  <source>drugs.com</source>
+  <source>rxlist.com</source>
+  <source>naturalnews.com</source>
+  <source>mercola.com</source>
+  <source>altmedrev.com</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>patient.info</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Condition name]''' is a [acute/chronic] [type of condition] characterised by [key defining features]. {{Citation needed}} It primarily affects [affected population or body system] and is caused by [main cause or mechanism, if known]. {{Citation needed}}
+
+== Signs and symptoms ==
+The most common signs and symptoms of [condition name] include [list key symptoms]. {{Citation needed}} In more severe cases, [complications or advanced symptoms]. {{Citation needed}}
+
+== Causes ==
+[Condition name] is caused by [main cause]. {{Citation needed}} Risk factors include [list of risk factors]. {{Citation needed}}
+
+== Diagnosis ==
+[Condition name] is typically diagnosed through [diagnostic method]. {{Citation needed}}
+
+== Treatment ==
+Treatment for [condition name] includes [main treatment approaches]. {{Citation needed}}
+
+== Epidemiology ==
+[Condition name] affects approximately [number or proportion] of [population]. {{Citation needed}}
+
+
+
+
+
+== References ==
+<references />
+[[Category:Medical conditions]]

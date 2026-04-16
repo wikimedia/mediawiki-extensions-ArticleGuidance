@@ -1,0 +1,58 @@
+<article-guidance article-type="Q486972" notability-risk="sources junior">
+
+<instructions>
+Articles about human settlements such as towns, villages, and hamlets are appropriate when the settlement has received significant coverage in reliable, independent sources, or is documented in official records. Very small settlements may need independent coverage beyond administrative listings to justify their relevance.
+Quick considerations:
+* State the settlement's location, country, and administrative status clearly in the lead.
+* Use official national statistics and census data for population figures.
+* Distinguish between the settlement as a geographic place and any administrative unit it belongs to.
+* Do not write about a settlement solely because you live there.
+</instructions>
+
+<recommended-sources>
+  <info>Official national statistics offices and census data</info>
+  <info>National geographic surveys and official administrative records</info>
+  <info>Established reference works on geography and local history</info>
+  <info>Local and regional newspapers and history publications</info>
+  <source>britannica.com</source>
+  <source>cia.gov/the-world-factbook</source>
+  <source>geographic.org</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>jstor.org </source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Tourism promotion websites used as a primary source</info>
+  <info>Social media and travel blogs</info>
+  <info>Real estate websites used as primary sources for demographic claims</info>
+  <source>twitter.com</source>
+  <source>tripadvisor.com</source>
+  <source>lonelyplanet.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Settlement name]''' is a [type: town / village / hamlet] in [region], [country]. {{Citation needed}} It has a population of approximately [population] as of [year]. {{Citation needed}} [One sentence on its most notable characteristic or historical role, if applicable.] {{Citation needed}}
+== History ==
+[Brief description of the settlement's documented history, based on independent sources.] {{Citation needed}}
+== Geography ==
+[Settlement name] is located at [coordinates] in [region]. [Description of the settlement's physical setting and surroundings.] {{Citation needed}}
+== Demographics ==
+[Settlement name] has a population of [number] as of [year]. [Description of demographic features where well-sourced.] {{Citation needed}}
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Human settlements]]

@@ -1,55 +1,70 @@
 <article-guidance article-type="Q515" notability-risk="wikidata">
-	<instructions>
-		Make sure you provide comprehensive coverage of the [[city]]'s geography, history, and demographics using reliable sources. [[Documentation]]
-	</instructions>
-	<recommended-sources>
-		<info>Official government census data</info>
-		<info>Academic studies on urban development</info>
-		<info>Articles from reputable news organizations</info>
-		<source>https://journals.sagepub.com/home/usj</source>
-	</recommended-sources>
-	<discouraged-sources>
-		<info>Travel blogs</info>
-		<info>Real estate advertisements</info>
-		<info>Unverified online forums</info>
-	</discouraged-sources>
-</article-guidance>
-{{Infobox settlement}}
 
-[City Name] is a city in [State/Province], [Country], with a population of approximately [number] as of [year]. It is known for [notable characteristic] and serves as [administrative/economic/cultural role] for [region].
+<instructions>
+Cities and large urban settlements with recognised administrative status are considered notable and do not require additional sourcing to create an article. The article should accurately represent the city as described in reliable, independent sources.
+
+Quick considerations:
+* State the city's location, country, and population clearly in the lead.
+* Use official national statistics and census data for population and demographic figures.
+* Avoid promotional language. Describe the city factually based on what independent sources say.
+* Do not describe the city as 'one of the most important/interesting/beautiful' unless directly supported by a cited independent source.
+</instructions>
+
+<recommended-sources>
+  <info>Official national statistics offices and census data</info>
+  <info>Local government official records for administrative facts</info>
+  <info>Established reference works and encyclopaedias</info>
+  <info>Peer-reviewed urban geography, history, and economics publications</info>
+  <info>Major international news agencies for current events</info>
+  <source>britannica.com</source>
+  <source>cia.gov/the-world-factbook</source>
+  <source>un.org/en/cities</source>
+  <source>worldbank.org</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>bbc.com/news</source>
+  <source>jstor.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Tourism promotion websites used as a primary source</info>
+  <info>Real estate websites used as a primary source for demographic or economic claims</info>
+  <info>Social media and travel blogs</info>
+  <source>tripadvisor.com</source>
+  <source>lonelyplanet.com</source>
+  <source>airbnb.com</source>
+  <source>zillow.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[City name]''' is a city in [region/country]. {{Citation needed}} It has a population of approximately [population] and is the [administrative status: capital / largest city] of [region or country]. {{Citation needed}} [One sentence on its most notable characteristic, historical role, or economic significance.] {{Citation needed}}
 
 == History ==
 
-[City Name] was founded in [year] by [founder or group], originally serving as a [trading post/military fort/colonial settlement]. The city expanded significantly during [period], driven by [factor such as industrialisation or the railway].
-
-=== Early history ===
-
-The area was first settled by [people or group] around [date]. [Key founder or explorer] established [City Name] in [year], and the first [census/record] recorded a population of [number].
+[City name] was [founded/established] in [approximate period]. [Description of key milestones in the city's history, based on independent scholarly sources.] {{Citation needed}}
 
 == Geography ==
 
-[City Name] is situated in [geographic description, e.g., a river valley / a coastal plain] at [elevation], bordered by [neighboring cities or natural features]. The climate is [climate type], with [brief description of seasons or weather patterns].
+[City name] is located at [coordinates] in [region]. [Description of the city's physical setting, climate, and geographic features.] {{Citation needed}}
 
 == Demographics ==
 
-As of the [year] census, [City Name] had a population of [number]. The most widely spoken languages are [language] and [language], and [percentage]% of residents identify as [ethnic group].
+[City name] has a population of approximately [number] as of [year]. [Description of demographic features including languages, religions, and ethnic composition if well-sourced.] {{Citation needed}}
 
-== Economy ==
 
-The city's economy is centred on [primary industry], with major employers including [Company Name] and [Company Name]. [City Name] is also a hub for [secondary sector or service industry].
-
-== Culture ==
-
-[City Name] is home to [cultural institution], and hosts the annual [Festival Name] each [month]. The city is known for [dish or culinary tradition], and its [arts/sports] scene includes [notable venue or team].
 
 == References ==
 
 <references>
 $1
 </references>
-
-== External links ==
-
-* [https://Official-Website-URL Official Website]
 
 [[Category:Cities]]

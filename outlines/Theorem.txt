@@ -1,0 +1,54 @@
+<article-guidance article-type="Q65943" notability-risk="">
+
+<instructions>
+Wikipedia covers theorems that have been formally proved and are recognised in peer-reviewed mathematical literature. Unproved conjectures, informal mathematical claims, and results published only in non-peer-reviewed sources are not appropriate for standalone articles.
+Quick considerations:
+*State the theorem precisely. Use standard mathematical notation where appropriate.
+*Explain why the theorem matters, what it proves and where it is used.
+*Do not include original proofs or new mathematical content. Wikipedia is not a research platform.
+*Long or highly technical proofs are typically summarised or omitted. If a proof is included, it should be short and illuminating.
+</instructions>
+
+<recommended-sources>
+  <info>Peer-reviewed mathematics journals (e.g. Annals of Mathematics, Journal of the AMS, Inventiones Mathematicae)</info>
+  <info>Established mathematical textbooks and monographs published by recognised academic presses</info>
+  <info>Recognised mathematical reference works and encyclopaedias</info>
+  <source>mathworld.wolfram.com</source>
+  <source>encyclopediaofmath.org</source>
+  <source>ams.org</source>
+  <source>jstor.org</source>
+  <source>arxiv.org</source>
+  <source>projecteuclid.org</source>
+  <source>zbmath.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Personal or student websites explaining mathematical content</info>
+  <info>Non-peer-reviewed preprints used as the sole source</info>
+  <info>Forums and question-and-answer websites</info>
+  <source>math.stackexchange.com</source>
+  <source>reddit.com</source>
+  <source>quora.com</source>
+  <source>medium.com</source>
+  <source>brilliant.org</source>
+  <source>cut-the-knot.org</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+In [field of mathematics], the '''[theorem name]''' states that [brief description of what the theorem asserts]. {{Citation needed}} It was first proved by [mathematician name] in [year]. {{Citation needed}}
+== Statement ==
+[State the theorem formally or semi-formally, using standard notation.] {{Citation needed}}
+== Significance and applications ==
+The [theorem name] is significant because [explanation of importance and influence in mathematics or related fields]. {{Citation needed}} It has been applied in [fields or areas]. {{Citation needed}}
+== History ==
+[History of the theorem's discovery, proof, and reception in the mathematical community.] {{Citation needed}}
+
+
+
+
+== References ==
+<references />
+[[Category:Theorems]]

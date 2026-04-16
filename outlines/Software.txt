@@ -1,0 +1,70 @@
+<article-guidance article-type="Q7397" notability-risk="sources wikidata">
+
+<instructions>
+Articles about software are appropriate when the software has received significant coverage in reliable, independent sources. Software being available for download, having many users, or being open source does not by itself establish notability. Coverage must be substantive and come from sources that are not connected to the software's developers.
+Quick considerations:
+* Write from a neutral perspective based on facts. Do not describe the software in promotional terms.
+* Cite independent technology publications and academic sources, not the developer's own documentation, blog, or press releases.
+* Do not write about software you have developed or are affiliated with.
+* If the software is a new version of existing software, check whether a separate article is needed or whether the information should be added to an existing article.
+</instructions>
+
+<recommended-sources>
+  <info>Established technology publications with editorial standards (e.g. Ars Technica, Wired, TechCrunch, The Verge)</info>
+  <info>Major newspapers with technology sections</info>
+  <info>Peer-reviewed computer science and software engineering publications</info>
+  <info>Academic textbooks and reference works that discuss the software</info>
+  <source>arstechnica.com</source>
+  <source>wired.com</source>
+  <source>theverge.com</source>
+  <source>techcrunch.com</source>
+  <source>thenextweb.com</source>
+  <source>zdnet.com</source>
+  <source>computerworld.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+  <source>acm.org</source>
+  <source>ieee.org</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The developer's own website, documentation, blog, or press releases used as the sole source</info>
+  <info>User review sites (e.g. G2, Capterra, Trustpilot)</info>
+  <info>Social media and forum discussions</info>
+  <info>GitHub or other repository data used as the sole evidence of notability</info>
+  <source>github.com</source>
+  <source>stackoverflow.com</source>
+  <source>g2.com</source>
+  <source>capterra.com</source>
+  <source>trustpilot.com</source>
+  <source>reddit.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>producthunt.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Software name]''' is a [type of software: open-source web browser / proprietary image editor] developed by [developer or organisation]. {{Citation needed}} First released in [year], it [brief description of primary function and platform]. {{Citation needed}}
+
+== History ==
+[Software name] was first released in [year] by [developer or organisation]. [Description of key milestones in the software's development history, based on independent sources.] {{Citation needed}}
+
+== Features ==
+[Software name] provides [description of primary features, based on independent coverage rather than developer documentation.] {{Citation needed}}
+
+== Reception ==
+[Software name] received [description of critical and user reception, based on independent reviews and coverage.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Software]]

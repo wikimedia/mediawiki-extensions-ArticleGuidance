@@ -1,0 +1,62 @@
+<article-guidance article-type="Q211236" notability-risk="sources crosswiki">
+<instructions>
+Articles about socialites and public figures known primarily for their social prominence are among the most frequently deleted on Wikipedia. Fame, social media following, or regular appearance at public events is not enough. The person needs significant, independent coverage in reliable sources that goes beyond gossip columns, event listings, or promotional profiles.
+Quick considerations:
+*Coverage must be substantive and independent, not interviews, press releases, or publicity.
+*Write about the person's public role and any documented activities or contributions. Avoid focusing on personal life unless it is well-sourced and significant for general reference.
+*Do not use gossip sites, tabloids, or social media as sources.
+*Do not write about yourself, your family, or your friends.
+</instructions>
+
+<recommended-sources>
+  <info>Established newspapers and magazines with editorial standards</info>
+  <info>Major newswires (Reuters, AP)</info>
+  <info>Biographical reference works and established encyclopaedias</info>
+  <info>Official records where relevant (e.g. charitable foundation registrations, business filings)</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Celebrity gossip websites and tabloids</info>
+  <info>Social media profiles and posts</info>
+  <info>Fan sites, fandom wikis, and follower-run accounts</info>
+  <info>Promotional profiles, press releases, and publicist materials</info>
+  <info>Paparazzi photo agencies used as the sole source of information</info>
+  <source>dailymail.co.uk</source>
+  <source>thesun.co.uk</source>
+  <source>mirror.co.uk</source>
+  <source>pagesix.com</source>
+  <source>tmz.com</source>
+  <source>eonline.com</source>
+  <source>justjared.com</source>
+  <source>peoplemagazine.com</source>
+  <source>usmagazine.com</source>
+  <source>hollywoodlife.com</source>
+  <source>celebitchy.com</source>
+  <source>dlisted.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>reddit.com</source>
+  <source>fandom.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+
+'''[Full name]''' (born [date], [place]) is a [nationality] [description of public role or social prominence]. {{Citation needed}} [He/She/They] is known for [primary reason for public recognition, supported by independent sources]. {{Citation needed}}
+
+== Early life ==
+[Full name] was born on [date] in [place] and grew up in [location]. {{Citation needed}} [Brief relevant detail about background if well sourced.] {{Citation needed}}
+
+== Public life ==
+[Description of the person's public role, social prominence, philanthropic work, or other documented activities, based on independent sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references />
+[[Category:Socialites]]

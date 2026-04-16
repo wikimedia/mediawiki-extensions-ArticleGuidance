@@ -1,0 +1,36 @@
+<article-guidance article-type="Q105543609" notability-risk="">
+
+<instructions>
+Most songs don't need their own article. They can be part of articles about the song's album or the artist. A song may be notable enough for a separate article when it has a major impact on relevant music charts, has received awards, or has been recorded independently by several notable artists or groups.
+
+Quick considerations:
+* Make sure that articles exist for the artist and the album of the song.
+* Consider only songs with enough verifiable material for a substantial entry. Short articles with superficial coverage are often merged into the artist or album page.
+* Don’t write about songs created by you, your family, or your friends.
+</instructions>
+
+</article-guidance>
+
+'''[Song title]''' is a song by [author name]. It was released by [company] on [date] as part of [music album]. The song was written by [writer] and produced by [producer]. {{Citation needed}} 
+
+The song consists of [description of musical style and singular aspects]. {{Citation needed}} 
+
+== Background ==
+[Artist name] composed the song [circumstasnces aout the song origin] {{Citation needed}} 
+
+
+== Reception ==
+[Song title] received [critic response and key achievements signaling its relevance] {{Citation needed}} 
+
+
+
+
+
+== References ==
+
+<references>
+$1
+</references>
+
+
+[[Category:Songs]]

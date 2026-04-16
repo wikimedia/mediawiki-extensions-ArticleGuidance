@@ -1,0 +1,67 @@
+<article-guidance article-type="Q188451">
+
+<instructions>
+Articles about music genres are appropriate when the genre is recognised by music scholars, critics, or established music publications. Informal genre labels used only on social media or fan communities, and micro-genres without independent critical coverage, are not suitable for standalone Wikipedia articles.
+Quick considerations:
+* Define the genre clearly: what musical characteristics define it, and how it relates to other genres.
+* Base the article on what music scholars, critics, and established publications have written. Do not define genres based on personal opinion.
+* Do not include lists of artists. Genre articles should not serve as directories.
+* Music genre names are not proper nouns and should not be capitalised unless they contain a proper name (e.g. British invasion, not British Invasion).
+</instructions>
+
+<recommended-sources>
+  <info>Established music publications with editorial standards and critical history (e.g. Rolling Stone, Pitchfork, NME, AllMusic)</info>
+  <info>Academic musicology and popular music studies publications</info>
+  <info>Established music reference works and encyclopaedias</info>
+  <info>Peer-reviewed journals in ethnomusicology and music history</info>
+  <source>allmusic.com</source>
+  <source>pitchfork.com</source>
+  <source>rollingstone.com</source>
+  <source>nme.com</source>
+  <source>theguardian.com</source>
+  <source>musicbrainz.org</source>
+  <source>jstor.org</source>
+  <source>oxfordmusiconline.com</source>
+  <source>britannica.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Social media and fan community definitions of genres</info>
+  <info>User-generated music databases used as the sole source (e.g. RateYourMusic, Discogs for genre definitions)</info>
+  <info>Personal music blogs without editorial oversight</info>
+  <info>Streaming platform genre tags used as a primary source</info>
+  <source>rateyourmusic.com</source>
+  <source>discogs.com</source>
+  <source>last.fm</source>
+  <source>spotify.com</source>
+  <source>reddit.com</source>
+  <source>medium.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>youtube.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Genre name]''' is a genre of [broader category: popular music / electronic music / folk music] that emerged in [decade/period] in [place of origin]. {{Citation needed}} It is characterised by [key musical features]. {{Citation needed}}
+
+== Characteristics ==
+[Description of the musical features that define the genre: instrumentation, rhythm, tempo, lyrical themes, production style.] {{Citation needed}}
+
+== History ==
+[Description of the genre's origins, development, and key moments, based on music scholarship and criticism.] {{Citation needed}}
+
+== Influence and legacy ==
+[Description of the genre's influence on other genres and its lasting cultural impact, based on independent sources.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Music genres]]

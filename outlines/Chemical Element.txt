@@ -1,0 +1,64 @@
+<article-guidance article-type="Q11344" notability-risk="wikidata">
+
+<instructions>
+Chemical elements are generally considered notable if they appear in the periodic table and are recognised by the International Union of Pure and Applied Chemistry (IUPAC). Articles should be based on significant coverage in peer-reviewed scientific literature.
+Quick considerations:
+*Use the IUPAC-approved name and symbol. Element names are common nouns, do not capitalise them when written as words.
+*Include the element's symbol, atomic number, and position in the periodic table in the lead.
+*Do not include unsourced claims about biological effects, toxicity, or applications.
+<instructions>
+
+<recommended-sources>
+  <info>IUPAC publications and official element confirmations (iupac.org)</info>
+  <info>Peer-reviewed chemistry journals (e.g. Journal of the American Chemical Society, Inorganic Chemistry)</info>
+  <info>Academic chemistry textbooks and reference works</info>
+  <info>CRC Handbook of Chemistry and Physics</info>
+  <info>Wikipedia:WikiProject Elements featured articles as structural models (e.g. Germanium, Caesium, Lead)</info>
+  <source>iupac.org</source>
+  <source>rsc.org</source>
+  <source>acs.org</source>
+  <source>webbook.nist.gov</source>
+  <source>ptable.com (for reference data)</source>
+  <source>chemspider.com (for compound data)</source>
+  <source>crcpress.com</source>
+  <source>springer.com/chemistry</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>General science journalism used as a primary source for chemical properties</info>
+  <info>Alternative health websites making unsourced claims about elements</info>
+  <info>Social media and forums</info>
+  <info>User-generated chemistry wikis</info>
+  <source>chemicool.com
+  <source>lenntech.com 
+  <source>periodictable.com
+  <source>reddit.com
+  <source>quora.com
+  <source>medium.com
+  <source>wordpress.com
+  <source>blogspot.com
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Element name]''' is a chemical element with symbol [X] and atomic number [N]. {{Citation needed}} It is a [physical description at standard conditions, e.g. silvery metal / colourless gas] and belongs to [group/period/block] of the periodic table. {{Citation needed}}
+
+== Characteristics ==
+[Physical and chemical properties at standard conditions. Include allotropes if relevant.] {{Citation needed}}
+
+== History ==
+[Element name] was [discovered / first isolated] by [person] in [year]. {{Citation needed}} [History of naming, early uses, and key milestones.] {{Citation needed}}
+
+== Occurrence ==
+[Element name] occurs [naturally / synthetically]. [Description of how and where it is found.] {{Citation needed}}
+
+== Applications ==
+[Main industrial, scientific, and biological uses.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references />
+[[Category:Chemical elements]]

@@ -1,0 +1,69 @@
+<article-guidance article-type="Q847017" notability-risk="wikidata junior">
+
+<instructions>
+Articles about sports clubs are appropriate when the club has received significant coverage in reliable, independent sources. Participation in a local or regional league alone does not establish notability. The club needs in-depth coverage beyond routine match reports and fixture listings.
+Quick considerations:
+* Focus on the club's history, significant achievements, and documented impact, using independent sources.
+* Avoid promotional language: do not describe the club as 'one of the biggest' or 'most successful' unless directly supported by a cited independent source.
+* Do not write about a club you play for, manage, or are affiliated with.
+* Club names and stadium names are proper nouns and should be capitalised.
+</instructions>
+
+<recommended-sources>
+  <info>National and regional sports journalism outlets with editorial standards</info>
+  <info>Official league, federation, and governing body records</info>
+  <info>Major newswires covering sport (e.g. Reuters, AP)</info>
+  <info>Academic sports history or sociology publications</info>
+  <source>espn.com</source>
+  <source>bbc.com</source>
+  <source>theguardian.com</source>
+  <source>soccerway.com</source>
+  <source>transfermarkt.com</source>
+  <source>fifa.com</source>
+  <source>uefa.com</source>
+  <source>the-afc.com</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The club's own website, social media, and official communications used as the sole source</source>
+  <info>Fan sites, supporter blogs, and club forums</source>
+  <info>Statistics databases used as the sole evidence of notability (e.g. Transfermarkt, Soccerway)</source>
+  <info>Social media accounts including the club's own profiles</source>  <source>twitter.com</source>
+  <source>transfermarkt.com</source>
+  <source>soccerway.com</source>
+  <source>soccerbase.com</source>
+  <source>sofascore.com</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>reddit.com</source>
+  <source>fandom.com</source>
+  <source>blogspot.com</source>
+  <source>wordpress.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Club name]''' is a [sport] club based in [location], [country]. {{Citation needed}} Founded in [year], the club [brief description of notable history or current status: competes in the X league / is known for Y achievement]. {{Citation needed}}
+== History ==
+[Club name] was founded in [year] in [location]. [Description of key milestones in the club's history, based on independent sources.] {{Citation needed}}
+== Stadium ==
+[Club name] plays its home matches at [stadium name], which has a capacity of [number]. {{Citation needed}} [Brief history of the ground if well sourced.] {{Citation needed}}
+== Honours ==
+* [Competition name]: [year(s)] {{Citation needed}}
+* [Competition name]: [year(s)] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Sports clubs]]

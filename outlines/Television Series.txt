@@ -1,0 +1,70 @@
+<article-guidance article-type="Q5398426" notability-risk="sources junior">
+
+<instructions>
+Articles about television series are appropriate when the series has received significant coverage in reliable, independent sources beyond routine listings and press releases. A series being broadcast does not automatically make it notable. Coverage must be substantive and independent.
+Quick considerations:
+* Write from an outside perspective, not as if you are describing the show to a fan. Focus on real-world context: who made it, when it aired, how it was received.
+* Avoid plot-heavy writing. The plot section should be a brief summary, not a detailed recap.
+* Do not write about a series you are involved in or have a personal connection to.
+</instructions>
+
+<recommended-sources>
+  <info>Established television and entertainment publications with editorial standards (e.g. Variety, The Hollywood Reporter, TV Guide)</info>
+  <info>Major newspapers and broadcasters with arts and TV criticism</info>
+  <info>Official broadcaster or streaming platform press offices used only for factual data (not as evidence of notability)</info>
+  <info>Academic media studies publications</info>
+  <source>variety.com</source>
+  <source>hollywoodreporter.com</source>
+  <source>deadline.com</source>
+  <source>tvguide.com</source>
+  <source>avclub.com</source>
+  <source>vulture.com</source>
+  <source>theguardian.com</source>
+  <source>nytimes.com</source>
+  <source>indiewire.com</source>
+  <source>metacritic.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>Fan wikis and episode recap sites</info>
+  <info>IMDb used as a sole source</info>
+  <info>Social media accounts including official show accounts</info>
+  <info>Press releases and promotional materials from the production company</info>
+  <source>imdb.com</source>
+  <source>fandom.com</source>
+  <source>tvtropes.org</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>tiktok.com</source>
+  <source>youtube.com</source>
+  <source>reddit.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Series title]''' is a [nationality] [genre] television series [created/developed] by [creator name]. {{Citation needed}} It premiered on [network/platform] on [date]. {{Citation needed}} The series follows [brief one-sentence plot]. {{Citation needed}}
+
+== Plot ==
+[Brief description of the series concept, setting, and main characters. This section should be a summary, not a scene-by-scene account.] {{Citation needed}}
+
+== Cast and characters ==
+* [Actor name] as [character name], [brief character description] {{Citation needed}}
+* [Actor name] as [character name], [brief character description] {{Citation needed}}
+
+== Production ==
+[Description of how the series was developed, commissioned, and made, based on independent sources. May include development, casting, and filming information.] {{Citation needed}}
+
+== Reception ==
+[Series title] received [description of critical and audience reception, based on independent reviews and ratings data.] {{Citation needed}}
+
+
+
+
+
+== References ==
+<references>
+$1
+</references>
+[[Category:Television series]]

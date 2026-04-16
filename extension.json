@@ -125,7 +125,7 @@
 		}
 	},
 	"Hooks": {
-		"BeforeInitialize": "RedLinkRedirect",
+		"BeforeInitialize": [ "RedLinkRedirect", "EditTag" ],
 		"AlternateEdit": "RedLinkRedirect",
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
@@ -278,17 +278,6 @@
 				"article-guidance.less"
 			]
 		},
-		"ext.articleguidance.ve": {
-			"localBasePath": "resources/ext.articleguidance.ve",
-			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.ve",
-			"packageFiles": [
-				"init.js"
-			],
-			"dependencies": [
-				"mediawiki.storage",
-				"mediawiki.util"
-			]
-		},
 		"ext.articleguidance.newarticle.styles": {
 			"localBasePath": "resources/ext.articleguidance.newarticle.styles",
 			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle.styles",
@@ -325,16 +314,7 @@
 				"articleguidance-publish-followup-close-button"
 			],
 			"dependencies": [
-				"vue",
-				"mediawiki.storage",
-				"mediawiki.util"
-			]
-		}
-	},
-	"attributes": {
-		"VisualEditor": {
-			"PluginModules": [
-				"ext.articleguidance.ve"
+				"vue"
 			]
 		}
 	},

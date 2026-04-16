@@ -7,11 +7,19 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 
-class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, RevisionFromEditCompleteHook {
+class EditTagHandler implements
+	BeforeInitializeHook,
+	ChangeTagsListActiveHook,
+	ListDefinedTagsHook,
+	RevisionFromEditCompleteHook
+{
 
 	private const TAG = 'articleguidance';
+	private const SESSION_EDITING = 'ArticleGuidanceEditing';
+	public const SESSION_PUBLISHED = 'ArticleGuidancePublished';
 
 	/**
 	 * @inheritDoc
@@ -30,13 +38,26 @@ class EditTagHandler implements ChangeTagsListActiveHook, ListDefinedTagsHook, R
 	/**
 	 * @inheritDoc
 	 */
+	public function onBeforeInitialize( $title, $unused, $output, $user, $request, $mediaWiki ): void {
+		if (
+			$title !== null
+			&& $request->getCheck( 'articleguidance' )
+			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
+		) {
+			$request->getSession()->set( self::SESSION_EDITING, $title->getPrefixedText() );
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ): void {
 		$request = RequestContext::getMain()->getRequest();
-		if ( $request->getCheck( 'articleguidance' ) ) {
+		$session = $request->getSession();
+		if ( $session->get( self::SESSION_EDITING ) === $wikiPage->getTitle()->getPrefixedText() ) {
 			$tags[] = self::TAG;
-			$request->response()->setCookie( 'ag-published', '1', time() + 120, [
-				'httpOnly' => true,
-			] );
+			$session->remove( self::SESSION_EDITING );
+			$session->set( self::SESSION_PUBLISHED, $wikiPage->getTitle()->getPrefixedText() );
 		}
 	}
 }

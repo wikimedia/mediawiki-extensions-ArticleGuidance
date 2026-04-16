@@ -11,21 +11,20 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 	/**
 	 * Load the post-publish follow-up module after an ArticleGuidance publish.
 	 *
-	 * A short-lived cookie set by EditTagHandler signals that the current page view
-	 * immediately follows an ArticleGuidance publish. The JS module performs a further
-	 * sessionStorage check to confirm the title matches and ensures one-shot display.
+	 * A session flag set by EditTagHandler signals that the current page view
+	 * immediately follows an ArticleGuidance publish.
 	 *
 	 * @inheritDoc
 	 */
 	public function onBeforePageDisplay( $out, $skin ): void {
-		$request = $out->getRequest();
+		$session = $out->getRequest()->getSession();
 		if (
 			!$out->getUser()->isAnon()
 			&& $out->getTitle()->isContentPage()
-			&& $request->getCookie( 'ag-published' )
+			&& $session->get( EditTagHandler::SESSION_PUBLISHED ) === $out->getTitle()->getPrefixedText()
 		) {
 			$out->addModules( 'ext.articleguidance.publishingfollowup' );
-			$request->response()->clearCookie( 'ag-published' );
+			$session->remove( EditTagHandler::SESSION_PUBLISHED );
 		}
 	}
 }

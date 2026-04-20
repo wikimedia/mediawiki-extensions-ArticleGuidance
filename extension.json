@@ -102,7 +102,7 @@
 				"ArticleGuidanceTitleExtractor",
 				"MainConfig",
 				"TitleFactory",
-				"ArticleGuidanceExperimentManager"
+				"ArticleGuidanceExperimentFactory"
 			]
 		},
 		"ArticleGuidanceTag": {
@@ -115,7 +115,10 @@
 			]
 		},
 		"EditTag": {
-			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler"
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler",
+			"services": [
+				"ArticleGuidanceExperimentFactory"
+			]
 		},
 		"PreloadCleanup": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
@@ -126,7 +129,6 @@
 	},
 	"Hooks": {
 		"BeforeInitialize": [ "RedLinkRedirect", "EditTag" ],
-		"AlternateEdit": "RedLinkRedirect",
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",

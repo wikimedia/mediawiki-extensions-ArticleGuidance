@@ -6,12 +6,9 @@ editor.
 
 ## How it works
 
-The redirect is handled by `RedLinkRedirectHandler`, which implements two MediaWiki hooks:
-
-- **`BeforeInitialize`** — fires early in the request lifecycle, before any output is generated.
-  This is the primary path and works on both desktop and mobile.
-- **`AlternateEdit`** — fires during edit page initialization; acts as a fallback for edge cases
-  where `BeforeInitialize` does not intercept.
+The redirect is handled by `RedLinkRedirectHandler`, which implements the `BeforeInitialize` hook.
+It fires early in the request lifecycle, before any output is generated, and works on both desktop
+and mobile.
 
 On each request, the handler evaluates four independent conditions. All must be true for a redirect
 to occur:
@@ -28,14 +25,14 @@ to occur:
    disables A/B splitting and redirect all eligible traffic.
 
 When all conditions are met, the handler issues an HTTP redirect to
-`Special:NewArticle?newarticletitle=<title>`, pre-filling the article title.
+`Special:NewArticle?newarticletitle=<title>&source=redlink`, pre-filling the article title.
 
 ## Entry-point redirect
 
 In addition to red-link interception, the handler supports direct entry-point pages configured via
 `ArticleGuidanceExperimentEntryPointTitles`. When a qualifying user (in scope and in the treatment
-group) visits one of those pages, they are redirected to `Special:NewArticle` without a
-pre-filled title. This path does not check the referer.
+group) visits one of those pages, they are redirected to `Special:NewArticle?source=articlewizard`
+without a pre-filled title. This path does not check the referer.
 
 ## Configuration
 
@@ -52,3 +49,4 @@ pre-filled title. This path does not check the referer.
 Title matching normalises both sides to DB keys (underscores, lowercase, namespace aliases) so
 `Main Page` and `Main_Page` are treated identically. Category matching performs a live database
 query (`getParentCategories()`) and is only executed when the title list produces no match.
+Regardless of which rule matched, the analytics `source` param is always `redlink`.

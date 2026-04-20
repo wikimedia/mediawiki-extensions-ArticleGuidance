@@ -2,6 +2,7 @@
 
 declare( strict_types = 1 );
 
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
@@ -9,19 +10,21 @@ use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
-use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManagerInterface;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 
 /** @phpcs-require-sorted-array */
 return [
-	'ArticleGuidanceExperimentManager' =>
-		static function ( MediaWikiServices $services ): ?ExperimentManagerInterface {
-			if ( !ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' ) ) {
-				return null;
-			}
-			return $services->getService( 'TestKitchen.ExperimentManager' );
+	'ArticleGuidanceExperimentFactory' =>
+		static function ( MediaWikiServices $services ): ArticleGuidanceExperimentFactory {
+			$experimentManager = ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' )
+				? $services->getService( 'TestKitchen.ExperimentManager' )
+				: null;
+			return new ArticleGuidanceExperimentFactory(
+				$services->getMainConfig(),
+				$experimentManager,
+			);
 		},
 	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {
 		return new OutlineService(

@@ -7,8 +7,10 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
+use MediaWiki\Page\WikiPage;
 
 class EditTagHandler implements
 	BeforeInitializeHook,
@@ -20,6 +22,11 @@ class EditTagHandler implements
 	private const TAG = 'articleguidance';
 	private const SESSION_EDITING = 'ArticleGuidanceEditing';
 	public const SESSION_PUBLISHED = 'ArticleGuidancePublished';
+
+	public function __construct(
+		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
+	) {
+	}
 
 	/**
 	 * @inheritDoc
@@ -58,6 +65,16 @@ class EditTagHandler implements
 			$tags[] = self::TAG;
 			$session->remove( self::SESSION_EDITING );
 			$session->set( self::SESSION_PUBLISHED, $wikiPage->getTitle()->getPrefixedText() );
+			$this->sendArticleSavedEvent( $wikiPage );
 		}
+	}
+
+	private function sendArticleSavedEvent( WikiPage $wikiPage ): void {
+		$this->experimentFactory->getExperiment()?->send( 'article_saved', [
+			'page' => [
+				'title' => $wikiPage->getTitle()->getPrefixedText(),
+				'id' => $wikiPage->getId(),
+			]
+		] );
 	}
 }

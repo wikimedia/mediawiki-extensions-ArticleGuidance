@@ -301,7 +301,7 @@ async function main() {
 			return 'error';
 		}
 
-		fs.writeFileSync( path.join( outlinesDir, filename ), content, 'utf8' );
+		fs.writeFileSync( path.join( outlinesDir, filename ), content, 'utf8' ); // eslint-disable-line security/detect-non-literal-fs-filename
 		console.log( '  written' );
 		writtenFilenames.add( filename );
 		return 'ok';

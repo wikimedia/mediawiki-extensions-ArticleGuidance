@@ -21,8 +21,7 @@
 				inline
 				class="ext-articleguidance-titleconflict-warning"
 			>
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="existsWarningHtml"></span>
+				{{ existsWarningText }}
 			</cdx-message>
 
 			<!-- Suggested alternative title -->
@@ -123,7 +122,7 @@ module.exports = defineComponent( {
 
 		const canContinue = computed( () => titleExists.value === false );
 
-		const existsWarningHtml = computed( () => mw.message( 'articleguidance-specialnewarticle-exists-warning', localTitle.value ).parse() );
+		const existsWarningText = computed( () => mw.message( 'articleguidance-titleconflict-exists-warning', localTitle.value ).text() );
 
 		const handleBack = () => {
 			store.resetTitleConflict();
@@ -145,7 +144,7 @@ module.exports = defineComponent( {
 		return {
 			localTitle,
 			titleExists,
-			existsWarningHtml,
+			existsWarningText,
 			titleSuggestion,
 			selectedResult,
 			canContinue,

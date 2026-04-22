@@ -10,7 +10,6 @@
 	"articleguidance-specialnewarticle-loading": "Haetaan...",
 	"articleguidance-specialnewarticle-checking": "Tarkistetaan...",
 	"articleguidance-specialnewarticle-no-results": "Ei aiheita haulle ”$1”",
-	"articleguidance-specialnewarticle-exists-warning": "Artikkeli nimeltä [[$1]] on jo olemassa.",
 	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
 	"articleguidance-specialnewarticle-disambiguation-title": "Mikä tämä on?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ei mikään näistä?",

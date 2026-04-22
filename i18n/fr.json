@@ -10,7 +10,6 @@
 	"articleguidance-specialnewarticle-loading": "Recherche…",
 	"articleguidance-specialnewarticle-checking": "Vérification…",
 	"articleguidance-specialnewarticle-no-results": "Aucune correspondance trouvée pour « $1 »",
-	"articleguidance-specialnewarticle-exists-warning": "Un article intitulé « [[$1]] » existe.",
 	"articleguidance-specialnewarticle-edit-existing": "Modifier l'article existant",
 	"articleguidance-specialnewarticle-disambiguation-title": "Qu’est-ce ?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Rien de tout ça ?",
@@ -71,5 +70,10 @@
 	"articleguidance-publish-followup-confirmation-title": "L'article a été publié !",
 	"articleguidance-publish-followup-community-review": "D'autres rédacteurs reliront cet article. En attendant, vous pouvez relire les suggestions pour l’améliorer.",
 	"articleguidance-publish-followup-edit-more-button": "Améliorer l'article",
-	"articleguidance-publish-followup-close-button": "Fermer"
+	"articleguidance-publish-followup-close-button": "Fermer",
+	"articleguidance-unsupported-subject-heading": "Aucun accompagnement n'est encore disponible pour ce sujet.",
+	"articleguidance-unsupported-subject-request-title": "Demander le support de ce type",
+	"articleguidance-unsupported-subject-request-description": "Demandez à la communauté d'ajouter un accompagnement pour ce type d'article.",
+	"articleguidance-unsupported-subject-start-title": "Commencer la rédaction",
+	"articleguidance-unsupported-subject-start-description": "Rédiger cet article sans accompagnement."
 }

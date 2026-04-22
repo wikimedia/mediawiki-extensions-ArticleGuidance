@@ -10,7 +10,6 @@
 	"articleguidance-specialnewarticle-loading": "Axtarılır...",
 	"articleguidance-specialnewarticle-checking": "Yoxlanılır...",
 	"articleguidance-specialnewarticle-no-results": "\"$1\" üçün mövzu tapılmadı",
-	"articleguidance-specialnewarticle-exists-warning": "[[$1]] adlı məqalə artıq mövcuddur.",
 	"articleguidance-specialnewarticle-edit-existing": "Mövcud məqaləni redaktə et",
 	"articleguidance-specialnewarticle-disambiguation-title": "Bu nədir?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Bunlardan heç biri?",
@@ -71,5 +70,10 @@
 	"articleguidance-publish-followup-confirmation-title": "Məqalə yayımlandı!",
 	"articleguidance-publish-followup-community-review": "Digər istifadəçilər bu məqaləni yoxlayacaqlar. Bu müddət ərzində onu yaxşılaşdırmaq üçün verilən təkliflərə baxın.",
 	"articleguidance-publish-followup-edit-more-button": "Məqaləni təkmilləşdir",
-	"articleguidance-publish-followup-close-button": "Bağla"
+	"articleguidance-publish-followup-close-button": "Bağla",
+	"articleguidance-unsupported-subject-heading": "Bu mövzu üçün hələlik heç bir təlimat yoxdur",
+	"articleguidance-unsupported-subject-request-title": "Bu növ üçün dəstək tələb edin",
+	"articleguidance-unsupported-subject-request-description": "Bu tip məqalə üçün icmadan təlimat əlavə etmələrini xahiş edin.",
+	"articleguidance-unsupported-subject-start-title": "Yazmağa başla",
+	"articleguidance-unsupported-subject-start-description": "Bu məqaləni məqalə təlimatı olmadan yaz."
 }

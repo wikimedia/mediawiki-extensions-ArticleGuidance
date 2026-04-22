@@ -6,7 +6,7 @@
 	},
 	"articleguidance-specialnewarticle-title": "Neien Artikel",
 	"articleguidance-specialnewarticle-no-results": "Fir „$1“ goufe keng Sujete fonnt",
-	"articleguidance-specialnewarticle-exists-warning": "Et gëtt schonn en Artikel mam Titel [[$1]].",
+	"articleguidance-titleconflict-exists-warning": "Et gëtt schonn en Artikel mam Titel „$1“.",
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",

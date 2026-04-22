@@ -10,7 +10,6 @@
 	"articleguidance-specialnewarticle-loading": "Aranıyor...",
 	"articleguidance-specialnewarticle-checking": "Kontrol ediliyor...",
 	"articleguidance-specialnewarticle-no-results": "\"$1\" için konu bulunamadı",
-	"articleguidance-specialnewarticle-exists-warning": "Bu vikide zaten \" $1 \" isimli bir madde mevcut.",
 	"articleguidance-specialnewarticle-edit-existing": "Mevcut maddeyi düzenle",
 	"articleguidance-specialnewarticle-disambiguation-title": "Bu nedir?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Bunlardan hiçbiri?",

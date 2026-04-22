@@ -12,7 +12,6 @@
 	"articleguidance-specialnewarticle-loading": "جارٍ البحث...",
 	"articleguidance-specialnewarticle-checking": "جارٍ التحقق...",
 	"articleguidance-specialnewarticle-no-results": "لم يتم العثور على أي موضوعات لـ \"$1\"",
-	"articleguidance-specialnewarticle-exists-warning": "توجد بالفعل مقالة بعنوان [[$1]].",
 	"articleguidance-specialnewarticle-edit-existing": "تعديل المقالة الموجودة",
 	"articleguidance-specialnewarticle-disambiguation-title": "ما هذا؟",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "لا شيء من هذا؟",

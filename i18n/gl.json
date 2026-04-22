@@ -10,7 +10,6 @@
 	"articleguidance-specialnewarticle-loading": "Procurando...",
 	"articleguidance-specialnewarticle-checking": "Comprobando...",
 	"articleguidance-specialnewarticle-no-results": "Non se atoparon temas para «$1»",
-	"articleguidance-specialnewarticle-exists-warning": "Xa existe un artigo titulado «[[$1]]».",
 	"articleguidance-specialnewarticle-edit-existing": "Editar o artigo existente",
 	"articleguidance-specialnewarticle-disambiguation-title": "Que é isto?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ningún destes?",
@@ -71,5 +70,10 @@
 	"articleguidance-publish-followup-confirmation-title": "Publicouse o artigo!",
 	"articleguidance-publish-followup-community-review": "Os demais editores revisarán este artigo. Mentres tanto, bótalle unha ollada ás suxestións para melloralo.",
 	"articleguidance-publish-followup-edit-more-button": "Mellorar o artigo",
-	"articleguidance-publish-followup-close-button": "Pechar"
+	"articleguidance-publish-followup-close-button": "Pechar",
+	"articleguidance-unsupported-subject-heading": "Aínda non hai ningunha guía para este tema",
+	"articleguidance-unsupported-subject-request-title": "Solicitar asistencia para este tipo",
+	"articleguidance-unsupported-subject-request-description": "Pídelle á comunidade que engada unha guía para este tipo de artigo.",
+	"articleguidance-unsupported-subject-start-title": "Comezar a escribir",
+	"articleguidance-unsupported-subject-start-description": "Escribir este artigo sen a guía."
 }

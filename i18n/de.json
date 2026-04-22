@@ -10,7 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Suche …",
 	"articleguidance-specialnewarticle-checking": "Überprüfung...",
 	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden.",
-	"articleguidance-specialnewarticle-exists-warning": "Ein Artikel mit dem Titel [[$1]] existiert bereits.",
+	"articleguidance-titleconflict-exists-warning": "Ein Artikel mit dem Titel „$1“ existiert bereits.",
 	"articleguidance-specialnewarticle-edit-existing": "Vorhandenen Artikel bearbeiten",
 	"articleguidance-specialnewarticle-disambiguation-title": "Was bedeutet dies?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Keines davon?",

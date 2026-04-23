@@ -7,6 +7,7 @@
 	"articleguidance-specialnewarticle-title": "Нови чланак",
 	"articleguidance-specialnewarticle-title-placeholder": "Наслов чланка",
 	"articleguidance-specialnewarticle-checking": "Проверавам...",
+	"articleguidance-titleconflict-exists-warning": "Чланак са насловом „$1” већ постоји.",
 	"articleguidance-sources-invalid-url": "Неисправан URL",
 	"articleguidance-sources-continue": "Настави",
 	"articleguidance-sources-unreliable-warning-title": "Не препоручује заједница",
@@ -26,5 +27,6 @@
 	"articleguidance-titleconflict-viewexisting": "Видети постојећи чланак",
 	"articleguidance-publish-followup-confirmation-title": "Чланак је објављен!",
 	"articleguidance-publish-followup-edit-more-button": "Унапредите чланак",
-	"articleguidance-publish-followup-close-button": "Затвори"
+	"articleguidance-publish-followup-close-button": "Затвори",
+	"articleguidance-unsupported-subject-start-title": "Почети писање"
 }

@@ -12,6 +12,7 @@
 	"articleguidance-specialnewarticle-loading": "جارٍ البحث...",
 	"articleguidance-specialnewarticle-checking": "جارٍ التحقق...",
 	"articleguidance-specialnewarticle-no-results": "لم يتم العثور على أي موضوعات لـ \"$1\"",
+	"articleguidance-titleconflict-exists-warning": "هناك مقالة بعنوان \"$1\" بالفعل.",
 	"articleguidance-specialnewarticle-edit-existing": "تعديل المقالة الموجودة",
 	"articleguidance-specialnewarticle-disambiguation-title": "ما هذا؟",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "لا شيء من هذا؟",
@@ -72,5 +73,10 @@
 	"articleguidance-publish-followup-confirmation-title": "تم نشر المقال!",
 	"articleguidance-publish-followup-community-review": "سيراجع محررون آخرون هذه المقالة. في هذه الأثناء، ألقِ نظرة أخرى على الاقتراحات لتحسينها.",
 	"articleguidance-publish-followup-edit-more-button": "تحسين المقال",
-	"articleguidance-publish-followup-close-button": "إغلاق"
+	"articleguidance-publish-followup-close-button": "إغلاق",
+	"articleguidance-unsupported-subject-heading": "لا توجد إرشادات لهذا الموضوع بعد",
+	"articleguidance-unsupported-subject-request-title": "طلب دعم لهذا النوع",
+	"articleguidance-unsupported-subject-request-description": "اطلب من المجتمع إضافة إرشادات لهذا النوع من المقال.",
+	"articleguidance-unsupported-subject-start-title": "ابدأ بالكتابة",
+	"articleguidance-unsupported-subject-start-description": "اكتب هذه المقالة بدون توجيه من المقال"
 }

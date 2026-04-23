@@ -10,6 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Recherche…",
 	"articleguidance-specialnewarticle-checking": "Vérification…",
 	"articleguidance-specialnewarticle-no-results": "Aucune correspondance trouvée pour « $1 »",
+	"articleguidance-titleconflict-exists-warning": "Un article intitulé « $1 » existe déjà.",
 	"articleguidance-specialnewarticle-edit-existing": "Modifier l'article existant",
 	"articleguidance-specialnewarticle-disambiguation-title": "Qu’est-ce ?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Rien de tout ça ?",

@@ -71,7 +71,7 @@ async function fetchLocalArticleData( title ) {
 		titles: title,
 		prop: 'pageimages|description',
 		piprop: 'thumbnail',
-		pithumbsize: 200,
+		pithumbsize: 60,
 		formatversion: 2
 	} );
 	const page = response.query.pages[ 0 ];

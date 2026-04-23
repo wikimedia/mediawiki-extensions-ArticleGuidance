@@ -16,6 +16,8 @@ use Wikimedia\ObjectCache\WANObjectCache;
  */
 class WikidataInfoFetcher {
 
+	private const THUMB_WIDTH = 60;
+
 	public function __construct(
 		private readonly HttpRequestFactory $httpRequestFactory,
 		private readonly Language $contentLanguage,
@@ -29,10 +31,9 @@ class WikidataInfoFetcher {
 	 * Convert a Wikimedia Commons image filename to a thumbnail URL
 	 *
 	 * @param string $filename Image filename from Wikidata
-	 * @param int $width Thumbnail width (default 200px)
 	 * @return string Thumbnail URL
 	 */
-	private function getCommonsImageUrl( string $filename, int $width = 200 ): string {
+	private function getCommonsImageUrl( string $filename ): string {
 		// Replace spaces with underscores
 		$filename = str_replace( ' ', '_', $filename );
 
@@ -47,7 +48,7 @@ class WikidataInfoFetcher {
 			$dir1,
 			$dir2,
 			rawurlencode( $filename ),
-			$width,
+			self::THUMB_WIDTH,
 			rawurlencode( $filename )
 		);
 	}

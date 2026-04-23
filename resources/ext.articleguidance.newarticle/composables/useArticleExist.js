@@ -1,5 +1,6 @@
 const { ref, watch } = require( 'vue' );
 const { checkPagesExist } = require( '../api/MediaWiki.js' );
+const { withRetry } = require( '../utils/retry.js' );
 
 /**
  * Composable for checking if an article exists on the local wiki
@@ -32,11 +33,10 @@ function useArticleExist( title ) {
 		error.value = null;
 
 		try {
-			const existenceMap = await checkPagesExist( [ currentTitle ] );
-			const pageExists = existenceMap[ currentTitle ];
+			const existenceMap = await withRetry( () => checkPagesExist( [ currentTitle ] ) );
 			// Only update if title hasn't changed during the async operation
 			if ( title.value === currentTitle ) {
-				exists.value = pageExists;
+				exists.value = existenceMap[ currentTitle ];
 			}
 		} catch ( err ) {
 			if ( title.value === currentTitle ) {

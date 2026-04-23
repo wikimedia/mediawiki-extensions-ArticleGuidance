@@ -27,12 +27,19 @@
 				</div>
 
 				<!-- Error state -->
-				<cdx-message
-					v-if="error"
-					type="error"
-					class="ext-articleguidance-error">
-					{{ error }}
-				</cdx-message>
+				<div v-if="error" class="ext-articleguidance-inline-error">
+					<span class="ext-articleguidance-inline-error-message">
+						{{ $i18n( 'articleguidance-specialnewarticle-search-error' ).text() }}
+					</span>
+					<cdx-button
+						class="ext-articleguidance-inline-error-retry"
+						weight="quiet"
+						action="progressive"
+						@click="handleRetry"
+					>
+						{{ $i18n( 'articleguidance-specialnewarticle-search-retry' ).text() }}
+					</cdx-button>
+				</div>
 
 				<!-- Results list -->
 				<template v-if="showResults">
@@ -68,7 +75,10 @@
 			</div>
 
 			<!-- Can't find option -->
-			<div v-if="showResults || showNoResults" class="ext-articleguidance-search-footer">
+			<div
+				v-if="showResults || showNoResults || error"
+				class="ext-articleguidance-search-footer"
+			>
 				<span class="ext-articleguidance-browse-prefix">
 					{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines-prefix' ).text() }}
 				</span>
@@ -88,7 +98,7 @@
 <script>
 const { defineComponent, ref, onMounted, computed, watch } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
-const { CdxTextInput, CdxMessage, CdxButton, CdxProgressIndicator } = require( '../codex.js' );
+const { CdxTextInput, CdxButton, CdxProgressIndicator } = require( '../codex.js' );
 const { useSearch } = require( '../composables/useSearch.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -103,7 +113,6 @@ module.exports = defineComponent( {
 	name: 'SearchStep',
 	components: {
 		CdxTextInput,
-		CdxMessage,
 		CdxButton,
 		CdxProgressIndicator,
 		Step,
@@ -162,6 +171,12 @@ module.exports = defineComponent( {
 			store.hideOutlines();
 		};
 
+		// Handle retrying after a search error
+		const handleRetry = () => {
+			performSearch( searchQuery.value );
+			checkExistence();
+		};
+
 		const MAX_SUPPORTED = MAX_RESULTS;
 		const MAX_UNSUPPORTED = 3;
 
@@ -200,6 +215,7 @@ module.exports = defineComponent( {
 			handleSelect,
 			handleBrowseOutlines,
 			handleHideOutlines,
+			handleRetry,
 			showResults,
 			showNoResults
 		};
@@ -245,8 +261,23 @@ module.exports = defineComponent( {
 	margin-top: 16px;
 }
 
-.ext-articleguidance-error {
-	margin-bottom: 16px;
+.ext-articleguidance-inline-error {
+	display: inline-flex;
+	align-items: baseline;
+	gap: @spacing-25;
+	margin-bottom: @spacing-50;
+}
+
+.ext-articleguidance-inline-error-message {
+	color: @color-subtle;
+	font-size: @font-size-medium;
+	font-weight: @font-weight-normal;
+}
+
+.ext-articleguidance-inline-error-retry {
+	padding: 0;
+	min-height: auto;
+	font-weight: @font-weight-normal;
 }
 
 .ext-articleguidance-results-list {

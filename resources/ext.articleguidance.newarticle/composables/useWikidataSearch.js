@@ -3,6 +3,7 @@ const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
 const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
 const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { withRetry } = require( '../utils/retry.js' );
 
 const PROP_INSTANCE_OF = 'P31';
 
@@ -135,8 +136,8 @@ function useWikidataSearch( query, language ) {
 		try {
 			// Run Wikidata search and outline load in parallel
 			const [ wikidataResults, outlines ] = await Promise.all( [
-				searchWikidata( searchQuery, language.value ),
-				store.loadOutlines()
+				withRetry( () => searchWikidata( searchQuery, language.value ) ),
+				withRetry( () => store.loadOutlines() )
 			] );
 
 			if ( requestId !== latestRequestId ) {
@@ -170,8 +171,10 @@ function useWikidataSearch( query, language ) {
 
 			// Run wbgetentities and SPARQL hierarchy check in parallel
 			const [ entityData, itemHierarchyMatches ] = await Promise.all( [
-				fetchEntityClaims( searchQIds, properties, language.value ),
-				checkItemHierarchyMatches( searchQIds, groups, excludedItemTypesList )
+				withRetry( () => fetchEntityClaims( searchQIds, properties, language.value ) ),
+				withRetry( () => checkItemHierarchyMatches(
+					searchQIds, groups, excludedItemTypesList
+				) )
 			] );
 
 			if ( requestId !== latestRequestId ) {

@@ -10,6 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Zoeken...",
 	"articleguidance-specialnewarticle-checking": "Controleren...",
 	"articleguidance-specialnewarticle-no-results": "Geen onderwerpen gevonden voor \"$1\"",
+	"articleguidance-titleconflict-exists-warning": "Er bestaat al een pagina met de titel \"$1\".",
 	"articleguidance-specialnewarticle-edit-existing": "Bestaande pagina bewerken",
 	"articleguidance-specialnewarticle-disambiguation-title": "Wat is dit?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Geen van deze?",
@@ -70,5 +71,10 @@
 	"articleguidance-publish-followup-confirmation-title": "De pagina is gepubliceerd!",
 	"articleguidance-publish-followup-community-review": "Andere redacteuren gaan deze pagina beoordelen. Bekijk in de tussentijd de suggesties ter verbetering nog eens.",
 	"articleguidance-publish-followup-edit-more-button": "Pagina verbeteren",
-	"articleguidance-publish-followup-close-button": "Sluiten"
+	"articleguidance-publish-followup-close-button": "Sluiten",
+	"articleguidance-unsupported-subject-heading": "Er is nog geen richtlijn beschikbaar voor dit onderwerp",
+	"articleguidance-unsupported-subject-request-title": "Ondersteuning vragen voor dit type",
+	"articleguidance-unsupported-subject-request-description": "Vraag de community om richtlijnen toe te voegen voor dit type pagina.",
+	"articleguidance-unsupported-subject-start-title": "Begin met bewerken",
+	"articleguidance-unsupported-subject-start-description": "Maak deze pagina zonder richtlijnen."
 }

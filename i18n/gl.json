@@ -10,6 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Procurando...",
 	"articleguidance-specialnewarticle-checking": "Comprobando...",
 	"articleguidance-specialnewarticle-no-results": "Non se atoparon temas para «$1»",
+	"articleguidance-titleconflict-exists-warning": "Xa existe un artigo titulado «$1».",
 	"articleguidance-specialnewarticle-edit-existing": "Editar o artigo existente",
 	"articleguidance-specialnewarticle-disambiguation-title": "Que é isto?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ningún destes?",

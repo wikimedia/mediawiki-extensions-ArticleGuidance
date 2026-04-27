@@ -10,6 +10,7 @@
 	"articleguidance-specialnewarticle-loading": "Haetaan...",
 	"articleguidance-specialnewarticle-checking": "Tarkistetaan...",
 	"articleguidance-specialnewarticle-no-results": "Ei aiheita haulle ”$1”",
+	"articleguidance-titleconflict-exists-warning": "Artikkeli nimeltä ”$1” on jo olemassa.",
 	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
 	"articleguidance-specialnewarticle-disambiguation-title": "Mikä tämä on?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Ei mikään näistä?",
@@ -56,5 +57,7 @@
 	"articleguidance-publish-followup-confirmation-title": "Artikkeli on julkaistu!",
 	"articleguidance-publish-followup-community-review": "Muut muokkaajat arvioivat tämän artikkelin. Voit sillä välin katsoa uudelleen ehdotuksia artikkelin parantamiseksi.",
 	"articleguidance-publish-followup-edit-more-button": "Paranna artikkelia",
-	"articleguidance-publish-followup-close-button": "Sulje"
+	"articleguidance-publish-followup-close-button": "Sulje",
+	"articleguidance-unsupported-subject-request-title": "Pyydä tukea tälle tyypille",
+	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen"
 }

@@ -107,8 +107,6 @@ const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
 const StateMessage = require( './StateMessage.vue' );
 
-const MAX_RESULTS = 5;
-
 module.exports = defineComponent( {
 	name: 'SearchStep',
 	components: {
@@ -177,17 +175,17 @@ module.exports = defineComponent( {
 			checkExistence();
 		};
 
-		const MAX_SUPPORTED = MAX_RESULTS;
+		const MAX_TOTAL = 8;
 		const MAX_UNSUPPORTED = 3;
 
 		const supportedResults = computed(
-			() => results.value.filter( ( r ) => r.supported ).slice( 0, MAX_SUPPORTED )
+			() => results.value.filter( ( r ) => r.supported )
 		);
 		const unsupportedResults = computed(
 			() => results.value.filter( ( r ) => !r.supported ).slice( 0, MAX_UNSUPPORTED )
 		);
 		const visibleResults = computed(
-			() => supportedResults.value.concat( unsupportedResults.value )
+			() => supportedResults.value.concat( unsupportedResults.value ).slice( 0, MAX_TOTAL )
 		);
 
 		// Computed properties for display states

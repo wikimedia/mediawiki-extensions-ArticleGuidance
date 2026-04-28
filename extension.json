@@ -10,7 +10,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.46.0"
+		"MediaWiki": ">= 1.47.0"
 	},
 	"config": {
 		"ArticleGuidanceJuniorEditorThreshold": {
@@ -39,7 +39,12 @@
 			]
 		},
 		"ArticleGuidanceExcludedItemTypes": {
-			"value": [ "Q4167410", "Q13406463", "Q11266439", "Q4167836" ],
+			"value": [
+				"Q4167410",
+				"Q13406463",
+				"Q11266439",
+				"Q4167836"
+			],
 			"description": "Wikidata Q IDs whose P31 presence causes an item to be excluded from article guidance search results. Q4167410 is the Wikimedia disambiguation page type."
 		},
 		"ArticleGuidanceExperimentName": {
@@ -47,7 +52,9 @@
 			"description": "TestKitchen experiment name used for A/B traffic splitting. When set, only users assigned to the 'treatment' group are redirected to Special:NewArticle. An empty string disables splitting and redirects all eligible traffic."
 		},
 		"ArticleGuidanceExperimentRefererTitles": {
-			"value": [ "Main_Page" ],
+			"value": [
+				"Main_Page"
+			],
 			"description": "Page titles (with optional namespace prefix, e.g. 'Wikipedia:Articles to create') whose red-links are in scope."
 		},
 		"ArticleGuidanceExperimentRefererCategories": {
@@ -128,7 +135,10 @@
 		}
 	},
 	"Hooks": {
-		"BeforeInitialize": [ "RedLinkRedirect", "EditTag" ],
+		"BeforeInitialize": [
+			"RedLinkRedirect",
+			"EditTag"
+		],
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",

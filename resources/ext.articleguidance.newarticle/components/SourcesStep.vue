@@ -163,7 +163,7 @@
 </template>
 
 <script>
-const { defineComponent, ref, watch, nextTick, computed } = require( 'vue' );
+const { defineComponent, onMounted, ref, watch, nextTick, computed } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const {
 	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
@@ -192,6 +192,10 @@ module.exports = defineComponent( {
 	setup() {
 		const store = useArticleGuidanceStore();
 		const { selectedOutline, minRequiredSources } = storeToRefs( store );
+
+		onMounted( () => {
+			instrument.logSourcesShown();
+		} );
 		const recommendedSources = computed(
 			() => selectedOutline.value.recommendedSources.info || []
 		);

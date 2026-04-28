@@ -67,11 +67,14 @@ function logWriteTitle( query, resultCount ) {
  * Fire when the user selects a Wikidata search result card.
  *
  * @param {string} resultQid QID of the clicked Wikidata item.
- * @param {{title: string, qid: string}} outline Matched outline type.
+ * @param {{title: string, qid: string|null}} outline Matched outline type. qid is null when the
+ *   result has no matching outline (unsupported topic), which routes the user to the unsupported
+ *   subject step. The action_subtype reflects this: 'suggested_topic' when supported,
+ *   'unsupported_topic' when not.
  */
 function logSelectSuggestedTopic( resultQid, outline ) {
 	const data = {};
-	data.action_subtype = 'suggested_topic';
+	data.action_subtype = outline.qid ? 'suggested_topic' : 'unsupported_topic';
 	data.action_context = { result_qid: resultQid, outline: outline };
 	submit( 'select_topic', data );
 }
@@ -126,6 +129,13 @@ function logNotabilityCheckShown( tags ) {
 	const data = {};
 	data.action_context = { tags: tags };
 	submit( 'notability_check_shown', data );
+}
+
+/**
+ * Fire when the sources step mounts.
+ */
+function logSourcesShown() {
+	submit( 'sources_shown' );
 }
 
 /**
@@ -208,6 +218,7 @@ module.exports = {
 	logAddSource,
 	logNotabilityAction,
 	logNotabilityCheckShown,
+	logSourcesShown,
 	logGuidanceShown,
 	logWriteStart,
 	logSubjectCoveredShown,

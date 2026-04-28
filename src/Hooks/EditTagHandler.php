@@ -11,6 +11,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactor
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPage;
+use MediaWiki\Title\Title;
 
 class EditTagHandler implements
 	BeforeInitializeHook,
@@ -52,6 +53,7 @@ class EditTagHandler implements
 			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
 		) {
 			$request->getSession()->set( self::SESSION_EDITING, $title->getPrefixedText() );
+			$this->sendEditingStartedEvent( $title );
 		}
 	}
 
@@ -67,6 +69,14 @@ class EditTagHandler implements
 			$session->set( self::SESSION_PUBLISHED, $wikiPage->getTitle()->getPrefixedText() );
 			$this->sendArticleSavedEvent( $wikiPage );
 		}
+	}
+
+	private function sendEditingStartedEvent( Title $title ): void {
+		$this->experimentFactory->getExperiment()?->send( 'editing_start', [
+			'page' => [
+				'title' => $title->getPrefixedText(),
+			]
+		] );
 	}
 
 	private function sendArticleSavedEvent( WikiPage $wikiPage ): void {

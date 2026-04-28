@@ -52,9 +52,7 @@
 			"description": "TestKitchen experiment name used for A/B traffic splitting. When set, only users assigned to the 'treatment' group are redirected to Special:NewArticle. An empty string disables splitting and redirects all eligible traffic."
 		},
 		"ArticleGuidanceExperimentRefererTitles": {
-			"value": [
-				"Main_Page"
-			],
+			"value": [],
 			"description": "Page titles (with optional namespace prefix, e.g. 'Wikipedia:Articles to create') whose red-links are in scope."
 		},
 		"ArticleGuidanceExperimentRefererCategories": {

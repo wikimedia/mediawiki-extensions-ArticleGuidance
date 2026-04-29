@@ -10,6 +10,8 @@
 	"articleguidance-specialnewarticle-loading": "Suche …",
 	"articleguidance-specialnewarticle-checking": "Überprüfung...",
 	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden.",
+	"articleguidance-specialnewarticle-search-error": "Das Thema konnte nicht geprüft werden.",
+	"articleguidance-specialnewarticle-search-retry": "Erneut versuchen",
 	"articleguidance-titleconflict-exists-warning": "Ein Artikel mit dem Titel „$1“ existiert bereits.",
 	"articleguidance-specialnewarticle-edit-existing": "Vorhandenen Artikel bearbeiten",
 	"articleguidance-specialnewarticle-disambiguation-title": "Was bedeutet dies?",

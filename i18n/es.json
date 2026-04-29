@@ -2,14 +2,46 @@
 	"@metadata": {
 		"authors": [
 			"Kookoriko",
-			"Monicapozo03"
+			"Monicapozo03",
+			"Pginer"
 		]
 	},
+	"articleguidance-desc": "Permite a los usuarios crear artículos mediante un proceso guiado",
+	"articleguidance-specialnewarticle-title": "Nuevo artículo",
+	"articleguidance-specialnewarticle-title-placeholder": "Título del artículo",
+	"articleguidance-specialnewarticle-loading": "Buscando…",
+	"articleguidance-specialnewarticle-checking": "Comprobando...",
+	"articleguidance-specialnewarticle-no-results": "No se encontraron temas para \"$1\"",
+	"articleguidance-titleconflict-exists-warning": "Ya existe un artículo titulado \"$1\".",
+	"articleguidance-specialnewarticle-edit-existing": "Editar el artículo existente",
+	"articleguidance-specialnewarticle-disambiguation-title": "¿Qué es esto?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "¿Ninguno de estos?",
+	"articleguidance-sources-title": "Añadir fuentes",
+	"articleguidance-sources-subtitle": "Las fuentes permiten a los lectores comprobar los hechos y muestran por qué este tema es importante.",
+	"articleguidance-sources-subtitle-notability-risk": "Este tipo de artículo requiere aportar las fuentes para poder continuar.",
+	"articleguidance-sources-url-placeholder": "Pegar un enlace a la fuente",
+	"articleguidance-sources-add-source": "Añadir fuente",
+	"articleguidance-sources-invalid-url": "Introduce una URL válida",
+	"articleguidance-sources-duplicate": "Esta fuente ya se ha añadido",
+	"articleguidance-sources-continue": "Continuar",
+	"articleguidance-sources-helper": "Puedes añadir fuentes mientras escribes.",
+	"articleguidance-sources-helper-required": "Los artículos sobre $1 en esta wiki requieren proporcionar fuentes.",
+	"articleguidance-sources-helper-progress": "$1 de {{PLURAL:$2|$2 fuente|$2 fuentes}} añadida.",
+	"articleguidance-sources-unreliable-warning-title": "No recomendado por la comunidad",
+	"articleguidance-sources-unreliable-warning-description": "Este tipo de fuente no suele aceptarse para este tipo de artículo.",
+	"articleguidance-sources-tips-title": "Consejos para artículos de $1",
+	"articleguidance-sources-tips-content-recommended": "Estos tipos de fuentes funcionan bien:",
+	"articleguidance-sources-tips-content-discouraged": "Estos no suelen ser aceptados:",
+	"articleguidance-navigation-back": "Volver",
+	"articleguidance-notability-option-wikidata-title": "Añadir este tema a Wikidata",
 	"articleguidance-specialnewarticle-no-matching-type": "¿No puedes encontrar el tipo correcto?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Sugiera un nuevo tipo",
 	"articleguidance-subjectcovered-title": "El artículo ya existe",
 	"articleguidance-subjectcovered-description": "Este tema ya cuenta con un artículo en esta wiki. Puedes leerlo o mejorarlo.",
 	"articleguidance-subjectcovered-button": "Mejorar artículo",
+	"articleguidance-titleconflict-continue": "Continuar",
 	"tag-articleguidance": "Guía de artículos",
-	"tag-articleguidance-description": "La edición se realizó usando el flujo de trabajo de la guía de artículo"
+	"tag-articleguidance-description": "La edición se realizó usando el flujo de trabajo de la guía de artículo",
+	"articleguidance-publish-followup-close-button": "Cerrar",
+	"articleguidance-unsupported-subject-start-description": "Escribe este artículo sin asistencia."
 }

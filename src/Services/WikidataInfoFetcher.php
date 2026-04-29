@@ -74,7 +74,7 @@ class WikidataInfoFetcher {
 	public function fetchEntityCached( string $wikidataId, string $languageCode, ?string $matchVia = null ): ?array {
 		// Cache key version - increment to invalidate old cache entries
 		$cacheKey = $this->cache->makeKey(
-			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v8'
+			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v9'
 		);
 		$method = __METHOD__;
 
@@ -92,6 +92,7 @@ class WikidataInfoFetcher {
 						'props' => 'labels|descriptions|claims',
 						'ids' => $wikidataId,
 						'languages' => $languageCode,
+						'languagefallback' => '1',
 						'format' => 'json'
 					] )
 				];

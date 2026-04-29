@@ -90,6 +90,7 @@ async function fetchEntityClaims( qids, properties, language ) {
 		ids: uncachedQIds.join( '|' ),
 		props: 'claims|sitelinks/urls|labels|descriptions',
 		languages: language,
+		languagefallback: '1',
 		format: 'json',
 		origin: '*'
 	} );

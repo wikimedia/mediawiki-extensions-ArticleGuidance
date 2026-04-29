@@ -8,7 +8,6 @@ const { getDraftTitle } = require( '../utils/draft.js' );
 
 const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const currentStep = ref( 'search' );
-	const history = ref( [ 'search' ] );
 	const searchQuery = ref( '' );
 	const selectedResult = ref( null );
 	const selectedOutline = ref( null );
@@ -46,7 +45,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function goTo( step ) {
 		currentStep.value = step;
-		history.value.push( step );
+		window.history.pushState( { agStep: step }, '' );
 	}
 
 	let loadingPromise = null;
@@ -246,11 +245,16 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function goBack() {
-		if ( history.value.length > 1 ) {
-			history.value.pop();
-			currentStep.value = history.value[ history.value.length - 1 ];
-		}
+		window.history.back();
 	}
+
+	window.history.replaceState( { agStep: 'search' }, '' );
+
+	window.addEventListener( 'popstate', ( event ) => {
+		if ( event.state && event.state.agStep ) {
+			currentStep.value = event.state.agStep;
+		}
+	} );
 
 	return {
 		currentStep,

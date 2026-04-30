@@ -3,6 +3,7 @@
 		<search-step v-if="currentStep === 'search'"></search-step>
 		<subject-covered-step v-else-if="currentStep === 'subjectcovered'"></subject-covered-step>
 		<title-conflict-step v-else-if="currentStep === 'titleconflict'"></title-conflict-step>
+		<update-title-step v-else-if="currentStep === 'updatetitle'"></update-title-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
 		<notability-step v-else-if="currentStep === 'notability'"></notability-step>
 		<unsupported-subject-step
@@ -23,6 +24,7 @@ const NotabilityStep = require( './components/NotabilityStep.vue' );
 const UnsupportedSubjectStep = require( './components/UnsupportedSubjectStep.vue' );
 const SubjectCoveredStep = require( './components/SubjectCoveredStep.vue' );
 const TitleConflictStep = require( './components/TitleConflictStep.vue' );
+const UpdateTitleStep = require( './components/UpdateTitleStep.vue' );
 const { scrollToTop } = require( './utils/scroll.js' );
 
 module.exports = defineComponent( {
@@ -31,6 +33,7 @@ module.exports = defineComponent( {
 		SearchStep,
 		SubjectCoveredStep,
 		TitleConflictStep,
+		UpdateTitleStep,
 		SourcesStep,
 		NotabilityStep,
 		UnsupportedSubjectStep,

@@ -18,6 +18,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const localArticle = ref( null );
 	const articleTitle = ref( null );
 	const titleSuggestion = ref( null );
+	const originalTypedTitle = ref( null );
 
 	const localArticleInfo = computed( () => ( {
 		title: ( localArticle.value && localArticle.value.title ) ||
@@ -119,6 +120,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	async function selectArticle( result, titleTaken ) {
 		articleTitle.value = null;
 		titleSuggestion.value = null;
+		originalTypedTitle.value = null;
 		if ( selectedResult.value === null || selectedResult.value.id !== result.id ) {
 			references.value = [];
 		}
@@ -137,10 +139,24 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			goTo( 'titleconflict' );
 		} else if ( !result.matchedQId ) {
 			goTo( 'unsupportedsubject' );
-		} else if ( shouldShowNotabilityStep() ) {
-			goTo( 'notability' );
 		} else {
-			goTo( 'sources' );
+			if ( result.label &&
+				result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
+				const existenceMap = await checkPagesExist( [ result.label ] );
+				if ( existenceMap[ result.label ] ) {
+					articleTitle.value = result.label;
+					titleSuggestion.value = await findTitleSuggestion( result );
+					goTo( 'titleconflict' );
+					return;
+				}
+				originalTypedTitle.value = searchQuery.value;
+				articleTitle.value = result.label;
+			}
+			if ( shouldShowNotabilityStep() ) {
+				goTo( 'notability' );
+			} else {
+				goTo( 'sources' );
+			}
 		}
 	}
 
@@ -244,6 +260,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		goTo( 'instructions' );
 	}
 
+	function goToUpdateTitle() {
+		goTo( 'updatetitle' );
+	}
+
 	function goBack() {
 		window.history.back();
 	}
@@ -273,6 +293,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		minRequiredSources,
 		articleTitle,
 		titleSuggestion,
+		originalTypedTitle,
 		creationTitle,
 		getActiveNotabilityTags,
 		getBlockingRestriction,
@@ -289,6 +310,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		resetTitleConflict,
 		confirmNotability,
 		confirmSources,
+		goToUpdateTitle,
 		goBack
 	};
 } );

@@ -188,6 +188,7 @@
 				"components/InstructionsStep.vue",
 				"components/SubjectCoveredStep.vue",
 				"components/TitleConflictStep.vue",
+				"components/UpdateTitleStep.vue",
 				"components/ArticleInfo.vue",
 				"components/ArticleCard.vue",
 				"components/StateMessage.vue",
@@ -220,6 +221,7 @@
 						"cdxIconUserTalk",
 						"cdxIconBook",
 						"cdxIconClose",
+						"cdxIconEdit",
 						"cdxIconInfoFilled",
 						"cdxIconLinkExternal",
 						"cdxIconLogoWikidata",
@@ -301,7 +303,13 @@
 				"articleguidance-unsupported-subject-request-title",
 				"articleguidance-unsupported-subject-request-description",
 				"articleguidance-unsupported-subject-start-title",
-				"articleguidance-unsupported-subject-start-description"
+				"articleguidance-unsupported-subject-start-description",
+				"articleguidance-updatetitle-title",
+				"articleguidance-updatetitle-button",
+				"articleguidance-updatetitle-cancel",
+				"articleguidance-updatetitle-originally-typed",
+				"articleguidance-updatetitle-use-original",
+				"articleguidance-updatetitle-edit-label"
 			],
 			"dependencies": [
 				"vue",

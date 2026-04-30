@@ -10,6 +10,8 @@
 	"articleguidance-specialnewarticle-loading": "Axtarılır...",
 	"articleguidance-specialnewarticle-checking": "Yoxlanılır...",
 	"articleguidance-specialnewarticle-no-results": "\"$1\" üçün mövzu tapılmadı",
+	"articleguidance-specialnewarticle-search-error": "Bu mövzunu yoxlamaq mümkün olmadı.",
+	"articleguidance-specialnewarticle-search-retry": "Yenidən cəhd et",
 	"articleguidance-titleconflict-exists-warning": "\"$1\" adlı məqalə artıq mövcuddur.",
 	"articleguidance-specialnewarticle-edit-existing": "Mövcud məqaləni redaktə et",
 	"articleguidance-specialnewarticle-disambiguation-title": "Bu nədir?",

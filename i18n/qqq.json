@@ -41,6 +41,7 @@
 	"articleguidance-instructions-source-guidance": "Guidance text about having reliable sources, shown at the bottom of the guidance card",
 	"articleguidance-instructions-start-writing": "Button text to start writing the article in the editor",
 	"articleguidance-navigation-back": "Button text for the back navigation button",
+	"articleguidance-category-note": "Shown in the article-guidance tag box on outline pages when a category attribute is set. $1 is a wiki link to the category page that new articles will be added to.",
 	"articleguidance-notability-restrictions-title": "Title of the notability restrictions box shown when the selected article type has notability risk tags.",
 	"articleguidance-notability-warning": "Warning message shown at the top of the notability step. Explains that new articles of this type are often deleted and encourages contributors to use the listed alternatives.",
 	"articleguidance-notability-warning-crosswiki": "Warning message shown at the top of the notability step when the crosswiki restriction is active. Explains that the subject is not yet covered on other Wikipedias.",

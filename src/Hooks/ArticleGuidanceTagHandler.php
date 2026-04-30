@@ -11,6 +11,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
+use MediaWiki\Title\Title;
 
 /**
  * Handler for the <article-guidance> parser tag extension
@@ -75,6 +76,13 @@ class ArticleGuidanceTagHandler implements
 			$explicitMatchVia = null;
 		}
 		$matchVia = $explicitMatchVia;
+
+		$category = null;
+		$rawCategory = trim( $attributes['category'] ?? '' );
+		if ( $rawCategory !== '' ) {
+			$categoryTitle = Title::newFromText( 'Category:' . $rawCategory );
+			$category = $categoryTitle ? $categoryTitle->getText() : null;
+		}
 
 		// Parse instructions and sources for display in the tag
 		$instructionsHtml = null;
@@ -171,7 +179,8 @@ class ArticleGuidanceTagHandler implements
 			$discouragedSourcesHtml,
 			$wikidataImage,
 			$notabilityThresholds,
-			$matchVia
+			$matchVia,
+			$category
 		);
 
 		return $html;

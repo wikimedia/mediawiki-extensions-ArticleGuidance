@@ -41,7 +41,8 @@ class ArticleGuidanceRenderer {
 		?array $discouragedSourcesHtml,
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
-		?string $matchVia = null
+		?string $matchVia = null,
+		?string $category = null
 	): string {
 		$isValid = $wikidataId !== null;
 
@@ -213,6 +214,16 @@ class ArticleGuidanceRenderer {
 					 )
 				);
 			}
+		}
+
+		// Category note — shown last, separated from the sources section
+		if ( $category !== null ) {
+			$html .= Html::element( 'hr', [ 'class' => 'ext-articleguidance-separator' ] );
+			$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-category' ],
+				wfMessage( 'articleguidance-category-note',
+					'[[:Category:' . $category . ']]'
+				)->parse()
+			);
 		}
 
 		$html .= Html::closeElement( 'div' );

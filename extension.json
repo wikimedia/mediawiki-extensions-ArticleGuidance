@@ -13,6 +13,14 @@
 		"MediaWiki": ">= 1.47.0"
 	},
 	"config": {
+		"ArticleGuidanceUserAgent": {
+			"value": "MediaWiki/ArticleGuidance language-product-localization@wikimedia.org",
+			"description": "User-Agent header sent with server-side HTTP requests to Wikidata APIs (wbgetentities, SPARQL)."
+		},
+		"ArticleGuidanceSparqlEndpoint": {
+			"value": "https://query.wikidata.org/sparql",
+			"description": "SPARQL endpoint URL for server-side Wikidata queries."
+		},
 		"ArticleGuidanceJuniorEditorThreshold": {
 			"value": 100,
 			"description": "Minimum number of edits before a user is no longer considered a junior editor."

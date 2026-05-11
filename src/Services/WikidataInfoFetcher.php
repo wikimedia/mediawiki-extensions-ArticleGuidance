@@ -24,6 +24,8 @@ class WikidataInfoFetcher {
 		private readonly LoggerInterface $logger,
 		private readonly WANObjectCache $cache,
 		private readonly array $matchViaRules,
+		private readonly string $userAgent,
+		private readonly string $sparqlEndpoint,
 	) {
 	}
 
@@ -207,12 +209,12 @@ class WikidataInfoFetcher {
 	private function buildSparqlRequest( string $sparqlQuery ): array {
 		return [
 			'method' => 'GET',
-			'url' => 'https://query.wikidata.org/sparql?' . http_build_query( [
+			'url' => rtrim( $this->sparqlEndpoint, '/' ) . '?' . http_build_query( [
 				'query' => $sparqlQuery,
 				'format' => 'json'
 			] ),
 			'headers' => [
-				'User-Agent' => 'MediaWiki ArticleGuidance Extension',
+				'User-Agent' => $this->userAgent,
 				'Accept' => 'application/sparql-results+json'
 			]
 		];

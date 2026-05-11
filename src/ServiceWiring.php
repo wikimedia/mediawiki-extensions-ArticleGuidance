@@ -56,12 +56,15 @@ return [
 		return new TitleExtractor();
 	},
 	'ArticleGuidanceWikidataInfoFetcher' => static function ( MediaWikiServices $services ): WikidataInfoFetcher {
+		$config = $services->getMainConfig();
 		return new WikidataInfoFetcher(
 			$services->getHttpRequestFactory(),
 			$services->getContentLanguage(),
 			LoggerFactory::getInstance( 'ArticleGuidance' ),
 			$services->getMainWANObjectCache(),
-			$services->getMainConfig()->get( 'ArticleGuidanceMatchViaRules' )
+			$config->get( 'ArticleGuidanceMatchViaRules' ),
+			$config->get( 'ArticleGuidanceUserAgent' ),
+			$config->get( 'ArticleGuidanceSparqlEndpoint' )
 		);
 	},
 ];

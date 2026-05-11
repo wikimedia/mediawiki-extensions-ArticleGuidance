@@ -4,6 +4,7 @@ const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
 const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { withRetry } = require( '../utils/retry.js' );
+const { reportSearchEvaluation } = require( '../logging/search.js' );
 
 const PROP_INSTANCE_OF = 'P31';
 
@@ -312,6 +313,8 @@ function useWikidataSearch( query, language ) {
 					localSitelink: entity ? entity.localSitelink : null
 				} );
 			} );
+
+			reportSearchEvaluation( searchQuery, filteredResults, sparqlMatches, outlineByType );
 
 			if ( requestId !== latestRequestId ) {
 				return;

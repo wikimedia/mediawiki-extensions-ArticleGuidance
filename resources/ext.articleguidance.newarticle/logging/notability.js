@@ -13,6 +13,11 @@ const DIVIDER = '─────────────────────
  * @param {Object|null} selectedResult The Wikidata match, or null (for the group title)
  */
 function reportNotabilityEvaluation( outline, tagResults, selectedResult ) {
+	const debugParam = mw.util.getParamValue( 'debug' );
+	if ( debugParam !== '1' && debugParam !== 'true' ) {
+		return;
+	}
+
 	if ( !outline || !outline.notabilityRisk ) {
 		return;
 	}

@@ -194,6 +194,7 @@
 				"utils/scroll.js",
 				"utils/missingTypeFeedback.js",
 				"logging/notability.js",
+				"logging/search.js",
 				"logging/instrument.js",
 				{
 					"name": "config.json",

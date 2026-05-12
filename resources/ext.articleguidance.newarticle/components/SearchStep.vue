@@ -48,6 +48,16 @@
 							$i18n( 'articleguidance-specialnewarticle-disambiguation-title' ).text()
 						}}
 					</div>
+					<p
+						v-if="hasFallbackLabels"
+						class="ext-articleguidance-language-fallback-notice"
+					>
+						{{
+							$i18n(
+								'articleguidance-specialnewarticle-language-fallback-notice'
+							).text()
+						}}
+					</p>
 					<div class="ext-articleguidance-results-list">
 						<article-card
 							v-for="result in visibleResults"
@@ -188,6 +198,10 @@ module.exports = defineComponent( {
 			() => supportedResults.value.concat( unsupportedResults.value ).slice( 0, MAX_TOTAL )
 		);
 
+		const hasFallbackLabels = computed(
+			() => visibleResults.value.some( ( r ) => r.labelFallback )
+		);
+
 		// Computed properties for display states
 		// Show Wikidata results even when a title already exists
 		const showResults = computed(
@@ -210,6 +224,7 @@ module.exports = defineComponent( {
 			loading,
 			error,
 			visibleResults,
+			hasFallbackLabels,
 			handleSelect,
 			handleBrowseOutlines,
 			handleHideOutlines,

@@ -137,9 +137,13 @@ async function fetchEntityClaims( qids, properties, language ) {
 		}
 		const labelEntry = entity.labels && entity.labels[ language ];
 		const descEntry = entity.descriptions && entity.descriptions[ language ];
+		const labelFallback = !!labelEntry &&
+			labelEntry.language !== language &&
+			labelEntry.language !== 'mul';
 		freshResult[ qid ] = {
 			claims,
 			label: labelEntry ? labelEntry.value : qid,
+			labelFallback,
 			description: descEntry ? descEntry.value : '',
 			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,
 			sitelinkCount,

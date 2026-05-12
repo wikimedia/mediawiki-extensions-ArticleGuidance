@@ -19,6 +19,7 @@
 	"articleguidance-specialnewarticle-disambiguation-title": "Heading shown above the subject match cards and the article type outlines list",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "First part of the button text to browse all available article type outlines when the user cannot find what they are looking for in the search results",
 	"articleguidance-specialnewarticle-browse-outlines-link": "Second part of the button text to browse all available article type outlines when the user cannot find what they are looking for in the search results",
+	"articleguidance-specialnewarticle-language-fallback-notice": "Notice shown below search result cards when at least one result displays a label from a fallback language (because the wiki's content language has no label on Wikidata). Not shown when all labels are in the requested language or use the 'mul' language code.",
 	"articleguidance-sources-title": "Title of the sources step where users add references",
 	"articleguidance-sources-subtitle": "Default subtitle of the sources step explaining why sources are important (when there are no notability risks that required them before continuing)",
 	"articleguidance-sources-subtitle-notability-risk": "Alternative subtitle of the sources step asking the user to add required sources before writing.",

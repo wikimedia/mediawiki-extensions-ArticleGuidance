@@ -281,6 +281,7 @@ function useWikidataSearch( query, language ) {
 				filteredResults.push( {
 					id: result.id,
 					label: ( entity && entity.label ) || result.id,
+					labelFallback: entity ? entity.labelFallback : false,
 					description: ( entity && entity.description ) || '',
 					url: result.url,
 					matchedQId: matchedQIds[ 0 ],
@@ -303,6 +304,7 @@ function useWikidataSearch( query, language ) {
 				filteredResults.push( {
 					id: result.id,
 					label: ( entity && entity.label ) || result.id,
+					labelFallback: entity ? entity.labelFallback : false,
 					description: ( entity && entity.description ) || '',
 					url: result.url,
 					matchedQId: null,

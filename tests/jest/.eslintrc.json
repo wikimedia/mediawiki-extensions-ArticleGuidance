@@ -2,5 +2,8 @@
 	"plugins": [ "jest" ],
 	"env": {
 		"jest/globals": true
+	},
+	"rules": {
+		"n/no-unsupported-features/node-builtins": [ "error", { "ignores": [ "fetch" ] } ]
 	}
 }

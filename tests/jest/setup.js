@@ -9,5 +9,8 @@ const configValues = {
 global.mw = {
 	config: {
 		get: ( key ) => key in configValues ? configValues[ key ] : null
+	},
+	log: {
+		warn: jest.fn()
 	}
 };

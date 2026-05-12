@@ -5,7 +5,10 @@ const { isMobile } = require( './mobile.js' );
  *
  * @param {string} title         Target article title (may include namespace prefix)
  * @param {string} outlineTitle  MW page title of the preload template (outline)
- * @param {Array}  references    User-supplied reference strings
+ * @param {Array}  references    Per-reference content strings — Citoid-formatted
+ *                               citation wikitext (e.g. {{Cite web|…}}) when
+ *                               available, otherwise the raw URL. Each is
+ *                               wrapped in a numbered <ref> tag.
  * @return {string}
  */
 function getCreateArticleUrl( title, outlineTitle, references ) {

@@ -232,6 +232,7 @@ const { cdxIconAdd, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { validateSource } = require( '../api/Sources.js' );
+const { fetchAllCitationsWikitext } = require( '../api/Citoid.js' );
 const instrument = require( '../logging/instrument.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
@@ -424,9 +425,13 @@ module.exports = defineComponent( {
 		} );
 
 		/**
-		 * Handle continue - navigate to next step
+		 * Handle continue - navigate to next step.
+		 * Kick off Citoid prefetch in the background so it may resolve while
+		 * the user reads the instructions page.
 		 */
 		const handleContinue = () => {
+			const urls = verifiedSources.value.map( ( s ) => s.url );
+			store.setCitationWikitextsPromise( fetchAllCitationsWikitext( urls ) );
 			store.confirmSources();
 		};
 

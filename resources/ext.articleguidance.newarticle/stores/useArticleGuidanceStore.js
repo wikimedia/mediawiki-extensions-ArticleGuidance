@@ -240,7 +240,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function confirmTitle() {
-		if ( shouldShowNotabilityStep() ) {
+		if ( !selectedResult.value.matchedQId ) {
+			goTo( 'unsupportedsubject' );
+		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
 			goTo( 'sources' );

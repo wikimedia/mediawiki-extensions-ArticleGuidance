@@ -76,7 +76,7 @@ class WikidataInfoFetcher {
 	public function fetchEntityCached( string $wikidataId, string $languageCode, ?string $matchVia = null ): ?array {
 		// Cache key version - increment to invalidate old cache entries
 		$cacheKey = $this->cache->makeKey(
-			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v9'
+			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v10'
 		);
 		$method = __METHOD__;
 
@@ -120,6 +120,9 @@ class WikidataInfoFetcher {
 					}
 					$entityData['matchVia'] = $matchVia;
 					$entityData['hierarchyDepth'] = $this->processSparqlResponse( $responses[1]['response'] );
+					if ( $entityData['hierarchyDepth'] === null ) {
+						$ttl = WANObjectCache::TTL_MINUTE * 5;
+					}
 				} else {
 					// No explicit match-via: infer from Wikidata superclasses and compute
 					// both P171 and P279 depths in a single SPARQL query.
@@ -138,6 +141,9 @@ class WikidataInfoFetcher {
 						$this->processInferenceAndDepthSparqlResponse( $responses[1]['response'] );
 					$entityData['matchVia'] = $inferredMatchVia;
 					$entityData['hierarchyDepth'] = $hierarchyDepth;
+					if ( $hierarchyDepth === null ) {
+						$ttl = WANObjectCache::TTL_MINUTE * 5;
+					}
 				}
 
 				return $entityData;

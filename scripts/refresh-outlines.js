@@ -72,6 +72,8 @@ const apiUrl = baseUrl + '/w/api.php';
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
+const USER_AGENT = 'MediaWiki/ArticleGuidance language-product-localization@wikimedia.org';
+
 /** Shared cookie store (name → value). */
 const cookies = new Map();
 
@@ -97,7 +99,7 @@ async function apiGet( params ) {
 	}
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	const response = await fetch( url.toString(), {
-		headers: { Cookie: serializeCookies() }
+		headers: { 'User-Agent': USER_AGENT, Cookie: serializeCookies() }
 	} );
 	storeCookies( response );
 	if ( !response.ok ) {
@@ -113,6 +115,7 @@ async function apiPost( params ) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
+			'User-Agent': USER_AGENT,
 			Cookie: serializeCookies()
 		},
 		body: body.toString()
@@ -294,7 +297,7 @@ async function main() {
 		const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v0/outlines`;
 		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		const restResponse = await fetch( restUrl, {
-			headers: { Cookie: serializeCookies() }
+			headers: { 'User-Agent': USER_AGENT, Cookie: serializeCookies() }
 		} );
 		if ( !restResponse.ok ) {
 			console.warn( `  ⚠ REST API returned HTTP ${ restResponse.status }` );

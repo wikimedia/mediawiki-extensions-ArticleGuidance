@@ -279,7 +279,7 @@ GROUP BY ?inferredMatchVia";
 		[ $code, $reason, $headers, $body, $error ] = $response;
 
 		if ( $code !== 200 ) {
-			$this->logger->warning( 'SPARQL inference request failed (graceful degradation)', [
+			$this->logger->warning( 'Failed to fetch outline hierarchy depth and matchVia (code !== 200)', [
 				'code' => $code,
 				'error' => $error
 			] );
@@ -288,6 +288,9 @@ GROUP BY ?inferredMatchVia";
 
 		$data = json_decode( $body, true );
 		if ( !is_array( $data ) || !isset( $data['results']['bindings'][0] ) ) {
+			$this->logger->warning( 'Failed to fetch outline hierarchy depth and matchVia (unexpected body)', [
+				'body' => substr( $body, 0, 200 )
+			] );
 			return [ 'matchVia' => null, 'hierarchyDepth' => null ];
 		}
 
@@ -311,7 +314,7 @@ GROUP BY ?inferredMatchVia";
 		[ $code, $reason, $headers, $body, $error ] = $response;
 
 		if ( $code !== 200 ) {
-			$this->logger->warning( 'SPARQL request failed (graceful degradation)', [
+			$this->logger->warning( 'Failed to fetch outline hierarchy depth (code !== 200)', [
 				'code' => $code,
 				'error' => $error
 			] );
@@ -323,6 +326,9 @@ GROUP BY ?inferredMatchVia";
 			return (int)$data['results']['bindings'][0]['depth']['value'];
 		}
 
+		$this->logger->warning( 'Failed to fetch outline hierarchy depth (unexpected body)', [
+			'body' => substr( $body, 0, 200 )
+		] );
 		return null;
 	}
 }

@@ -9,6 +9,7 @@
 	"articleguidance-specialnewarticle-search-retry": "Nach eng Kéier probéieren",
 	"articleguidance-titleconflict-exists-warning": "Et gëtt schonn en Artikel mam Titel „$1“.",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Theema net disponibel?",
+	"articleguidance-specialnewarticle-language-fallback-notice": "Verschidde Resultater ginn an enger anerer Sprooch ugewisen",
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",

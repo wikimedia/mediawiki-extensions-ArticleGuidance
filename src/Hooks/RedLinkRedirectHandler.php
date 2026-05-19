@@ -50,7 +50,6 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		if ( $experiment === null ) {
 			return false;
 		}
-		$experiment->sendExposure();
 		return $experiment->isAssignedGroup( 'treatment' );
 	}
 
@@ -169,6 +168,24 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		return false;
 	}
 
+	private function sendExperimentExposure(): void {
+		$experiment = $this->experimentFactory->getExperiment();
+		if ( $experiment !== null ) {
+			$experiment->sendExposure();
+		}
+	}
+
+	private function sendEditingStartedEvent( Title $title ): void {
+		$experiment = $this->experimentFactory->getExperiment();
+		if ( $experiment !== null ) {
+			$experiment->send( 'editing_start', [
+				'page' => [
+					'title' => $title->getPrefixedText(),
+				]
+			] );
+		}
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -177,24 +194,51 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			return;
 		}
 
-		$params = [];
+		// Case 1: user arrived at the editor from Article Guidance
+		if ( $request->getCheck( 'articleguidance' )
+			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
+		) {
+			$request->getSession()->set( EditTagHandler::SESSION_EDITING, $title->getPrefixedText() );
+			$this->sendEditingStartedEvent( $title );
+			return;
+		}
+
+		// Case 2: create a new article from a red link
 		if ( $this->isArticleRedLink( $title, $request )
 			&& $this->isRefererInScope( $request )
 			&& $this->isUserAllowed( $user )
 		) {
-			$params['newarticletitle'] = $title->getPrefixedText();
-			$params['source'] = 'redlink';
-		} elseif ( $this->isEntryPointPage( $title )
-			&& $this->isUserAllowed( $user )
-		) {
-			$params['source'] = 'articlewizard';
-		} else {
-			return;
+			$this->sendExperimentExposure();
+			if ( $this->isInTreatmentGroup() ) {
+				// Outcome 1: go to Article Guidance
+				$this->performRedirect( $output, [
+					'newarticletitle' => $title->getPrefixedText(),
+					'source' => 'redlink',
+				] );
+				return false;
+			} else {
+				// Outcome 2: go directly to the editor
+				$this->sendEditingStartedEvent( $title );
+				return;
+			}
 		}
 
-		if ( $this->isInTreatmentGroup() ) {
-			$this->performRedirect( $output, $params );
-			return false;
+		// Case 3: user lands on a configured entry point page (e.g. Special:ArticleWizard)
+		if ( $this->isEntryPointPage( $title )
+			&& $this->isUserAllowed( $user )
+		) {
+			$this->sendExperimentExposure();
+			if ( $this->isInTreatmentGroup() ) {
+				// Outcome 1: go to Article Guidance
+				$this->performRedirect( $output, [
+					'source' => 'articlewizard',
+				] );
+				return false;
+			} else {
+				// Outcome 2: stay on the entry point page
+				// TODO: log something here when we have the ability to tag articles created
+				// after going through the article wizard.
+			}
 		}
 	}
 }

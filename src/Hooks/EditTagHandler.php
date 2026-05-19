@@ -8,20 +8,16 @@ use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
-use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
-use MediaWiki\Page\WikiPage;
-use MediaWiki\Title\Title;
 
 class EditTagHandler implements
-	BeforeInitializeHook,
 	ChangeTagsListActiveHook,
 	ListDefinedTagsHook,
 	RevisionFromEditCompleteHook
 {
 
 	private const TAG = 'articleguidance';
-	private const SESSION_EDITING = 'ArticleGuidanceEditing';
+	public const SESSION_EDITING = 'ArticleGuidanceEditing';
 	public const SESSION_PUBLISHED = 'ArticleGuidancePublished';
 
 	public function __construct(
@@ -46,45 +42,26 @@ class EditTagHandler implements
 	/**
 	 * @inheritDoc
 	 */
-	public function onBeforeInitialize( $title, $unused, $output, $user, $request, $mediaWiki ): void {
-		if (
-			$title !== null
-			&& $request->getCheck( 'articleguidance' )
-			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
-		) {
-			$request->getSession()->set( self::SESSION_EDITING, $title->getPrefixedText() );
-			$this->sendEditingStartedEvent( $title );
-		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ): void {
+		if ( $rev->getParentId() > 0 ) {
+			return;
+		}
+
 		$request = RequestContext::getMain()->getRequest();
 		$session = $request->getSession();
-		if ( $session->get( self::SESSION_EDITING ) === $wikiPage->getTitle()->getPrefixedText() ) {
-			$tags[] = self::TAG;
-			$session->remove( self::SESSION_EDITING );
-			$session->set( self::SESSION_PUBLISHED, $wikiPage->getTitle()->getPrefixedText() );
-			$this->sendArticleSavedEvent( $wikiPage );
-		}
-	}
+		$titleText = $wikiPage->getTitle()->getPrefixedText();
 
-	private function sendEditingStartedEvent( Title $title ): void {
-		$this->experimentFactory->getExperiment()?->send( 'editing_start', [
-			'page' => [
-				'title' => $title->getPrefixedText(),
-			]
-		] );
-	}
-
-	private function sendArticleSavedEvent( WikiPage $wikiPage ): void {
 		$this->experimentFactory->getExperiment()?->send( 'article_saved', [
 			'page' => [
-				'title' => $wikiPage->getTitle()->getPrefixedText(),
+				'title' => $titleText,
 				'id' => $wikiPage->getId(),
 			]
 		] );
+
+		if ( $session->get( self::SESSION_EDITING ) === $titleText ) {
+			$tags[] = self::TAG;
+			$session->remove( self::SESSION_EDITING );
+			$session->set( self::SESSION_PUBLISHED, $titleText );
+		}
 	}
 }

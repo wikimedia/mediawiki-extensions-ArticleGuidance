@@ -31,4 +31,5 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
 | `unsupported_subject_shown` | Unsupported-subject step is shown | — | — | — |
 | `unsupported_subject_action` | User acts on the unsupported-subject step | — | `request_support` or `start_writing` | — |
-| `article_saved` | User saves a revision after entering the editor from the workflow | — | — | `{"page":{"title":"<title>","id":<id>}}` |
+| `editing_start` | User lands on the editor: treatment group after completing the AG workflow, or control group following a red link directly | — | — | `{"page":{"title":"<title>"}}` |
+| `article_saved` | User saves the first revision of a new article (fires for all groups, not only AG-workflow participants) | — | — | `{"page":{"title":"<title>","id":<id>}}` |

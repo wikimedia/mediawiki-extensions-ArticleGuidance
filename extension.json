@@ -141,10 +141,7 @@
 		}
 	},
 	"Hooks": {
-		"BeforeInitialize": [
-			"RedLinkRedirect",
-			"EditTag"
-		],
+		"BeforeInitialize": "RedLinkRedirect",
 		"ParserFirstCallInit": "ArticleGuidanceTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",

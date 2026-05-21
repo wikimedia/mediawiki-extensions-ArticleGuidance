@@ -25,7 +25,8 @@ const opts = {
 	category: '',
 	user: '',
 	password: '',
-	dryRun: false
+	dryRun: false,
+	interactive: false
 };
 
 for ( let i = 0; i < args.length; i++ ) {
@@ -45,9 +46,12 @@ for ( let i = 0; i < args.length; i++ ) {
 		case '--dry-run':
 			opts.dryRun = true;
 			break;
+		case '--interactive':
+			opts.interactive = true;
+			break;
 		default:
 			console.error( `Unknown argument: ${ args[ i ] }` );
-			console.error( 'Usage: node refresh-outlines.js --url <url> [--category <name>] [--user <user>] [--password <password>] [--dry-run]' );
+			console.error( 'Usage: node refresh-outlines.js --url <url> [--category <name>] [--user <user>] [--password <password>] [--dry-run] [--interactive]' );
 			throw new Error( 'Invalid arguments' );
 	}
 }
@@ -125,6 +129,78 @@ async function apiPost( params ) {
 		throw new Error( `HTTP ${ response.status } ${ response.statusText } for POST ${ apiUrl }` );
 	}
 	return response.json();
+}
+
+// ---------------------------------------------------------------------------
+// Interactive helpers
+// ---------------------------------------------------------------------------
+
+const green = ( s ) => `\x1b[32m${ s }\x1b[0m`;
+const yellow = ( s ) => `\x1b[33m${ s }\x1b[0m`;
+const red = ( s ) => `\x1b[31m${ s }\x1b[0m`;
+
+function delay( ms ) {
+	return new Promise( ( resolve ) => {
+		setTimeout( resolve, ms );
+	} );
+}
+
+function pressAnyKey() {
+	process.stdout.write( '  Press any key to continue, or Ctrl+C to abort…' );
+	return new Promise( ( resolve, reject ) => {
+		process.stdin.setRawMode( true );
+		process.stdin.resume();
+		process.stdin.once( 'data', ( key ) => {
+			if ( key[ 0 ] === 3 ) {
+				process.stdout.write( '\n' );
+				process.stdin.setRawMode( false );
+				process.stdin.pause();
+				reject( new Error( 'Aborted.' ) );
+				return;
+			}
+			process.stdin.setRawMode( false );
+			process.stdin.pause();
+			process.stdout.write( '\n' );
+			resolve();
+		} );
+	} );
+}
+
+async function validateOutline( title ) {
+	const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v0/outlines`;
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	const restResponse = await fetch( restUrl, {
+		headers: { 'User-Agent': USER_AGENT, Cookie: serializeCookies() }
+	} );
+	if ( !restResponse.ok ) {
+		return { ok: false, reason: `REST API returned HTTP ${ restResponse.status }` };
+	}
+	const restData = await restResponse.json();
+	const outlines = restData.outlines || [];
+	const outline = outlines.find( ( o ) => o.title === title );
+	if ( !outline ) {
+		return { ok: false, reason: 'outline not found in REST API response' };
+	}
+	const missing = [];
+	if ( !outline.title ) {
+		missing.push( 'title' );
+	}
+	if ( !outline.label ) {
+		missing.push( 'label' );
+	}
+	if ( !outline.description ) {
+		missing.push( 'description' );
+	}
+	if ( !outline.articleType ) {
+		missing.push( 'articleType' );
+	}
+	if ( typeof outline.hierarchyDepth !== 'number' ) {
+		missing.push( 'hierarchyDepth' );
+	}
+	if ( missing.length > 0 ) {
+		return { ok: false, warn: true, reason: `missing or empty fields: ${ missing.join( ', ' ) }` };
+	}
+	return { ok: true, outline };
 }
 
 // ---------------------------------------------------------------------------
@@ -244,6 +320,10 @@ async function main() {
 		const progress = `[${ i + 1 }/${ titles.length }]`;
 		console.log( `${ progress } ${ title }` );
 
+		if ( opts.interactive ) {
+			await pressAnyKey();
+		}
+
 		// Purge
 		let purgeOk = false;
 		try {
@@ -275,6 +355,22 @@ async function main() {
 
 		if ( !purgeOk ) {
 			continue;
+		}
+
+		if ( opts.interactive ) {
+			await delay( 2000 );
+			try {
+				const result = await validateOutline( title );
+				if ( result.ok ) {
+					console.log( green( `  ✓ outline validated (hierarchyDepth: ${ result.outline.hierarchyDepth })` ) );
+				} else if ( result.warn ) {
+					console.warn( yellow( `  ⚠ incomplete data — ${ result.reason }` ) );
+				} else {
+					console.error( red( `  ✗ ${ result.reason }` ) );
+				}
+			} catch ( err ) {
+				console.error( red( `  ✗ validation error: ${ err.message }` ) );
+			}
 		}
 	}
 

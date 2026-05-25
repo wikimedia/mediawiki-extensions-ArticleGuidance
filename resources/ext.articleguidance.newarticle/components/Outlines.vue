@@ -127,11 +127,6 @@ module.exports = defineComponent( {
 	flex-direction: column;
 	gap: 12px;
 
-	.ext-articleguidance-article-card {
-		.cdx-card__text__title {
-			text-transform: capitalize;
-		}
-	}
 }
 
 .ext-articleguidance-outlines-no-match {

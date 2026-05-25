@@ -335,8 +335,7 @@ module.exports = defineComponent( {
 				return mw.message( 'articleguidance-sources-helper' ).text();
 			}
 			if ( verifiedSources.value.length === 0 ) {
-				const raw = selectedOutline.value && selectedOutline.value.label || '';
-				const label = raw.charAt( 0 ).toUpperCase() + raw.slice( 1 );
+				const label = selectedOutline.value && selectedOutline.value.label || '';
 				return mw.message( 'articleguidance-sources-helper-required', label ).text();
 			}
 			if ( verifiedSources.value.length < minRequiredSources.value ) {

@@ -7,6 +7,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Language\Language;
+use MediaWiki\Languages\LanguageFactory;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ObjectCache\WANObjectCache;
 
@@ -21,6 +22,7 @@ class WikidataInfoFetcher {
 	public function __construct(
 		private readonly HttpRequestFactory $httpRequestFactory,
 		private readonly Language $contentLanguage,
+		private readonly LanguageFactory $languageFactory,
 		private readonly LoggerInterface $logger,
 		private readonly WANObjectCache $cache,
 		private readonly array $matchViaRules,
@@ -76,7 +78,7 @@ class WikidataInfoFetcher {
 	public function fetchEntityCached( string $wikidataId, string $languageCode, ?string $matchVia = null ): ?array {
 		// Cache key version - increment to invalidate old cache entries
 		$cacheKey = $this->cache->makeKey(
-			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v10'
+			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v11'
 		);
 		$method = __METHOD__;
 
@@ -184,7 +186,14 @@ class WikidataInfoFetcher {
 		}
 
 		$entity = $data['entities'][$wikidataId];
-		$label = $entity['labels'][$languageCode]['value'] ?? null;
+		$labelData = $entity['labels'][$languageCode] ?? null;
+		$label = $labelData['value'] ?? null;
+		if ( $label !== null ) {
+			// Capitalize using the actual language returned by the API (may differ
+			// from $languageCode because of language fallback).
+			$labelLanguage = $this->languageFactory->getLanguage( $labelData['language'] ?? $languageCode );
+			$label = $labelLanguage->ucfirst( $label );
+		}
 		$description = $entity['descriptions'][$languageCode]['value'] ?? null;
 
 		// Extract image from P18 claim

@@ -60,6 +60,7 @@ return [
 		return new WikidataInfoFetcher(
 			$services->getHttpRequestFactory(),
 			$services->getContentLanguage(),
+			$services->getLanguageFactory(),
 			LoggerFactory::getInstance( 'ArticleGuidance' ),
 			$services->getMainWANObjectCache(),
 			$config->get( 'ArticleGuidanceMatchViaRules' ),

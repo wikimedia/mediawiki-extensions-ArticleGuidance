@@ -51,17 +51,21 @@ class EditTagHandler implements
 		$session = $request->getSession();
 		$titleText = $wikiPage->getTitle()->getPrefixedText();
 
-		$this->experimentFactory->getExperiment()?->send( 'article_saved', [
+		$eventData = [
 			'page' => [
 				'title' => $titleText,
 				'id' => $wikiPage->getId(),
+				'namespace_id' => $wikiPage->getTitle()->getNamespace(),
 			]
-		] );
+		];
 
 		if ( $session->get( self::SESSION_EDITING ) === $titleText ) {
 			$tags[] = self::TAG;
 			$session->remove( self::SESSION_EDITING );
 			$session->set( self::SESSION_PUBLISHED, $titleText );
+			$eventData['action_source'] = 'articleguidance';
 		}
+
+		$this->experimentFactory->getExperiment()?->send( 'article_saved', $eventData );
 	}
 }

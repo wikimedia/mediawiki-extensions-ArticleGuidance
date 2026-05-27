@@ -97,7 +97,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	async function findTitleSuggestion( result ) {
 		const candidates = [];
 
-		if ( result.label &&
+		if ( result && result.label &&
 			result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
 			candidates.push( result.label );
 		}
@@ -119,6 +119,29 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Navigate to the title conflict step if the given title already exists
+	 * on the local wiki.
+	 *
+	 * @param {string} title Title to check on the local wiki
+	 * @param {Object|null} result Selected Wikidata result, when available
+	 * @return {Promise<boolean>} Whether a conflict was found and handled
+	 */
+	async function routeIfTitleTaken( title, result ) {
+		const trimmed = title && title.trim();
+		if ( !trimmed ) {
+			return false;
+		}
+		const existenceMap = await checkPagesExist( [ trimmed ] );
+		if ( !existenceMap[ trimmed ] ) {
+			return false;
+		}
+		articleTitle.value = trimmed;
+		titleSuggestion.value = await findTitleSuggestion( result );
+		goTo( 'titleconflict' );
+		return true;
 	}
 
 	async function selectArticle( result, titleTaken ) {
@@ -146,11 +169,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		} else {
 			if ( result.label &&
 				result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
-				const existenceMap = await checkPagesExist( [ result.label ] );
-				if ( existenceMap[ result.label ] ) {
-					articleTitle.value = result.label;
-					titleSuggestion.value = await findTitleSuggestion( result );
-					goTo( 'titleconflict' );
+				if ( await routeIfTitleTaken( result.label, result ) ) {
 					return;
 				}
 				originalTypedTitle.value = searchQuery.value;
@@ -173,12 +192,18 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		showOutlines.value = false;
 	}
 
-	function selectOutline( outline ) {
+	async function selectOutline( outline ) {
 		const currentQId = selectedOutline.value && selectedOutline.value.articleType;
 		if ( currentQId !== outline.articleType ) {
 			references.value = [];
 		}
 		selectedOutline.value = outline;
+		articleTitle.value = null;
+		titleSuggestion.value = null;
+		originalTypedTitle.value = null;
+		if ( await routeIfTitleTaken( searchQuery.value, null ) ) {
+			return;
+		}
 		if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
@@ -243,7 +268,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function confirmTitle() {
-		if ( !selectedResult.value.matchedQId ) {
+		if ( selectedResult.value && !selectedResult.value.matchedQId ) {
 			goTo( 'unsupportedsubject' );
 		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );

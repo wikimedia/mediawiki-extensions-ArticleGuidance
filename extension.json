@@ -70,6 +70,10 @@
 		"ArticleGuidanceExperimentEntryPointTitles": {
 			"value": [],
 			"description": "Special page or page titles (e.g. 'Special:ArticleWizard') that act as alternative entry points into Article Guidance: qualifying junior mobile users visiting these pages will be redirected to Special:NewArticle. Empty array disables this redirect."
+		},
+		"ArticleGuidanceExperimentJuniorEditorsOnly": {
+			"value": false,
+			"description": "When true, the red-link/entry-point experiment only admits junior editors: in addition to the createpage permission and not being blocked, the user's edit count must be below ArticleGuidanceJuniorEditorThreshold. Default false admits all eligible logged-in users regardless of edit count."
 		}
 	},
 	"AutoloadNamespaces": {

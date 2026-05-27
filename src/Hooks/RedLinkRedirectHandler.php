@@ -129,7 +129,17 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isUserAllowed( User $user ): bool {
-		return $user->isAllowed( 'createpage' ) && $user->getBlock() === null;
+		if ( !$user->isAllowed( 'createpage' ) || $user->getBlock() !== null ) {
+			return false;
+		}
+		if ( $this->mainConfig->get( 'ArticleGuidanceExperimentJuniorEditorsOnly' ) ) {
+			$threshold = $this->mainConfig->get( 'ArticleGuidanceJuniorEditorThreshold' );
+			$editCount = $user->getEditCount() ?? 0;
+			if ( $editCount >= $threshold ) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

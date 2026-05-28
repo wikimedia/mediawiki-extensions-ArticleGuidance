@@ -360,12 +360,8 @@ module.exports = defineComponent( {
 			store.goBack();
 		};
 
-		const hasNotabilityRisk = computed( () => selectedOutline.value &&
-				selectedOutline.value.notabilityRisk &&
-				selectedOutline.value.notabilityRisk.includes( 'sources' ) );
-
 		const subtitleMessage = computed( () => {
-			if ( hasNotabilityRisk.value ) {
+			if ( isMandatory.value ) {
 				return mw.message( 'articleguidance-sources-subtitle-notability-risk' ).text();
 			}
 			return mw.message( 'articleguidance-sources-subtitle' ).text();

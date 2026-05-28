@@ -1,6 +1,11 @@
 'use strict';
 
-const { evaluateTag, evaluateNotabilityTags, getBlockingRestrictionType } = require( '../../../resources/ext.articleguidance.newarticle/utils/notability.js' );
+const {
+	evaluateTag,
+	evaluateNotabilityTags,
+	getBlockingRestrictionType,
+	isSourcesRequired
+} = require( '../../../resources/ext.articleguidance.newarticle/utils/notability.js' );
 
 const BASE_STATE = {
 	selectedWikidataItem: false,
@@ -175,4 +180,50 @@ const blockingCases = {
 
 test.each( Object.entries( blockingCases ) )( 'getBlockingRestrictionType: %s', ( label, { activeTags, expected } ) => {
 	expect( getBlockingRestrictionType( activeTags ) ).toBe( expected );
+} );
+
+// ---------------------------------------------------------------------------
+// isSourcesRequired — sources tag enforcement, gated by junior when present
+// ---------------------------------------------------------------------------
+
+const sourcesRequiredCases = {
+	'null outline → false': {
+		outline: null,
+		state: BASE_STATE,
+		expected: false
+	},
+	'outline with no notabilityRisk → false': {
+		outline: {},
+		state: BASE_STATE,
+		expected: false
+	},
+	'notabilityRisk without sources → false': {
+		outline: { notabilityRisk: [ 'wikidata', 'crosswiki' ] },
+		state: BASE_STATE,
+		expected: false
+	},
+	'sources alone → true regardless of user': {
+		outline: { notabilityRisk: [ 'sources' ] },
+		state: { ...BASE_STATE, userEditCount: 500 },
+		expected: true
+	},
+	'sources + junior, user is junior (5 edits) → true': {
+		outline: { notabilityRisk: [ 'sources', 'junior' ] },
+		state: { ...BASE_STATE, userEditCount: 5 },
+		expected: true
+	},
+	'sources + junior, user at threshold (10 edits) → false': {
+		outline: { notabilityRisk: [ 'sources', 'junior' ] },
+		state: { ...BASE_STATE, userEditCount: 10 },
+		expected: false
+	},
+	'sources + junior, experienced user (500 edits) → false (T427493)': {
+		outline: { notabilityRisk: [ 'sources', 'junior' ] },
+		state: { ...BASE_STATE, userEditCount: 500 },
+		expected: false
+	}
+};
+
+test.each( Object.entries( sourcesRequiredCases ) )( 'isSourcesRequired: %s', ( label, { outline, state, expected } ) => {
+	expect( isSourcesRequired( outline, state ) ).toBe( expected );
 } );

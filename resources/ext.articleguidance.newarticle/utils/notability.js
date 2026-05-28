@@ -107,4 +107,34 @@ function getBlockingRestrictionType( activeTags ) {
 	return null;
 }
 
-module.exports = { evaluateTag, evaluateNotabilityTags, getBlockingRestrictionType };
+/**
+ * Whether the sources requirement is active for an outline and the current user.
+ *
+ * The `sources` tag enforces a minimum number of references in the sources
+ * step. The `junior` tag, when present in the same notabilityRisk list, gates
+ * that requirement to junior editors only — mirroring the willShow gating in
+ * evaluateNotabilityTags() for the notability step.
+ *
+ * @param {Object|null} outline
+ * @param {Object} state Same shape as accepted by evaluateTag
+ * @return {boolean}
+ */
+function isSourcesRequired( outline, state ) {
+	if ( !outline || !outline.notabilityRisk ) {
+		return false;
+	}
+	if ( !outline.notabilityRisk.includes( 'sources' ) ) {
+		return false;
+	}
+	if ( outline.notabilityRisk.includes( 'junior' ) ) {
+		return evaluateTag( 'junior', state ).active;
+	}
+	return true;
+}
+
+module.exports = {
+	evaluateTag,
+	evaluateNotabilityTags,
+	getBlockingRestrictionType,
+	isSourcesRequired
+};

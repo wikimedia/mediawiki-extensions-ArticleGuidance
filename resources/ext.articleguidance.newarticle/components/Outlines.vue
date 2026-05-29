@@ -53,7 +53,7 @@
 </template>
 
 <script>
-const { defineComponent, onMounted } = require( 'vue' );
+const { computed, defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxIcon, CdxMessage } = require( '../codex.js' );
 const { cdxIconArticle, cdxIconLinkExternal } = require( '../icons.json' );
@@ -90,6 +90,12 @@ module.exports = defineComponent( {
 			store.selectOutline( outlineItem );
 		};
 
+		const missingTypeFeedbackUrl = computed( () => {
+			const title = store.articleTitle || store.searchQuery;
+			const wiki = mw.config.get( 'wgWikiID' );
+			return getMissingTypeFeedbackUrl( title, wiki );
+		} );
+
 		return {
 			outlinesList,
 			loading,
@@ -97,7 +103,7 @@ module.exports = defineComponent( {
 			handleSelectOutline,
 			articleIcon: cdxIconArticle,
 			cdxIconLinkExternal,
-			missingTypeFeedbackUrl: getMissingTypeFeedbackUrl()
+			missingTypeFeedbackUrl
 		};
 	}
 } );

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Escargot bleu"
+			"Escargot bleu",
+			"Framawiki"
 		]
 	},
 	"articleguidance-desc": "Guidage et assistance à la création d'articles.",
@@ -35,7 +36,7 @@
 	"articleguidance-sources-tips-content-recommended": "Ces types de sources fonctionnent bien :",
 	"articleguidance-sources-tips-content-discouraged": "Ces types de sources sont rarement acceptés :",
 	"articleguidance-sources-check-failed": "La vérification de la source a échoué. Veuillez réessayer.",
-	"articleguidance-instructions-guidance-heading": "Partir sur cet article",
+	"articleguidance-instructions-guidance-heading": "Commencer cet article",
 	"articleguidance-instructions-guidance-intro": "Voici quelques conseils pour vous aider à rédiger un bon article.",
 	"articleguidance-instructions-source-guidance": "Assurez-vous de disposer de sources fiables et indépendantes sur ce sujet avant de commencer.",
 	"articleguidance-instructions-start-writing": "Commencer la rédaction",

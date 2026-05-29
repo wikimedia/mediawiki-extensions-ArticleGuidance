@@ -18,6 +18,8 @@
 	"articleguidance-specialnewarticle-disambiguation-title": "Qu’est-ce ?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Sujet introuvable ?",
 	"articleguidance-specialnewarticle-browse-outlines-link": "Choisir une catégorie",
+	"articleguidance-specialnewarticle-skip-guidance-prefix": "Ignorer l’accompagnement.",
+	"articleguidance-specialnewarticle-skip-guidance-link": "Modifier sans l’accompagnement de la communauté.",
 	"articleguidance-specialnewarticle-language-fallback-notice": "Certains résultats sont affichés dans une autre langue",
 	"articleguidance-sources-title": "Ajouter des sources",
 	"articleguidance-sources-subtitle": "Les sources permettent aux lecteurs de vérifier les faits et de montrer la notoriété d'un sujet.",

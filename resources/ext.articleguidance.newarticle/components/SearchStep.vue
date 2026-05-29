@@ -84,22 +84,67 @@
 				</state-message>
 			</div>
 
-			<!-- Can't find option -->
+			<!-- Footer: browse fallback and (for experienced editors) skip guidance -->
 			<div
-				v-if="showResults || showNoResults || error"
+				v-if="showResults || showNoResults || error || showSkipGuidance"
 				class="ext-articleguidance-search-footer"
 			>
-				<span class="ext-articleguidance-browse-prefix">
-					{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines-prefix' ).text() }}
-				</span>
-				<cdx-button
-					class="ext-articleguidance-browse-link"
-					weight="quiet"
-					action="progressive"
-					@click="handleBrowseOutlines"
+				<!-- Can't find option -->
+				<div
+					v-if="showResults || showNoResults || error"
+					class="ext-articleguidance-browse"
 				>
-					{{ $i18n( 'articleguidance-specialnewarticle-browse-outlines-link' ).text() }}
-				</cdx-button>
+					<span class="ext-articleguidance-browse-prefix">
+						{{
+							$i18n(
+								'articleguidance-specialnewarticle-browse-outlines-prefix'
+							).text()
+						}}
+					</span>
+					<cdx-button
+						class="ext-articleguidance-browse-link"
+						weight="quiet"
+						action="progressive"
+						@click="handleBrowseOutlines"
+					>
+						{{
+							$i18n( 'articleguidance-specialnewarticle-browse-outlines-link' ).text()
+						}}
+					</cdx-button>
+				</div>
+
+				<!-- Skip guidance (experienced editors only) -->
+				<div
+					v-if="showSkipGuidance"
+					class="ext-articleguidance-skip-guidance"
+				>
+					<a
+						class="ext-articleguidance-skip-guidance-info"
+						href="https://www.mediawiki.org/wiki/Article_guidance"
+						target="_blank"
+						rel="noopener"
+						:aria-label="$i18n(
+							'articleguidance-specialnewarticle-skip-guidance-info-label'
+						).text()"
+					>
+						<cdx-icon
+							class="ext-articleguidance-skip-guidance-icon"
+							:icon="cdxIconInfo"
+						></cdx-icon>
+					</a>
+					<span class="ext-articleguidance-skip-guidance-prefix">
+						{{
+							$i18n( 'articleguidance-specialnewarticle-skip-guidance-prefix' ).text()
+						}}
+					</span>
+					<a
+						class="ext-articleguidance-skip-guidance-link"
+						:href="skipGuidanceUrl"
+						@click="handleSkipGuidance"
+					>{{
+						$i18n( 'articleguidance-specialnewarticle-skip-guidance-link' ).text()
+					}}</a>
+				</div>
 			</div>
 		</template>
 	</step>
@@ -108,9 +153,11 @@
 <script>
 const { defineComponent, ref, onMounted, computed, watch } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
-const { CdxTextInput, CdxButton, CdxProgressIndicator } = require( '../codex.js' );
+const { CdxTextInput, CdxButton, CdxIcon, CdxProgressIndicator } = require( '../codex.js' );
+const { cdxIconInfo } = require( '../icons.json' );
 const { useSearch } = require( '../composables/useSearch.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
@@ -122,6 +169,7 @@ module.exports = defineComponent( {
 	components: {
 		CdxTextInput,
 		CdxButton,
+		CdxIcon,
 		CdxProgressIndicator,
 		Step,
 		ArticleCard,
@@ -185,6 +233,28 @@ module.exports = defineComponent( {
 			checkExistence();
 		};
 
+		// URL for the skip-guidance link; recomputed when the title changes
+		const skipGuidanceUrl = computed( () => getEditArticleUrl( searchQuery.value ) );
+
+		// Log the skip event; the link's href handles navigation
+		const handleSkipGuidance = () => {
+			instrument.logSkipGuidance( searchQuery.value );
+		};
+
+		// Only experienced editors are offered the skip-guidance bypass
+		const isExperiencedEditor = computed( () => {
+			const threshold = mw.config.get( 'wgArticleGuidanceJuniorEditorThreshold' );
+			return ( mw.config.get( 'wgUserEditCount' ) || 0 ) >= threshold;
+		} );
+
+		// Show the skip-guidance strip once a title has been entered,
+		// regardless of whether the search is still in progress
+		const showSkipGuidance = computed(
+			() => isExperiencedEditor.value &&
+				!!searchQuery.value &&
+				searchQuery.value.trim().length >= 1
+		);
+
 		const MAX_TOTAL = 8;
 		const MAX_UNSUPPORTED = 3;
 
@@ -229,8 +299,12 @@ module.exports = defineComponent( {
 			handleBrowseOutlines,
 			handleHideOutlines,
 			handleRetry,
+			handleSkipGuidance,
+			skipGuidanceUrl,
 			showResults,
-			showNoResults
+			showNoResults,
+			showSkipGuidance,
+			cdxIconInfo
 		};
 	}
 } );
@@ -299,12 +373,6 @@ module.exports = defineComponent( {
 	gap: 12px;
 }
 
-@media only screen and ( min-width: @min-width-breakpoint-desktop ) {
-	.ext-articleguidance-results-list {
-		grid-template-columns: 1fr;
-	}
-}
-
 .ext-articleguidance-results-heading {
 	margin: 0 0 8px 0;
 	font-weight: @font-weight-bold;
@@ -313,6 +381,12 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-search-footer {
 	margin-top: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.ext-articleguidance-browse {
 	display: inline-flex;
 	align-items: center;
 	gap: 4px;
@@ -326,5 +400,56 @@ module.exports = defineComponent( {
 	color: @color-progressive;
 	padding: 0;
 	min-height: auto;
+}
+
+// Mobile: subtle full-bleed strip flush with the bottom of the panel so it
+// reads as connected to the MediaWiki page footer. The negative margins break
+// out of the step body's padding (see Step.vue).
+.ext-articleguidance-skip-guidance {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0 calc( -1 * clamp( 16px, 3vw, 32px ) ) calc( -1 * clamp( 16px, 3vw, 32px ) );
+	padding: 12px clamp( 16px, 3vw, 32px );
+	background-color: @background-color-neutral-subtle;
+	border-top: 1px solid @border-color-subtle;
+	font-size: @font-size-small;
+}
+
+.ext-articleguidance-skip-guidance-info {
+	display: inline-flex;
+	color: @color-subtle;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: @color-base;
+	}
+}
+
+.ext-articleguidance-skip-guidance-icon {
+	color: inherit;
+}
+
+.ext-articleguidance-skip-guidance-prefix {
+	color: @color-base;
+}
+
+.ext-articleguidance-skip-guidance-link {
+	.cdx-mixin-link();
+}
+
+@media only screen and ( min-width: @min-width-breakpoint-desktop ) {
+	.ext-articleguidance-results-list {
+		grid-template-columns: 1fr;
+	}
+
+	// Desktop: skip sits on its own line below the browse fallback
+	.ext-articleguidance-skip-guidance {
+		margin: 0;
+		padding: 0;
+		background-color: transparent;
+		border-top: 0;
+	}
 }
 </style>

@@ -193,6 +193,17 @@ function logTitleConflictAction( subtype ) {
 }
 
 /**
+ * Fire when an experienced editor skips guidance to start with a blank page.
+ *
+ * @param {string} title Title entered before skipping guidance.
+ */
+function logSkipGuidance( title ) {
+	const data = {};
+	data.action_context = { title: title };
+	submit( 'skip_guidance', data );
+}
+
+/**
  * Fire when the unsupported-subject step mounts.
  */
 function logUnsupportedSubjectShown() {
@@ -226,5 +237,6 @@ module.exports = {
 	logTitleConflictShown,
 	logTitleConflictAction,
 	logUnsupportedSubjectShown,
-	logUnsupportedSubjectAction
+	logUnsupportedSubjectAction,
+	logSkipGuidance
 };

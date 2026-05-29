@@ -176,6 +176,7 @@
 				"api/Wikidata.js",
 				"api/Sparql.js",
 				"composables/useArticleExist.js",
+				"composables/outlineMatching.js",
 				"composables/useSearch.js",
 				"composables/useWikidataSearch.js",
 				"components/StepHeader.vue",

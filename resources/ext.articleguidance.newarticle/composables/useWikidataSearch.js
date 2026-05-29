@@ -5,95 +5,15 @@ const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { withRetry } = require( '../utils/retry.js' );
 const { reportSearchEvaluation } = require( '../logging/search.js' );
-
-const PROP_INSTANCE_OF = 'P31';
-
-const propForGroup = ( key ) => key === 'default' ? PROP_INSTANCE_OF : key;
-
-/**
- * Group outline articleType Q IDs by their matchVia property value.
- *
- * @param {Array} outlines
- * @return {Object} Map of matchVia key → array of Q IDs
- */
-function groupOutlinesByMatchVia( outlines ) {
-	return outlines.reduce( ( groups, outline ) => {
-		const key = outline.matchVia || 'default';
-		if ( !groups[ key ] ) {
-			groups[ key ] = [];
-		}
-		groups[ key ].push( outline.articleType );
-		return groups;
-	}, {} );
-}
-
-/**
- * Select the most specific outline match per item.
- *
- * Specificity is determined in two steps:
- * 1. Prefer non-default matchVia strategies (e.g. P106 occupation) over default
- *    P31/P279 matches. This prevents a deeply-nested type like Q5 (human) from
- *    outranking a shallower occupation type like Q10833314 (tennis player).
- * 2. Within the surviving strategy group, keep only the highest-depth matches.
- *
- * @param {Object} matches - Map of { itemQId: string[] }
- * @param {Array} outlines - Outline objects with articleType, matchVia, hierarchyDepth
- * @return {Object} Filtered map of { itemQId: string[] }
- */
-function selectBestMatches( matches, outlines ) {
-	const depthByType = {};
-	const matchViaByType = {};
-	outlines.forEach( ( outline ) => {
-		if ( outline.articleType ) {
-			depthByType[ outline.articleType ] = outline.hierarchyDepth || 0;
-			matchViaByType[ outline.articleType ] = outline.matchVia || null;
-		}
-	} );
-
-	const result = {};
-	Object.entries( matches ).forEach( ( [ itemQId, outlineQIds ] ) => {
-		// Step 1: prefer non-default matchVia
-		const hasNonDefault = outlineQIds.some( ( qid ) => matchViaByType[ qid ] !== null );
-		const strategyFiltered = hasNonDefault ?
-			outlineQIds.filter( ( qid ) => matchViaByType[ qid ] !== null ) :
-			outlineQIds;
-
-		// Step 2: keep only the highest-depth matches within the surviving group
-		const maxDepth = strategyFiltered.reduce(
-			( max, qid ) => Math.max( max, depthByType[ qid ] || 0 ),
-			0
-		);
-		result[ itemQId ] = maxDepth > 0 ?
-			strategyFiltered.filter( ( qid ) => ( depthByType[ qid ] || 0 ) === maxDepth ) :
-			strategyFiltered;
-	} );
-	return result;
-}
-
-/**
- * Merge item-level hierarchy match results into the item→outlineQIds matches map.
- *
- * @param {Object} matches Mutable map of { itemQId: outlineQId[] }
- * @param {Object} itemHierarchyMatches Map of { groupKey: { itemQId: Set<outlineQId> } }
- */
-function applyHierarchyMatches( matches, itemHierarchyMatches ) {
-	const EXCLUDED_KEY = '__excluded__';
-	Object.entries( itemHierarchyMatches ).forEach( ( [ key, itemOutlineMap ] ) => {
-		if ( key === EXCLUDED_KEY ) {
-			return;
-		}
-		Object.entries( itemOutlineMap ).forEach( ( [ itemQId, outlineSet ] ) => {
-			if ( !matches[ itemQId ] ) {
-				matches[ itemQId ] = [];
-			}
-			outlineSet.forEach( ( outlineQId ) => {
-				if ( !matches[ itemQId ].includes( outlineQId ) ) {
-					matches[ itemQId ].push( outlineQId );
-				}
-			} );
-		} );
-	} );
-}
+const {
+	PROP_INSTANCE_OF,
+	EXCLUDED_KEY,
+	propForGroup,
+	groupOutlinesByMatchVia,
+	collectDirectMatches,
+	applyHierarchyMatches,
+	selectBestMatches
+} = require( './outlineMatching.js' );
 
 /**
  * Composable for searching Wikidata with outline matching and hierarchy depth filtering
@@ -198,7 +118,6 @@ function useWikidataSearch( query, language ) {
 			} );
 
 			// Exclude items whose P31 is (directly or via P279+) a configured excluded type
-			const EXCLUDED_KEY = '__excluded__';
 			const excludedTypeSet = new Set( excludedItemTypesList );
 			const exclusionByItem = itemHierarchyMatches[ EXCLUDED_KEY ] || {};
 			const filteredQIds = searchQIds.filter( ( qid ) => {
@@ -226,24 +145,10 @@ function useWikidataSearch( query, language ) {
 				}
 			} );
 
-			// Direct P31 → outline-type match (0-hop via wbgetentities)
-			const defaultItemTypeMap = directTypesByGroup.default || {};
-			filteredQIds.forEach( ( qid ) => {
-				const directTypes = defaultItemTypeMap[ qid ];
-				if ( !directTypes ) {
-					return;
-				}
-				directTypes.forEach( ( directType ) => {
-					if ( outlineQIdSet.has( directType ) ) {
-						if ( !matches[ qid ] ) {
-							matches[ qid ] = [];
-						}
-						if ( !matches[ qid ].includes( directType ) ) {
-							matches[ qid ].push( directType );
-						}
-					}
-				} );
-			} );
+			// Direct property → outline-type match (0-hop via wbgetentities) across
+			// every matchVia group, since the SPARQL hierarchy query uses `+` and
+			// would miss e.g. an item whose P106 is itself an outline articleType.
+			collectDirectMatches( matches, filteredQIds, directTypesByGroup, outlineQIdSet );
 
 			applyHierarchyMatches( matches, itemHierarchyMatches );
 			const sparqlMatches = selectBestMatches( matches, validOutlines );

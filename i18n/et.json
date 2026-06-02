@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pikne",
 			"Rivoz"
 		]
 	},
 	"articleguidance-specialnewarticle-title-placeholder": "Artikli pealkiri",
 	"articleguidance-specialnewarticle-disambiguation-title": "Mis see on?",
-	"articleguidance-specialnewarticle-browse-outlines-prefix": "Mitte ükski neist?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Kas teemat ei leidu?",
 	"articleguidance-sources-unreliable-warning-title": "Kogukond ei soovita"
 }

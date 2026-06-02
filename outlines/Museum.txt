@@ -1,4 +1,4 @@
-<article-guidance article-type="Q33506" notability-risk="wikidata junior">
+<article-guidance article-type="Q33506" notability-risk="wikidata junior" category="Museums">
 
 <instructions>
 Articles about museums are appropriate when the museum has received significant coverage in reliable, independent sources. Being open to the public or holding a permanent collection does not by itself establish notability. Coverage must be substantive and come from sources that are not the museum's own promotional materials.
@@ -58,15 +58,8 @@ The museum's collection includes [description of the main areas of the collectio
 
 The museum is housed in [description of the building, its architecture, and history if well-sourced].] {{Citation needed}}
 
-
-
-
-
-
 == References ==
 
 <references>
 $1
 </references>
-
-[[Category:Museums]]

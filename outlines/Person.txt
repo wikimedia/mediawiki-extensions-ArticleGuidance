@@ -1,4 +1,4 @@
-<article-guidance article-type="Q5" notability-risk="sources crosswiki">
+<article-guidance article-type="Q5" notability-risk="sources crosswiki" category="People">
 
 <instructions>
 Articles about people are among the most frequently deleted on Wikipedia. The person needs in-depth coverage from at least two articles published by renowned publishers, two years apart.
@@ -52,14 +52,7 @@ Quick considerations:
 == Legacy ==
 [Full name] is recognised for [lasting contribution or impact]. [Any posthumous recognition or influence on the field.] {{Citation needed}}
 
-
-
-
-
 == References ==
-
 <references>
 $1
 </references>
-
-[[Category:People]]

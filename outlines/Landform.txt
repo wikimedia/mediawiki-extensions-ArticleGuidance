@@ -1,4 +1,4 @@
-<article-guidance article-type="Q271669">
+<article-guidance article-type="Q271669" category="Landforms">
 
 <instructions>
 Landforms (mountains, volcanoes, rivers, valleys, lakes, and other natural physical features of the Earth's surface) are generally considered notable when they are named, documented in authoritative geographic or scientific sources, and of sufficient size or significance to warrant a standalone article. Very minor or unnamed features typically do not need their own article.
@@ -59,12 +59,7 @@ Quick considerations:
 == History ==
 [Description of any historical, cultural, or human significance the feature has had, based on independent sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Landforms]]

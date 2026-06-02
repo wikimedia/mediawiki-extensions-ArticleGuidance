@@ -1,4 +1,4 @@
-<article-guidance article-type="Q211236" notability-risk="sources crosswiki">
+<article-guidance article-type="Q211236" notability-risk="sources crosswiki" category="Celebrities">
 <instructions>
 Articles about socialites and public figures known primarily for their social prominence are among the most frequently deleted on Wikipedia. Fame, social media following, or regular appearance at public events is not enough. The person needs significant, independent coverage in reliable sources that goes beyond gossip columns, event listings, or promotional profiles.
 Quick considerations:
@@ -53,10 +53,8 @@ Quick considerations:
 == Public life ==
 [Description of the person's public role, social prominence, philanthropic work, or other documented activities, based on independent sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Socialites]]
+
+<references>
+$1
+</references>

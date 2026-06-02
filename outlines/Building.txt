@@ -1,0 +1,69 @@
+<article-guidance article-type="Q41176" notability-risk="sources junior" category="Buildings">
+
+<instructions>
+Articles about buildings (offices, factories, theatres, stadiums, and other structures) are appropriate when the building has received significant coverage in reliable, independent sources, or has recognised historical, architectural, or cultural significance. Ordinary residential buildings, recently constructed buildings without independent coverage, and buildings primarily notable only to their owners or occupants typically do not warrant their own article.
+
+Quick considerations:
+* Establish why this specific building is notable. Its age, architectural significance, historical events, or cultural importance, using independent sources.
+* Distinguish between the building as a physical structure and any organisation or business that occupies it. These may need separate articles.
+* Base architectural and historical claims on independent scholarly or journalistic sources, not solely on the building owner's or developer's materials.
+* If the building is listed on an official heritage register, mention this clearly and cite the relevant register entry.
+* Do not write about a building you own, manage, or have a personal or professional connection to.
+
+</instructions>
+
+<recommended-sources>
+  <info>Official heritage and historic building registers (e.g. Historic England, national monuments records, UNESCO World Heritage listings)</info>
+  <info>Peer-reviewed architecture, urban history, and cultural heritage publications</info>
+  <info>Major national and regional newspapers for notable buildings</info>
+  <info>Established architectural reference works and encyclopaedias</info>
+  <info>Official planning and municipal records for historical information</info>
+  <source>historicengland.org.uk</source>
+  <source>britishlistedbuildings.co.uk</source>
+  <source>whc.unesco.org</source>
+  <source>jstor.org</source>
+  <source>britannica.com</source>
+  <source>reuters.com</source>
+  <source>apnews.com</source>
+  <source>bbc.com</source>
+  <source>archdaily.com</source>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The building owner's, developer's, or manager's own website or promotional materials used as the sole source</info>
+  <info>Tourism promotion websites used as a primary source</info>
+  <info>Real estate listings and property databases</info>
+  <info>Social media posts and visitor review sites</info>
+  <source>tripadvisor.com</source>
+  <source>yelp.com</source>
+  <source>airbnb.com</source>
+  <source>rightmove.co.uk</source>
+  <source>zillow.com</source>
+  <source>timeout.com (as a primary source)</source>
+  <source>lonelyplanet.com (as a primary source)</source>
+  <source>twitter.com</source>
+  <source>x.com</source>
+  <source>instagram.com</source>
+  <source>facebook.com</source>
+  <source>reddit.com</source>
+</discouraged-sources>
+
+</article-guidance>
+
+The '''[building name]''' is a [type: office building / theatre / stadium / factory / etc.] located in [city], [country]. {{Citation needed}}  [It was built / constructed / completed] in [year or approximate period] and was designed by [architect, if known and independently documented]. {{Citation needed}} [One sentence on its architectural, historical, or cultural significance, based on independent sources.] {{Citation needed}}
+
+== History ==
+
+[Description of the building's construction, commissioning, and key historical events associated with it, based on independent scholarly or journalistic sources.] {{Citation needed}}
+
+
+
+== Building ==
+
+[description of the building, its architecture, and history if well-sourced].] {{Citation needed}}
+
+== References ==
+
+<references>
+$1
+</references>

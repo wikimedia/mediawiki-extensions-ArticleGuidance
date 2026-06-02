@@ -1,4 +1,4 @@
-<article-guidance article-type="Q571" notability-risk="sources wikidata">
+<article-guidance article-type="Q571" notability-risk="sources wikidata" category="Books">
 
 <instructions>
 Articles about literary works are appropriate when the work has received significant coverage in reliable, independent sources such as literary reviews, academic criticism, or established reference works. A plot summary alone is not sufficient for an article. There must be sourced external commentary on real-world topics such as themes, style, and reception.
@@ -56,13 +56,7 @@ Quick considerations:
 == Reception ==
 [Description of how the work was received by critics and readers when published, and its longer critical legacy, based on independent sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-
-[[Category:Books]]

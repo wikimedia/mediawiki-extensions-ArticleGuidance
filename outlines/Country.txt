@@ -1,4 +1,4 @@
-<article-guidance article-type="Q6256" notability-risk="wikidata">
+<article-guidance article-type="Q6256" notability-risk="wikidata" category="Countries">
 
 <instructions>
 Sovereign countries recognised by the United Nations or by a significant number of UN member states are considered notable and do not require additional sourcing to create an article. The article should accurately represent the country as described in reliable, independent sources.
@@ -56,12 +56,7 @@ Quick considerations:
 == Administrative divisions ==
 [Country name] is divided into [type of subdivisions, e.g. provinces / states / departments]. [Overview of the main subdivisions.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Countries]]

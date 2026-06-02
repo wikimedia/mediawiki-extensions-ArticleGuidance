@@ -1,4 +1,4 @@
-<article-guidance article-type="Q82955" notability-risk="wikidata sources">
+<article-guidance article-type="Q82955" notability-risk="wikidata sources" category="Politician">
 
 <instructions>
 Articles about politicians are frequently deleted unless the person has held significant elected or appointed public office. Candidates who have not won election, and local officials without independent coverage, are often not considered notable.
@@ -50,13 +50,8 @@ Quick considerations:
 
 [Full name] entered politics in [year] when [he/she/they] was [elected/appointed] as [first role]. [He/She/They] went on to serve as [subsequent roles, listed chronologically]. [He/She/They] is particularly associated with [key policy area, legislation, or political event]. {{Citation needed}}
 
-
-
-
 == References ==
 
 <references>
 $1
 </references>
-
-[[Category:Politicians]]

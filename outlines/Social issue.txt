@@ -1,4 +1,4 @@
-<article-guidance article-type="Q1920219" notability-risk="sources wikidata">
+<article-guidance article-type="Q1920219" notability-risk="sources wikidata" category="Social issues">
 
 <instructions>
 Articles about social issues — poverty, discrimination, homelessness, inequality, and similar problems affecting communities or societies — are appropriate when the issue is documented in reliable, independent sources such as academic research, government reports, or established journalism. Wikipedia articles on social issues must present multiple perspectives neutrally and be grounded in evidence. They should not advocate for a particular political position or serve as a platform for activism.
@@ -78,9 +78,6 @@ Quick considerations:
 [Key statistics on the scale and distribution of the issue, sourced from official government data, UN agencies, or peer-reviewed research. Include the date of the data and its source.] {{Citation needed}}
 
 == References ==
-
 <references>
 $1
 </references>
-
-[[Category:Social issues]]

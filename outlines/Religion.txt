@@ -1,4 +1,4 @@
-<article-guidance article-type="Q9174" notability-risk="sources wikidata">
+<article-guidance article-type="Q9174" notability-risk="sources wikidata" category="Religions">
 
 <instructions>
 Articles about religions and religious traditions are appropriate when the religion is documented in reliable, independent academic sources. New religious movements, informal spiritual communities, and personal belief systems described only in self-published sources are not appropriate for standalone Wikipedia articles. Religion articles must be written from a neutral point of view. Wikipedia does not take positions on religious truth claims. The article should describe what the religion teaches and how it is practised, not evaluate whether its beliefs are correct.
@@ -52,12 +52,7 @@ Quick considerations:
 == Practices ==
 [Description of the religion's main practices, rituals, and observances, based on academic sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Religions]]

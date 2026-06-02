@@ -1,4 +1,4 @@
-<article-guidance article-type="Q5398426" notability-risk="sources junior">
+<article-guidance article-type="Q5398426" notability-risk="sources junior" category="Television series">
 
 <instructions>
 Articles about television series are appropriate when the series has received significant coverage in reliable, independent sources beyond routine listings and press releases. A series being broadcast does not automatically make it notable. Coverage must be substantive and independent.
@@ -44,6 +44,7 @@ Quick considerations:
 
 </article-guidance>
 
+
 '''[Series title]''' is a [nationality] [genre] television series [created/developed] by [creator name]. {{Citation needed}} It premiered on [network/platform] on [date]. {{Citation needed}} The series follows [brief one-sentence plot]. {{Citation needed}}
 
 == Plot ==
@@ -59,12 +60,7 @@ Quick considerations:
 == Reception ==
 [Series title] received [description of critical and audience reception, based on independent reviews and ratings data.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Television series]]

@@ -1,4 +1,4 @@
-<article-guidance article-type="Q11019" notability-risk="wikidata junior">
+<article-guidance article-type="Q11019" notability-risk="wikidata junior" category="Products">
 
 <instructions>
 Articles about products are among the most frequently deleted on Wikipedia. A product needs significant, independent coverage in reliable sources, not press releases, advertising, or the manufacturer's own website. Coverage must be substantive and address the product itself, not just the company that makes it.
@@ -63,10 +63,7 @@ Quick considerations:
 == Reception ==
 [Product name] received [description of critical and commercial reception, based on independent reviews and sales data.] {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Products]]
+<references>
+$1
+</references>

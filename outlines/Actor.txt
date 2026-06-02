@@ -1,4 +1,4 @@
-<article-guidance article-type="Q33999" notability-risk="wikidata junior">
+<article-guidance article-type="Q33999" notability-risk="wikidata junior" category="Actors">
 
 <instructions>
 Articles about actors are frequently deleted unless the person has received significant coverage in reliable, independent sources. Appearing in a production, having an agent, or being credited in a film or series is not enough on its own. The person needs in-depth coverage from sources that are not connected to them or their work.
@@ -58,12 +58,7 @@ Quick considerations:
 == Career ==
 [Full name] began [his/her/their] acting career in [year]. [Description of key roles and career milestones in chronological order, based on independent sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Actors]]

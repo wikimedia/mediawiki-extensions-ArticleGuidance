@@ -1,4 +1,4 @@
-<article-guidance article-type="Q847017" notability-risk="wikidata junior">
+<article-guidance article-type="Q847017" notability-risk="wikidata junior" category="Sports clubs">
 
 <instructions>
 Articles about sports clubs are appropriate when the club has received significant coverage in reliable, independent sources. Participation in a local or regional league alone does not establish notability. The club needs in-depth coverage beyond routine match reports and fixture listings.
@@ -50,20 +50,18 @@ Quick considerations:
 </article-guidance>
 
 '''[Club name]''' is a [sport] club based in [location], [country]. {{Citation needed}} Founded in [year], the club [brief description of notable history or current status: competes in the X league / is known for Y achievement]. {{Citation needed}}
+
 == History ==
 [Club name] was founded in [year] in [location]. [Description of key milestones in the club's history, based on independent sources.] {{Citation needed}}
+
 == Stadium ==
 [Club name] plays its home matches at [stadium name], which has a capacity of [number]. {{Citation needed}} [Brief history of the ground if well sourced.] {{Citation needed}}
+
 == Honours ==
 * [Competition name]: [year(s)] {{Citation needed}}
 * [Competition name]: [year(s)] {{Citation needed}}
-
-
-
-
 
 == References ==
 <references>
 $1
 </references>
-[[Category:Sports clubs]]

@@ -1,4 +1,4 @@
-<article-guidance article-type="Q112872396" notability-risk="sources junior">
+<article-guidance article-type="Q112872396" notability-risk="sources junior" category="Schools">
 
 <instructions>
 Senior secondary schools (educating students to at least age 15) are generally considered notable. Primary and middle schools are typically not notable enough for their own Wikipedia article unless they have received significant independent coverage. The article must be based on reliable, third-party sources, not the school's own website.
@@ -58,14 +58,10 @@ Quick considerations:
 *[Name], [brief description of notability], [years attended] {{Citation needed}}
 *[Name], [brief description of notability], [years attended] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
+
 == External links ==
 * [https://Official-Website-URL Official Website]
-[[Category:Schools]]

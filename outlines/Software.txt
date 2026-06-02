@@ -1,4 +1,4 @@
-<article-guidance article-type="Q7397" notability-risk="sources wikidata">
+<article-guidance article-type="Q7397" notability-risk="sources wikidata" category="Software">
 
 <instructions>
 Articles about software are appropriate when the software has received significant coverage in reliable, independent sources. Software being available for download, having many users, or being open source does not by itself establish notability. Coverage must be substantive and come from sources that are not connected to the software's developers.
@@ -48,6 +48,7 @@ Quick considerations:
 
 </article-guidance>
 
+
 '''[Software name]''' is a [type of software: open-source web browser / proprietary image editor] developed by [developer or organisation]. {{Citation needed}} First released in [year], it [brief description of primary function and platform]. {{Citation needed}}
 
 == History ==
@@ -59,12 +60,7 @@ Quick considerations:
 == Reception ==
 [Software name] received [description of critical and user reception, based on independent reviews and coverage.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Software]]

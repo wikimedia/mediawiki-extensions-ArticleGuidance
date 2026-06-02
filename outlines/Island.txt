@@ -1,4 +1,4 @@
-<article-guidance article-type="Q23442">
+<article-guidance article-type="Q23442" category="Islands">
 
 <instructions>
 Islands that are named, listed in authoritative databases, and historically relevant, are appropriate subjects for articles. Very small or uninhabited islands may be notable if they have received significant independent coverage or have geographic, historical, or ecological significance.
@@ -53,12 +53,7 @@ Quick considerations:
 == Ecology ==
 [Description of the island's flora, fauna, and ecological features, based on scientific sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Islands]]

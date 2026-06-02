@@ -1,4 +1,4 @@
-<article-guidance article-type="Q756">
+<article-guidance article-type="Q756" category="Plants">
 
 <instructions>
 Any plant species that has been given a formal scientific name in a peer-reviewed publication is considered appropriate for a Wikipedia article. The article should accurately represent current scientific understanding based on peer-reviewed sources.
@@ -58,12 +58,7 @@ The [common name] is native to [geographic range]. [Description of the habitats 
 == Ecology ==
 [Description of the plant's ecological relationships, including pollinators, seed dispersers, and interactions with its environment.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Plants]]

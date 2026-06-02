@@ -1,4 +1,4 @@
-<article-guidance article-type="Q2066131" notability-risk="sources junior">
+<article-guidance article-type="Q2066131" notability-risk="sources junior" category="Sportspeople">
 
 <instructions>
 Articles about sportspeople are frequently deleted unless the person has received significant coverage in reliable, independent sources. Participation alone — even at a professional level — is generally not enough. The person needs in-depth coverage, not just statistics or match results in sports databases.
@@ -39,12 +39,7 @@ Quick considerations:
 * [Competition and year]  {{Citation needed}}
 * [Competition and year]  {{Citation needed}}
 
-
-
 == References ==
-
 <references>
 $1
 </references>
-
-[[Category:Sportspeople]]

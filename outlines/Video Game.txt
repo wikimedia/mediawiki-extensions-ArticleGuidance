@@ -1,4 +1,4 @@
-<article-guidance article-type="Q7889" notability-risk="wikidata junior">
+<article-guidance article-type="Q7889" notability-risk="wikidata junior" category="Video games">
 
 <instructions>
 Articles about video games are appropriate when the game has received significant coverage in reliable, independent sources. Being available for download, having many players, or being listed in a store does not by itself establish notability. Coverage must be substantive and come from sources that are not the game's publisher or developer.
@@ -50,6 +50,7 @@ Quick considerations:
 
 </article-guidance>
 
+
 '''[Game title]''' is a [year] [genre] video game developed by [developer] and published by [publisher]. {{Citation needed}} [One sentence on platform(s) and release context.] {{Citation needed}} [One sentence on reception or significance.] {{Citation needed}}
 
 == Gameplay ==
@@ -64,12 +65,7 @@ Quick considerations:
 == Reception ==
 [Game title] received [description of critical and commercial reception, based on independent reviews. Include aggregate review scores and notable awards where relevant.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Video games]]

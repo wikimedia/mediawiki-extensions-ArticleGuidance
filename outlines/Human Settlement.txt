@@ -1,4 +1,4 @@
-<article-guidance article-type="Q486972" notability-risk="sources junior">
+<article-guidance article-type="Q486972" notability-risk="sources junior" category="Human settlements">
 
 <instructions>
 Articles about human settlements such as towns, villages, and hamlets are appropriate when the settlement has received significant coverage in reliable, independent sources, or is documented in official records. Very small settlements may need independent coverage beyond administrative listings to justify their relevance.
@@ -41,18 +41,18 @@ Quick considerations:
 
 
 '''[Settlement name]''' is a [type: town / village / hamlet] in [region], [country]. {{Citation needed}} It has a population of approximately [population] as of [year]. {{Citation needed}} [One sentence on its most notable characteristic or historical role, if applicable.] {{Citation needed}}
+
 == History ==
 [Brief description of the settlement's documented history, based on independent sources.] {{Citation needed}}
+
 == Geography ==
-[Settlement name] is located at [coordinates] in [region]. [Description of the settlement's physical setting and surroundings.] {{Citation needed}}
+[Settlement name] is located at [coordinates] in [region]. [Description of the settlement's physical setting and 
+surroundings.] {{Citation needed}}
+
 == Demographics ==
 [Settlement name] has a population of [number] as of [year]. [Description of demographic features where well-sourced.] {{Citation needed}}
-
-
-
 
 == References ==
 <references>
 $1
 </references>
-[[Category:Human settlements]]

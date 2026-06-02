@@ -1,4 +1,4 @@
-<article-guidance article-type="Q618779" notability-risk="sources">
+<article-guidance article-type="Q618779" notability-risk="sources" category="Awards">
 <instructions>
 Articles about awards are appropriate when the award has received significant coverage in reliable, independent sources. An award being given regularly, or being awarded by a notable organisation, does not by itself establish notability. Coverage must be substantive and address the award itself, not just list its recipients.
 Quick considerations:
@@ -52,12 +52,7 @@ The '''[award name]''' is an award given [annually / periodically] by [awarding 
 == Recipients ==
 [Brief overview of notable recipients where independently documented. For long lists, link to a separate list article: {{main|List of [award name] recipients}}] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Awards]]

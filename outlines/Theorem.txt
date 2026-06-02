@@ -1,4 +1,4 @@
-<article-guidance article-type="Q65943" notability-risk="">
+<article-guidance article-type="Q65943" notability-risk="" category="Theorems">
 
 <instructions>
 Wikipedia covers theorems that have been formally proved and are recognised in peer-reviewed mathematical literature. Unproved conjectures, informal mathematical claims, and results published only in non-peer-reviewed sources are not appropriate for standalone articles.
@@ -39,16 +39,17 @@ Quick considerations:
 </article-guidance>
 
 In [field of mathematics], the '''[theorem name]''' states that [brief description of what the theorem asserts]. {{Citation needed}} It was first proved by [mathematician name] in [year]. {{Citation needed}}
+
 == Statement ==
 [State the theorem formally or semi-formally, using standard notation.] {{Citation needed}}
+
 == Significance and applications ==
 The [theorem name] is significant because [explanation of importance and influence in mathematics or related fields]. {{Citation needed}} It has been applied in [fields or areas]. {{Citation needed}}
+
 == History ==
 [History of the theorem's discovery, proof, and reception in the mathematical community.] {{Citation needed}}
 
-
-
-
 == References ==
-<references />
-[[Category:Theorems]]
+<references>
+$1
+</references>

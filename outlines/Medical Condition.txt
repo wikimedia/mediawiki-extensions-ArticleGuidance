@@ -1,4 +1,4 @@
-<article-guidance article-type="Q103994247" notability-risk="sources wikidata">
+<article-guidance article-type="Q103994247" notability-risk="sources wikidata" category="Medical conditions">
 
 <instructions>
 Articles about medical conditions are appropriate only when the condition is recognised in mainstream medical literature. Self-diagnosed conditions, informal illness categories, and conditions described only in non-peer-reviewed or alternative medicine sources are not suitable for Wikipedia articles.
@@ -68,10 +68,7 @@ Treatment for [condition name] includes [main treatment approaches]. {{Citation 
 == Epidemiology ==
 [Condition name] affects approximately [number or proportion] of [population]. {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Medical conditions]]
+<references>
+$1
+</references>

@@ -1,4 +1,4 @@
-<article-guidance article-type="Q515" notability-risk="wikidata">
+<article-guidance article-type="Q515" notability-risk="wikidata" category="Cities">
 
 <instructions>
 Cities and large urban settlements with recognised administrative status are considered notable and do not require additional sourcing to create an article. The article should accurately represent the city as described in reliable, independent sources.
@@ -59,12 +59,8 @@ Quick considerations:
 
 [City name] has a population of approximately [number] as of [year]. [Description of demographic features including languages, religions, and ethnic composition if well-sourced.] {{Citation needed}}
 
-
-
 == References ==
 
 <references>
 $1
 </references>
-
-[[Category:Cities]]

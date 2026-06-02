@@ -1,4 +1,4 @@
-<article-guidance article-type="Q7725634" notability-risk="sources wikidata">
+<article-guidance article-type="Q7725634" notability-risk="sources wikidata" category="Literary works">
 
 <instructions>
 Articles about literary works are appropriate when the work has received significant coverage in reliable, independent sources such as literary reviews, academic criticism, or established reference works. A plot summary alone is not sufficient for an article. There must be sourced external commentary on real-world topics such as themes, style, and reception.
@@ -47,21 +47,20 @@ Quick considerations:
 
 
 '''[Title]''' is a [type: novel / short story / poem / play] by [author name], first published in [year]. {{Citation needed}} [One sentence describing the work's genre, setting, or central subject.] {{Citation needed}} [One sentence on its critical reception or significance.] {{Citation needed}}
+
 == Plot ==
 [Summary of the plot in 400–700 words, written in the present tense. Include all major plot points and the ending. Do not use teaser-style descriptions that withhold information.] {{Citation needed}}
+
 == Major themes ==
 [Description of the work's major themes, based on what literary scholars and critics have written, not on personal interpretation.] {{Citation needed}}
+
 == Development history ==
 [Description of how the work was written and developed, if documented in independent sources.] {{Citation needed}}
+
 == Reception ==
 [Description of how the work was received by critics and readers when published, and its longer critical legacy, based on independent sources.] {{Citation needed}}
-
-
-
-
 
 == References ==
 <references>
 $1
 </references>
-[[Category:Literary works]]

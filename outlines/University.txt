@@ -1,4 +1,4 @@
-<article-guidance article-type="Q3918" notability-risk="sources junior">
+<article-guidance article-type="Q3918" notability-risk="sources junior" category="Universities">
 
 <instructions>
 Universities and degree-awarding institutions are generally considered notable. However, the article must be based on reliable, independent sources, not the institution's own website, prospectus, or promotional materials. Avoid academic boosterism: rankings, admissions statistics, and awards should only be included if supported by independent sources.
@@ -36,6 +36,7 @@ Quick considerations:
 
 </article-guidance>
 
+
 '''[University name]''' is a [public/private] university located in [location]. {{Citation needed}} It was founded in [year] and offers [brief description of academic programmes, e.g. undergraduate and postgraduate degrees]. {{Citation needed}}
 
 == History ==
@@ -51,10 +52,7 @@ Quick considerations:
 *[Name], [brief description, e.g. Nobel laureate / head of state], [role: alumnus/faculty] {{Citation needed}}
 *[Name], [brief description], [role] {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Universities]]
+<references>
+$1
+</references>

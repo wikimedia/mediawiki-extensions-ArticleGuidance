@@ -1,4 +1,4 @@
-<article-guidance article-type="Q482994" notability-risk="sources junior">
+<article-guidance article-type="Q482994" notability-risk="sources junior" category="Albums">
 
 <instructions>
 Not all albums need their own Wikipedia article. An album may be notable enough for a separate article when it has received significant coverage in reliable, independent music publications, charted widely, won major awards, or represents a significant moment in an artist's career or music history. Albums by notable artists are often considered suitable, but each should be assessed based on available independent coverage.
@@ -47,9 +47,7 @@ Quick considerations:
   <source>wordpress.com</source>
 </discouraged-sources>
 
-
 </article-guidance>
-
 
 '''"[Album title]"''' is the [first/second…] studio album by [artist name], released on [date] through [record label]. {{Citation needed}} [One sentence on the album's context, style, or significance.] {{Citation needed}}
 
@@ -65,15 +63,8 @@ Quick considerations:
 
 [Album title] received [description of critical reception, based on independent reviews. Include chart performance where relevant.] {{Citation needed}}
 
-
-
-
-
-
 == References ==
 
 <references>
 $1
 </references>
-
-[[Category:Albums]]

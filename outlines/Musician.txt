@@ -1,4 +1,4 @@
-<article-guidance article-type="Q639669" notability-risk="sources junior">
+<article-guidance article-type="Q639669" notability-risk="sources junior" category="Musicians">
 
 <instructions>
 Articles about musicians are appropriate when the person has received significant coverage in reliable, independent sources. Being active as a musician, having released recordings, or having performed publicly does not by itself establish notability. The person needs in-depth coverage from sources that are not connected to them or their management.
@@ -64,13 +64,7 @@ Quick considerations:
 == Discography ==
 [Brief summary of major releases. A full discography is maintained in a separate article.]
 
-
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Musicians]]

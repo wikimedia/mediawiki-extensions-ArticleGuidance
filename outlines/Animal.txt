@@ -1,4 +1,4 @@
-<article-guidance article-type="Q729" notability-risk="sources junior">
+<article-guidance article-type="Q729" notability-risk="sources junior" category="Animals">
 
 <instructions>
 Articles about animal species are appropriate when the species has been formally described in scientific literature and has a recognised scientific name. Any animal species that has been given a formal scientific name in a peer-reviewed publication is considered appropriate for a Wikipedia article. The article should accurately represent current scientific understanding based on peer-reviewed sources.
@@ -62,14 +62,8 @@ The [common name] is found in [geographic range]. [Description of the habitats i
 
 [Description of the animal's diet, reproduction, social behaviour, and interactions with its environment.] {{Citation needed}}
 
-
-
-
-
 == References ==
 
 <references>
 $1
 </references>
-
-[[Category:Animals]]

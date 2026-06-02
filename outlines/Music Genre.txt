@@ -1,4 +1,4 @@
-<article-guidance article-type="Q188451">
+<article-guidance article-type="Q188451" category="Music genres">
 
 <instructions>
 Articles about music genres are appropriate when the genre is recognised by music scholars, critics, or established music publications. Informal genre labels used only on social media or fan communities, and micro-genres without independent critical coverage, are not suitable for standalone Wikipedia articles.
@@ -56,12 +56,7 @@ Quick considerations:
 == Influence and legacy ==
 [Description of the genre's influence on other genres and its lasting cultural impact, based on independent sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Music genres]]

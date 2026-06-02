@@ -1,4 +1,4 @@
-<article-guidance article-type="Q108586636" notability-risk="sources">
+<article-guidance article-type="Q108586636" notability-risk="sources" category="Events">
 
 <instructions>
 Wikipedia is not a news service. Articles about recent events are only appropriate when there is already substantial coverage in multiple independent reliable sources and when the event is likely to have lasting significance. Breaking news that has not yet been covered in depth should not be turned into a Wikipedia article.
@@ -54,19 +54,20 @@ Quick considerations:
 
 
 The '''[event name]''' was a [brief description of what happened] that took place on [date] in [location]. {{Citation needed}} [One sentence on the immediate significance or scale of the event.] {{Citation needed}}
+
 == Background ==
 [Relevant context that helps the reader understand why the event occurred.] {{Citation needed}}
+
 == Event ==
 [Factual, chronological account of what happened, sourced throughout.] {{Citation needed}}
+
 == Responses ==
 [Reactions from relevant parties: governments, organisations, affected communities.] {{Citation needed}}
+
 == Aftermath ==
 [Documented consequences and developments following the event.] {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Events]]
+<references>
+$1
+</references>

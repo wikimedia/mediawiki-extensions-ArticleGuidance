@@ -1,4 +1,4 @@
-<article-guidance article-type="Q180684" notability-risk="sources wikidata">
+<article-guidance article-type="Q180684" notability-risk="sources wikidata" category="Armed conflicts">
 <instructions>
 Articles about armed conflicts (wars, battles, sieges, insurgencies, and other organised violent confrontations) are appropriate when the conflict has received significant coverage in reliable, independent sources. The article must present all sides of the conflict neutrally, based on verifiable facts from independent sources, not on the claims of any party to the conflict.
 Quick considerations:
@@ -65,13 +65,7 @@ The '''[conflict name]''' was [is] a [type: war / battle / insurgency / civil wa
 == Aftermath ==
 [Description of the consequences and legacy of the conflict, based on independent scholarly sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-
-[[Category:Armed conflicts]]

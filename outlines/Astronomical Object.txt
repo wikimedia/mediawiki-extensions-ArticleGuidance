@@ -1,4 +1,4 @@
-<article-guidance article-type="Q6999">
+<article-guidance article-type="Q6999" category="Astronomical Objects">
 <instructions>
 Astronomical objects (stars, planets, galaxies, nebulae, asteroids, comets, and other objects observed beyond Earth's atmosphere) are generally appropriate subjects for Wikipedia articles when they are catalogued in an authoritative astronomical database and have been the subject of peer-reviewed scientific publications.
 Quick considerations:
@@ -53,12 +53,7 @@ Quick considerations:
 == Physical characteristics ==
 [Description of the object's key physical properties: size, mass, luminosity, temperature, spectral type, or composition, based on peer-reviewed sources.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Astronomical objects]]

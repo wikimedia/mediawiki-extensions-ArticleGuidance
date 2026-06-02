@@ -1,4 +1,4 @@
-<article-guidance article-type="Q55215251" notability-risk="sources wikidata">
+<article-guidance article-type="Q55215251" notability-risk="sources wikidata" category="Medical tests">
 
 <instructions>
 Articles about medical tests are appropriate only when the test is recognised in mainstream medical and scientific literature. Tests described only in non-peer-reviewed sources, promotional materials, or alternative medicine publications are not suitable for Wikipedia articles.
@@ -60,12 +60,7 @@ Quick considerations:
 == Risks and limitations ==
 [Description of known limitations, false positive or negative rates, and any risks associated with the test.] {{Citation needed}}
 
-
-
-
-
 == References ==
 <references>
 $1
 </references>
-[[Category:Medical tests]]

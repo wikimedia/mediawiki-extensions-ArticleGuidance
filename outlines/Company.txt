@@ -1,4 +1,4 @@
-<article-guidance article-type="Q4830453" notability-risk="sources crosswiki">
+<article-guidance article-type="Q4830453" notability-risk="sources crosswiki" category="Companies">
 
 <instructions>
 Articles about businesses are among the most frequently deleted on Wikipedia. A company needs significant, independent coverage in reliable sources — not press releases, not its own website, and not directory listings. Coverage must be substantive, not just passing mentions.
@@ -39,10 +39,6 @@ The company is known for [notable products, activities and achievements].{{Citat
 [Company name] is recognised for [lasting contribution or impact].{{Citation needed}}
 Criticism of [Company name] has arisen from various groups concerning [criticism or controversy]. {{Citation needed}}
 
-
-
-
-
 == References ==
 
 <references>
@@ -52,5 +48,3 @@ $1
 == External links ==
 
 * [Company official website]
-
-[[Category:Companies]]

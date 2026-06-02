@@ -1,4 +1,4 @@
-<article-guidance article-type="Q11344" notability-risk="wikidata">
+<article-guidance article-type="Q11344" notability-risk="wikidata" category="Chemical elements">
 
 <instructions>
 Chemical elements are generally considered notable if they appear in the periodic table and are recognised by the International Union of Pure and Applied Chemistry (IUPAC). Articles should be based on significant coverage in peer-reviewed scientific literature.
@@ -55,10 +55,7 @@ Quick considerations:
 == Applications ==
 [Main industrial, scientific, and biological uses.] {{Citation needed}}
 
-
-
-
-
 == References ==
-<references />
-[[Category:Chemical elements]]
+<references>
+$1
+</references>

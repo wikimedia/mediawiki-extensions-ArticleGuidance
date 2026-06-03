@@ -14,15 +14,26 @@
 			>
 			</cdx-text-input>
 
-			<!-- Conflict warning -->
-			<cdx-message
-				v-if="titleExists === true"
-				type="warning"
-				inline
-				class="ext-articleguidance-titleconflict-warning"
-			>
-				{{ existsWarningText }}
-			</cdx-message>
+			<!-- Conflict row: warning + view-existing on the same line on desktop -->
+			<div class="ext-articleguidance-titleconflict-conflict-row">
+				<cdx-message
+					v-if="titleExists === true"
+					type="warning"
+					inline
+					class="ext-articleguidance-titleconflict-warning"
+				>
+					{{ existsWarningText }}
+				</cdx-message>
+				<cdx-button
+					weight="quiet"
+					action="progressive"
+					class="ext-articleguidance-titleconflict-viewexisting-btn"
+					@click="handleReadArticle"
+				>
+					{{ $i18n( 'articleguidance-titleconflict-viewexisting' ).text() }}
+					<cdx-icon :icon="cdxIconLinkExternal"></cdx-icon>
+				</cdx-button>
+			</div>
 
 			<!-- Suggested alternative title -->
 			<div
@@ -44,37 +55,33 @@
 			<div class="ext-articleguidance-titleconflict-selected-subject">
 				{{ $i18n( 'articleguidance-titleconflict-selected-subject' ).text() }}
 			</div>
-			<article-card
-				v-if="selectedResult"
-				:title="selectedResult.label"
-				:description="selectedResult.description"
-				:thumbnail="selectedResult.thumbnail"
-			>
-			</article-card>
-
-			<!-- Continue button -->
-			<cdx-button
-				weight="primary"
-				action="progressive"
-				:disabled="!canContinue"
-				class="ext-articleguidance-titleconflict-continue"
-				@click="handleContinue"
-			>
-				{{ $i18n( 'articleguidance-titleconflict-continue' ).text() }}
-			</cdx-button>
-
-			<!-- View existing article link -->
-			<div
-				class="ext-articleguidance-titleconflict-viewexisting"
-			>
-				<cdx-button
-					weight="quiet"
-					action="progressive"
-					class="ext-articleguidance-titleconflict-viewexisting-btn"
-					@click="handleReadArticle"
+			<div class="ext-articleguidance-titleconflict-subject-card-wrapper">
+				<article-card
+					v-if="selectedResult"
+					:fit-width="true"
+					:title="selectedResult.label"
+					:description="selectedResult.description"
+					:thumbnail="selectedResult.thumbnail"
 				>
-					{{ $i18n( 'articleguidance-titleconflict-viewexisting' ).text() }}
-					<cdx-icon :icon="cdxIconLinkExternal"></cdx-icon>
+				</article-card>
+			</div>
+
+			<!-- Actions: Back + Continue -->
+			<div class="ext-articleguidance-titleconflict-actions">
+				<cdx-button
+					class="ext-articleguidance-titleconflict-back-btn"
+					weight="quiet"
+					@click="handleBack"
+				>
+					{{ $i18n( 'articleguidance-navigation-back' ).text() }}
+				</cdx-button>
+				<cdx-button
+					weight="primary"
+					action="progressive"
+					:disabled="!canContinue"
+					@click="handleContinue"
+				>
+					{{ $i18n( 'articleguidance-titleconflict-continue' ).text() }}
 				</cdx-button>
 			</div>
 		</div>
@@ -221,22 +228,61 @@ module.exports = defineComponent( {
 	}
 }
 
+.ext-articleguidance-titleconflict-conflict-row {
+	// Mobile: dissolve this wrapper so the warning and "view existing" button
+	// become direct flex items of the content column. This lets the button be
+	// reordered below the actions (see `order` rule below). Desktop restores
+	// `display: flex` to keep them side by side.
+	display: contents;
+}
+
 .ext-articleguidance-titleconflict-selected-subject {
-	font-weight: @font-weight-bold;
-	font-size: @font-size-x-large;
+	font-weight: @font-weight-normal;
+	font-size: @font-size-small;
 	color: @color-subtle;
 }
 
-.ext-articleguidance-titleconflict-continue {
-	&.cdx-button {
+.ext-articleguidance-titleconflict-actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+
+	.cdx-button {
 		width: 100%;
 		max-width: 400px;
 	}
 }
 
-.ext-articleguidance-titleconflict-viewexisting {
-	display: flex;
-	justify-content: center;
+.ext-articleguidance-titleconflict-back-btn {
+	display: none;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-titleconflict-conflict-row {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 16px;
+		}
+
+		.ext-articleguidance-titleconflict-actions {
+			flex-direction: row;
+			justify-content: flex-end;
+
+			.cdx-button {
+				width: auto;
+				max-width: none;
+			}
+		}
+
+		.ext-articleguidance-titleconflict-back-btn {
+			display: inline-flex;
+		}
+	}
 }
 .ext-articleguidance-titleconflict-viewexisting-btn {
 	background: none;
@@ -248,5 +294,10 @@ module.exports = defineComponent( {
 	display: flex;
 	align-items: center;
 	gap: 0.25em;
+	// Mobile: render below the actions/Continue button (the conflict-row wrapper
+	// is `display: contents` there, so this is a flex item of the content
+	// column). On desktop it sits to the right of the warning within the row,
+	// where this order keeps it after the warning.
+	order: 1;
 }
 </style>

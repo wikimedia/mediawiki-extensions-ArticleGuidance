@@ -7,26 +7,38 @@
 	>
 		<article-info></article-info>
 
-		<!-- Guidance -->
+		<!-- Heading sits above the card on desktop; on mobile the card is a
+		transparent passthrough so the layout is unchanged. -->
 		<h4 class="ext-articleguidance-guidance-heading">
 			{{ $i18n( 'articleguidance-instructions-guidance-heading' ).text() }}
 		</h4>
-		<div class="ext-articleguidance-guidance-intro">
-			{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
-		</div>
 
-		<!-- Community-provided tips (from outline) -->
-		<div
-			v-if="selectedOutline && selectedOutline.instructions"
-			ref="tipsContainer"
-			class="ext-articleguidance-guidance-tips"
-		>
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="content" v-html="selectedOutline.instructions"></div>
+		<!-- Guidance: contained reading column (carded on desktop) -->
+		<div class="ext-articleguidance-guidance-card">
+			<div class="ext-articleguidance-guidance-intro">
+				{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
+			</div>
+
+			<!-- Community-provided tips (from outline) -->
+			<div
+				v-if="selectedOutline && selectedOutline.instructions"
+				ref="tipsContainer"
+				class="ext-articleguidance-guidance-tips"
+			>
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<div class="content" v-html="selectedOutline.instructions"></div>
+			</div>
 		</div>
 
 		<!-- Actions -->
 		<div class="ext-articleguidance-instructions-actions">
+			<cdx-button
+				class="ext-articleguidance-instructions-back-btn"
+				weight="quiet"
+				@click="handleBack"
+			>
+				{{ $i18n( 'articleguidance-navigation-back' ).text() }}
+			</cdx-button>
 			<cdx-button
 				weight="primary"
 				action="progressive"
@@ -110,6 +122,10 @@ module.exports = defineComponent( {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
+// On mobile the guidance card is a transparent passthrough; the card's visual
+// treatment (background, border, padding) is applied on desktop only so the
+// mobile layout is unchanged.
+
 .ext-articleguidance-guidance-heading {
 	font-size: @font-size-large;
 	font-weight: @font-weight-bold;
@@ -154,6 +170,43 @@ module.exports = defineComponent( {
 	.cdx-button {
 		width: 100%;
 		max-width: 400px;
+	}
+}
+
+.ext-articleguidance-instructions-back-btn {
+	display: none;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-guidance-card {
+			background-color: @background-color-neutral-subtle;
+			border: @border-width-base @border-style-base @border-color-subtle;
+			border-radius: @border-radius-base;
+			padding: 24px;
+		}
+
+		// The intro line is only shown on mobile.
+		.ext-articleguidance-guidance-intro {
+			display: none;
+		}
+
+		.ext-articleguidance-instructions-actions {
+			flex-direction: row;
+			justify-content: flex-end;
+			align-items: center;
+
+			.cdx-button {
+				width: auto;
+				max-width: none;
+			}
+		}
+
+		.ext-articleguidance-instructions-back-btn {
+			display: inline-flex;
+		}
 	}
 }
 </style>

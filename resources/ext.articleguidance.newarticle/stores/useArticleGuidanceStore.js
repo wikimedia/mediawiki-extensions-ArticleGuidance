@@ -188,10 +188,20 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	function browseOutlines() {
 		selectedResult.value = null;
 		showOutlines.value = true;
+		// Treat the outlines panel as a pushed history entry so the browser
+		// back button dismisses it (back to the results list), mirroring how
+		// it feels like a step to the user.
+		window.history.pushState( { agStep: 'search', agOutlines: true }, '' );
 	}
 
 	function hideOutlines() {
-		showOutlines.value = false;
+		// Pop the entry pushed by browseOutlines() rather than mutating the
+		// flag directly, keeping the history stack in sync; the popstate
+		// handler clears showOutlines. Guard so we never navigate away when
+		// no outlines entry was pushed.
+		if ( showOutlines.value ) {
+			window.history.back();
+		}
 	}
 
 	async function selectOutline( outline ) {
@@ -328,11 +338,20 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		window.history.back();
 	}
 
+	// Take over scroll handling from the browser. Otherwise, navigating back
+	// (e.g. dismissing the outlines panel) restores the previous entry's scroll
+	// position after our scrollToTop() runs, leaving the user partway down the
+	// list. Every step transition explicitly scrolls to the top instead.
+	if ( 'scrollRestoration' in window.history ) {
+		window.history.scrollRestoration = 'manual';
+	}
+
 	window.history.replaceState( { agStep: 'search' }, '' );
 
 	window.addEventListener( 'popstate', ( event ) => {
 		if ( event.state && event.state.agStep ) {
 			currentStep.value = event.state.agStep;
+			showOutlines.value = !!event.state.agOutlines;
 		}
 	} );
 

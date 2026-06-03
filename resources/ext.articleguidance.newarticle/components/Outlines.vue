@@ -171,4 +171,36 @@ module.exports = defineComponent( {
 .ext-articleguidance-error {
 	margin-bottom: 16px;
 }
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-outlines-list {
+			display: grid;
+			grid-template-columns: repeat( 3, 1fr );
+			gap: 16px;
+
+			.ext-articleguidance-article-card {
+				min-height: 80px;
+
+				.ext-articleguidance-article-card-description {
+					/* stylelint-disable-next-line value-no-vendor-prefix */
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+			}
+		}
+
+		.ext-articleguidance-outlines-no-match {
+			justify-content: flex-start;
+			text-align: left;
+			border-top: @border-width-base @border-style-base @border-color-subtle;
+			padding-top: 12px;
+			margin-top: 16px;
+		}
+	}
+}
 </style>

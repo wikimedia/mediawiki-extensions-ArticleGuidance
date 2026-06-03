@@ -1,8 +1,13 @@
+@import 'mediawiki.skin.variables.less';
+
 /* Hide header while the vue app is loading */
 .mw-special-NewArticle .mw-body {
-	header, /* desktop */
 	/* stylelint-disable-next-line selector-class-pattern */
-	.heading-holder { /* mobile */
+	.heading-holder { /* mobile skin heading wrapper */
+		display: none;
+	}
+
+	header { /* desktop skin heading (Vector etc.) */
 		display: none;
 	}
 }

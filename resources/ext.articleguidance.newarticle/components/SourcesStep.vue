@@ -7,105 +7,183 @@
 	>
 		<article-info></article-info>
 
-		<h3 class="ext-articleguidance-sources-heading">
-			{{ $i18n( 'articleguidance-sources-title' ).text() }}
-			<span
-				v-if="isMandatory"
-				class="ext-articleguidance-sources-required-indicator"
-			>*</span>
-		</h3>
-		<p class="ext-articleguidance-sources-subtitle">
-			{{ subtitleMessage }}
-		</p>
+		<div class="ext-articleguidance-sources-layout">
+			<!-- Left column: form + actions -->
+			<div class="ext-articleguidance-sources-main">
+				<h3 class="ext-articleguidance-sources-heading">
+					{{ $i18n( 'articleguidance-sources-title' ).text() }}
+					<span
+						v-if="isMandatory"
+						class="ext-articleguidance-sources-required-indicator"
+					>*</span>
+				</h3>
+				<p class="ext-articleguidance-sources-subtitle">
+					{{ subtitleMessage }}
+				</p>
 
-		<!-- URL input field -->
-		<div class="ext-articleguidance-url-input-wrapper">
-			<cdx-text-input
-				ref="urlInput"
-				v-model="currentUrl"
-				:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
-				:disabled="checking"
-				:status="unreliableWarning ? 'error' : 'default'"
-				:clearable="true"
-				class="ext-articleguidance-url-input"
-				@keyup.enter="handleVerifyUrl"
-				@paste="handlePaste"
-			>
-			</cdx-text-input>
-			<cdx-button
-				:disabled="!currentUrl.trim() || checking"
-				:aria-label="$i18n( 'articleguidance-sources-add-source' ).text()"
-				class="ext-articleguidance-add-source-button"
-				@click="handleVerifyUrl"
-			>
-				<cdx-icon :icon="cdxIconAdd"></cdx-icon>
-			</cdx-button>
-		</div>
+				<!-- URL input field -->
+				<div class="ext-articleguidance-url-input-wrapper">
+					<cdx-text-input
+						ref="urlInput"
+						v-model="currentUrl"
+						:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
+						:disabled="checking"
+						:status="unreliableWarning ? 'error' : 'default'"
+						:clearable="true"
+						class="ext-articleguidance-url-input"
+						@keyup.enter="handleVerifyUrl"
+						@paste="handlePaste"
+					>
+					</cdx-text-input>
+					<cdx-button
+						:disabled="!currentUrl.trim() || checking"
+						:aria-label="$i18n( 'articleguidance-sources-add-source' ).text()"
+						class="ext-articleguidance-add-source-button"
+						@click="handleVerifyUrl"
+					>
+						<cdx-icon :icon="cdxIconAdd"></cdx-icon>
+						<span class="ext-articleguidance-add-source-label">{{
+							$i18n( 'articleguidance-sources-add-source' ).text()
+						}}</span>
+					</cdx-button>
+				</div>
 
-		<!-- Inline validation error -->
-		<div
-			v-if="validationError"
-			class="ext-articleguidance-validation-error"
-		>
-			{{ validationError }}
-		</div>
+				<!-- Inline validation error -->
+				<div
+					v-if="validationError"
+					class="ext-articleguidance-validation-error"
+				>
+					{{ validationError }}
+				</div>
 
-		<!-- Unreliable source warning -->
-		<cdx-message
-			v-if="unreliableWarning"
-			type="warning"
-			class="ext-articleguidance-unreliable-warning"
-		>
-			<strong>
-				{{ $i18n( 'articleguidance-sources-unreliable-warning-title' ).text() }}
-			</strong>
-			<div class="ext-articleguidance-unreliable-description">
-				{{ $i18n( 'articleguidance-sources-unreliable-warning-description' ).text() }}
+				<!-- Unreliable source warning -->
+				<cdx-message
+					v-if="unreliableWarning"
+					type="warning"
+					class="ext-articleguidance-unreliable-warning"
+				>
+					<strong>
+						{{ $i18n( 'articleguidance-sources-unreliable-warning-title' ).text() }}
+					</strong>
+					<div class="ext-articleguidance-unreliable-description">
+						{{
+							$i18n( 'articleguidance-sources-unreliable-warning-description' ).text()
+						}}
+					</div>
+				</cdx-message>
+
+				<!-- Checking state -->
+				<div v-if="checking" class="ext-articleguidance-checking">
+					<cdx-progress-indicator show-label>
+						{{ $i18n( 'articleguidance-specialnewarticle-checking' ).text() }}
+					</cdx-progress-indicator>
+				</div>
+
+				<!-- Verified sources list -->
+				<cdx-message
+					v-for="( source, index ) in verifiedSources"
+					:key="source.url"
+					:type="source.classification === 'recommended' ? 'success' : 'notice'"
+					class="ext-articleguidance-source-message"
+					allow-user-dismiss
+					@user-dismissed="removeSource( index )"
+				>
+					<p class="ext-articleguidance-source-domain">
+						{{ source.domain }}
+					</p>
+					<p v-if="source.title" class="ext-articleguidance-source-title">
+						{{ source.title }}
+					</p>
+				</cdx-message>
+
+				<!-- Tips accordion (mobile only, hidden on desktop) -->
+				<cdx-accordion
+					v-if="hasTips"
+					v-model="tipsOpen"
+					class="ext-articleguidance-tips-accordion"
+					separation="outline"
+				>
+					<template #title>
+						<cdx-icon
+							:icon="cdxIconInfoFilled"
+							class="ext-articleguidance-tips-info-icon"
+						></cdx-icon>
+						{{
+							$i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text()
+						}}
+					</template>
+					<div class="ext-articleguidance-tips-content">
+						<div v-if="recommendedSources.length">
+							<div
+								:class="unreliableWarning ?
+									'ext-articleguidance-tips-title-highlighted' :
+									'ext-articleguidance-tips-title-regular'
+								"
+							>
+								{{ $i18n( 'articleguidance-sources-tips-content-recommended' ).text() }}
+							</div>
+							<ul class="ext-articleguidance-tip-list">
+								<!-- eslint-disable vue/no-v-html -->
+								<li
+									v-for="( item, i ) in recommendedSources"
+									:key="'rec-' + i"
+									v-html="item"
+								></li>
+								<!-- eslint-enable vue/no-v-html -->
+							</ul>
+						</div>
+						<div v-if="unreliableWarning && discouragedSources.length">
+							<div class="ext-articleguidance-tips-title-warning">
+								{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
+							</div>
+							<ul class="ext-articleguidance-tip-list">
+								<!-- eslint-disable vue/no-v-html -->
+								<li
+									v-for="( item, i ) in discouragedSources"
+									:key="'disc-' + i"
+									v-html="item"
+								></li>
+								<!-- eslint-enable vue/no-v-html -->
+							</ul>
+						</div>
+					</div>
+				</cdx-accordion>
+
+				<!-- Actions -->
+				<div class="ext-articleguidance-sources-actions">
+					<div class="ext-articleguidance-sources-helper">
+						{{ helperText }}
+					</div>
+					<div class="ext-articleguidance-sources-actions-right">
+						<cdx-button
+							class="ext-articleguidance-sources-back-btn"
+							weight="quiet"
+							@click="handleBack"
+						>
+							{{ $i18n( 'articleguidance-navigation-back' ).text() }}
+						</cdx-button>
+						<cdx-button
+							weight="primary"
+							action="progressive"
+							:disabled="!canContinue"
+							@click="handleContinue"
+						>
+							{{ continueLabel }}
+						</cdx-button>
+					</div>
+				</div>
 			</div>
-		</cdx-message>
 
-		<!-- Checking state -->
-		<div v-if="checking" class="ext-articleguidance-checking">
-			<cdx-progress-indicator show-label>
-				{{ $i18n( 'articleguidance-specialnewarticle-checking' ).text() }}
-			</cdx-progress-indicator>
-		</div>
-
-		<!-- Verified sources list -->
-		<cdx-message
-			v-for="( source, index ) in verifiedSources"
-			:key="source.url"
-			:type="source.classification === 'recommended' ? 'success' : 'notice'"
-			class="ext-articleguidance-source-message"
-			allow-user-dismiss
-			@user-dismissed="removeSource( index )"
-		>
-			<p class="ext-articleguidance-source-domain">
-				{{ source.domain }}
-			</p>
-			<p v-if="source.title" class="ext-articleguidance-source-title">
-				{{ source.title }}
-			</p>
-		</cdx-message>
-
-		<!-- Tips accordion -->
-		<cdx-accordion
-			v-if="hasTips"
-			v-model="tipsOpen"
-			class="ext-articleguidance-tips-accordion"
-			separation="outline"
-		>
-			<template #title>
-				<cdx-icon
-					:icon="cdxIconInfoFilled"
-					class="ext-articleguidance-tips-info-icon"
-				></cdx-icon>
-				{{
-					$i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text()
-				}}
-			</template>
-			<div class="ext-articleguidance-tips-content">
-				<div>
+			<!-- Right column: static tips block (desktop only) -->
+			<div v-if="hasTips" class="ext-articleguidance-sources-tips-static">
+				<div class="ext-articleguidance-sources-tips-label">
+					<cdx-icon
+						:icon="cdxIconInfoFilled"
+						class="ext-articleguidance-sources-tips-static-icon"
+					></cdx-icon>
+					{{ $i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text() }}
+				</div>
+				<div class="ext-articleguidance-tips-content">
 					<div v-if="recommendedSources.length">
 						<div
 							:class="unreliableWarning ?
@@ -119,44 +197,27 @@
 							<!-- eslint-disable vue/no-v-html -->
 							<li
 								v-for="( item, i ) in recommendedSources"
-								:key="'rec-' + i"
+								:key="'srec-' + i"
 								v-html="item"
 							></li>
 							<!-- eslint-enable vue/no-v-html -->
 						</ul>
 					</div>
 					<div v-if="unreliableWarning && discouragedSources.length">
-						<div
-							class="ext-articleguidance-tips-title-warning"
-						>
+						<div class="ext-articleguidance-tips-title-warning">
 							{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
 						</div>
 						<ul class="ext-articleguidance-tip-list">
 							<!-- eslint-disable vue/no-v-html -->
 							<li
 								v-for="( item, i ) in discouragedSources"
-								:key="'disc-' + i"
+								:key="'sdisc-' + i"
 								v-html="item"
 							></li>
 							<!-- eslint-enable vue/no-v-html -->
 						</ul>
 					</div>
 				</div>
-			</div>
-		</cdx-accordion>
-
-		<!-- Actions -->
-		<div class="ext-articleguidance-sources-actions">
-			<cdx-button
-				weight="primary"
-				action="progressive"
-				:disabled="!canContinue"
-				@click="handleContinue"
-			>
-				{{ continueLabel }}
-			</cdx-button>
-			<div class="ext-articleguidance-sources-helper">
-				{{ helperText }}
 			</div>
 		</div>
 	</step>
@@ -467,6 +528,11 @@ module.exports = defineComponent( {
 	}
 }
 
+// Mobile keeps an icon-only add button; the text label is revealed on desktop.
+.ext-articleguidance-add-source-label {
+	display: none;
+}
+
 .ext-articleguidance-validation-error {
 	color: @color-error;
 	font-size: @font-size-small;
@@ -592,11 +658,20 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-sources-actions {
 	display: flex;
+	// Mobile: button on top, helper text centered below it.
+	flex-direction: column-reverse;
+	margin-top: 32px;
+	padding-top: 16px;
+	gap: 8px;
+	border-top: @border-width-base @border-style-base @border-color-subtle;
+}
+
+.ext-articleguidance-sources-actions-right {
+	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 32px;
-	padding-top: 24px;
 	gap: 8px;
+	width: 100%;
 
 	.cdx-button {
 		width: 100%;
@@ -604,8 +679,120 @@ module.exports = defineComponent( {
 	}
 }
 
+.ext-articleguidance-sources-back-btn {
+	display: none;
+}
+
 .ext-articleguidance-sources-helper {
 	color: @color-placeholder;
 	font-size: @font-size-small;
+	text-align: center;
+}
+
+.ext-articleguidance-sources-tips-static {
+	display: none;
+}
+
+.ext-articleguidance-sources-tips-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: @font-size-small;
+	color: @color-subtle;
+	margin-bottom: 8px;
+}
+
+.ext-articleguidance-sources-tips-static-icon {
+	color: @color-base;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-sources-layout {
+			display: grid;
+			// Main column flexes; the tips box is capped so it doesn't sprawl.
+			grid-template-columns: minmax( 0, 1fr ) minmax( 0, 22em );
+			gap: 32px;
+			align-items: start;
+		}
+
+		// Desktop tips render as an enclosed, bordered box (no accordion).
+		.ext-articleguidance-sources-tips-static {
+			display: block;
+			padding: 16px;
+			border: @border-width-base @border-style-base @border-color-subtle;
+			border-radius: @border-radius-base;
+		}
+
+		.ext-articleguidance-tips-accordion {
+			display: none;
+		}
+
+		// Desktop has no divider above the Back/Continue row.
+		.ext-articleguidance-sources-actions {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		// Separate the add button from the input: each gets its own border,
+		// and the button reveals its "Add source" text label.
+		.ext-articleguidance-url-input-wrapper {
+			border: 0;
+			background-color: transparent;
+			gap: 8px;
+			align-items: stretch;
+		}
+
+		.ext-articleguidance-url-input {
+			border: @border-width-base @border-style-base @border-color-base;
+			border-radius: @border-radius-base;
+			background-color: @background-color-base;
+
+			&:focus-within {
+				border-color: @color-progressive;
+			}
+		}
+
+		.ext-articleguidance-add-source-button {
+			border: @border-width-base @border-style-base @border-color-base;
+			border-radius: @border-radius-base;
+		}
+
+		.ext-articleguidance-add-source-label {
+			display: inline;
+		}
+
+		.ext-articleguidance-sources-actions-right {
+			flex-direction: row;
+			width: auto;
+
+			.cdx-button {
+				width: auto;
+				max-width: none;
+			}
+		}
+
+		.ext-articleguidance-sources-back-btn {
+			display: inline-flex;
+		}
+
+		// Desktop: helper sits inline to the left of the buttons, not centered.
+		.ext-articleguidance-sources-helper {
+			text-align: start;
+		}
+
+		// In the desktop static tips block, "These source types work well:" reads
+		// as a bold heading. Scoped to the static block so the mobile accordion
+		// label is unchanged.
+		.ext-articleguidance-sources-tips-static .ext-articleguidance-tips-title-regular {
+			color: @color-base;
+			font-weight: @font-weight-bold;
+		}
+	}
 }
 </style>

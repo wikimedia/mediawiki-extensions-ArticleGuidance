@@ -8,6 +8,7 @@
 		<article-card
 			v-if="selectedResult"
 			class="ext-articleguidance-unsupported-subject-card"
+			:fit-width="true"
 			:title="selectedResult.label"
 			:description="selectedResult.description"
 			:thumbnail="selectedResult.thumbnail"
@@ -121,5 +122,20 @@ module.exports = defineComponent( {
 .ext-articleguidance-unsupported-subject-options {
 	display: flex;
 	flex-direction: column;
+	gap: 8px;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		// Size the list to its widest card's content (min 400px to align with
+		// the card above); children stretch to that width so they stay aligned.
+		.ext-articleguidance-unsupported-subject-options {
+			width: fit-content;
+			min-width: 400px;
+			max-width: 100%;
+		}
+	}
 }
 </style>

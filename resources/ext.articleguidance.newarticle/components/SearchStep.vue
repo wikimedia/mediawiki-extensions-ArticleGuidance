@@ -7,6 +7,7 @@
 	>
 		<div class="ext-articleguidance-search-controls">
 			<cdx-text-input
+				ref="searchInput"
 				v-model="searchQuery"
 				:placeholder="$i18n( 'articleguidance-specialnewarticle-title-placeholder' ).text()"
 				class="ext-articleguidance-search-input"
@@ -151,7 +152,7 @@
 </template>
 
 <script>
-const { defineComponent, ref, onMounted, computed, watch } = require( 'vue' );
+const { defineComponent, ref, onMounted, computed, watch, nextTick } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxButton, CdxIcon, CdxProgressIndicator } = require( '../codex.js' );
 const { cdxIconInfo } = require( '../icons.json' );
@@ -159,6 +160,8 @@ const { useSearch } = require( '../composables/useSearch.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
+const { scrollToTop } = require( '../utils/scroll.js' );
+const { isMobile } = require( '../utils/mobile.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
@@ -181,6 +184,8 @@ module.exports = defineComponent( {
 
 		const store = useArticleGuidanceStore();
 		const { searchQuery, showOutlines } = storeToRefs( store );
+
+		const searchInput = ref( null );
 
 		// Initialize search composable
 		const {
@@ -205,6 +210,24 @@ module.exports = defineComponent( {
 		watch( searchQuery, () => {
 			if ( showOutlines.value ) {
 				store.hideOutlines();
+			}
+		} );
+
+		watch( showOutlines, ( visible ) => {
+			if ( visible ) {
+				if ( !isMobile() ) {
+					nextTick( () => {
+						if ( searchInput.value ) {
+							searchInput.value.focus();
+						}
+					} );
+				}
+			} else {
+				// Scroll after the results list has re-rendered (it is hidden
+				// while outlines are shown via v-if), so the list lands at the top.
+				nextTick( () => {
+					scrollToTop();
+				} );
 			}
 		} );
 
@@ -289,6 +312,7 @@ module.exports = defineComponent( {
 
 		// Return everything you want to expose to the template
 		return {
+			searchInput,
 			searchQuery,
 			showOutlines,
 			loading,
@@ -396,10 +420,11 @@ module.exports = defineComponent( {
 	color: @color-base;
 }
 
-.ext-articleguidance-browse-link {
+.ext-articleguidance-browse-link.cdx-button {
 	color: @color-progressive;
 	padding: 0;
 	min-height: auto;
+	font-size: inherit;
 }
 
 // Mobile: subtle full-bleed strip flush with the bottom of the panel so it
@@ -440,16 +465,25 @@ module.exports = defineComponent( {
 }
 
 @media only screen and ( min-width: @min-width-breakpoint-desktop ) {
-	.ext-articleguidance-results-list {
-		grid-template-columns: 1fr;
-	}
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-results-list {
+			grid-template-columns: 1fr;
+		}
 
-	// Desktop: skip sits on its own line below the browse fallback
-	.ext-articleguidance-skip-guidance {
-		margin: 0;
-		padding: 0;
-		background-color: transparent;
-		border-top: 0;
+		// Desktop: browse and skip share a row, with skip aligned to the right.
+		.ext-articleguidance-search-footer {
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.ext-articleguidance-skip-guidance {
+			margin: 0 0 0 auto;
+			padding: 0;
+			background-color: transparent;
+			border-top: 0;
+		}
 	}
 }
 </style>

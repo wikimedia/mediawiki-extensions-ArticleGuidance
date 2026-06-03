@@ -1,32 +1,33 @@
 <template>
-	<div class="ext-articleguidance-action-option">
-		<cdx-icon
-			:icon="icon"
-			class="ext-articleguidance-action-option-icon"
-		></cdx-icon>
-		<div class="ext-articleguidance-action-option-content">
-			<component
-				:is="url ? 'a' : 'button'"
-				v-bind="url ? { href: url, target: isExternal ? '_blank' : undefined } : {}"
-				class="ext-articleguidance-action-option-title"
-				@click="log && log(); action && action()"
-			>
-				{{ title }}
-			</component>
-			<p class="ext-articleguidance-action-option-description">
-				{{ description }}
-			</p>
-		</div>
-	</div>
+	<cdx-card
+		class="ext-articleguidance-action-option"
+		:class="{ 'ext-articleguidance-action-option--interactive': !url }"
+		:icon="icon"
+		:url="url || undefined"
+		:target="isExternal ? '_blank' : undefined"
+		:rel="isExternal ? 'noopener noreferrer' : undefined"
+		:role="!url ? 'button' : undefined"
+		:tabindex="!url ? 0 : undefined"
+		@click="handleClick"
+		@keydown.enter.prevent="!url && handleClick()"
+		@keydown.space.prevent="!url && handleClick()"
+	>
+		<template #title>
+			{{ title }}
+		</template>
+		<template #description>
+			{{ description }}
+		</template>
+	</cdx-card>
 </template>
 
 <script>
 const { defineComponent, computed } = require( 'vue' );
-const { CdxIcon } = require( '../codex.js' );
+const { CdxCard } = require( '../codex.js' );
 
 module.exports = defineComponent( {
 	name: 'ActionOption',
-	components: { CdxIcon },
+	components: { CdxCard },
 	props: {
 		icon: {
 			type: [ String, Object ],
@@ -57,7 +58,17 @@ module.exports = defineComponent( {
 		const isExternal = computed(
 			() => props.url !== null && props.url.startsWith( 'http' )
 		);
-		return { isExternal };
+
+		const handleClick = () => {
+			if ( props.log ) {
+				props.log();
+			}
+			if ( props.action ) {
+				props.action();
+			}
+		};
+
+		return { isExternal, handleClick };
 	}
 } );
 </script>
@@ -66,47 +77,29 @@ module.exports = defineComponent( {
 @import 'mediawiki.skin.variables.less';
 
 .ext-articleguidance-action-option {
-	display: flex;
-	align-items: flex-start;
-	gap: 12px;
-	padding: 12px 0;
-	border-bottom: 1px solid @border-color-subtle;
-
-	&:first-child {
-		border-top: 1px solid @border-color-subtle;
+	.cdx-card__icon {
+		color: @color-base;
 	}
-}
 
-.ext-articleguidance-action-option-icon.cdx-icon {
-	color: @color-progressive;
-	flex-shrink: 0;
-	margin-top: 2px;
-}
-
-.ext-articleguidance-action-option-content {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-}
-
-.ext-articleguidance-action-option-title {
-	color: @color-progressive;
-	font-weight: @font-weight-normal;
-
-	&:is( button ) {
-		background: none;
-		border: 0;
-		padding: 0;
+	// CdxCard only applies clickable affordances to link (`url`) cards. The
+	// no-url "action" variant is made interactive via role/tabindex, so mirror
+	// ArticleCard's interactive states here.
+	&.ext-articleguidance-action-option--interactive {
 		cursor: pointer;
-		font-size: inherit;
-		font-family: inherit;
-		text-align: start;
-	}
-}
+		transition: background-color 0.2s;
 
-.ext-articleguidance-action-option-description {
-	margin: 0;
-	color: @color-subtle;
-	font-size: @font-size-small;
+		&:hover {
+			background-color: @background-color-interactive-subtle;
+		}
+
+		&:active {
+			background-color: @background-color-interactive;
+		}
+
+		&:focus-visible {
+			outline: 2px solid @color-progressive;
+			outline-offset: 2px;
+		}
+	}
 }
 </style>

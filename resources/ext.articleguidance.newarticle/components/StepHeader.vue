@@ -85,4 +85,35 @@ module.exports = defineComponent( {
 .ext-articleguidance-step-header-spacer {
 	justify-self: end;
 }
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-step-header {
+			border-bottom: @border-width-base @border-style-base @border-color-subtle;
+		}
+
+		.ext-articleguidance-step-header-inner {
+			display: block;
+			max-width: none;
+			margin: 0;
+		}
+
+		.ext-articleguidance-step-header-back,
+		.ext-articleguidance-step-header-spacer {
+			display: none;
+		}
+
+		.ext-articleguidance-step-header-title {
+			justify-self: stretch;
+			text-align: left;
+			// Match the standard MW special-page heading and the serif title input.
+			font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+			font-size: @font-size-xxx-large;
+			font-weight: @font-weight-normal;
+			padding: 4px 0 8px;
+		}
+	}
+}
 </style>

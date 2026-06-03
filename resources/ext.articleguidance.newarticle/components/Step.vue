@@ -62,7 +62,21 @@ module.exports = defineComponent( {
 .ext-articleguidance-step-header-inner,
 .ext-articleguidance-step-content {
 	max-width: 40rem;
-	margin: 0 auto;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-step-body {
+			padding: 12px 0 0;
+		}
+
+		.ext-articleguidance-step-content {
+			margin: 0;
+			max-width: none;
+		}
+	}
 }
 
 </style>

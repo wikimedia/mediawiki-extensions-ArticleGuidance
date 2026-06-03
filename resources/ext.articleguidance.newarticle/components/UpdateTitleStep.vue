@@ -43,6 +43,7 @@
 			</div>
 			<article-card
 				v-if="selectedResult"
+				:fit-width="true"
 				:title="selectedResult.label"
 				:description="selectedResult.description"
 				:thumbnail="selectedResult.thumbnail"

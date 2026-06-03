@@ -1,7 +1,10 @@
 <template>
 	<cdx-card
 		class="ext-articleguidance-article-card"
-		:class="{ 'ext-articleguidance-article-card--interactive': interactive }"
+		:class="{
+			'ext-articleguidance-article-card--interactive': interactive,
+			'ext-articleguidance-article-card--fit-width': fitWidth
+		}"
 		:thumbnail="cardThumbnail"
 		:icon="icon"
 		:role="interactive ? 'button' : undefined"
@@ -52,6 +55,10 @@ module.exports = defineComponent( {
 			default: null
 		},
 		interactive: {
+			type: Boolean,
+			default: false
+		},
+		fitWidth: {
 			type: Boolean,
 			default: false
 		},
@@ -149,6 +156,25 @@ module.exports = defineComponent( {
 		color: @color-subtle;
 		min-width: 20px;
 		min-height: 20px;
+	}
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		// Opt-in width adjustment: size the card to its content (single-line
+		// description) while staying at least as wide as the action buttons
+		// below it, and never exceeding the container.
+		.ext-articleguidance-article-card--fit-width {
+			// border-box so the 400px floor matches the border-box width of the
+			// buttons below (CdxCard adds padding + border, which would
+			// otherwise push the card wider than the buttons).
+			box-sizing: border-box;
+			width: fit-content;
+			min-width: 400px;
+			max-width: 100%;
+		}
 	}
 }
 </style>

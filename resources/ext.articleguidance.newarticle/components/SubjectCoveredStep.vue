@@ -6,6 +6,7 @@
 		@back="handleBack"
 	>
 		<article-card
+			:fit-width="true"
 			:thumbnail="localArticleInfo.thumbnail"
 			:title="localArticleInfo.title"
 			:description="localArticleInfo.description"

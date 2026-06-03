@@ -31,14 +31,22 @@
 					:log="option.log"
 				></action-option>
 			</div>
+			<cdx-button
+				class="ext-articleguidance-notability-back-btn"
+				weight="quiet"
+				@click="handleBack"
+			>
+				<cdx-icon :icon="cdxIconArrowPrevious"></cdx-icon>
+				{{ $i18n( 'articleguidance-navigation-back' ).text() }}
+			</cdx-button>
 		</div>
 	</step>
 </template>
 
 <script>
 const { defineComponent, computed, onMounted } = require( 'vue' );
-const { CdxMessage } = require( '../codex.js' );
-const { cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
+const { CdxButton, CdxIcon, CdxMessage } = require( '../codex.js' );
+const { cdxIconArrowPrevious, cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
@@ -48,6 +56,8 @@ const ActionOption = require( './ActionOption.vue' );
 module.exports = defineComponent( {
 	name: 'NotabilityStep',
 	components: {
+		CdxButton,
+		CdxIcon,
 		CdxMessage,
 		Step,
 		ArticleInfo,
@@ -118,7 +128,8 @@ module.exports = defineComponent( {
 		return {
 			contributionOptions,
 			warningMessage,
-			handleBack
+			handleBack,
+			cdxIconArrowPrevious
 		};
 	}
 } );
@@ -140,5 +151,33 @@ module.exports = defineComponent( {
 .ext-articleguidance-notability-options-list {
 	display: flex;
 	flex-direction: column;
+	gap: 8px;
+}
+
+.ext-articleguidance-notability-back-btn {
+	display: none;
+	margin-top: 20px;
+}
+
+@media screen and ( min-width: @min-width-breakpoint-desktop ) {
+	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
+	// on wide screens.
+	body:not( .skin-minerva ) {
+		.ext-articleguidance-notability-options {
+			max-width: none;
+		}
+
+		// Size the list to its widest card's content (min 400px); children
+		// stretch to that width so the options stay aligned.
+		.ext-articleguidance-notability-options-list {
+			width: fit-content;
+			min-width: 400px;
+			max-width: 100%;
+		}
+
+		.ext-articleguidance-notability-back-btn {
+			display: inline-flex;
+		}
+	}
 }
 </style>

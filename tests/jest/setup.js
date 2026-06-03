@@ -2,7 +2,8 @@
 
 const configValues = {
 	wgArticleGuidanceJuniorEditorThreshold: 10,
-	wgArticleGuidanceCrossWikiThreshold: 5
+	wgArticleGuidanceCrossWikiThreshold: 5,
+	wgWikiID: 'testwiki'
 };
 
 global.mw = {

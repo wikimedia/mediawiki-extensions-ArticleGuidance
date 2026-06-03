@@ -203,7 +203,7 @@
 				"utils/retry.js",
 				"utils/articleUrl.js",
 				"utils/scroll.js",
-				"utils/missingTypeFeedback.js",
+				"utils/projectFeedback.js",
 				"logging/notability.js",
 				"logging/search.js",
 				"logging/instrument.js",

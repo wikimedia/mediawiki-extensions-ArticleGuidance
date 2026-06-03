@@ -42,11 +42,10 @@ const { storeToRefs } = require( 'pinia' );
 const { cdxIconUserTalk, cdxIconArticle } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
+const { getRequestSupportUrl } = require( '../utils/projectFeedback.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const ActionOption = require( './ActionOption.vue' );
-
-const FEEDBACK_PAGE_URL = 'https://www.mediawiki.org/wiki/Talk:Article_guidance';
 
 module.exports = defineComponent( {
 	name: 'UnsupportedSubjectStep',
@@ -59,20 +58,9 @@ module.exports = defineComponent( {
 		const store = useArticleGuidanceStore();
 		const { selectedResult, searchQuery, articleTitle } = storeToRefs( store );
 
-		const requestSupportUrl = computed( () => {
-			const result = selectedResult.value;
-			const wiki = mw.config.get( 'wgDBname' );
-			const sectionTitle = result ?
-				'Request for support: ' + result.label + ' (' + result.id + ') on ' + wiki :
-				'Request for support';
-			const url = new URL( FEEDBACK_PAGE_URL );
-			url.search = new URLSearchParams( {
-				action: 'edit',
-				section: 'new',
-				preloadtitle: sectionTitle
-			} ).toString();
-			return url.toString();
-		} );
+		const requestSupportUrl = computed(
+			() => getRequestSupportUrl( selectedResult.value )
+		);
 
 		const startWritingUrl = computed(
 			() => mw.util.getUrl( articleTitle.value || searchQuery.value, { veaction: 'edit' } )

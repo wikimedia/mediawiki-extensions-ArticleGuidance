@@ -59,7 +59,7 @@ const { CdxIcon, CdxMessage } = require( '../codex.js' );
 const { cdxIconArticle, cdxIconLinkExternal } = require( '../icons.json' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
-const { getMissingTypeFeedbackUrl } = require( '../utils/missingTypeFeedback.js' );
+const { getMissingTypeFeedbackUrl } = require( '../utils/projectFeedback.js' );
 const instrument = require( '../logging/instrument.js' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
@@ -92,8 +92,7 @@ module.exports = defineComponent( {
 
 		const missingTypeFeedbackUrl = computed( () => {
 			const title = store.articleTitle || store.searchQuery;
-			const wiki = mw.config.get( 'wgWikiID' );
-			return getMissingTypeFeedbackUrl( title, wiki );
+			return getMissingTypeFeedbackUrl( title );
 		} );
 
 		return {

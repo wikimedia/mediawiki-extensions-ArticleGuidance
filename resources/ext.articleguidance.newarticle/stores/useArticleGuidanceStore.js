@@ -9,6 +9,8 @@ const {
 } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
 const { getDraftTitle } = require( '../utils/draft.js' );
+const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
+const instrument = require( '../logging/instrument.js' );
 
 const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const currentStep = ref( 'search' );
@@ -263,6 +265,30 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return getDraftTitle( title );
 	} );
 
+	const hasInstructions = computed( () => !!( selectedOutline.value &&
+		selectedOutline.value.instructions &&
+		String( selectedOutline.value.instructions ).trim() ) );
+
+	/**
+	 * Navigate to the editor to start writing the article.
+	 *
+	 * Builds the VisualEditor preload URL from the chosen title, outline and
+	 * gathered references, logs the write_start event, and redirects. Shared by
+	 * the instructions step and, when there is no guidance to show, the sources
+	 * step.
+	 */
+	function startWriting() {
+		instrument.logWriteStart( {
+			title: selectedOutline.value && selectedOutline.value.title,
+			qid: selectedOutline.value && selectedOutline.value.articleType
+		} );
+		location.href = getCreateArticleUrl(
+			creationTitle.value,
+			selectedOutline.value.title,
+			references.value.map( ( r ) => r.url )
+		);
+	}
+
 	function setArticleTitle( title ) {
 		articleTitle.value = title;
 	}
@@ -287,7 +313,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function confirmSources() {
-		goTo( 'instructions' );
+		if ( hasInstructions.value ) {
+			goTo( 'instructions' );
+		} else {
+			startWriting();
+		}
 	}
 
 	function goToUpdateTitle() {
@@ -325,6 +355,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		titleSuggestion,
 		originalTypedTitle,
 		creationTitle,
+		hasInstructions,
 		getActiveNotabilityTags,
 		getBlockingRestriction,
 		shouldShowNotabilityStep,
@@ -340,6 +371,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		resetTitleConflict,
 		confirmNotability,
 		confirmSources,
+		startWriting,
 		goToUpdateTitle,
 		goBack
 	};

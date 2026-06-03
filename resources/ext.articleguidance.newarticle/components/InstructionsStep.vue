@@ -7,28 +7,22 @@
 	>
 		<article-info></article-info>
 
-		<!-- Guidance card -->
-		<div class="ext-articleguidance-guidance-card">
-			<h4 class="ext-articleguidance-guidance-heading">
-				{{ $i18n( 'articleguidance-instructions-guidance-heading' ).text() }}
-			</h4>
-			<div class="ext-articleguidance-guidance-intro">
-				{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
-			</div>
+		<!-- Guidance -->
+		<h4 class="ext-articleguidance-guidance-heading">
+			{{ $i18n( 'articleguidance-instructions-guidance-heading' ).text() }}
+		</h4>
+		<div class="ext-articleguidance-guidance-intro">
+			{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
+		</div>
 
-			<!-- Community-provided tips (from outline) -->
-			<div
-				v-if="selectedOutline && selectedOutline.instructions"
-				class="ext-articleguidance-guidance-tips"
-			>
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div class="content" v-html="selectedOutline.instructions"></div>
-			</div>
-
-			<!-- Source guidance -->
-			<div class="ext-articleguidance-guidance-sources">
-				{{ $i18n( 'articleguidance-instructions-source-guidance' ).text() }}
-			</div>
+		<!-- Community-provided tips (from outline) -->
+		<div
+			v-if="selectedOutline && selectedOutline.instructions"
+			ref="tipsContainer"
+			class="ext-articleguidance-guidance-tips"
+		>
+			<!-- eslint-disable-next-line vue/no-v-html -->
+			<div class="content" v-html="selectedOutline.instructions"></div>
 		</div>
 
 		<!-- Actions -->
@@ -45,11 +39,10 @@
 </template>
 
 <script>
-const { defineComponent, onMounted } = require( 'vue' );
+const { defineComponent, onMounted, ref, watch, nextTick } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxButton } = require( '../codex.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
-const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
@@ -63,25 +56,40 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, references, creationTitle } = storeToRefs( store );
+		const { selectedOutline } = storeToRefs( store );
 
-		const buildCreateArticleUrl = () => getCreateArticleUrl(
-			creationTitle.value,
-			selectedOutline.value.title,
-			references.value.map( ( r ) => r.url )
-		);
+		// Container holding the community-authored guidance HTML.
+		const tipsContainer = ref( null );
+
+		// Community-authored links should open in a new tab so the user keeps
+		// their place in the flow.
+		const openLinksInNewTab = () => {
+			const el = tipsContainer.value;
+			if ( !el ) {
+				return;
+			}
+			Array.prototype.forEach.call( el.querySelectorAll( 'a' ), ( link ) => {
+				link.setAttribute( 'target', '_blank' );
+				link.setAttribute( 'rel', 'noopener noreferrer' );
+			} );
+		};
 
 		onMounted( () => {
 			instrument.logGuidanceShown();
+			nextTick( openLinksInNewTab );
 		} );
+
+		// Guidance may arrive after the step mounts; re-process links when it does.
+		watch(
+			() => selectedOutline.value && selectedOutline.value.instructions,
+			() => {
+				nextTick( openLinksInNewTab );
+			}
+		);
 
 		// Navigate to article creation page
 		const handleStartWriting = () => {
-			instrument.logWriteStart( {
-				title: selectedOutline.value && selectedOutline.value.title,
-				qid: selectedOutline.value && selectedOutline.value.articleType
-			} );
-			location.href = buildCreateArticleUrl();
+			store.startWriting();
 		};
 
 		// Handle back navigation
@@ -91,6 +99,7 @@ module.exports = defineComponent( {
 
 		return {
 			selectedOutline,
+			tipsContainer,
 			handleStartWriting,
 			handleBack
 		};
@@ -101,26 +110,6 @@ module.exports = defineComponent( {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.ext-articleguidance-guidance-card {
-	background-color: @background-color-neutral-subtle;
-	border-radius: @border-radius-base;
-	padding: 16px;
-
-	.ext-articleguidance-guidance-intro {
-		color: @color-subtle;
-		font-size: @font-size-small;
-		margin: 0 0 12px 0;
-	}
-
-	.ext-articleguidance-guidance-sources {
-		color: @color-subtle;
-		font-size: @font-size-small;
-		margin: 0;
-		padding-top: 12px;
-		border-top: @border-width-base @border-style-base @border-color-subtle;
-	}
-}
-
 .ext-articleguidance-guidance-heading {
 	font-size: @font-size-large;
 	font-weight: @font-weight-bold;
@@ -129,18 +118,38 @@ module.exports = defineComponent( {
 	border: 0;
 }
 
+.ext-articleguidance-guidance-intro {
+	color: @color-subtle;
+	font-size: @font-size-small;
+	margin: 0 0 12px 0;
+}
+
 .ext-articleguidance-guidance-tips {
 	color: @color-base;
 	margin-bottom: 12px;
+
+	.content {
+		// Override left padding inherited from the skin so the prose lines up
+		// with the heading and intro above it.
+		padding-left: 0;
+		margin-left: 0;
+	}
+
+	.content > :first-child {
+		margin-top: 0;
+	}
 }
 
 .ext-articleguidance-instructions-actions {
+	position: sticky;
+	bottom: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-top: 32px;
-	padding-top: 24px;
+	padding: 16px 0;
 	gap: 8px;
+	background-color: @background-color-base;
 
 	.cdx-button {
 		width: 100%;

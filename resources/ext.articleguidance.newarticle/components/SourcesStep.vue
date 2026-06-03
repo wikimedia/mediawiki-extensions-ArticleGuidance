@@ -153,7 +153,7 @@
 				:disabled="!canContinue"
 				@click="handleContinue"
 			>
-				{{ $i18n( 'articleguidance-sources-continue' ).text() }}
+				{{ continueLabel }}
 			</cdx-button>
 			<div class="ext-articleguidance-sources-helper">
 				{{ helperText }}
@@ -191,7 +191,7 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, minRequiredSources } = storeToRefs( store );
+		const { selectedOutline, minRequiredSources, hasInstructions } = storeToRefs( store );
 
 		onMounted( () => {
 			instrument.logSourcesShown();
@@ -330,6 +330,13 @@ module.exports = defineComponent( {
 			() => verifiedSources.value.length >= minRequiredSources.value
 		);
 
+		// When the outline has no guidance, the instructions step is skipped and
+		// this becomes the final step, so the button leads straight to writing.
+		const continueLabel = computed( () => hasInstructions.value ?
+			mw.message( 'articleguidance-sources-continue' ).text() :
+			mw.message( 'articleguidance-instructions-start-writing' ).text()
+		);
+
 		const helperText = computed( () => {
 			if ( !isMandatory.value ) {
 				return mw.message( 'articleguidance-sources-helper' ).text();
@@ -372,6 +379,7 @@ module.exports = defineComponent( {
 			checking,
 			isMandatory,
 			canContinue,
+			continueLabel,
 			helperText,
 			validationError,
 			unreliableWarning,

@@ -43,7 +43,6 @@
 	"articleguidance-sources-check-failed": "Error message displayed when the source validation API call fails unexpectedly",
 	"articleguidance-instructions-guidance-heading": "Heading for the guidance card shown before the user starts writing",
 	"articleguidance-instructions-guidance-intro": "Introductory sentence below the guidance card heading",
-	"articleguidance-instructions-source-guidance": "Guidance text about having reliable sources, shown at the bottom of the guidance card",
 	"articleguidance-instructions-start-writing": "Button text to start writing the article in the editor",
 	"articleguidance-navigation-back": "Button text for the back navigation button",
 	"articleguidance-category-note": "Shown in the article-guidance tag box on outline pages when a category attribute is set. $1 is a wiki link to the category page that new articles will be added to.",

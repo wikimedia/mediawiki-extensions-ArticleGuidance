@@ -6,7 +6,9 @@ Outline data is populated when a wiki page containing an `<article-guidance>` ta
 re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
 
 1. Fetches entity metadata (label, description, image, hierarchy depth, match-via) from Wikidata
-   via `WikidataInfoFetcher`, which caches results for 24 hours.
+   via `WikidataInfoFetcher`, which caches results for one week. An optional `label` attribute on
+   the tag overrides the Wikidata-derived label everywhere — both the stored outline list and the
+   on-wiki guidance card.
 2. Parses the tag's inner content into fully-resolved HTML using `Parser::recursiveTagParseFully()`,
    resolving all strip markers (links, etc.) inline.
 3. Writes the structured outline data as a page property (`articleguidance-data`) via

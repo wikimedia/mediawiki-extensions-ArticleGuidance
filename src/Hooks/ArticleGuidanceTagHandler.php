@@ -63,6 +63,8 @@ class ArticleGuidanceTagHandler implements
 
 		// Extract parameters
 		$articleType = $attributes['article-type'] ?? null;
+		// Optional custom label that overrides the Wikidata-derived label everywhere
+		$customLabel = trim( $attributes['label'] ?? '' );
 		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
 		$validTags = array_values( array_filter( $allTags,
 			static fn ( $tag ) => in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
@@ -107,6 +109,8 @@ class ArticleGuidanceTagHandler implements
 		$wikidataDescription = null;
 		$wikidataImage = null;
 		$hierarchyDepth = null;
+		// Effective label used for storage and rendering; resolved against Wikidata below
+		$displayLabel = $customLabel !== '' ? $customLabel : null;
 
 		if ( $articleType !== null ) {
 			if ( $this->isValidWikidataId( $articleType ) ) {
@@ -128,10 +132,13 @@ class ArticleGuidanceTagHandler implements
 						$matchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
 					}
 
+					// Custom label takes precedence over the Wikidata label
+					$displayLabel = $customLabel !== '' ? $customLabel : $wikidataLabel;
+
 					$description = $wikidataDescription !== null ? ucfirst( $wikidataDescription ) : null;
 					$data = [ 'articleType' => $wikidataId ];
-					if ( $wikidataLabel !== null && $wikidataLabel !== '' ) {
-						$data['label'] = $wikidataLabel;
+					if ( $displayLabel !== null && $displayLabel !== '' ) {
+						$data['label'] = $displayLabel;
 					}
 					if ( $description !== null && $description !== '' ) {
 						$data['description'] = $description;
@@ -169,7 +176,7 @@ class ArticleGuidanceTagHandler implements
 		// Render HTML using the renderer service
 		$html = $this->renderer->render(
 			$wikidataId,
-			$wikidataLabel,
+			$displayLabel,
 			$wikidataDescription,
 			$articleType,
 			$validTags,

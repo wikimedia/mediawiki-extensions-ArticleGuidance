@@ -13,6 +13,7 @@ use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
+use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 
 class RedLinkRedirectHandler implements BeforeInitializeHook {
@@ -22,7 +23,12 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		private readonly Config $mainConfig,
 		private readonly TitleFactory $titleFactory,
 		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
+		private readonly UserOptionsLookup $userOptionsLookup,
 	) {
+	}
+
+	private function hasArticleGuidanceEnabled( User $user ): bool {
+		return $this->userOptionsLookup->getBoolOption( $user, 'articleguidance-enable' );
 	}
 
 	/**
@@ -219,7 +225,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			&& $this->isUserAllowed( $user )
 		) {
 			$this->sendExperimentExposure();
-			if ( $this->isInTreatmentGroup() ) {
+			if ( $this->isInTreatmentGroup() && $this->hasArticleGuidanceEnabled( $user ) ) {
 				// Outcome 1: go to Article Guidance
 				$this->performRedirect( $output, [
 					'newarticletitle' => $title->getPrefixedText(),
@@ -238,7 +244,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			&& $this->isUserAllowed( $user )
 		) {
 			$this->sendExperimentExposure();
-			if ( $this->isInTreatmentGroup() ) {
+			if ( $this->isInTreatmentGroup() && $this->hasArticleGuidanceEnabled( $user ) ) {
 				// Outcome 1: go to Article Guidance
 				$this->performRedirect( $output, [
 					'source' => 'articlewizard',

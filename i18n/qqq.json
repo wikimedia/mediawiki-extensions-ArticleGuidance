@@ -8,6 +8,8 @@
 		]
 	},
 	"articleguidance-desc": "{{desc|name=ArticleGuidance|url=https://www.mediawiki.org/wiki/Extension:ArticleGuidance}}",
+	"articleguidance-pref-enable-label": "Label for the user preference checkbox (in the Editing section of Special:Preferences) that controls whether the Article Guidance guided new-article experience is used.",
+	"articleguidance-pref-enable-help": "Help text shown under the {{msg-mw|articleguidance-pref-enable-label}} preference checkbox.",
 	"articleguidance-specialnewarticle-title": "Title of the Special:NewArticle page. Also used as the header title across all steps of the new article flow.",
 	"articleguidance-specialnewarticle-title-placeholder": "Placeholder text for the Wikidata search input field",
 	"articleguidance-specialnewarticle-loading": "Loading state message displayed while searching Wikidata",

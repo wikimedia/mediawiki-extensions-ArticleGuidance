@@ -7,6 +7,8 @@
 		]
 	},
 	"articleguidance-desc": "Enables users to create articles through a guided, assisted workflow",
+	"articleguidance-pref-enable-label": "Use article guidance when creating new articles",
+	"articleguidance-pref-enable-help": "When enabled, creating a new article opens the guided experience instead of the standard editor.",
 	"articleguidance-specialnewarticle-title": "New article",
 	"articleguidance-specialnewarticle-title-placeholder": "Article title",
 	"articleguidance-specialnewarticle-loading": "Searching...",

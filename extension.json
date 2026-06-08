@@ -119,6 +119,13 @@
 				"ArticleGuidanceTitleExtractor",
 				"MainConfig",
 				"TitleFactory",
+				"ArticleGuidanceExperimentFactory",
+				"UserOptionsLookup"
+			]
+		},
+		"Preferences": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreferencesHandler",
+			"services": [
 				"ArticleGuidanceExperimentFactory"
 			]
 		},
@@ -151,7 +158,11 @@
 		"ChangeTagsListActive": "EditTag",
 		"RevisionFromEditComplete": "EditTag",
 		"EditFormPreloadText": "PreloadCleanup",
-		"BeforePageDisplay": "PublishFollowUp"
+		"BeforePageDisplay": "PublishFollowUp",
+		"GetPreferences": "Preferences"
+	},
+	"DefaultUserOptions": {
+		"articleguidance-enable": 1
 	},
 	"ExtensionMessagesFiles": {
 		"ArticleGuidanceAlias": "ArticleGuidance.alias.php"

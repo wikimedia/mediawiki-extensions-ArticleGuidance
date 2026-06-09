@@ -17,14 +17,17 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 	 * @inheritDoc
 	 */
 	public function onBeforePageDisplay( $out, $skin ): void {
+		if ( $out->getUser()->isAnon() || !$out->getTitle()?->isContentPage() ) {
+			return;
+		}
 		$session = $out->getRequest()->getSession();
-		if (
-			!$out->getUser()->isAnon()
-			&& $out->getTitle()->isContentPage()
-			&& $session->get( EditTagHandler::SESSION_PUBLISHED ) === $out->getTitle()->getPrefixedText()
-		) {
+		$titleText = $out->getTitle()->getPrefixedText();
+		$published = $session->get( EditTagHandler::SESSION_PUBLISHED );
+		if ( is_array( $published ) && isset( $published[ $titleText ] ) ) {
 			$out->addModules( 'ext.articleguidance.publishingfollowup' );
-			$session->remove( EditTagHandler::SESSION_PUBLISHED );
+			// Consume only this title's flag; other just-published articles keep theirs.
+			unset( $published[ $titleText ] );
+			$session->set( EditTagHandler::SESSION_PUBLISHED, $published );
 		}
 	}
 }

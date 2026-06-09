@@ -20,6 +20,12 @@ class EditTagHandler implements
 	public const SESSION_EDITING = 'ArticleGuidanceEditing';
 	public const SESSION_PUBLISHED = 'ArticleGuidancePublished';
 
+	/**
+	 * Cap on the number of in-flight titles tracked in each session set, so a
+	 * session that starts many edits without publishing cannot grow unbounded.
+	 */
+	public const MAX_TRACKED = 50;
+
 	public function __construct(
 		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
 	) {
@@ -59,10 +65,24 @@ class EditTagHandler implements
 			]
 		];
 
-		if ( $session->get( self::SESSION_EDITING ) === $titleText ) {
+		$editing = $session->get( self::SESSION_EDITING );
+		if ( is_array( $editing ) && isset( $editing[ $titleText ] ) ) {
 			$tags[] = self::TAG;
-			$session->remove( self::SESSION_EDITING );
-			$session->set( self::SESSION_PUBLISHED, $titleText );
+			// Remove only this title; other tabs' in-flight edits stay tracked.
+			unset( $editing[ $titleText ] );
+			$session->set( self::SESSION_EDITING, $editing );
+
+			$published = $session->get( self::SESSION_PUBLISHED );
+			$published = is_array( $published ) ? $published : [];
+			$published[ $titleText ] = true;
+			$published = array_slice(
+				$published,
+				-self::MAX_TRACKED,
+				length: null,
+				preserve_keys: true
+			);
+			$session->set( self::SESSION_PUBLISHED, $published );
+
 			$eventData['action_source'] = 'articleguidance';
 		}
 

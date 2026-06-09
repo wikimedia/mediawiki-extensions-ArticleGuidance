@@ -214,7 +214,17 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		if ( $request->getCheck( 'articleguidance' )
 			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
 		) {
-			$request->getSession()->set( EditTagHandler::SESSION_EDITING, $title->getPrefixedText() );
+			$session = $request->getSession();
+			$titleText = $title->getPrefixedText();
+			// Track each in-flight edit by title so concurrent edits in separate
+			// tabs don't clobber one another and all get tagged on publish.
+			$editing = $session->get( EditTagHandler::SESSION_EDITING );
+			$editing = is_array( $editing ) ? $editing : [];
+			// Re-insert at the end so the most recently started edits survive the cap.
+			unset( $editing[ $titleText ] );
+			$editing[ $titleText ] = true;
+			$editing = array_slice( $editing, -EditTagHandler::MAX_TRACKED, null, true );
+			$session->set( EditTagHandler::SESSION_EDITING, $editing );
 			$this->sendEditingStartedEvent( $title );
 			return;
 		}

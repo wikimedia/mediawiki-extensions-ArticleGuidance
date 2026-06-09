@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Ermöglicht Benutzern die Erstellung von Artikeln über einen geführten, unterstützten Workflow.",
+	"articleguidance-pref-enable-label": "Nutze die Artikelleitlinien, wenn du neue Artikel erstellst",
+	"articleguidance-pref-enable-help": "Wenn diese Option aktiviert ist, wird beim Erstellen eines neuen Artikels der Assistent anstelle des Standard-Editors geöffnet.",
 	"articleguidance-specialnewarticle-title": "Neuer Artikel",
 	"articleguidance-specialnewarticle-title-placeholder": "Artikeltitel",
 	"articleguidance-specialnewarticle-loading": "Suche …",
@@ -19,6 +21,7 @@
 	"articleguidance-specialnewarticle-browse-outlines-link": "Wähle stattdessen einen Typ aus",
 	"articleguidance-specialnewarticle-skip-guidance-prefix": "Unterstützung überspringen.",
 	"articleguidance-specialnewarticle-skip-guidance-link": "Bearbeitung ohne Anleitung der Community.",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "Erfahre mehr über den Artikelleitfaden",
 	"articleguidance-specialnewarticle-language-fallback-notice": "Einige Ergebnisse werden in einer anderen Sprache angezeigt.",
 	"articleguidance-sources-title": "Quellen hinzufügen",
 	"articleguidance-sources-subtitle": "Einzelnachweise helfen den Lesern, die Fakten zu überprüfen, und zeigen, warum dieses Thema wichtig ist.",

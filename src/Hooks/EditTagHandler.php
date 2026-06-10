@@ -17,6 +17,9 @@ class EditTagHandler implements
 {
 
 	private const TAG = 'articleguidance';
+	// Both session values are maps keyed by prefixed title. The value carries the
+	// selected Wikidata item Q-id (or true when none was selected), so the item
+	// stays paired with its own article across concurrent edits in separate tabs.
 	public const SESSION_EDITING = 'ArticleGuidanceEditing';
 	public const SESSION_PUBLISHED = 'ArticleGuidancePublished';
 
@@ -68,13 +71,16 @@ class EditTagHandler implements
 		$editing = $session->get( self::SESSION_EDITING );
 		if ( is_array( $editing ) && isset( $editing[ $titleText ] ) ) {
 			$tags[] = self::TAG;
-			// Remove only this title; other tabs' in-flight edits stay tracked.
+			// Remove only this title; other tabs' in-flight edits stay tracked. Carry
+			// its value (the selected Wikidata item, or true) into the published set so
+			// the post-publish module can connect the new article to its item.
+			$value = $editing[ $titleText ];
 			unset( $editing[ $titleText ] );
 			$session->set( self::SESSION_EDITING, $editing );
 
 			$published = $session->get( self::SESSION_PUBLISHED );
 			$published = is_array( $published ) ? $published : [];
-			$published[ $titleText ] = true;
+			$published[ $titleText ] = $value;
 			$published = array_slice(
 				$published,
 				-self::MAX_TRACKED,

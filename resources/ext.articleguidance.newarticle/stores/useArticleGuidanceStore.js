@@ -307,7 +307,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		location.href = getCreateArticleUrl(
 			creationTitle.value,
 			selectedOutline.value.title,
-			refs
+			refs,
+			selectedResult.value && selectedResult.value.id
 		);
 	}
 

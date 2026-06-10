@@ -74,6 +74,14 @@
 		"ArticleGuidanceExperimentJuniorEditorsOnly": {
 			"value": false,
 			"description": "When true, the red-link/entry-point experiment only admits junior editors: in addition to the createpage permission and not being blocked, the user's edit count must be below ArticleGuidanceJuniorEditorThreshold. Default false admits all eligible logged-in users regardless of edit count."
+		},
+		"ArticleGuidanceWikidataConnectEnabled": {
+			"value": false,
+			"description": "When true, a published article is automatically connected to the Wikidata item the user selected, by adding a sitelink. Default false so non-production environments never write to Wikidata."
+		},
+		"ArticleGuidanceWikidataApiUrl": {
+			"value": "https://www.wikidata.org/w/api.php",
+			"description": "Wikidata Action API endpoint used by the client to read sitelinks and add the sitelink (wbsetsitelink) connecting a published article to its item."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -148,7 +156,10 @@
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
 		},
 		"PublishFollowUp": {
-			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PublishFollowUpHandler"
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PublishFollowUpHandler",
+			"services": [
+				"MainConfig"
+			]
 		}
 	},
 	"Hooks": {
@@ -360,6 +371,7 @@
 			],
 			"packageFiles": [
 				"init.js",
+				"connectWikidata.js",
 				"PublishFollowUp.vue",
 				{
 					"name": "icons.json",
@@ -379,7 +391,8 @@
 				"articleguidance-publish-followup-close-button"
 			],
 			"dependencies": [
-				"vue"
+				"vue",
+				"mediawiki.ForeignApi"
 			]
 		}
 	},

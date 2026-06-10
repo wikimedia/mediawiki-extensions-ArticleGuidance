@@ -9,9 +9,12 @@ const { isMobile } = require( './mobile.js' );
  *                               citation wikitext (e.g. {{Cite web|…}}) when
  *                               available, otherwise the raw URL. Each is
  *                               wrapped in a numbered <ref> tag.
+ * @param {string} [itemId]      Wikidata item Q-id the article is about, when the user
+ *                               selected a specific item (used to connect the published
+ *                               article to Wikidata)
  * @return {string}
  */
-function getCreateArticleUrl( title, outlineTitle, references ) {
+function getCreateArticleUrl( title, outlineTitle, references, itemId ) {
 	const preloadParams = references.map( ( r, index ) => `<ref name="ref${ index + 1 }">${ r }</ref>` );
 
 	const params = {
@@ -21,6 +24,10 @@ function getCreateArticleUrl( title, outlineTitle, references ) {
 		articleguidance: 1,
 		cxhidebetapopup: 1
 	};
+
+	if ( itemId && /^Q\d+$/.test( itemId ) ) {
+		params.articleguidanceitem = itemId;
+	}
 
 	if ( isMobile() ) {
 		params.action = 'edit';

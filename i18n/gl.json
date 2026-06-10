@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Permite aos usuarios crear artigos mediante un fluxo de traballo guiado e asistido",
+	"articleguidance-pref-enable-label": "Utilizar a guía de artigos ao creares artigos novos",
+	"articleguidance-pref-enable-help": "Cando a opción está activada, ao creares un artigo novo abrirase a experiencia guiada en lugar do editor estándar.",
 	"articleguidance-specialnewarticle-title": "Artigo novo",
 	"articleguidance-specialnewarticle-title-placeholder": "Título do artigo",
 	"articleguidance-specialnewarticle-loading": "Procurando...",

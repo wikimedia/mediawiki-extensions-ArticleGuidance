@@ -7,6 +7,8 @@
 		]
 	},
 	"articleguidance-desc": "ব্যবহারকারীদের একটি নির্দেশিত ও সহায়তাপ্রাপ্ত প্রক্রিয়ার মাধ্যমে নিবন্ধ তৈরি করতে সক্ষম করে",
+	"articleguidance-pref-enable-label": "নতুন নিবন্ধ তৈরি করার সময় নিবন্ধ নির্দেশিকা ব্যবহার করুন",
+	"articleguidance-pref-enable-help": "এটি চালু থাকলে, নতুন নিবন্ধ তৈরি করার সময় সাধারণ সম্পাদকের পরিবর্তে নির্দেশনাসহ সম্পাদনার অভিজ্ঞতা চালু হবে।",
 	"articleguidance-specialnewarticle-title": "নতুন নিবন্ধ",
 	"articleguidance-specialnewarticle-title-placeholder": "নিবন্ধের শিরোনাম",
 	"articleguidance-specialnewarticle-loading": "অনুসন্ধান করা হচ্ছে...",
@@ -19,6 +21,9 @@
 	"articleguidance-specialnewarticle-disambiguation-title": "এটি কী?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "বিষয় অনুপলব্ধ?",
 	"articleguidance-specialnewarticle-browse-outlines-link": "এর পরিবর্তে একটি ধরন নির্বাচন করুন",
+	"articleguidance-specialnewarticle-skip-guidance-prefix": "সহায়তা বাদ দিন।",
+	"articleguidance-specialnewarticle-skip-guidance-link": "সম্প্রদায়ের নির্দেশিকা ছাড়াই সম্পাদনা করুন।",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "নিবন্ধ নির্দেশিকা সম্পর্কে আরও জানুন",
 	"articleguidance-specialnewarticle-language-fallback-notice": "কিছু ফলাফল অন্য একটি ভাষায় প্রদর্শন করা হচ্ছে",
 	"articleguidance-sources-title": "উৎস যোগ করুন",
 	"articleguidance-sources-subtitle": "তথ্যসূত্র পাঠকদের তথ্য যাচাই করতে সাহায্য করে এবং এই বিষয়টি কেন গুরুত্বপূর্ণ তা বুঝিয়ে দেয়।",

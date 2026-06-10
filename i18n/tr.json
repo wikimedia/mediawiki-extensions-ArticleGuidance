@@ -6,6 +6,8 @@
 		]
 	},
 	"articleguidance-desc": "Kullanıcıların rehberli ve destekli bir süreç aracılığıyla madde oluşturmasını sağlar",
+	"articleguidance-pref-enable-label": "Yeni madde oluştururken madde kılavuzunu kullanın",
+	"articleguidance-pref-enable-help": "Bu özellik devreye alınırsa yeni bir madde oluşturulduğunda standart düzenleyici yerine adım adım kılavuzlu düzenleme arayüzü açılır.",
 	"articleguidance-specialnewarticle-title": "Yeni madde",
 	"articleguidance-specialnewarticle-title-placeholder": "Madde başlığı",
 	"articleguidance-specialnewarticle-loading": "Aranıyor...",

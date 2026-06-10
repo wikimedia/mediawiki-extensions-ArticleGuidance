@@ -6,6 +6,7 @@
 		]
 	},
 	"articleguidance-desc": "Guidage et assistance à la création d'articles.",
+	"articleguidance-pref-enable-label": "Utiliser l'accompagnement à la création d'articles lors de la création d'articles",
 	"articleguidance-specialnewarticle-title": "Nouvel article",
 	"articleguidance-specialnewarticle-title-placeholder": "Titre de l’article",
 	"articleguidance-specialnewarticle-loading": "Recherche…",

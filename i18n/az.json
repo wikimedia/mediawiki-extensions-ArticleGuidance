@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "İstifadəçilərə köməkçi iş axını vasitəsilə məqalələr yaratmağa imkan verir",
+	"articleguidance-pref-enable-label": "Yeni məqalələr yaratarkən məqalə təlimatından istifadə et",
+	"articleguidance-pref-enable-help": "Aktivləşdirildikdə, yeni məqalə yaratmaq standart redaktor əvəzinə təlimatlı təcrübəni açır.",
 	"articleguidance-specialnewarticle-title": "Yeni məqalə",
 	"articleguidance-specialnewarticle-title-placeholder": "Məqalə başlığı",
 	"articleguidance-specialnewarticle-loading": "Axtarılır...",

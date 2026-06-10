@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Permitte que usatores crea articulos per un fluxo de travalio guidate e assistite",
+	"articleguidance-pref-enable-label": "Usar le guida pro le creation de nove articulos",
+	"articleguidance-pref-enable-help": "Si iste option es activate, le guida assistente apparera in loco del editor normal quando on crea un nove articulo.",
 	"articleguidance-specialnewarticle-title": "Nove articulo",
 	"articleguidance-specialnewarticle-title-placeholder": "Titulo del articulo",
 	"articleguidance-specialnewarticle-loading": "Recerca in curso…",

@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Waxay u suurtagelisaa isticmaaleyaasha inay abuuraan maqaalyo iyagoo adeegsanaya hab hagid iyo caawin leh",
+	"articleguidance-pref-enable-label": "Isticmaal hagista maqaalka marka aad abuurayso maqaallo cusub",
+	"articleguidance-pref-enable-help": "Marka la daaro, abuurista maqaal cusub waxay fureysaa khibradda hagidda halkii ay ka furi lahayd tifaftiraha caadiga ah.",
 	"articleguidance-specialnewarticle-title": "Maqaal cusub",
 	"articleguidance-specialnewarticle-title-placeholder": "Cinwaanka maqaalka",
 	"articleguidance-specialnewarticle-loading": "Raadinta...",

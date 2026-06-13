@@ -5,16 +5,16 @@ $cfg = require __DIR__ . '/../vendor/mediawiki/mediawiki-phan-config/src/config.
 $cfg['directory_list'] = array_merge(
 	$cfg['directory_list'],
 	[
-		'../SpamBlacklist',
-		'../TestKitchen',
+		'../../extensions/SpamBlacklist',
+		'../../extensions/TestKitchen',
 	]
 );
 
 $cfg['exclude_analysis_directory_list'] = array_merge(
 	$cfg['exclude_analysis_directory_list'],
 	[
-		'../SpamBlacklist',
-		'../TestKitchen',
+		'../../extensions/SpamBlacklist',
+		'../../extensions/TestKitchen',
 	]
 );
 

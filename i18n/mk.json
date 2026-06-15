@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Им овозможува на корисниците да создаваат статии преку воден и потпомогнат работен тек.",
+	"articleguidance-pref-enable-label": "Користи упатства за статии при создавање на нови статии",
+	"articleguidance-pref-enable-help": "Кога е овозможено, при создавање на нова статија се отвора упатство наместо стандарден уредувач.",
 	"articleguidance-specialnewarticle-title": "Нова статија",
 	"articleguidance-specialnewarticle-title-placeholder": "Наслов на статијата",
 	"articleguidance-specialnewarticle-loading": "Пребарувам...",

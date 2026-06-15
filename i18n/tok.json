@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Palinasin"
+			"Palinasin",
+			"Recqy"
 		]
 	},
 	"articleguidance-specialnewarticle-title": "lipu sin",
-	"articleguidance-specialnewarticle-title-placeholder": "o pana e nimi lipu",
+	"articleguidance-specialnewarticle-title-placeholder": "nimi lipu",
 	"articleguidance-specialnewarticle-loading": "mi alasa...",
 	"articleguidance-specialnewarticle-checking": "mi alasa...",
 	"articleguidance-specialnewarticle-no-results": "mi alasa e ala tan nimi \"$1\"",

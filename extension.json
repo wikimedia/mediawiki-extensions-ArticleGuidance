@@ -128,7 +128,8 @@
 				"MainConfig",
 				"TitleFactory",
 				"ArticleGuidanceExperimentFactory",
-				"UserOptionsLookup"
+				"UserOptionsLookup",
+				"ConnectionProvider"
 			]
 		},
 		"Preferences": {

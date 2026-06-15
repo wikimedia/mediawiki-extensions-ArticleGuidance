@@ -8,6 +8,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Hook\BeforeInitializeHook;
+use MediaWiki\Logging\DatabaseLogEntry;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
@@ -15,6 +16,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class RedLinkRedirectHandler implements BeforeInitializeHook {
 
@@ -24,7 +26,27 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		private readonly TitleFactory $titleFactory,
 		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly IConnectionProvider $connectionProvider,
 	) {
+	}
+
+	/**
+	 * Check whether a title has a deletion or move log entry, i.e. the article
+	 * was previously deleted or moved away (a move without leaving a redirect
+	 * also turns the old title into a red link). Matches any 'move' entry, since
+	 * a move that left a redirect makes the title exist and so cannot reach here.
+	 */
+	private function hasDeletionOrMoveLog( Title $title ): bool {
+		$dbr = $this->connectionProvider->getReplicaDatabase();
+		$row = DatabaseLogEntry::newSelectQueryBuilder( $dbr )
+			->where( [
+				'log_namespace' => $title->getNamespace(),
+				'log_title' => $title->getDBkey(),
+				'log_type' => [ 'delete', 'move' ],
+			] )
+			->caller( __METHOD__ )
+			->fetchRow();
+		return $row !== false;
 	}
 
 	private function hasArticleGuidanceEnabled( User $user ): bool {
@@ -238,6 +260,14 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			&& $this->isRefererInScope( $request )
 			&& $this->isUserAllowed( $user )
 		) {
+			// Skip the experiment entirely for red links to deleted or moved-away
+			// articles so the editor opens as usual, showing the deletion/move log
+			// and (for those with permission) undelete tools. Excluded from both
+			// groups, so no exposure or editing_start event is sent. (T428146)
+			if ( $this->hasDeletionOrMoveLog( $title ) ) {
+				return;
+			}
+
 			$this->sendExperimentExposure();
 			if ( $this->isInTreatmentGroup() && $this->hasArticleGuidanceEnabled( $user ) ) {
 				// Outcome 1: go to Article Guidance

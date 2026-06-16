@@ -108,9 +108,7 @@
 							:icon="cdxIconInfoFilled"
 							class="ext-articleguidance-tips-info-icon"
 						></cdx-icon>
-						{{
-							$i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text()
-						}}
+						{{ tipsTitle }}
 					</template>
 					<div class="ext-articleguidance-tips-content">
 						<div v-if="recommendedSources.length">
@@ -120,7 +118,7 @@
 									'ext-articleguidance-tips-title-regular'
 								"
 							>
-								{{ $i18n( 'articleguidance-sources-tips-content-recommended' ).text() }}
+								{{ recommendedTitle }}
 							</div>
 							<ul class="ext-articleguidance-tip-list">
 								<!-- eslint-disable vue/no-v-html -->
@@ -134,7 +132,7 @@
 						</div>
 						<div v-if="unreliableWarning && discouragedSources.length">
 							<div class="ext-articleguidance-tips-title-warning">
-								{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
+								{{ discouragedTitle }}
 							</div>
 							<ul class="ext-articleguidance-tip-list">
 								<!-- eslint-disable vue/no-v-html -->
@@ -181,7 +179,7 @@
 						:icon="cdxIconInfoFilled"
 						class="ext-articleguidance-sources-tips-static-icon"
 					></cdx-icon>
-					{{ $i18n( 'articleguidance-sources-tips-title', selectedOutline.label ).text() }}
+					{{ tipsTitle }}
 				</div>
 				<div class="ext-articleguidance-tips-content">
 					<div v-if="recommendedSources.length">
@@ -191,7 +189,7 @@
 								'ext-articleguidance-tips-title-regular'
 							"
 						>
-							{{ $i18n( 'articleguidance-sources-tips-content-recommended' ).text() }}
+							{{ recommendedTitle }}
 						</div>
 						<ul class="ext-articleguidance-tip-list">
 							<!-- eslint-disable vue/no-v-html -->
@@ -205,7 +203,7 @@
 					</div>
 					<div v-if="unreliableWarning && discouragedSources.length">
 						<div class="ext-articleguidance-tips-title-warning">
-							{{ $i18n( 'articleguidance-sources-tips-content-discouraged' ).text() }}
+							{{ discouragedTitle }}
 						</div>
 						<ul class="ext-articleguidance-tip-list">
 							<!-- eslint-disable vue/no-v-html -->
@@ -266,6 +264,15 @@ module.exports = defineComponent( {
 		);
 		const hasTips = computed(
 			() => recommendedSources.value.length > 0 || discouragedSources.value.length > 0
+		);
+		const tipsTitle = computed( () => mw.message(
+			'articleguidance-sources-tips-title', selectedOutline.value.label
+		).text() );
+		const recommendedTitle = computed(
+			() => mw.message( 'articleguidance-sources-tips-content-recommended' ).text()
+		);
+		const discouragedTitle = computed(
+			() => mw.message( 'articleguidance-sources-tips-content-discouraged' ).text()
 		);
 
 		// Ref for the URL text input component
@@ -456,7 +463,9 @@ module.exports = defineComponent( {
 			recommendedSources,
 			discouragedSources,
 			hasTips,
-			selectedOutline,
+			tipsTitle,
+			recommendedTitle,
+			discouragedTitle,
 			subtitleMessage
 		};
 	}

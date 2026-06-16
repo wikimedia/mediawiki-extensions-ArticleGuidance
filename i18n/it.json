@@ -26,7 +26,7 @@
 	"articleguidance-specialnewarticle-browse-outlines-link": "Scegli un tipo invece",
 	"articleguidance-specialnewarticle-skip-guidance-prefix": "Salta l'assistenza.",
 	"articleguidance-specialnewarticle-skip-guidance-link": "Modifica senza la guida della comunità.",
-	"articleguidance-specialnewarticle-skip-guidance-info-label": "Scopri di più sul percorso guidato.",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "Scopri di più sul percorso guidato",
 	"articleguidance-specialnewarticle-language-fallback-notice": "Alcuni risultati sono mostrati in un'altra lingua",
 	"articleguidance-sources-title": "Aggiungi fonti",
 	"articleguidance-sources-subtitle": "Le fonti aiutano i lettori a verificare i fatti e mostrano perché questo soggetto è importante.",
@@ -92,8 +92,8 @@
 	"articleguidance-publish-followup-edit-more-button": "Migliora voce",
 	"articleguidance-publish-followup-close-button": "Chiudi",
 	"articleguidance-unsupported-subject-heading": "Non esistono ancora percorsi guidati per questo argomento",
-	"articleguidance-unsupported-subject-request-title": "Richiedi supporto",
+	"articleguidance-unsupported-subject-request-title": "Richiedi assistenza per questo tipo",
 	"articleguidance-unsupported-subject-request-description": "Chiedi alla comunità di aggiungere un percorso guidato per questo tipo di voce.",
 	"articleguidance-unsupported-subject-start-title": "inizia a scrivere",
-	"articleguidance-unsupported-subject-start-description": "Scrivi questo articolo saltando il percorso guidato."
+	"articleguidance-unsupported-subject-start-description": "Scrivi questa voce saltando il percorso guidato."
 }

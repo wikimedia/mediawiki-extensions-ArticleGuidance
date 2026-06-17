@@ -6,6 +6,8 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Message\Message;
 
 /**
  * Renders HTML for ext-articleguidance tag
@@ -15,6 +17,7 @@ class ArticleGuidanceRenderer {
 	/**
 	 * Render the article guidance HTML
 	 *
+	 * @param Language $targetLanguage Parser target/content language for message localization
 	 * @param string|null $wikidataId Wikidata Q ID
 	 * @param string|null $wikidataLabel Label from Wikidata
 	 * @param string|null $wikidataDescription Description from Wikidata
@@ -27,9 +30,11 @@ class ArticleGuidanceRenderer {
 	 * @param string|null $wikidataImage Wikidata image URL
 	 * @param array $notabilityThresholds Notability thresholds
 	 * @param string|null $matchVia Match-via property for tooltip info
+	 * @param string|null $categoryNoteHtml Pre-parsed category note HTML
 	 * @return string Rendered HTML
 	 */
 	public function render(
+		Language $targetLanguage,
 		?string $wikidataId,
 		?string $wikidataLabel,
 		?string $wikidataDescription,
@@ -42,7 +47,7 @@ class ArticleGuidanceRenderer {
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
 		?string $matchVia = null,
-		?string $category = null
+		?string $categoryNoteHtml = null
 	): string {
 		$isValid = $wikidataId !== null;
 
@@ -91,7 +96,8 @@ class ArticleGuidanceRenderer {
 
 			if ( $wikidataLabel ) {
 				$label = Html::element( 'span', [], $wikidataLabel );
-				$typeHtml .= ' ' . wfMessage( 'parentheses' )->rawParams( $label )->escaped();
+				$typeHtml .= ' ' . Message::newFromKey( 'parentheses' )
+					->inLanguage( $targetLanguage )->rawParams( $label )->escaped();
 			}
 
 			$topHtml .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-type' ], $typeHtml );
@@ -112,7 +118,8 @@ class ArticleGuidanceRenderer {
 		// --- Second region: notability restrictions/errors ---
 		if ( $notabilityRisk !== [] || $invalidNotabilityRisk !== [] ) {
 			$boxHtml = Html::element( 'div', [ 'class' => 'ext-articleguidance-restrictions-title' ],
-				wfMessage( 'articleguidance-notability-restrictions-title' )->text()
+				Message::newFromKey( 'articleguidance-notability-restrictions-title' )
+					->inLanguage( $targetLanguage )->text()
 			);
 
 			if ( $notabilityRisk !== [] ) {
@@ -124,8 +131,9 @@ class ArticleGuidanceRenderer {
 					);
 					$threshold = $notabilityThresholds[$tag] ?? null;
 					$msg = $threshold !== null
-						? wfMessage( 'articleguidance-notability-tag-' . $tag, $threshold )
-						: wfMessage( 'articleguidance-notability-tag-' . $tag );
+						? Message::newFromKey( 'articleguidance-notability-tag-' . $tag, $threshold )
+						: Message::newFromKey( 'articleguidance-notability-tag-' . $tag );
+					$msg->inLanguage( $targetLanguage );
 					$desc = Html::element( 'span',
 						[ 'class' => 'ext-articleguidance-restriction-desc' ],
 						$msg->text()
@@ -145,7 +153,8 @@ class ArticleGuidanceRenderer {
 				$unknownList = implode( ', ', $invalidNotabilityRisk );
 				$boxHtml .= Html::element( 'div',
 					[ 'class' => 'ext-articleguidance-restrictions-unknown' ],
-					wfMessage( 'articleguidance-notability-unknown-tags', $unknownList )->text()
+					Message::newFromKey( 'articleguidance-notability-unknown-tags', $unknownList )
+						->inLanguage( $targetLanguage )->text()
 				);
 			}
 
@@ -177,7 +186,8 @@ class ArticleGuidanceRenderer {
 					Html::element(
 						'div',
 						[ 'class' => 'ext-articleguidance-sources-title' ],
-						wfMessage( 'articleguidance-sources-tips-content-recommended' )->text()
+						Message::newFromKey( 'articleguidance-sources-tips-content-recommended' )
+							->inLanguage( $targetLanguage )->text()
 					 ) .
 					Html::rawElement(
 						'ul',
@@ -205,7 +215,8 @@ class ArticleGuidanceRenderer {
 					Html::element(
 						'div',
 						[ 'class' => 'ext-articleguidance-sources-title' ],
-						wfMessage( 'articleguidance-sources-tips-content-discouraged' )->text()
+						Message::newFromKey( 'articleguidance-sources-tips-content-discouraged' )
+							->inLanguage( $targetLanguage )->text()
 					 ) .
 					Html::rawElement(
 						'ul',
@@ -217,12 +228,10 @@ class ArticleGuidanceRenderer {
 		}
 
 		// Category note — shown last, separated from the sources section
-		if ( $category !== null ) {
+		if ( $categoryNoteHtml !== null ) {
 			$html .= Html::element( 'hr', [ 'class' => 'ext-articleguidance-separator' ] );
 			$html .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-category' ],
-				wfMessage( 'articleguidance-category-note',
-					'[[:Category:' . $category . ']]'
-				)->parse()
+				$categoryNoteHtml
 			);
 		}
 

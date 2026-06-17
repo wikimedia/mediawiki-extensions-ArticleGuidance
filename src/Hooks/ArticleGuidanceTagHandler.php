@@ -8,6 +8,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Message\Message;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
@@ -173,8 +174,24 @@ class ArticleGuidanceTagHandler implements
 			}
 		}
 
+		// Localize in the parser's target/content language so the cached output is
+		// correct for all viewers, not just whoever renders the page first.
+		$targetLanguage = $parser->getTargetLanguage();
+
+		// Parse the category note with the page parser (avoids Message::parse()
+		// spinning up a nested global parser inside this parse).
+		$categoryNoteHtml = null;
+		if ( $category !== null ) {
+			$noteText = Message::newFromKey(
+				'articleguidance-category-note',
+				'[[:Category:' . $category . ']]'
+			)->inLanguage( $targetLanguage )->plain();
+			$categoryNoteHtml = $parser->recursiveTagParseFully( $noteText, $frame );
+		}
+
 		// Render HTML using the renderer service
 		$html = $this->renderer->render(
+			$targetLanguage,
 			$wikidataId,
 			$displayLabel,
 			$wikidataDescription,
@@ -187,7 +204,7 @@ class ArticleGuidanceTagHandler implements
 			$wikidataImage,
 			$notabilityThresholds,
 			$matchVia,
-			$category
+			$categoryNoteHtml
 		);
 
 		return $html;

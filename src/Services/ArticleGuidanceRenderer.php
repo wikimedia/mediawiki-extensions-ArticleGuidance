@@ -71,12 +71,12 @@ class ArticleGuidanceRenderer {
 		}
 
 		$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-header' ],
-			'Article Guidance'
+			Message::newFromKey( 'articleguidance-header' )->inLanguage( $targetLanguage )->text()
 		);
 
 		if ( $wikidataId ) {
 			$typeHtml = Html::element( 'span', [ 'class' => 'ext-articleguidance-type-label' ],
-				'Type: '
+				Message::newFromKey( 'articleguidance-type-label' )->inLanguage( $targetLanguage )->text() . ' '
 			);
 			$linkAttrs = [
 				'href' => "https://www.wikidata.org/wiki/$wikidataId",
@@ -109,7 +109,8 @@ class ArticleGuidanceRenderer {
 			}
 		} elseif ( $articleType !== null ) {
 			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
-				"Invalid article-type: '$articleType' (expected format: Q12345)"
+				Message::newFromKey( 'articleguidance-invalid-article-type', $articleType )
+					->inLanguage( $targetLanguage )->text()
 			);
 		}
 

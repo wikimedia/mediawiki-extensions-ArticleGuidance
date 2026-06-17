@@ -64,6 +64,14 @@
 					:thumbnail="selectedResult.thumbnail"
 				>
 				</article-card>
+				<article-card
+					v-else-if="selectedOutline"
+					:fit-width="true"
+					:title="selectedOutline.label"
+					:description="selectedOutline.description"
+					:icon="articleIcon"
+				>
+				</article-card>
 			</div>
 
 			<!-- Actions: Back + Continue -->
@@ -92,7 +100,7 @@
 const { defineComponent, ref, computed, watch, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton, CdxIcon } = require( '../codex.js' );
-const { cdxIconLinkExternal } = require( '../icons.json' );
+const { cdxIconLinkExternal, cdxIconArticle } = require( '../icons.json' );
 const useArticleExist = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -111,7 +119,7 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedResult, titleSuggestion } = storeToRefs( store );
+		const { selectedResult, selectedOutline, titleSuggestion } = storeToRefs( store );
 
 		const localTitle = ref( store.articleTitle || '' );
 		const existingArticleTitle = localTitle.value;
@@ -159,6 +167,8 @@ module.exports = defineComponent( {
 			existsWarningText,
 			titleSuggestion,
 			selectedResult,
+			selectedOutline,
+			articleIcon: cdxIconArticle,
 			canContinue,
 			handleBack,
 			handleContinue,
@@ -237,7 +247,7 @@ module.exports = defineComponent( {
 }
 
 .ext-articleguidance-titleconflict-selected-subject {
-	font-weight: @font-weight-normal;
+	font-weight: @font-weight-bold;
 	font-size: @font-size-small;
 	color: @color-subtle;
 }

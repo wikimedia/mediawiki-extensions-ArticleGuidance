@@ -6,7 +6,6 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Http\HttpRequestFactory;
-use MediaWiki\Language\Language;
 use MediaWiki\Languages\LanguageFactory;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ObjectCache\WANObjectCache;
@@ -21,7 +20,6 @@ class WikidataInfoFetcher {
 
 	public function __construct(
 		private readonly HttpRequestFactory $httpRequestFactory,
-		private readonly Language $contentLanguage,
 		private readonly LanguageFactory $languageFactory,
 		private readonly LoggerInterface $logger,
 		private readonly WANObjectCache $cache,

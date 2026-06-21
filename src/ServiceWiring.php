@@ -59,7 +59,6 @@ return [
 		$config = $services->getMainConfig();
 		return new WikidataInfoFetcher(
 			$services->getHttpRequestFactory(),
-			$services->getContentLanguage(),
 			$services->getLanguageFactory(),
 			LoggerFactory::getInstance( 'ArticleGuidance' ),
 			$services->getMainWANObjectCache(),

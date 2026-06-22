@@ -14,6 +14,8 @@
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
 	"articleguidance-sources-helper-progress": "$1 vu(n) {{PLURAL:$2|$2 Sourcen}} derbäigesat.",
+	"articleguidance-type-label": "Typ:",
+	"articleguidance-invalid-article-type": "Ongültegen Artikeltyp: „$1“ (erwaart Format: Q12345)",
 	"articleguidance-notability-warning-crosswiki": "Fir en Artikel iwwer dëse Sujet unzeleeën, muss et e schonn op enger anerer Wikipedia ginn.",
 	"articleguidance-notability-warning-wikidata": "Dir kënnt dës Zort Artikel just fir Sujete mat engem Wikidata-Antrag uleeën.",
 	"articleguidance-notability-warning-draft": "Dësen Artikel fänkt als Brouillon un. Dir kënnt e verëffentlechen, wann e prett ass.",

@@ -1,9 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pecha-G.Dhargyal"
+			"Pecha-G.Dhargyal",
+			"TigerZhang"
 		]
 	},
+	"articleguidance-header": "འབྲི་གུང་གི་ལམ་སྟོན་",
+	"articleguidance-type-label": "ཐབས་:",
+	"articleguidance-invalid-article-type": "ཆ་མེད་ཀྱི་ཡིག་སྣོད་: \"$1\" (ཚད་གཞི་གཏན་འབེབས་བྱས་པ།: Q12345)",
 	"articleguidance-titleconflict-suggestion-prefix": "གྲོས་འཆར།:",
 	"articleguidance-titleconflict-continue": "མུ་མཐུད།",
 	"articleguidance-titleconflict-selected-subject": "བདམ་པའི་གནད་དོན།",

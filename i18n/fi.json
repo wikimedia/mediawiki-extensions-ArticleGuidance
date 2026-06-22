@@ -39,6 +39,7 @@
 	"articleguidance-instructions-start-writing": "Aloita kirjoittaminen",
 	"articleguidance-navigation-back": "Takaisin",
 	"articleguidance-category-note": "Tämän rungon pohjalta luodut artikkelit lisätään luokkaan $1 .",
+	"articleguidance-type-label": "Tyyppi:",
 	"articleguidance-notability-restrictions-title": "Merkittävyysrajoitukset",
 	"articleguidance-notability-warning-wikidata": "Voit luoda tämän tyyppisen artikkelin vain aiheista, joista on Wikidata-kohde.",
 	"articleguidance-notability-warning-draft": "Tämä artikkeli on aluksi luonnos. Voit julkaista sen, kun se on valmis.",

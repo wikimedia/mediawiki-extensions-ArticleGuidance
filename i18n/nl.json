@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"McDutchie",
 			"Siebrand"
 		]
 	},
@@ -45,6 +46,9 @@
 	"articleguidance-instructions-start-writing": "Begin met bewerken",
 	"articleguidance-navigation-back": "Terug",
 	"articleguidance-category-note": "Pagina's die op basis van dit schema worden gemaakt, worden toegevoegd aan $1.",
+	"articleguidance-header": "Artikelrichtlijnen",
+	"articleguidance-type-label": "Type:",
+	"articleguidance-invalid-article-type": "Foutief artikeltype: “$1” (vereiste indeling: Q12345)",
 	"articleguidance-notability-restrictions-title": "Relevantiebeperkingen",
 	"articleguidance-notability-warning": "Nieuwe pagina's van dit type worden vaak verwijderd op deze wiki. Nieuwe bijdragers hebben een betere kans van slagen als ze beginnen met een van de onderstaande opties",
 	"articleguidance-notability-warning-crosswiki": "Om een pagina over dit onderwerp te kunnen maken, moet het al op andere Wikipedia's bestaan.",

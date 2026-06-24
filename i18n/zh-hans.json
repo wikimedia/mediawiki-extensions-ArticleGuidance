@@ -1,8 +1,24 @@
 {
 	"@metadata": {
 		"authors": [
-			"GuoPC"
+			"GuoPC",
+			"Zhoucantd"
 		]
 	},
-	"articleguidance-desc": "使用户能够通过引导式辅助工作流程创建条目"
+	"articleguidance-desc": "使用户能够通过引导式辅助工作流程创建条目",
+	"articleguidance-specialnewarticle-disambiguation-title": "这是什么？",
+	"articleguidance-sources-invalid-url": "请输入有效URL",
+	"articleguidance-sources-duplicate": "这个来源已经被添加了",
+	"articleguidance-sources-continue": "继续",
+	"articleguidance-sources-helper": "你可以在你编写的时候添加来源。",
+	"articleguidance-sources-helper-required": "这个维基上的$1条目需要来源。",
+	"articleguidance-sources-unreliable-warning-title": "社区不推荐以此网站作为来源",
+	"articleguidance-sources-unreliable-warning-description": "对于此类条目，这类来源很少被接受。",
+	"articleguidance-instructions-start-writing": "开始编辑",
+	"articleguidance-navigation-back": "返回",
+	"articleguidance-header": "条目指引",
+	"articleguidance-type-label": "类型：",
+	"articleguidance-titleconflict-suggestion-prefix": "建议：",
+	"articleguidance-titleconflict-continue": "继续",
+	"articleguidance-titleconflict-selected-subject": "选中的项目"
 }

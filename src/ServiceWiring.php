@@ -31,6 +31,7 @@ return [
 		return new OutlineService(
 			$services->getTitleFactory(),
 			$services->getPageProps(),
+			$services->getContentLanguage(),
 		);
 	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {

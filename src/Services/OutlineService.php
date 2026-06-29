@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Category\Category;
+use MediaWiki\Language\Language;
 use MediaWiki\Page\PageProps;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -20,6 +21,7 @@ class OutlineService {
 	public function __construct(
 		private readonly TitleFactory $titleFactory,
 		private readonly PageProps $pageProps,
+		private readonly Language $contentLanguage,
 	) {
 	}
 
@@ -96,9 +98,13 @@ class OutlineService {
 			if ( !is_array( $pageData ) ) {
 				continue;
 			}
+			// Capitalize the first letter at read time so labels persisted in
+			// page_props before the capitalization fix (T427201) are corrected
+			// without waiting for the pages to be re-parsed.
+			$label = $this->contentLanguage->ucfirst( $pageData['label'] ?? $pageData['articleType'] );
 			$outlines[] = [
 				'title' => $member->getPrefixedText(),
-				'label' => $pageData['label'] ?? $pageData['articleType'],
+				'label' => $label,
 				'description' => $pageData['description'] ?? '',
 				'articleType' => $pageData['articleType'],
 				'matchVia' => $pageData['matchVia'] ?? null,

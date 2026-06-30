@@ -1,12 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
+			"Gsdn",
 			"GuoPC",
-			"Zhoucantd"
+			"Zhoucantd",
+			"沈澄心"
 		]
 	},
 	"articleguidance-desc": "使用户能够通过引导式辅助工作流程创建条目",
+	"articleguidance-specialnewarticle-title": "新条目",
+	"articleguidance-specialnewarticle-title-placeholder": "条目标题",
+	"articleguidance-specialnewarticle-loading": "搜索中……",
+	"articleguidance-specialnewarticle-checking": "检查中……",
+	"articleguidance-specialnewarticle-no-results": "未找到与“$1”相关的主题",
+	"articleguidance-specialnewarticle-search-retry": "重试",
+	"articleguidance-titleconflict-exists-warning": "题为“$1”的文章已存在。",
 	"articleguidance-specialnewarticle-disambiguation-title": "这是什么？",
+	"articleguidance-sources-title": "添加来源",
+	"articleguidance-sources-add-source": "添加来源",
 	"articleguidance-sources-invalid-url": "请输入有效URL",
 	"articleguidance-sources-duplicate": "这个来源已经被添加了",
 	"articleguidance-sources-continue": "继续",
@@ -18,7 +29,10 @@
 	"articleguidance-navigation-back": "返回",
 	"articleguidance-header": "条目指引",
 	"articleguidance-type-label": "类型：",
+	"articleguidance-notability-restrictions-title": "收录标准限制",
 	"articleguidance-titleconflict-suggestion-prefix": "建议：",
 	"articleguidance-titleconflict-continue": "继续",
-	"articleguidance-titleconflict-selected-subject": "选中的项目"
+	"articleguidance-titleconflict-selected-subject": "选中的项目",
+	"articleguidance-updatetitle-cancel": "取消",
+	"articleguidance-publish-followup-close-button": "关闭"
 }

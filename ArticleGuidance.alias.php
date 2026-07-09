@@ -12,3 +12,8 @@ $specialPageAliases = [];
 $specialPageAliases['en'] = [
 	'NewArticle' => [ 'NewArticle' ],
 ];
+
+/** Polish (polski) */
+$specialPageAliases['pl'] = [
+	'NewArticle' => [ 'Nowy_artykuł' ],
+];

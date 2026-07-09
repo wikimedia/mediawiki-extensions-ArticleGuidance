@@ -47,7 +47,7 @@ module.exports = defineComponent( {
 			default: ''
 		},
 		thumbnail: {
-			type: String,
+			type: [ String, Boolean ],
 			default: null
 		},
 		icon: {
@@ -70,14 +70,19 @@ module.exports = defineComponent( {
 	emits: [ 'click' ],
 	setup( props ) {
 		const cardThumbnail = computed( () => {
-			if ( props.icon ) {
+			// Do not show thumbnail
+			if ( props.icon || props.thumbnail === false ) {
 				return null;
 			}
-			if ( props.thumbnail ) {
+
+			// Show thumbnail if a valid URL string is provided
+			if ( props.thumbnail && typeof props.thumbnail === 'string' ) {
 				return {
 					url: props.thumbnail
 				};
 			}
+
+			// Show default thumbnail
 			return {};
 		} );
 

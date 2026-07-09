@@ -24,7 +24,7 @@
 				:key="outlineItem.articleType"
 				:title="outlineItem.label"
 				:description="outlineItem.description"
-				:icon="articleIcon"
+				:thumbnail="false"
 				:interactive="true"
 				@click="handleSelectOutline( outlineItem )"
 			>
@@ -56,7 +56,7 @@
 const { computed, defineComponent, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxIcon, CdxMessage } = require( '../codex.js' );
-const { cdxIconArticle, cdxIconLinkExternal } = require( '../icons.json' );
+const { cdxIconLinkExternal } = require( '../icons.json' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getMissingTypeFeedbackUrl } = require( '../utils/projectFeedback.js' );
@@ -100,7 +100,6 @@ module.exports = defineComponent( {
 			loading,
 			error,
 			handleSelectOutline,
-			articleIcon: cdxIconArticle,
 			cdxIconLinkExternal,
 			missingTypeFeedbackUrl
 		};

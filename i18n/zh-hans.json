@@ -1,8 +1,34 @@
 {
 	"@metadata": {
 		"authors": [
-			"GuoPC"
+			"GuoPC",
+			"Gsdn",
+			"Zhoucantd",
+			"沈澄心"
 		]
 	},
-	"articleguidance-desc": "使用户能够通过引导式辅助工作流程创建条目"
+	"articleguidance-desc": "使用户能够通过引导式辅助工作流程创建条目",
+	"articleguidance-specialnewarticle-title": "新条目",
+	"articleguidance-specialnewarticle-title-placeholder": "条目标题",
+	"articleguidance-specialnewarticle-loading": "搜索中……",
+	"articleguidance-specialnewarticle-checking": "检查中……",
+	"articleguidance-specialnewarticle-no-results": "未找到与“$1”相关的主题",
+	"articleguidance-titleconflict-exists-warning": "题为“$1”的文章已存在。",
+	"articleguidance-specialnewarticle-disambiguation-title": "这是什么？",
+	"articleguidance-sources-title": "添加来源",
+	"articleguidance-sources-add-source": "添加来源",
+	"articleguidance-sources-invalid-url": "请输入有效URL",
+	"articleguidance-sources-duplicate": "这个来源已经被添加了",
+	"articleguidance-sources-continue": "继续",
+	"articleguidance-sources-helper": "你可以在你编写的时候添加来源。",
+	"articleguidance-sources-helper-required": "这个维基上的$1条目需要来源。",
+	"articleguidance-sources-unreliable-warning-title": "社区不推荐以此网站作为来源",
+	"articleguidance-sources-unreliable-warning-description": "对于此类条目，这类来源很少被接受。",
+	"articleguidance-instructions-start-writing": "开始编辑",
+	"articleguidance-navigation-back": "返回",
+	"articleguidance-notability-restrictions-title": "收录标准限制",
+	"articleguidance-titleconflict-suggestion-prefix": "建议：",
+	"articleguidance-titleconflict-continue": "继续",
+	"articleguidance-titleconflict-selected-subject": "选中的项目",
+	"articleguidance-publish-followup-close-button": "关闭"
 }

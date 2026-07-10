@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Siebrand"
+			"Siebrand",
+			"McDutchie"
 		]
 	},
 	"articleguidance-desc": "Hiermee kunnen gebruikers pagina's maken via een begeleide, ondersteunende procedure.",

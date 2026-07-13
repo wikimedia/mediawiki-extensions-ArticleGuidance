@@ -155,7 +155,7 @@ module.exports = defineComponent( {
 	gap: 8px;
 }
 
-.ext-articleguidance-notability-back-btn {
+.ext-articleguidance-notability-options > .ext-articleguidance-notability-back-btn {
 	display: none;
 	margin-top: 20px;
 }

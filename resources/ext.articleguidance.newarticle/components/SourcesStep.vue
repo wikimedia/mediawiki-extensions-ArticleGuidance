@@ -693,7 +693,7 @@ module.exports = defineComponent( {
 	}
 }
 
-.ext-articleguidance-sources-back-btn {
+.ext-articleguidance-sources-actions-right > .ext-articleguidance-sources-back-btn {
 	display: none;
 }
 

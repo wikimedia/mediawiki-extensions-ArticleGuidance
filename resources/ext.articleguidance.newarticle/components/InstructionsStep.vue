@@ -173,7 +173,7 @@ module.exports = defineComponent( {
 	}
 }
 
-.ext-articleguidance-instructions-back-btn {
+.ext-articleguidance-instructions-actions > .ext-articleguidance-instructions-back-btn {
 	display: none;
 }
 

@@ -264,7 +264,7 @@ module.exports = defineComponent( {
 	}
 }
 
-.ext-articleguidance-titleconflict-back-btn {
+.ext-articleguidance-titleconflict-actions > .ext-articleguidance-titleconflict-back-btn {
 	display: none;
 }
 

@@ -370,8 +370,16 @@ module.exports = defineComponent( {
 	}
 }
 
+.ext-articleguidance-search-step {
+	.ext-articleguidance-step-content {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 .ext-articleguidance-results {
 	margin-top: 16px;
+	flex-grow: 1;
 }
 
 .ext-articleguidance-inline-error {

@@ -64,6 +64,13 @@ module.exports = defineComponent( {
 	max-width: 40rem;
 }
 
+@media screen and ( max-width: @min-width-breakpoint-desktop ) {
+	// Mobile view only
+	.ext-articleguidance-step-content {
+		min-height: 50vh;
+	}
+}
+
 @media screen and ( min-width: @min-width-breakpoint-desktop ) {
 	// Desktop view only — Minerva (mobile view) keeps the mobile layout even
 	// on wide screens.

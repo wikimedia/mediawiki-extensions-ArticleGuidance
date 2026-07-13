@@ -197,6 +197,8 @@ module.exports = defineComponent( {
 			if ( searchQuery.value && searchQuery.value.trim().length >= 1 ) {
 				performSearch( searchQuery.value );
 				checkExistence();
+			} else {
+				searchInput.value.focus();
 			}
 		} );
 

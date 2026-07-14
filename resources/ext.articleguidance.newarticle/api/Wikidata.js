@@ -1,3 +1,5 @@
+const { buildApiUrl, getPageUrl } = require( '../utils/wikidata.js' );
+
 // Page-scoped cache: cleared automatically on page reload.
 // Key: qid, Value: entity data object (claims, label, description, imageFilename, sitelinkCount,
 //   localSitelink)
@@ -17,15 +19,13 @@ async function searchWikidata( query, language, limit = 20 ) {
 		return [];
 	}
 
-	const searchUrl = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
+	const searchUrl = buildApiUrl( {
 		action: 'query',
 		list: 'search',
 		srsearch: query.trim(),
 		srnamespace: '0',
 		srlimit: limit.toString(),
-		uselang: language,
-		format: 'json',
-		origin: '*'
+		uselang: language
 	} );
 
 	try {
@@ -47,7 +47,7 @@ async function searchWikidata( query, language, limit = 20 ) {
 				id: item.title,
 				label: item.title,
 				description: '',
-				url: 'https://www.wikidata.org/wiki/' + item.title
+				url: getPageUrl( item.title )
 			} ) );
 	} catch ( error ) {
 		// eslint-disable-next-line no-console
@@ -85,14 +85,12 @@ async function fetchEntityClaims( qids, properties, language ) {
 		return cachedResult;
 	}
 
-	const url = 'https://www.wikidata.org/w/api.php?' + new URLSearchParams( {
+	const url = buildApiUrl( {
 		action: 'wbgetentities',
 		ids: uncachedQIds.join( '|' ),
 		props: 'claims|sitelinks/urls|labels|descriptions',
 		languages: language,
-		languagefallback: '1',
-		format: 'json',
-		origin: '*'
+		languagefallback: '1'
 	} );
 
 	const response = await fetch( url );

@@ -17,10 +17,6 @@
 			"value": "MediaWiki/ArticleGuidance language-product-localization@wikimedia.org",
 			"description": "User-Agent header sent with server-side HTTP requests to Wikidata APIs (wbgetentities, SPARQL)."
 		},
-		"ArticleGuidanceSparqlEndpoint": {
-			"value": "https://query.wikidata.org/sparql",
-			"description": "SPARQL endpoint URL for server-side Wikidata queries."
-		},
 		"ArticleGuidanceJuniorEditorThreshold": {
 			"value": 100,
 			"description": "Minimum number of edits before a user is no longer considered a junior editor."
@@ -79,9 +75,13 @@
 			"value": false,
 			"description": "When true, a published article is automatically connected to the Wikidata item the user selected, by adding a sitelink. Default false so non-production environments never write to Wikidata."
 		},
-		"ArticleGuidanceWikidataApiUrl": {
-			"value": "https://www.wikidata.org/w/api.php",
-			"description": "Wikidata Action API endpoint used by the client to read sitelinks and add the sitelink (wbsetsitelink) connecting a published article to its item."
+		"ArticleGuidanceWikidataUrls": {
+			"value": {
+				"api": "https://www.wikidata.org/w/api.php",
+				"view": "https://www.wikidata.org/wiki/$1",
+				"sparql": "https://query.wikidata.org/sparql"
+			},
+			"description": "Wikidata endpoint URLs. In 'view', $1 is the Wikidata item Id (Q id)."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -229,13 +229,15 @@
 				"utils/citation.js",
 				"utils/scroll.js",
 				"utils/projectFeedback.js",
+				"utils/wikidata.js",
 				"logging/notability.js",
 				"logging/search.js",
 				"logging/instrument.js",
 				{
 					"name": "config.json",
 					"config": [
-						"ArticleGuidanceExperimentName"
+						"ArticleGuidanceExperimentName",
+						"ArticleGuidanceWikidataUrls"
 					]
 				},
 				{
@@ -374,6 +376,12 @@
 				"init.js",
 				"connectWikidata.js",
 				"PublishFollowUp.vue",
+				{
+					"name": "config.json",
+					"config": [
+						"ArticleGuidanceWikidataUrls"
+					]
+				},
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",

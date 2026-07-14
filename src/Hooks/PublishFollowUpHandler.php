@@ -46,8 +46,6 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 			) {
 				$out->addJsConfigVars( [
 					'wgArticleGuidanceConnectItemId' => $item,
-					'wgArticleGuidanceWikidataApiUrl' =>
-						$this->config->get( 'ArticleGuidanceWikidataApiUrl' ),
 				] );
 			}
 

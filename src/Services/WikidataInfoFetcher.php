@@ -25,7 +25,7 @@ class WikidataInfoFetcher {
 		private readonly WANObjectCache $cache,
 		private readonly array $matchViaRules,
 		private readonly string $userAgent,
-		private readonly string $sparqlEndpoint,
+		private readonly WikidataUrls $wikidataUrls,
 	) {
 	}
 
@@ -89,7 +89,7 @@ class WikidataInfoFetcher {
 				// Request 1: wbgetentities for label/description/image
 				$wbgetentitiesReq = [
 					'method' => 'GET',
-					'url' => 'https://www.wikidata.org/w/api.php?' . http_build_query( [
+					'url' => $this->wikidataUrls->getApiUrl( [
 						'action' => 'wbgetentities',
 						'props' => 'labels|descriptions|claims',
 						'ids' => $wikidataId,
@@ -222,7 +222,7 @@ class WikidataInfoFetcher {
 	private function buildSparqlRequest( string $sparqlQuery ): array {
 		return [
 			'method' => 'GET',
-			'url' => rtrim( $this->sparqlEndpoint, '/' ) . '?' . http_build_query( [
+			'url' => $this->wikidataUrls->getSparqlUrl( [
 				'query' => $sparqlQuery,
 				'format' => 'json'
 			] ),

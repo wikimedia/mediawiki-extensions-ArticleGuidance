@@ -48,6 +48,7 @@ const { defineComponent, computed, onMounted } = require( 'vue' );
 const { CdxButton, CdxIcon, CdxMessage } = require( '../codex.js' );
 const { cdxIconArrowPrevious, cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { getPageUrl } = require( '../utils/wikidata.js' );
 const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleInfo = require( './ArticleInfo.vue' );
@@ -89,7 +90,7 @@ module.exports = defineComponent( {
 					icon: cdxIconLogoWikidata,
 					title: mw.message( 'articleguidance-notability-option-wikidata-title' ).text(),
 					description: mw.message( 'articleguidance-notability-option-wikidata-description' ).text(),
-					url: 'https://www.wikidata.org/wiki/Special:NewItem',
+					url: getPageUrl( 'Special:NewItem' ),
 					log: () => instrument.logNotabilityAction( 'wikidata_item' )
 				} );
 			}

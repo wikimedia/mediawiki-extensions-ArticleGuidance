@@ -10,6 +10,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\ArticleGuidance\Services\UrlAsciiEncoder;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Extension\ArticleGuidance\Services\WikidataUrls;
 use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -35,7 +36,9 @@ return [
 		);
 	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
-		return new ArticleGuidanceRenderer();
+		return new ArticleGuidanceRenderer(
+			$services->getService( 'ArticleGuidanceWikidataUrls' )
+		);
 	},
 	'ArticleGuidanceSourceValidator' => static function ( MediaWikiServices $services ): SourceValidator {
 		$spamBlacklist = ExtensionRegistry::getInstance()->isLoaded( 'SpamBlacklist' )
@@ -65,7 +68,12 @@ return [
 			$services->getMainWANObjectCache(),
 			$config->get( 'ArticleGuidanceMatchViaRules' ),
 			$config->get( 'ArticleGuidanceUserAgent' ),
-			$config->get( 'ArticleGuidanceSparqlEndpoint' )
+			$services->getService( 'ArticleGuidanceWikidataUrls' )
+		);
+	},
+	'ArticleGuidanceWikidataUrls' => static function ( MediaWikiServices $services ): WikidataUrls {
+		return new WikidataUrls(
+			$services->getMainConfig()->get( 'ArticleGuidanceWikidataUrls' )
 		);
 	},
 ];

@@ -15,6 +15,14 @@ use MediaWiki\Message\Message;
 class ArticleGuidanceRenderer {
 
 	/**
+	 * @param WikidataUrls $wikidataUrls Builds Wikidata item page links.
+	 */
+	public function __construct(
+		private readonly WikidataUrls $wikidataUrls,
+	) {
+	}
+
+	/**
 	 * Render the article guidance HTML
 	 *
 	 * @param Language $targetLanguage Parser target/content language for message localization
@@ -79,7 +87,7 @@ class ArticleGuidanceRenderer {
 				Message::newFromKey( 'articleguidance-type-label' )->inLanguage( $targetLanguage )->text() . ' '
 			);
 			$linkAttrs = [
-				'href' => "https://www.wikidata.org/wiki/$wikidataId",
+				'href' => $this->wikidataUrls->getPageUrl( $wikidataId ),
 				'target' => '_blank',
 			];
 			if ( $matchVia !== null ) {

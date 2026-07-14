@@ -2,6 +2,8 @@
  * SPARQL query utilities for Wikidata
  */
 
+const { buildSparqlUrl } = require( '../utils/wikidata.js' );
+
 const PROP_INSTANCE_OF = 'P31';
 const PROP_SUBCLASS_OF = 'P279';
 const PROP_PARENT_TAXON = 'P171';
@@ -21,7 +23,7 @@ const hierarchyCache = new Map();
  * @return {Promise<Object>} Parsed JSON response
  */
 async function executeSparql( query ) {
-	const url = 'https://query.wikidata.org/sparql?' + new URLSearchParams( {
+	const url = buildSparqlUrl( {
 		query: query,
 		format: 'json'
 	} );

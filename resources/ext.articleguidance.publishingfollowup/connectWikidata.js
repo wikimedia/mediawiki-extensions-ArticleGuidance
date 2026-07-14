@@ -7,21 +7,23 @@
  * when the item already links to this wiki, so an existing connection is never
  * overwritten. All failures are non-fatal and produce no UI.
  */
+// Action API endpoint from the single ArticleGuidanceWikidataUrls config.
+const apiEndpoint = require( './config.json' ).ArticleGuidanceWikidataUrls.api;
+
 function connectWikidata() {
 	const itemId = mw.config.get( 'wgArticleGuidanceConnectItemId' );
 	if ( !itemId || !/^Q\d+$/.test( itemId ) ) {
 		return;
 	}
 
-	const apiUrl = mw.config.get( 'wgArticleGuidanceWikidataApiUrl' );
 	// Wikibase site global id; equals the database name for Wikipedias (e.g. "enwiki").
 	const linksite = mw.config.get( 'wgDBname' );
 	const linktitle = mw.config.get( 'wgPageName' );
-	if ( !apiUrl || !linksite || !linktitle ) {
+	if ( !apiEndpoint || !linksite || !linktitle ) {
 		return;
 	}
 
-	const api = new mw.ForeignApi( apiUrl );
+	const api = new mw.ForeignApi( apiEndpoint );
 
 	api.get( {
 		action: 'wbgetentities',

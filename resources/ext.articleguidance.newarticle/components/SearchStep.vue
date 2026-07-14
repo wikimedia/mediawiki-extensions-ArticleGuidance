@@ -5,15 +5,23 @@
 		:show-back="showOutlines"
 		@back="handleHideOutlines"
 	>
-		<div class="ext-articleguidance-search-controls">
-			<cdx-text-input
-				ref="searchInput"
-				v-model="searchQuery"
-				:placeholder="$i18n( 'articleguidance-specialnewarticle-title-placeholder' ).text()"
-				class="ext-articleguidance-search-input"
-			>
-			</cdx-text-input>
-		</div>
+		<cdx-text-input
+			ref="searchInput"
+			v-model="searchQuery"
+			:placeholder="$i18n( 'articleguidance-specialnewarticle-title-placeholder' ).text()"
+			class="ext-articleguidance-search-input"
+		>
+		</cdx-text-input>
+
+		<!-- Invalid title error -->
+		<cdx-message
+			v-if="invalidTitle"
+			type="error"
+			inline
+			class="ext-articleguidance-search-invalid-title"
+		>
+			{{ invalidTitleErrorText }}
+		</cdx-message>
 
 		<!-- Inline outlines panel -->
 		<outlines v-if="showOutlines"></outlines>
@@ -79,7 +87,7 @@
 					{{
 						$i18n(
 							'articleguidance-specialnewarticle-no-results',
-							searchQuery
+							validQuery
 						).text()
 					}}
 				</state-message>
@@ -154,7 +162,7 @@
 <script>
 const { defineComponent, ref, onMounted, computed, watch, nextTick } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
-const { CdxTextInput, CdxButton, CdxIcon, CdxProgressIndicator } = require( '../codex.js' );
+const { CdxTextInput, CdxButton, CdxIcon, CdxProgressIndicator, CdxMessage } = require( '../codex.js' );
 const { cdxIconInfo } = require( '../icons.json' );
 const useSearchDelayed = require( '../composables/useSearchDelayed.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
@@ -162,6 +170,7 @@ const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const { isMobile } = require( '../utils/mobile.js' );
+const { isValidTitle, getInvalidTitleCharacters } = require( '../utils/title.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
@@ -174,6 +183,7 @@ module.exports = defineComponent( {
 		CdxButton,
 		CdxIcon,
 		CdxProgressIndicator,
+		CdxMessage,
 		Step,
 		ArticleCard,
 		Outlines,
@@ -187,11 +197,39 @@ module.exports = defineComponent( {
 
 		const searchInput = ref( null );
 
-		// Initialize search composable
+		// Validate article title
+		const invalidTitle = computed( () => {
+			const query = searchQuery.value;
+			return query ? !isValidTitle( query ) : false;
+		} );
+
+		// Extract invalid characters for error display
+		const invalidCharacters = computed( () => {
+			if ( !invalidTitle.value ) {
+				return '';
+			}
+			return getInvalidTitleCharacters( searchQuery.value ).join( ', ' );
+		} );
+
+		// Error message for invalid title
+		const invalidTitleErrorText = computed( () => {
+			if ( invalidCharacters.value ) {
+				return mw.message(
+					'articleguidance-specialnewarticle-invalid-title',
+					invalidCharacters.value
+				).text();
+			}
+			return mw.message( 'articleguidance-specialnewarticle-invalid-title-generic' ).text();
+		} );
+
+		// Only search when the query is a valid article title
+		const validQuery = computed( () => invalidTitle.value ? '' : searchQuery.value );
+
+		// Initialize search composable with validated query
 		const {
 			results, loading, error, performSearch, articleExist, checkExistence, isDelayed,
 			searchPath, searchDuration
-		} = useSearchDelayed( searchQuery, selectedLanguage );
+		} = useSearchDelayed( validQuery, selectedLanguage );
 
 		// The loading message based on the delay state.
 		const checkingMessage = computed( () => isDelayed.value ?
@@ -200,8 +238,8 @@ module.exports = defineComponent( {
 
 		onMounted( () => {
 			store.loadOutlines();
-			if ( searchQuery.value && searchQuery.value.trim().length >= 1 ) {
-				performSearch( searchQuery.value );
+			if ( validQuery.value && validQuery.value.trim().length >= 1 ) {
+				performSearch( validQuery.value );
 				checkExistence();
 			} else {
 				searchInput.value.focus();
@@ -209,9 +247,9 @@ module.exports = defineComponent( {
 		} );
 
 		watch( loading, ( isLoading ) => {
-			if ( !isLoading && searchQuery.value ) {
+			if ( !isLoading && validQuery.value ) {
 				instrument.logWriteTitle(
-					searchQuery.value,
+					validQuery.value,
 					results.value.length,
 					searchPath.value,
 					searchDuration.value
@@ -265,16 +303,16 @@ module.exports = defineComponent( {
 
 		// Handle retrying after a search error
 		const handleRetry = () => {
-			performSearch( searchQuery.value );
+			performSearch( validQuery.value );
 			checkExistence();
 		};
 
 		// URL for the skip-guidance link; recomputed when the title changes
-		const skipGuidanceUrl = computed( () => getEditArticleUrl( searchQuery.value ) );
+		const skipGuidanceUrl = computed( () => getEditArticleUrl( validQuery.value ) );
 
 		// Log the skip event; the link's href handles navigation
 		const handleSkipGuidance = () => {
-			instrument.logSkipGuidance( searchQuery.value );
+			instrument.logSkipGuidance( validQuery.value );
 		};
 
 		// Only experienced editors are offered the skip-guidance bypass
@@ -283,12 +321,12 @@ module.exports = defineComponent( {
 			return ( mw.config.get( 'wgUserEditCount' ) || 0 ) >= threshold;
 		} );
 
-		// Show the skip-guidance strip once a title has been entered,
+		// Show the skip-guidance strip once a valid title has been entered,
 		// regardless of whether the search is still in progress
 		const showSkipGuidance = computed(
 			() => isExperiencedEditor.value &&
-				!!searchQuery.value &&
-				searchQuery.value.trim().length >= 1
+				!!validQuery.value &&
+				validQuery.value.trim().length >= 1
 		);
 
 		const MAX_TOTAL = 8;
@@ -311,13 +349,13 @@ module.exports = defineComponent( {
 		// Computed properties for display states
 		// Show Wikidata results even when a title already exists
 		const showResults = computed(
-			() => !loading.value && results.value.length > 0
+			() => !loading.value && !!validQuery.value && results.value.length > 0
 		);
 
 		// Only show "no results" if article doesn't exist
 		const showNoResults = computed(
 			() => !loading.value &&
-				searchQuery.value &&
+				!!validQuery.value &&
 				results.value.length === 0 &&
 				!error.value &&
 				!articleExist.value
@@ -327,9 +365,12 @@ module.exports = defineComponent( {
 		return {
 			searchInput,
 			searchQuery,
+			validQuery,
 			showOutlines,
 			loading,
 			error,
+			invalidTitle,
+			invalidTitleErrorText,
 			visibleResults,
 			hasFallbackLabels,
 			handleSelect,
@@ -350,6 +391,10 @@ module.exports = defineComponent( {
 
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
+
+.ext-articleguidance-search-invalid-title {
+	margin-top: @spacing-50;
+}
 
 .ext-articleguidance-search-input {
 	width: 100%;

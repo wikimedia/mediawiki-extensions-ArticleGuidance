@@ -18,6 +18,8 @@
 	"articleguidance-specialnewarticle-no-results": "No subjects found for \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Couldn't check this subject.",
 	"articleguidance-specialnewarticle-search-retry": "Try again",
+	"articleguidance-specialnewarticle-invalid-title": "Page titles can't include $1. Remove these characters and try again.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "This page title is invalid. Please try another title.",
 	"articleguidance-titleconflict-exists-warning": "An article titled \"$1\" already exists.",
 	"articleguidance-specialnewarticle-edit-existing": "Edit existing article",
 	"articleguidance-specialnewarticle-disambiguation-title": "What is this?",

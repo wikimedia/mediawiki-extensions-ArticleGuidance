@@ -19,6 +19,8 @@
 	"articleguidance-specialnewarticle-no-results": "Message shown when no Wikidata entities match the search query. Parameters: $1 is the search query text",
 	"articleguidance-specialnewarticle-search-error": "Error message shown inline in the search results area when all Wikidata queries fail even after a silent retry. Followed by a 'Try again' button.",
 	"articleguidance-specialnewarticle-search-retry": "Label for the inline button that lets the user manually retry after a search error in the search step.",
+	"articleguidance-specialnewarticle-invalid-title": "Inline error shown in the search step when the user types a title that contains characters MediaWiki does not allow in page titles. Parameters:\n* $1 - List of invalid characters entered by the user (e.g. \"[\", \"]\")",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Generic inline error shown in the search step when the user types an invalid title and no specific invalid characters could be singled out.",
 	"articleguidance-titleconflict-exists-warning": "Plain-text warning shown in the title conflict step when the user types an article title that already exists. Parameters:\n* $1 - The article title that already exists",
 	"articleguidance-specialnewarticle-edit-existing": "Button text for navigating to edit the existing article that was found",
 	"articleguidance-specialnewarticle-disambiguation-title": "Heading shown above the subject match cards and the article type outlines list",

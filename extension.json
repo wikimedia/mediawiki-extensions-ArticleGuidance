@@ -403,6 +403,16 @@
 				"vue",
 				"mediawiki.ForeignApi"
 			]
+		},
+		"ext.articleguidance.ve": {
+			"localBasePath": "resources/ext.articleguidance.ve",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.ve",
+			"packageFiles": [
+				"init.js"
+			],
+			"dependencies": [
+				"mediawiki.util"
+			]
 		}
 	},
 	"TrackingCategories": [

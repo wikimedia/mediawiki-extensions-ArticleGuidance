@@ -236,6 +236,9 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		if ( $request->getCheck( 'articleguidance' )
 			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
 		) {
+			// Load the VisualEditor tweaks module when entering VE from Article Guidance.
+			$output->addModules( 'ext.articleguidance.ve' );
+
 			$session = $request->getSession();
 			$titleText = $title->getPrefixedText();
 			// Track each in-flight edit by title so concurrent edits in separate tabs

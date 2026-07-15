@@ -188,11 +188,6 @@ module.exports = defineComponent( {
 			padding: 24px;
 		}
 
-		// The intro line is only shown on mobile.
-		.ext-articleguidance-guidance-intro {
-			display: none;
-		}
-
 		.ext-articleguidance-instructions-actions {
 			flex-direction: row;
 			justify-content: flex-end;

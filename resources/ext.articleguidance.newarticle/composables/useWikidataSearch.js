@@ -1,6 +1,8 @@
 const { ref, watch } = require( 'vue' );
 const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
+const { translateQuery } = require( '../api/Cx.js' );
 const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
+const { containsNonLatin } = require( '../utils/script.js' );
 const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { withRetry } = require( '../utils/retry.js' );
@@ -14,6 +16,7 @@ const {
 	applyHierarchyMatches,
 	selectBestMatches
 } = require( './outlineMatching.js' );
+const config = require( '../config.json' );
 
 /**
  * Composable for searching Wikidata with outline matching and hierarchy depth filtering
@@ -38,6 +41,30 @@ function useWikidataSearch( query, language ) {
 	const store = useArticleGuidanceStore();
 
 	/**
+	 * Translate the query via cxserver and search Wikidata with the translation.
+	 *
+	 * Best-effort fallback for non-Latin queries: returns an empty array when
+	 * translation is unavailable, the translation is empty or unchanged, or the
+	 * follow-up search fails, so it never blocks or breaks the native-language
+	 * results it runs alongside.
+	 *
+	 * @param {string} searchQuery - Query string to translate and search for
+	 * @return {Promise<Array>} Candidate Wikidata results for the translated query
+	 */
+	const searchViaTranslation = async ( searchQuery ) => {
+		const targetLang = config.ArticleGuidanceCxTargetLanguage || 'en';
+		const translated = await translateQuery( searchQuery, language.value, targetLang );
+		if ( !translated || translated === searchQuery ) {
+			return [];
+		}
+		try {
+			return await searchWikidata( translated, targetLang );
+		} catch ( err ) {
+			return [];
+		}
+	};
+
+	/**
 	 * Perform search with current query and language
 	 *
 	 * @param {string} searchQuery - Query string to search for
@@ -55,17 +82,37 @@ function useWikidataSearch( query, language ) {
 		error.value = null;
 
 		try {
-			// Run Wikidata search and outline load in parallel
-			const [ wikidataResults, outlines ] = await Promise.all( [
+			// Fire a cxserver-translated search preemptively (in parallel, not after
+			// a zero-result) whenever the query is in a non-Latin script, so items
+			// that only have a label in the translation target language can still match.
+			const doTranslate = containsNonLatin( searchQuery );
+
+			// Run the native-language Wikidata search, outline load, and (when
+			// applicable) the translated search in parallel.
+			const [ wikidataResults, outlines, translatedResults ] = await Promise.all( [
 				withRetry( () => searchWikidata( searchQuery, language.value ) ),
-				withRetry( () => store.loadOutlines() )
+				withRetry( () => store.loadOutlines() ),
+				doTranslate ? searchViaTranslation( searchQuery ) : Promise.resolve( [] )
 			] );
 
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 
-			if ( wikidataResults.length === 0 ) {
+			// Merge native and translated candidates, de-duplicating by Q ID and
+			// tracking which items were found only via the translated query.
+			const translationOnlyQIds = new Set();
+			const seenQIds = new Set( wikidataResults.map( ( result ) => result.id ) );
+			const mergedResults = wikidataResults.slice();
+			translatedResults.forEach( ( result ) => {
+				if ( !seenQIds.has( result.id ) ) {
+					seenQIds.add( result.id );
+					mergedResults.push( result );
+					translationOnlyQIds.add( result.id );
+				}
+			} );
+
+			if ( mergedResults.length === 0 ) {
 				results.value = [];
 				return;
 			}
@@ -80,7 +127,7 @@ function useWikidataSearch( query, language ) {
 			}
 
 			// Extract Q IDs from search results
-			const searchQIds = wikidataResults.map( ( result ) => result.id );
+			const searchQIds = mergedResults.map( ( result ) => result.id );
 
 			// Group outlines by matchVia and collect the properties to look up
 			const groups = groupOutlinesByMatchVia( validOutlines );
@@ -128,7 +175,7 @@ function useWikidataSearch( query, language ) {
 					exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
 				return !isDirectlyExcluded && !isHierarchyExcluded;
 			} );
-			const filteredWikidataResults = wikidataResults.filter(
+			const filteredWikidataResults = mergedResults.filter(
 				( r ) => filteredQIds.includes( r.id ) &&
 					entityData[ r.id ] && entityData[ r.id ].hasLabel
 			);
@@ -196,7 +243,8 @@ function useWikidataSearch( query, language ) {
 					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
 					supported: true,
 					sitelinkCount: entity ? entity.sitelinkCount : 0,
-					localSitelink: entity ? entity.localSitelink : null
+					localSitelink: entity ? entity.localSitelink : null,
+					viaTranslation: translationOnlyQIds.has( result.id )
 				} );
 			} );
 
@@ -218,7 +266,8 @@ function useWikidataSearch( query, language ) {
 					outlineName: null,
 					supported: false,
 					sitelinkCount: entity ? entity.sitelinkCount : 0,
-					localSitelink: entity ? entity.localSitelink : null
+					localSitelink: entity ? entity.localSitelink : null,
+					viaTranslation: translationOnlyQIds.has( result.id )
 				} );
 			} );
 

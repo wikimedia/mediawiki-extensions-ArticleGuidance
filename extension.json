@@ -86,6 +86,14 @@
 		"ArticleGuidanceSparqlEndpoint": {
 			"value": "https://query.wikidata.org/sparql",
 			"description": "SPARQL endpoint URL for server-side Wikidata queries (WikidataInfoFetcher). In production this points at the internal proxy; the browser keeps using the public endpoint from ArticleGuidanceWikidataUrls."
+		},
+		"ArticleGuidanceCxServerUrl": {
+			"value": "https://cxserver.wikimedia.org/v1/mt",
+			"description": "Base URL of the cxserver machine-translation endpoint used by the client to translate non-Latin topic-matching queries. The source language, target language, and MinT provider are appended as path segments (/{from}/{to}/MinT)."
+		},
+		"ArticleGuidanceCxTargetLanguage": {
+			"value": "en",
+			"description": "Language code that non-Latin topic-matching queries are translated into before searching Wikidata."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -203,6 +211,7 @@
 				"api/Wikidata.js",
 				"api/Sparql.js",
 				"api/Citoid.js",
+				"api/Cx.js",
 				"composables/useArticleExist.js",
 				"composables/outlineMatching.js",
 				"composables/useSearch.js",
@@ -234,6 +243,7 @@
 				"utils/scroll.js",
 				"utils/projectFeedback.js",
 				"utils/wikidata.js",
+				"utils/script.js",
 				"logging/notability.js",
 				"logging/search.js",
 				"logging/instrument.js",
@@ -241,7 +251,9 @@
 					"name": "config.json",
 					"config": [
 						"ArticleGuidanceExperimentName",
-						"ArticleGuidanceWikidataUrls"
+						"ArticleGuidanceWikidataUrls",
+						"ArticleGuidanceCxServerUrl",
+						"ArticleGuidanceCxTargetLanguage"
 					]
 				},
 				{

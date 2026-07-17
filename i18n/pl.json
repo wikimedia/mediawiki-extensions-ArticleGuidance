@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Rail"
+			"Rail",
+			"Tar Lócesilion"
 		]
 	},
 	"articleguidance-desc": "Umożliwia użytkownikom tworzenie artykułów przy użyciu wspomaganego procesu",
@@ -13,7 +14,7 @@
 	"articleguidance-titleconflict-exists-warning": "Atrykuł o nazwie „$1” już istnieje.",
 	"articleguidance-specialnewarticle-edit-existing": "Edytuj istniejący artykuł",
 	"articleguidance-specialnewarticle-disambiguation-title": "Co to jest?",
-	"articleguidance-specialnewarticle-browse-outlines-link": "Zamiast tego wybierz typ",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Zamiast tego wybierz kategorię",
 	"articleguidance-sources-title": "Dodaj źródła",
 	"articleguidance-sources-subtitle": "Źródłą pomagają czytelnikom zweryfikować fakty i pokazują dlaczego ten temat jest ważny.",
 	"articleguidance-sources-subtitle-notability-risk": "Ten rodzaj artykułu wymaga podania źródeł zanim można będzie kontynuować.",

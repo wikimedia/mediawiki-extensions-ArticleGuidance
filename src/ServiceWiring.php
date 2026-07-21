@@ -61,6 +61,10 @@ return [
 	},
 	'ArticleGuidanceWikidataInfoFetcher' => static function ( MediaWikiServices $services ): WikidataInfoFetcher {
 		$config = $services->getMainConfig();
+		// The server's SPARQL requests may need a different (proxied) endpoint than
+		// the browser; 'api' and 'view' are shared with the client.
+		$urls = $config->get( 'ArticleGuidanceWikidataUrls' );
+		$urls['sparql'] = $config->get( 'ArticleGuidanceSparqlEndpoint' );
 		return new WikidataInfoFetcher(
 			$services->getHttpRequestFactory(),
 			$services->getLanguageFactory(),
@@ -68,7 +72,7 @@ return [
 			$services->getMainWANObjectCache(),
 			$config->get( 'ArticleGuidanceMatchViaRules' ),
 			$config->get( 'ArticleGuidanceUserAgent' ),
-			$services->getService( 'ArticleGuidanceWikidataUrls' )
+			new WikidataUrls( $urls )
 		);
 	},
 	'ArticleGuidanceWikidataUrls' => static function ( MediaWikiServices $services ): WikidataUrls {

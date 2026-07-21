@@ -81,7 +81,11 @@
 				"view": "https://www.wikidata.org/wiki/$1",
 				"sparql": "https://query.wikidata.org/sparql"
 			},
-			"description": "Wikidata endpoint URLs. In 'view', $1 is the Wikidata item Id (Q id)."
+			"description": "Wikidata endpoint URLs. In 'view', $1 is the Wikidata item Id (Q id). Client and server share these; only the server SPARQL endpoint can be overridden separately, via ArticleGuidanceSparqlEndpoint."
+		},
+		"ArticleGuidanceSparqlEndpoint": {
+			"value": "https://query.wikidata.org/sparql",
+			"description": "SPARQL endpoint URL for server-side Wikidata queries (WikidataInfoFetcher). In production this points at the internal proxy; the browser keeps using the public endpoint from ArticleGuidanceWikidataUrls."
 		}
 	},
 	"AutoloadNamespaces": {

@@ -23,6 +23,23 @@
 				{{ existsWarningText }}
 			</cdx-message>
 
+			<cdx-message
+				v-if="showRedLinkReminder"
+				type="notice"
+				inline
+				class="ext-articleguidance-updatetitle-redlink"
+			>
+				{{ redLinkReminderText }}
+				<cdx-button
+					weight="quiet"
+					action="progressive"
+					class="ext-articleguidance-updatetitle-restore-redlink"
+					@click="handleRestoreRedLink"
+				>
+					{{ $i18n( 'articleguidance-updatetitle-restore-redlink' ).text() }}
+				</cdx-button>
+			</cdx-message>
+
 			<div
 				v-if="showOriginalOption"
 				class="ext-articleguidance-updatetitle-original"
@@ -91,7 +108,9 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedResult, originalTypedTitle } = storeToRefs( store );
+		const {
+			selectedResult, originalTypedTitle, isRedLink, redLinkTitle
+		} = storeToRefs( store );
 
 		const titleOnOpen = store.articleTitle || store.searchQuery;
 		const localTitle = ref( store.articleTitle || store.searchQuery );
@@ -120,12 +139,27 @@ module.exports = defineComponent( {
 			() => mw.message( 'articleguidance-updatetitle-originally-typed', originalTypedTitle.value ).text()
 		);
 
-		const showOriginalOption = computed( () => originalTypedTitle.value !== null &&
+		const showOriginalOption = computed( () => !isRedLink.value &&
+			originalTypedTitle.value !== null &&
 			localTitle.value !== originalTypedTitle.value
 		);
 
 		const handleUseOriginal = () => {
 			localTitle.value = originalTypedTitle.value;
+		};
+
+		const redLinkReminderText = computed(
+			() => mw.message( 'articleguidance-updatetitle-redlink-reminder', redLinkTitle.value ).text()
+		);
+
+		const showRedLinkReminder = computed( () => isRedLink.value &&
+			redLinkTitle.value &&
+			localTitle.value !== redLinkTitle.value &&
+			titleExists.value !== true
+		);
+
+		const handleRestoreRedLink = () => {
+			localTitle.value = redLinkTitle.value;
 		};
 
 		const handleSubmit = () => {
@@ -146,6 +180,9 @@ module.exports = defineComponent( {
 			originallyTypedText,
 			selectedResult,
 			showOriginalOption,
+			redLinkReminderText,
+			showRedLinkReminder,
+			handleRestoreRedLink,
 			canContinue,
 			handleUseOriginal,
 			handleSubmit,
@@ -204,6 +241,17 @@ module.exports = defineComponent( {
 }
 
 .ext-articleguidance-updatetitle-use-original {
+	&.cdx-button {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.ext-articleguidance-updatetitle-redlink {
+	margin: 0;
+}
+
+.ext-articleguidance-updatetitle-restore-redlink {
 	&.cdx-button {
 		padding-left: 0;
 		padding-right: 0;

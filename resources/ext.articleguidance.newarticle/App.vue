@@ -43,6 +43,10 @@ module.exports = defineComponent( {
 		initialTitle: {
 			type: String,
 			default: ''
+		},
+		source: {
+			type: String,
+			default: ''
 		}
 	},
 	setup( props ) {
@@ -51,6 +55,10 @@ module.exports = defineComponent( {
 
 		if ( props.initialTitle ) {
 			store.setSearchQuery( props.initialTitle );
+		}
+
+		if ( props.source === 'redlink' && props.initialTitle ) {
+			store.setRedLinkOrigin( props.initialTitle );
 		}
 
 		watch( currentStep, () => {

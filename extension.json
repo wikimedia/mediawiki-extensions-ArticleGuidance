@@ -346,7 +346,9 @@
 				"articleguidance-updatetitle-cancel",
 				"articleguidance-updatetitle-originally-typed",
 				"articleguidance-updatetitle-use-original",
-				"articleguidance-updatetitle-edit-label"
+				"articleguidance-updatetitle-edit-label",
+				"articleguidance-updatetitle-redlink-reminder",
+				"articleguidance-updatetitle-restore-redlink"
 			],
 			"dependencies": [
 				"vue",

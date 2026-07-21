@@ -26,6 +26,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const articleTitle = ref( null );
 	const titleSuggestion = ref( null );
 	const originalTypedTitle = ref( null );
+	const redLinkTitle = ref( null );
+	const isRedLink = computed( () => redLinkTitle.value !== null );
 
 	const localArticleInfo = computed( () => ( {
 		title: ( localArticle.value && localArticle.value.title ) ||
@@ -171,7 +173,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		} else if ( !result.matchedQId ) {
 			goTo( 'unsupportedsubject' );
 		} else {
-			if ( result.label &&
+			if ( !isRedLink.value && result.label &&
 				result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
 				if ( await routeIfTitleTaken( result.label, result ) ) {
 					return;
@@ -231,6 +233,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 
 	function setSearchQuery( query ) {
 		searchQuery.value = query;
+	}
+
+	function setRedLinkOrigin( title ) {
+		redLinkTitle.value = title;
 	}
 
 	function buildNotabilityState() {
@@ -394,6 +400,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		articleTitle,
 		titleSuggestion,
 		originalTypedTitle,
+		redLinkTitle,
+		isRedLink,
 		creationTitle,
 		hasInstructions,
 		getActiveNotabilityTags,
@@ -406,6 +414,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		selectOutline,
 		setReferences,
 		setSearchQuery,
+		setRedLinkOrigin,
 		setArticleTitle,
 		confirmTitle,
 		resetTitleConflict,

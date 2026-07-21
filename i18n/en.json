@@ -84,6 +84,8 @@
 	"articleguidance-updatetitle-cancel": "Cancel",
 	"articleguidance-updatetitle-originally-typed": "You originally typed \"$1\".",
 	"articleguidance-updatetitle-use-original": "Use that",
+	"articleguidance-updatetitle-redlink-reminder": "Changing the title leaves \"$1\" as a red link.",
+	"articleguidance-updatetitle-restore-redlink": "Undo",
 	"articleguidance-updatetitle-edit-label": "Edit article title",
 	"tag-articleguidance": "Article Guidance",
 	"tag-articleguidance-description": "Edit was made using the Article Guidance workflow",

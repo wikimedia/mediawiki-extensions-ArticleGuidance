@@ -85,6 +85,8 @@
 	"articleguidance-updatetitle-cancel": "Label for the secondary button that discards edits and returns to the previous step in the update-title step.",
 	"articleguidance-updatetitle-originally-typed": "Inline reminder shown in the update-title step when the current title differs from what the user originally typed, because the system auto-updated it on Wikidata item selection. Parameters:\n* $1 - The title the user originally typed in the search box",
 	"articleguidance-updatetitle-use-original": "Label for the inline quiet button shown next to the 'originally typed' reminder in the update-title step. Clicking fills the title input with the original typed title but does not submit.",
+	"articleguidance-updatetitle-redlink-reminder": "Informational reminder shown in the update-title step when a user who arrived from a clicked red link changes the title away from that red-link title. Warns that the original will remain an unlinked red link. Parameters:\n* $1 - The original red-link title",
+	"articleguidance-updatetitle-restore-redlink": "Label for the inline quiet button shown next to the red-link reminder in the update-title step. Clicking restores the title input to the original red-link title but does not submit.",
 	"articleguidance-updatetitle-edit-label": "Accessible aria-label for the quiet icon button in the article info area that opens the update-title step. Not visible on screen.",
 	"tag-articleguidance": "Display name for the 'articleguidance' edit tag shown in recent changes, history, and log pages.",
 	"tag-articleguidance-description": "Description of the 'articleguidance' edit tag shown on [[Special:Tags]].",

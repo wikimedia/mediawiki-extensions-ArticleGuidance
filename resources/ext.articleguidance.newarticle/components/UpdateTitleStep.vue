@@ -177,7 +177,9 @@ module.exports = defineComponent( {
 			line-height: @line-height-x-large;
 			caret-color: @color-progressive;
 
-			&, &:focus, &:hover {
+			&,
+			&:focus,
+			&:hover {
 				outline: 0;
 				box-shadow: none;
 				border-top: 0;
@@ -186,7 +188,8 @@ module.exports = defineComponent( {
 				border-bottom: 1px solid @border-color-base;
 			}
 
-			&:focus, &:focus-visible {
+			&:focus,
+			&:focus-visible {
 				border-bottom: 2px solid @color-progressive;
 			}
 		}

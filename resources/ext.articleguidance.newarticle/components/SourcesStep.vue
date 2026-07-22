@@ -603,6 +603,7 @@ module.exports = defineComponent( {
 		border-radius: 0;
 		padding: 12px 0;
 	}
+
 	&.cdx-message--warning {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
 	}
@@ -648,6 +649,7 @@ module.exports = defineComponent( {
 	color: @color-success;
 	font-weight: @font-weight-bold;
 }
+
 .ext-articleguidance-tips-title-warning {
 	color: @color-warning;
 	font-weight: @font-weight-bold;

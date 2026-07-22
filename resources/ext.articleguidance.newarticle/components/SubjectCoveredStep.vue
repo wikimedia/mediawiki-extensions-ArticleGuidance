@@ -83,6 +83,7 @@ module.exports = defineComponent( {
 	color: @color-subtle;
 	font-size: @font-size-medium;
 }
+
 .ext-articleguidance-subjectcovered-button {
 	margin-top: 0.5rem;
 

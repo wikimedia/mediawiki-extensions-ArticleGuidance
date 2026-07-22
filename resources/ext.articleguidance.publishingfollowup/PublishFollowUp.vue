@@ -96,7 +96,7 @@ module.exports = exports = defineComponent( {
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba( 0, 0, 0, 0.5 );
 		z-index: 99;
 	}
 
@@ -127,7 +127,7 @@ module.exports = exports = defineComponent( {
 		font-size: @font-size-medium;
 	}
 
-	&__content-message:dir(rtl) {
+	&__content-message:dir( rtl ) {
 		padding-left: 0;
 		padding-right: 28px;
 	}

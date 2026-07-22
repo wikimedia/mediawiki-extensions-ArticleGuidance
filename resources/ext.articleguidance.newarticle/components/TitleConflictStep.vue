@@ -201,12 +201,12 @@ module.exports = defineComponent( {
 	padding-left: 28px; // 20px for the warning icon + 8px gap
 }
 
-.ext-articleguidance-titleconflict-suggestion:dir(rtl) {
+.ext-articleguidance-titleconflict-suggestion:dir( rtl ) {
 	padding-left: 0;
 	padding-right: 28px;
 }
 
-.ext-articleguidance-titleconflict-suggestion-button{
+.ext-articleguidance-titleconflict-suggestion-button {
 	&.cdx-button {
 		padding-left: 0;
 		padding-right: 0;
@@ -222,7 +222,9 @@ module.exports = defineComponent( {
 			line-height: @line-height-x-large;
 			caret-color: @color-progressive;
 
-			&, &:focus, &:hover {
+			&,
+			&:focus,
+			&:hover {
 				outline: 0;
 				box-shadow: none;
 				border-top: 0;
@@ -231,7 +233,8 @@ module.exports = defineComponent( {
 				border-bottom: 1px solid @border-color-base;
 			}
 
-			&:focus, &:focus-visible {
+			&:focus,
+			&:focus-visible {
 				border-bottom: 2px solid @color-progressive;
 			}
 		}
@@ -294,6 +297,7 @@ module.exports = defineComponent( {
 		}
 	}
 }
+
 .ext-articleguidance-titleconflict-viewexisting-btn {
 	background: none;
 	border: none;

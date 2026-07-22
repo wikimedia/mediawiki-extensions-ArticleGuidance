@@ -125,7 +125,6 @@ module.exports = defineComponent( {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-
 }
 
 .ext-articleguidance-outlines-no-match {
@@ -185,7 +184,6 @@ module.exports = defineComponent( {
 				min-height: 80px;
 
 				.ext-articleguidance-article-card-description {
-					/* stylelint-disable-next-line value-no-vendor-prefix */
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;

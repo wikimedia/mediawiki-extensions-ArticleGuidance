@@ -129,7 +129,8 @@ function useWikidataSearch( query, language ) {
 				return !isDirectlyExcluded && !isHierarchyExcluded;
 			} );
 			const filteredWikidataResults = wikidataResults.filter(
-				( r ) => filteredQIds.includes( r.id )
+				( r ) => filteredQIds.includes( r.id ) &&
+					entityData[ r.id ] && entityData[ r.id ].hasLabel
 			);
 
 			// Collect matches, starting with 0-hop cases

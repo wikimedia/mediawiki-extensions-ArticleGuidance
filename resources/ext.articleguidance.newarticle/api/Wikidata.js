@@ -62,8 +62,8 @@ async function searchWikidata( query, language, limit = 20 ) {
  * @param {string[]} qids Array of Wikidata Q IDs (e.g. ['Q42', 'Q937'])
  * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
  * @param {string} language Language code for labels and descriptions
- * @return {Promise<Object>} Map of qid to entity data, each with claims, label, description,
- *   imageFilename, sitelinkCount, and localSitelink for the current wiki
+ * @return {Promise<Object>} Map of qid to entity data, each with claims, label, hasLabel,
+ *   description, imageFilename, sitelinkCount, and localSitelink for the current wiki
  */
 async function fetchEntityClaims( qids, properties, language ) {
 	if ( !qids || qids.length === 0 ) {
@@ -141,6 +141,7 @@ async function fetchEntityClaims( qids, properties, language ) {
 		freshResult[ qid ] = {
 			claims,
 			label: labelEntry ? labelEntry.value : qid,
+			hasLabel: !!labelEntry,
 			labelFallback,
 			description: descEntry ? descEntry.value : '',
 			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,

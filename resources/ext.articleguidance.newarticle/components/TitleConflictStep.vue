@@ -25,6 +25,7 @@
 					{{ existsWarningText }}
 				</cdx-message>
 				<cdx-button
+					v-if="titleExists === true"
 					weight="quiet"
 					action="progressive"
 					class="ext-articleguidance-titleconflict-viewexisting-btn"
@@ -122,7 +123,6 @@ module.exports = defineComponent( {
 		const { selectedResult, selectedOutline, titleSuggestion } = storeToRefs( store );
 
 		const localTitle = ref( store.articleTitle || '' );
-		const existingArticleTitle = localTitle.value;
 
 		const { exists: titleExists, checkExistence } = useArticleExist( localTitle );
 
@@ -158,7 +158,7 @@ module.exports = defineComponent( {
 
 		const handleReadArticle = () => {
 			instrument.logTitleConflictAction( 'view_existing' );
-			window.open( mw.util.getUrl( existingArticleTitle ), '_blank' );
+			window.open( mw.util.getUrl( localTitle.value ), '_blank' );
 		};
 
 		return {

@@ -55,7 +55,9 @@ page. Its title is `MediaWiki:Articleguidance-default-outline-preload`. For a ti
 MediaWiki namespace, core preloads the message of the same name, with the references as `$1`.
 
 To change the guidance for one wiki, create a generic outline on that wiki. It replaces the
-default. Interface administrators can also override the default messages on-wiki, like any
+default. `Special:Outlines/*` shows the default guidance, and its **Customize** button opens the
+editor on a new generic outline page with the default guidance preloaded. When the wiki has a
+generic outline, `Special:Outlines/*` goes to its page. Interface administrators can also override the default messages on-wiki, like any
 interface message, but that is not the supported way.
 
 ## Serving
@@ -137,3 +139,41 @@ Notability thresholds (e.g. the crosswiki sitelink count) are read from wiki con
 and are not stored in the page property. The exception is a per-outline override written as a `-N`
 suffix on a `sources` or `crosswiki` tag (e.g. `sources-3`). The page property stores it under
 `notabilityThresholds`, and the client falls back to wiki config for tags without an override.
+
+## Drafting
+
+Outline drafts are generated in the browser from example articles, then handed to the standard
+editor. The outline builder at `Special:Outlines/<QID>` makes them. It takes one or more Q IDs,
+separated by commas (`Special:Outlines/Q1,Q2`). The first is the primary type. A **suggested
+outline card** links to it, and **Other article types** in `Special:Outlines` opens it for the
+types that the maintainer selected.
+
+The page shows a card for each type, with its Q ID. When it loads, it finds up to 10 example
+articles by type (`autoDraft.js`) and generates the draft. The articles come from the local
+wiki. On a development or test wiki, `ArticleGuidanceOutlineBuilderSourceApi` sets another wiki
+to read them from, e.g. `https://en.wikipedia.org/w/api.php`. The draft covers all of the
+types (`article-type="Q1 Q2"`), and the example articles are shared between them. **Choose example articles** shows where the maintainer can change them.
+
+The maintainer can change the name of the new outline page. The page is always a subpage of
+`ArticleGuidanceOutlinePagePrefix`. The default name is the content-language label of the primary
+type, and `OutlinePageNamer` adds the Q ID when the label is taken. The field shows an error when
+the page exists, because the editor preloads the draft only on a new page.
+
+**Create outline** saves the draft with `POST /articleguidance/v1/outline-draft/{types}`, where
+`{types}` is the comma-separated Q IDs, as in `Special:Outlines/Q1,Q2`. It waits for the draft if
+it is not ready. The handler keeps it in `MainObjectStash` for an hour (`OutlineDraftStore`). The
+key is the user ID, or the session for an anonymous user, and all the Q IDs in order, so
+`Q1,Q2` and `Q1,Q3` have different drafts. The handler persists an anonymous session, so the editor
+request gets the same session. Anyone can save a draft, within the `articleguidance-outline-draft`
+rate limit; the wiki decides who can save the outline page. The browser then opens
+`<prefix>/<name>?action=edit&preload=Special:Outlines/Q1,Q2`. The editor link uses `preload`
+because VisualEditor sends it to its API, but not other URL parameters. A special page has no
+content, so core preloads nothing from it.
+
+`OutlinePreloadHandler` (`EditFormPreloadText`) preloads the user's draft on a new page under the
+prefix, or an empty `<article-guidance>` skeleton with all the types when there is no draft. It
+reads the types from the `Special:Outlines` subpage in `preload`. For the generic outline
+(`preload=Special:Outlines/*`) it preloads the default generic guidance from the content-language
+messages. Saving the page in the editor is where drafting joins the lifecycle above: the save
+parses the `<article-guidance>` tag, which writes the `articleguidance-data` page property and adds
+the page to the tracking category.

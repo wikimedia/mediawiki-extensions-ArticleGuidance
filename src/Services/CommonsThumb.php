@@ -40,4 +40,17 @@ class CommonsThumb {
 			$suffix
 		);
 	}
+
+	/**
+	 * Change the width of a thumbnail URL from getUrl().
+	 *
+	 * Stored outline data holds URLs, not file names, so the width is changed in the URL.
+	 *
+	 * @param string $url Thumbnail URL from getUrl()
+	 * @param int $width New width in pixels
+	 * @return string Thumbnail URL
+	 */
+	public static function resize( string $url, int $width ): string {
+		return str_replace( '/' . self::THUMB_WIDTH . 'px-', '/' . $width . 'px-', $url );
+	}
 }

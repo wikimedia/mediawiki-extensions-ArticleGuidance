@@ -5,7 +5,7 @@
  * WikidataUrls value object.
  */
 
-const urls = require( '../config.json' ).ArticleGuidanceWikidataUrls;
+const urls = require( './config.json' ).ArticleGuidanceWikidataUrls;
 
 /**
  * Build a Wikidata Action API request URL, with the cross-origin defaults

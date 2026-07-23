@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Category\Category;
+use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
 use MediaWiki\Page\PageProps;
@@ -36,6 +37,21 @@ class OutlineService {
 	 * does not have to exist.
 	 */
 	public const DEFAULT_GENERIC_OUTLINE_TITLE = 'MediaWiki:Articleguidance-default-outline-preload';
+
+	/** Messages of the default generic outline (T437432) */
+	private const DEFAULT_INSTRUCTIONS_MESSAGE = 'articleguidance-default-outline-instructions';
+	private const DEFAULT_NOTABILITY_RISK = [ 'junior', 'sources' ];
+	private const DEFAULT_RECOMMENDED_SOURCE_MESSAGES = [
+		'articleguidance-default-outline-recommended-source-1',
+		'articleguidance-default-outline-recommended-source-2',
+		'articleguidance-default-outline-recommended-source-3',
+	];
+	private const DEFAULT_DISCOURAGED_SOURCE_MESSAGES = [
+		'articleguidance-default-outline-discouraged-source-1',
+		'articleguidance-default-outline-discouraged-source-2',
+		'articleguidance-default-outline-discouraged-source-3',
+		'articleguidance-default-outline-discouraged-source-4',
+	];
 
 	/**
 	 * @var array{outlines: array, generic: ?array, lastModified: ?string, claims: array<string,array<int,Title>>}|null
@@ -134,6 +150,19 @@ class OutlineService {
 			}
 		}
 		return $duplicates;
+	}
+
+	/**
+	 * Parse the article types of a new outline, as in Special:Outlines/<Q IDs>.
+	 *
+	 * @param string $types Comma-separated Wikidata Q IDs. The first is the primary type.
+	 * @return string[] The valid Q IDs, without duplicates, in the same order
+	 */
+	public static function parseArticleTypes( string $types ): array {
+		return array_slice( array_values( array_unique( array_filter(
+			array_map( 'trim', explode( ',', $types ) ),
+			WikidataProperties::isItemId( ... )
+		) ) ), 0, self::MAX_ARTICLE_TYPES );
 	}
 
 	/**
@@ -322,28 +351,62 @@ class OutlineService {
 			'articleTypes' => [],
 			'generic' => true,
 			'default' => true,
-			'instructions' => $this->contentMessage( 'articleguidance-default-outline-instructions' )->parse(),
+			'instructions' => $this->contentMessage( self::DEFAULT_INSTRUCTIONS_MESSAGE )->parse(),
 			'thumbnail' => null,
-			'notabilityRisk' => [ 'junior', 'sources' ],
+			'notabilityRisk' => self::DEFAULT_NOTABILITY_RISK,
 			'notabilityThresholds' => [],
 			'recommendedSources' => [
-				'info' => $this->parseMessages( [
-					'articleguidance-default-outline-recommended-source-1',
-					'articleguidance-default-outline-recommended-source-2',
-					'articleguidance-default-outline-recommended-source-3',
-				] ),
+				'info' => $this->parseMessages( self::DEFAULT_RECOMMENDED_SOURCE_MESSAGES ),
 				'urls' => [],
 			],
 			'discouragedSources' => [
-				'info' => $this->parseMessages( [
-					'articleguidance-default-outline-discouraged-source-1',
-					'articleguidance-default-outline-discouraged-source-2',
-					'articleguidance-default-outline-discouraged-source-3',
-					'articleguidance-default-outline-discouraged-source-4',
-				] ),
+				'info' => $this->parseMessages( self::DEFAULT_DISCOURAGED_SOURCE_MESSAGES ),
 				'urls' => [],
 			],
 		];
+	}
+
+	/**
+	 * Write the default generic outline as the wikitext of an outline page, so
+	 * a wiki can start its own generic outline from it.
+	 *
+	 * @return string Outline wikitext: the tag with the guidance, then the article skeleton
+	 */
+	public function getDefaultGenericOutlineWikitext(): string {
+		$lines = [
+			'<article-guidance article-type="' . self::GENERIC_ARTICLE_TYPE . '" notability-risk="' .
+				implode( ' ', self::DEFAULT_NOTABILITY_RISK ) . '">',
+			'',
+			'<instructions>',
+		];
+		$instructions = $this->contentMessage( self::DEFAULT_INSTRUCTIONS_MESSAGE );
+		if ( !$instructions->isDisabled() ) {
+			$lines[] = $instructions->plain();
+		}
+		$lines[] = '</instructions>';
+		foreach ( [
+			'recommended-sources' => self::DEFAULT_RECOMMENDED_SOURCE_MESSAGES,
+			'discouraged-sources' => self::DEFAULT_DISCOURAGED_SOURCE_MESSAGES,
+		] as $tagName => $keys ) {
+			$lines[] = '';
+			$lines[] = "<$tagName>";
+			foreach ( $keys as $key ) {
+				$message = $this->contentMessage( $key );
+				if ( !$message->isDisabled() ) {
+					$lines[] = '  <info>' . $message->plain() . '</info>';
+				}
+			}
+			$lines[] = "</$tagName>";
+		}
+		$lines[] = '';
+		$lines[] = '</article-guidance>';
+		$lines[] = '';
+
+		$skeleton = $this->contentMessage( 'articleguidance-default-outline-preload' );
+		if ( !$skeleton->isDisabled() ) {
+			$lines[] = $skeleton->plain();
+		}
+		return implode( "\n", $lines ) . "\n";
 	}
 
 	/**

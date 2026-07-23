@@ -1,4 +1,4 @@
-const { buildApiUrl, getPageUrl } = require( '../utils/wikidata.js' );
+const { buildApiUrl, getPageUrl } = require( 'ext.articleguidance.common' );
 
 const NS_MAIN = 0;
 

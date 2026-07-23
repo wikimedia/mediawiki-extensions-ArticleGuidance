@@ -75,6 +75,14 @@
 				}
 			]
 		},
+		"ArticleGuidanceOutlinePagePrefix": {
+			"value": "Project:Article guidance",
+			"description": "Page title prefix for outline pages. The outline builder proposes '<prefix>/<label>' as the page to save an outline to. 'Project:' resolves to the wiki's project namespace."
+		},
+		"ArticleGuidanceOutlineBuilderSourceApi": {
+			"value": "",
+			"description": "URL of the api.php of the wiki that the outline builder reads example articles from, e.g. 'https://en.wikipedia.org/w/api.php'. Empty uses the local wiki. Only for development and test wikis, which have no real articles."
+		},
 		"ArticleGuidanceExcludedItemTypes": {
 			"value": [
 				"Q4167410",
@@ -180,6 +188,53 @@
 		"ArticleGuidanceFeedbackTalkPage": {
 			"value": "",
 			"description": "Full title of the local talk page that collects Article Guidance feedback, e.g. 'Wikipedia talk:Article Guidance'. Empty falls back to Talk:Article guidance on mediawiki.org."
+		},
+		"ArticleGuidanceSuggestedArticleTypes": {
+			"value": [
+				"Q33999",
+				"Q482994",
+				"Q729",
+				"Q180684",
+				"Q6999",
+				"Q618779",
+				"Q571",
+				"Q41176",
+				"Q211236",
+				"Q11344",
+				"Q515",
+				"Q4830453",
+				"Q6256",
+				"Q486972",
+				"Q23442",
+				"Q271669",
+				"Q7725634",
+				"Q103994247",
+				"Q55215251",
+				"Q639669",
+				"Q33506",
+				"Q188451",
+				"Q5",
+				"Q756",
+				"Q82955",
+				"Q11019",
+				"Q108586636",
+				"Q9174",
+				"Q112872396",
+				"Q7397",
+				"Q105543609",
+				"Q847017",
+				"Q2066131",
+				"Q5398426",
+				"Q65943",
+				"Q3918",
+				"Q7889",
+				"Q11424",
+				"Q3305213",
+				"Q746549",
+				"Q7278",
+				"Q34770"
+			],
+			"description": "Wikidata Q IDs of the article types that Special:Outlines suggests an outline for, when the wiki does not have one yet."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -191,7 +246,29 @@
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],
+	"RateLimits": {
+		"articleguidance-outline-draft": {
+			"ip": [
+				30,
+				3600
+			],
+			"user": [
+				30,
+				3600
+			]
+		}
+	},
 	"RestRoutes": [
+		{
+			"path": "/articleguidance/v1/outline-draft/{types}",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\SaveOutlineDraftHandler",
+			"services": [
+				"ArticleGuidanceOutlineDraftStore",
+				"MainConfig",
+				"UserFactory"
+			]
+		},
 		{
 			"path": "/articleguidance/v1/outlines",
 			"method": "GET",
@@ -217,6 +294,17 @@
 				"MainConfig",
 				"MagicWordFactory",
 				"ArticleGuidanceFeatureState"
+			]
+		},
+		"Outlines": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Specials\\SpecialOutlines",
+			"services": [
+				"ArticleGuidanceOutlineService",
+				"ArticleGuidanceWikidataUrls",
+				"ArticleGuidanceWikidataInfoFetcher",
+				"TitleFactory",
+				"MainConfig",
+				"ArticleGuidanceOutlinePageNamer"
 			]
 		}
 	},
@@ -258,6 +346,16 @@
 		"PreloadCleanup": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
 		},
+		"OutlinePreload": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\OutlinePreloadHandler",
+			"services": [
+				"MainConfig",
+				"TitleFactory",
+				"SpecialPageFactory",
+				"ArticleGuidanceOutlineDraftStore",
+				"ArticleGuidanceOutlineService"
+			]
+		},
 		"DuplicateOutlineNotice": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\DuplicateOutlineNoticeHandler",
 			"services": [
@@ -282,7 +380,10 @@
 		"ChangeTagsListActive": "EditTag",
 		"RevisionFromEditComplete": "EditTag",
 		"RecentChange_save": "EditTag",
-		"EditFormPreloadText": "PreloadCleanup",
+		"EditFormPreloadText": [
+			"PreloadCleanup",
+			"OutlinePreload"
+		],
 		"BeforePageDisplay": "PublishFollowUp",
 		"OutputPageParserOutput": "DuplicateOutlineNotice",
 		"GetPreferences": "Preferences"
@@ -300,6 +401,24 @@
 		]
 	},
 	"ResourceModules": {
+		"ext.articleguidance.common": {
+			"localBasePath": "resources/ext.articleguidance.common",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.common",
+			"packageFiles": [
+				"index.js",
+				"outlines.js",
+				"wikidata.js",
+				{
+					"name": "config.json",
+					"config": [
+						"ArticleGuidanceWikidataUrls"
+					]
+				}
+			],
+			"dependencies": [
+				"mediawiki.api"
+			]
+		},
 		"ext.articleguidance.newarticle": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"localBasePath": "resources/ext.articleguidance.newarticle",
@@ -309,7 +428,6 @@
 				"stores/useArticleGuidanceStore.js",
 				"App.vue",
 				"api/MediaWiki.js",
-				"api/Outlines.js",
 				"api/Redirect.js",
 				"api/Sources.js",
 				"api/Wikidata.js",
@@ -352,7 +470,6 @@
 				"utils/links.js",
 				"utils/scroll.js",
 				"utils/projectFeedback.js",
-				"utils/wikidata.js",
 				"utils/script.js",
 				"utils/title.js",
 				"logging/notability.js",
@@ -362,7 +479,6 @@
 					"name": "config.json",
 					"config": [
 						"ArticleGuidanceInstrumentName",
-						"ArticleGuidanceWikidataUrls",
 						"ArticleGuidanceCxServerUrl",
 						"ArticleGuidanceCxTargetLanguage",
 						"ArticleGuidanceFeedbackTalkPage"
@@ -499,7 +615,8 @@
 				"pinia",
 				"mediawiki.util",
 				"mediawiki.Title",
-				"mediawiki.api"
+				"mediawiki.api",
+				"ext.articleguidance.common"
 			]
 		},
 		"ext.articleguidance.tag.styles": {
@@ -514,6 +631,164 @@
 			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.newarticle.styles",
 			"styles": [
 				"styles.less"
+			]
+		},
+		"ext.articleguidance.outlines.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"localBasePath": "resources/ext.articleguidance.outlines.styles",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.outlines.styles",
+			"codexComponents": [
+				"CdxButton",
+				"CdxCard"
+			],
+			"codexStyleOnly": true,
+			"styles": [
+				"styles.less"
+			]
+		},
+		"ext.articleguidance.outlines": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"localBasePath": "resources/ext.articleguidance.outlinebuilder",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.outlinebuilder",
+			"packageFiles": [
+				"outlines/init.js",
+				"outlines/CustomTypes.vue",
+				"api/Wikidata.js"
+			],
+			"codexComponents": [
+				"CdxButton",
+				"CdxField",
+				"CdxMultiselectLookup"
+			],
+			"messages": [
+				"articleguidance-outlines-custom-continue",
+				"articleguidance-outlines-custom-label",
+				"articleguidance-outlines-custom-placeholder",
+				"articleguidance-outlines-custom-no-results",
+				"articleguidance-outlines-custom-help",
+				"articleguidance-outlines-custom-max",
+				"articleguidance-outlines-custom-covered"
+			],
+			"dependencies": [
+				"vue",
+				"mediawiki.api",
+				"mediawiki.jqueryMsg",
+				"mediawiki.util",
+				"ext.articleguidance.common"
+			]
+		},
+		"ext.articleguidance.outlinebuilder": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"localBasePath": "resources/ext.articleguidance.outlinebuilder",
+			"remoteExtPath": "ArticleGuidance/resources/ext.articleguidance.outlinebuilder",
+			"packageFiles": [
+				"init.js",
+				"App.vue",
+				"autoDraft.js",
+				"api/Outlines.js",
+				"api/Wikidata.js",
+				"api/Wikipedia.js",
+				"archetypes.js",
+				"articleFinder.js",
+				"articleList.js",
+				"components/AddArticles.vue",
+				"components/ArticleList.vue",
+				"outlierDetection.js",
+				"outlineGenerator.js",
+				"outlineMapping.js",
+				{
+					"name": "config.json",
+					"config": [
+						"ArticleGuidanceOutlineBuilderSourceApi"
+					]
+				},
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconCollapse",
+						"cdxIconExpand"
+					]
+				}
+			],
+			"codexComponents": [
+				"CdxButton",
+				"CdxCheckbox",
+				"CdxField",
+				"CdxIcon",
+				"CdxLookup",
+				"CdxMessage",
+				"CdxProgressIndicator",
+				"CdxTab",
+				"CdxTable",
+				"CdxTabs",
+				"CdxTextInput"
+			],
+			"messages": [
+				"articleguidance-outlinebuilder-count-label",
+				"articleguidance-outlinebuilder-create",
+				"articleguidance-outlinebuilder-create-empty",
+				"articleguidance-outlinebuilder-empty-error",
+				"articleguidance-outlinebuilder-page-label",
+				"articleguidance-outlinebuilder-page-invalid",
+				"articleguidance-outlinebuilder-page-exists",
+				"articleguidance-outlinebuilder-status-no-results",
+				"articleguidance-outlinebuilder-status-error",
+				"articleguidance-outlinebuilder-advanced",
+				"articleguidance-outlinebuilder-outline-error",
+				"articleguidance-outlinebuilder-outlier-sections-low",
+				"articleguidance-outlinebuilder-outlier-sections-high",
+				"articleguidance-outlinebuilder-outlier-size",
+				"articleguidance-outlinebuilder-generating",
+				"articleguidance-outlinebuilder-no-results",
+				"articleguidance-outlinebuilder-col-title",
+				"articleguidance-outlinebuilder-col-size",
+				"articleguidance-outlinebuilder-col-sections",
+				"articleguidance-outlinebuilder-col-references",
+				"articleguidance-outlinebuilder-col-updated",
+				"articleguidance-outlinebuilder-col-quality",
+				"articleguidance-outlinebuilder-add-label",
+				"articleguidance-outlinebuilder-add-placeholder",
+				"articleguidance-outlinebuilder-add-no-results",
+				"articleguidance-outlinebuilder-size-kb",
+				"articleguidance-outlinebuilder-quality-featured",
+				"articleguidance-outlinebuilder-quality-good",
+				"articleguidance-outlinebuilder-intro",
+				"articleguidance-outlinebuilder-tab-type",
+				"articleguidance-outlinebuilder-tab-category",
+				"articleguidance-outlinebuilder-tab-title",
+				"articleguidance-outlinebuilder-type-description",
+				"articleguidance-outlinebuilder-type-find",
+				"articleguidance-outlinebuilder-category-description",
+				"articleguidance-outlinebuilder-category-label",
+				"articleguidance-outlinebuilder-category-placeholder",
+				"articleguidance-outlinebuilder-category-no-results",
+				"articleguidance-outlinebuilder-category-subcats",
+				"articleguidance-outlinebuilder-category-add",
+				"articleguidance-outlinebuilder-title-description",
+				"articleguidance-outlinebuilder-busy-type",
+				"articleguidance-outlinebuilder-busy-category",
+				"articleguidance-outlinebuilder-busy-title",
+				"articleguidance-outlinebuilder-list-heading",
+				"articleguidance-outlinebuilder-list-clear",
+				"articleguidance-outlinebuilder-list-empty",
+				"articleguidance-outlinebuilder-col-source",
+				"articleguidance-outlinebuilder-source-type",
+				"articleguidance-outlinebuilder-source-category",
+				"articleguidance-outlinebuilder-source-manual",
+				"articleguidance-outlinebuilder-add-error",
+				"articleguidance-outlinebuilder-add-none"
+			],
+			"dependencies": [
+				"vue",
+				"mediawiki.api",
+				"mediawiki.jqueryMsg",
+				"mediawiki.ForeignApi",
+				"mediawiki.language",
+				"mediawiki.Title",
+				"mediawiki.user",
+				"mediawiki.util",
+				"ext.articleguidance.common"
 			]
 		},
 		"ext.articleguidance.publishingfollowup": {

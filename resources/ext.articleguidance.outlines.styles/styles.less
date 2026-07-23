@@ -1,0 +1,83 @@
+@import 'mediawiki.skin.variables.less';
+
+.mw-articleguidance-outlines__subtext {
+	color: @color-subtle;
+}
+
+.mw-articleguidance-outlines__nojs {
+	color: @color-subtle;
+
+	.client-js & {
+		display: none;
+	}
+}
+
+.mw-articleguidance-outlines__grid {
+	display: grid;
+	// A column never gets wider than the screen on narrow phones
+	grid-template-columns: repeat( auto-fill, minmax( ~'min( 20em, 100% )', 1fr ) );
+	// All rows take the height of the tallest card
+	grid-auto-rows: 1fr;
+	gap: @spacing-75;
+	margin-bottom: @spacing-150;
+}
+
+.mw-articleguidance-outlines__card {
+	.cdx-card__text {
+		flex: 1;
+		// Lets the column shrink below its text width, so the title ellipsis shows
+		min-width: 0;
+	}
+
+	.cdx-thumbnail__placeholder__icon {
+		.cdx-mixin-css-icon( @cdx-icon-article, @color-placeholder, @size-300 );
+	}
+
+	// One line of title and three of description keep the cards short
+	.cdx-card__text__title {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.cdx-card__text__description {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+	}
+}
+
+// The asterisk matches article-type="*", which applies to all article types
+.mw-articleguidance-outlines__card--generic .cdx-thumbnail__placeholder__icon {
+	.cdx-mixin-css-icon( @cdx-icon-asterisk, @color-placeholder, @size-300 );
+}
+
+.mw-articleguidance-outlines__types {
+	max-width: 42em;
+	margin-bottom: @spacing-75;
+
+	.cdx-card + .cdx-card {
+		margin-top: @spacing-75;
+	}
+}
+
+// The card on the outline builder page has room for the whole text
+.mw-articleguidance-outlines__card--large {
+	.cdx-thumbnail__image,
+	.cdx-thumbnail__placeholder {
+		width: @size-400 * 2;
+		min-width: @size-400 * 2;
+		height: @size-400 * 2;
+		min-height: @size-400 * 2;
+	}
+
+	.cdx-card__text__title {
+		white-space: normal;
+	}
+
+	.cdx-card__text__description {
+		display: block;
+		-webkit-line-clamp: unset;
+	}
+}

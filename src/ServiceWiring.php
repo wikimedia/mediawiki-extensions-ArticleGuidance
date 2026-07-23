@@ -7,6 +7,8 @@ use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactor
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\CommonsThumb;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
+use MediaWiki\Extension\ArticleGuidance\Services\OutlineDraftStore;
+use MediaWiki\Extension\ArticleGuidance\Services\OutlinePageNamer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\ReferenceRiskClient;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
@@ -49,6 +51,17 @@ return [
 				$services->getService( 'ArticleGuidanceFeatureState' ),
 			);
 		},
+	'ArticleGuidanceOutlineDraftStore' => static function ( MediaWikiServices $services ): OutlineDraftStore {
+		return new OutlineDraftStore( $services->getMainObjectStash() );
+	},
+	'ArticleGuidanceOutlinePageNamer' => static function ( MediaWikiServices $services ): OutlinePageNamer {
+		return new OutlinePageNamer(
+			$services->getTitleFactory(),
+			$services->getLinkBatchFactory(),
+			$services->getContentLanguage(),
+			$services->getMainConfig()->get( 'ArticleGuidanceOutlinePagePrefix' ),
+		);
+	},
 	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {
 		return new OutlineService(
 			$services->getTitleFactory(),

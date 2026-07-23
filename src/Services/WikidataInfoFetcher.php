@@ -95,7 +95,10 @@ class WikidataInfoFetcher {
 			__METHOD__
 		);
 
-		$entities = $this->processWbgetentitiesResponse( $responses[0]['response'], $languageCode );
+		$entities = $this->processEntities(
+			$this->decodeWbgetentitiesResponse( $responses[0]['response'] ) ?? [],
+			$languageCode
+		);
 		$depths = $matchVia !== null
 			? $this->processDepthSparqlResponse( $responses[1]['response'], $matchVia )
 			: $this->processInferenceAndDepthSparqlResponse( $responses[1]['response'] );
@@ -114,14 +117,75 @@ class WikidataInfoFetcher {
 	}
 
 	/**
-	 * Process wbgetentities API response
+	 * Fetch label, description, and image for many entities in as few
+	 * wbgetentities requests as possible (chunked at the API's 50-id limit).
 	 *
-	 * @param array $response Response array from MultiHttpClient
+	 * Unlike fetchEntitiesCached this does no hierarchy-depth / match-via SPARQL —
+	 * those are only needed when a builder is launched (Special:Outlines/Qid), so
+	 * a listing of many entities stays cheap. The result is cached as a whole,
+	 * keyed by the requested id set and language.
+	 *
+	 * @param string[] $wikidataIds Wikidata Q IDs
 	 * @param string $languageCode Language code
-	 * @return array<string,array|null> Label, description, and image by Q ID, or null for
-	 *   an entity with none of them. Empty on failure.
+	 * @return array<string,array> Map of Q ID → [ 'label', 'description', 'image' ],
+	 *   omitting entities that have none of those
 	 */
-	private function processWbgetentitiesResponse( array $response, string $languageCode ): array {
+	public function fetchBasicEntities( array $wikidataIds, string $languageCode ): array {
+		$ids = array_values( array_unique( $wikidataIds ) );
+		if ( $ids === [] ) {
+			return [];
+		}
+		sort( $ids );
+		$cacheKey = $this->cache->makeKey(
+			'articleguidance', 'wikidata-basic', $languageCode, sha1( implode( '|', $ids ) ), 'v3'
+		);
+		$method = __METHOD__;
+
+		return $this->cache->getWithSetCallback(
+			$cacheKey,
+			WANObjectCache::TTL_WEEK,
+			function ( $oldValue, &$ttl, &$setOpts ) use ( $ids, $languageCode, $method ) {
+				$multiClient = $this->httpRequestFactory->createMultiClient();
+				$requests = [];
+				foreach ( array_chunk( $ids, 50 ) as $index => $chunk ) {
+					$requests[$index] = [
+						'method' => 'GET',
+						'url' => $this->wikidataUrls->getApiUrl( [
+							'action' => 'wbgetentities',
+							'props' => 'labels|descriptions|claims',
+							'ids' => implode( '|', $chunk ),
+							'languages' => $languageCode,
+							'languagefallback' => '1',
+							'format' => 'json'
+						] )
+					];
+				}
+				$responses = $multiClient->runMulti( $requests, [], $method );
+
+				$rawEntities = [];
+				foreach ( $responses as $item ) {
+					$decoded = $this->decodeWbgetentitiesResponse( $item['response'] );
+					if ( $decoded === null ) {
+						// Retry a failure soon
+						$ttl = WANObjectCache::TTL_MINUTE * 5;
+						continue;
+					}
+					$rawEntities += $decoded;
+				}
+				return array_filter( $this->processEntities( $rawEntities, $languageCode ) );
+			},
+			[
+				'pcTTL' => WANObjectCache::TTL_PROC_LONG,
+				'lockTSE' => 30,
+			]
+		);
+	}
+
+	/**
+	 * @param array $response Response array from MultiHttpClient
+	 * @return array<string,array>|null Entities by Q ID, without missing entities, or null on failure
+	 */
+	private function decodeWbgetentitiesResponse( array $response ): ?array {
 		[ $code, $reason, $headers, $body, $error ] = $response;
 
 		if ( $code !== 200 ) {
@@ -129,18 +193,36 @@ class WikidataInfoFetcher {
 				'code' => $code,
 				'error' => $error,
 			] );
-			return [];
+			return null;
 		}
 
 		$data = json_decode( $body, true );
 		if ( !is_array( $data ) || !is_array( $data['entities'] ?? null ) ) {
 			$this->logger->error( 'Invalid Wikidata API response format' );
-			return [];
+			return null;
 		}
 
 		$entities = [];
 		foreach ( $data['entities'] as $id => $entity ) {
-			$entities[$id] = is_array( $entity ) ? $this->processEntity( $entity, $languageCode ) : null;
+			if ( is_array( $entity ) && !isset( $entity['missing'] ) ) {
+				$entities[(string)$id] = $entity;
+			}
+		}
+		return $entities;
+	}
+
+	/**
+	 * Extract label, description, and image of each entity.
+	 *
+	 * @param array<string,array> $rawEntities Entities from a wbgetentities response, by Q ID
+	 * @param string $languageCode Language code
+	 * @return array<string,array|null> Label, description, and image by Q ID, or null for
+	 *   an entity with none of them
+	 */
+	private function processEntities( array $rawEntities, string $languageCode ): array {
+		$entities = [];
+		foreach ( $rawEntities as $id => $entity ) {
+			$entities[$id] = $this->processEntity( $entity, $languageCode );
 		}
 		return $entities;
 	}

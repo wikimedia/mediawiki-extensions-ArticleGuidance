@@ -2,7 +2,7 @@
  * SPARQL query utilities for Wikidata
  */
 
-const { buildSparqlUrl } = require( '../utils/wikidata.js' );
+const { buildSparqlUrl } = require( 'ext.articleguidance.common' );
 
 const PROP_INSTANCE_OF = 'P31';
 const PROP_SUBCLASS_OF = 'P279';

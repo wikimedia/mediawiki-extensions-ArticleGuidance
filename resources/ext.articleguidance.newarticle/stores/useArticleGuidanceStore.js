@@ -1,6 +1,6 @@
 const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
-const { fetchOutlines } = require( '../api/Outlines.js' );
+const { fetchOutlines } = require( 'ext.articleguidance.common' );
 const { checkPagesExist, fetchLocalArticleData } = require( '../api/MediaWiki.js' );
 const {
 	evaluateNotabilityTags,

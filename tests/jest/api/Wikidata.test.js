@@ -2,7 +2,7 @@
 
 // config.json is a virtual ResourceLoader module (not on disk), so provide it here.
 jest.mock(
-	'../../../resources/ext.articleguidance.newarticle/config.json',
+	'../../../resources/ext.articleguidance.common/config.json',
 	() => ( {
 		ArticleGuidanceWikidataUrls: {
 			api: 'https://www.wikidata.org/w/api.php',

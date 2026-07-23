@@ -318,6 +318,33 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertNull( $service->getOutlineByQId( OutlineService::GENERIC_ARTICLE_TYPE ) );
 	}
 
+	public function testWritesDefaultGenericOutlineAsWikitext(): void {
+		$wikitext = $this->getService( [], [] )->getDefaultGenericOutlineWikitext();
+
+		$this->assertStringStartsWith(
+			'<article-guidance article-type="*" notability-risk="junior sources">',
+			$wikitext
+		);
+		$this->assertStringContainsString(
+			"<instructions>\n" .
+				wfMessage( 'articleguidance-default-outline-instructions' )->inContentLanguage()->plain() .
+				"\n</instructions>",
+			$wikitext
+		);
+		$this->assertStringContainsString(
+			'  <info>' .
+				wfMessage( 'articleguidance-default-outline-recommended-source-1' )->inContentLanguage()->plain() .
+				'</info>',
+			$wikitext
+		);
+		$this->assertSame( 7, substr_count( $wikitext, '<info>' ) );
+		$this->assertStringEndsWith(
+			"</article-guidance>\n\n" .
+				wfMessage( 'articleguidance-default-outline-preload' )->inContentLanguage()->plain() . "\n",
+			$wikitext
+		);
+	}
+
 	public function testAddsDefaultGenericOutlineToAnEmptyCategory(): void {
 		$service = $this->getService( [], [] );
 

@@ -6,7 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 /**
  * Single source of truth for building Wikidata URLs from the
- * ArticleGuidanceWikidataUrls config. Mirrors the JS utils/wikidata.js helper.
+ * ArticleGuidanceWikidataUrls config. Mirrors the JS ext.articleguidance.common/wikidata.js helper.
  */
 class WikidataUrls {
 

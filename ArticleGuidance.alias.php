@@ -11,6 +11,7 @@ $specialPageAliases = [];
 /** English (English) */
 $specialPageAliases['en'] = [
 	'NewArticle' => [ 'NewArticle' ],
+	'Outlines' => [ 'Outlines' ],
 ];
 
 /** Polish (polski) */

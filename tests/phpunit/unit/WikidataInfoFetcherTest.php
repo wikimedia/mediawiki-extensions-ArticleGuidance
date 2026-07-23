@@ -64,6 +64,10 @@ class WikidataInfoFetcherTest extends MediaWikiUnitTestCase {
 				foreach ( $reqs as &$req ) {
 					$type = str_contains( $req['url'], 'wbgetentities' ) ? 'wbgetentities' : 'sparql';
 					[ $code, $body ] = $responses[$type];
+					if ( isset( $body['entities'] ) ) {
+						$ids = explode( '|', self::getQueryParams( $req )['ids'] );
+						$body['entities'] = array_intersect_key( $body['entities'], array_flip( $ids ) );
+					}
 					$req['response'] = [ $code, '', [], json_encode( $body ), '' ];
 				}
 				return $reqs;

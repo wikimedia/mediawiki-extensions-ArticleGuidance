@@ -5,4 +5,4 @@ more easily by providing in-context guidance.
 
 For more details, see [ArticleGuidance].
 
-[ArticleGuidance]:	https://www.mediawiki.org/wiki/Special:MyLanguage/ArticleGuidance
+[ArticleGuidance]:	https://www.mediawiki.org/wiki/Special:MyLanguage/Article_guidance

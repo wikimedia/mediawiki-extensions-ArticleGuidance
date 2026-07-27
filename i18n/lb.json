@@ -14,6 +14,7 @@
 	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
 	"articleguidance-sources-helper-progress": "$1 vu(n) {{PLURAL:$2|$2 Sourcen}} derbäigesat.",
+	"articleguidance-instructions-guidance-intro": "Tipps vun Editeuren op dëser Wiki.",
 	"articleguidance-type-label": "Typ:",
 	"articleguidance-invalid-article-type": "Ongültegen Artikeltyp: „$1“ (erwaart Format: Q12345)",
 	"articleguidance-notability-warning-crosswiki": "Fir en Artikel iwwer dëse Sujet unzeleeën, muss et e schonn op enger anerer Wikipedia ginn.",

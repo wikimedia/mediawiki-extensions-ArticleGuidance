@@ -23,7 +23,7 @@
 				<!-- Loading state -->
 				<div v-if="loading">
 					<cdx-progress-indicator show-label>
-						{{ $i18n( 'articleguidance-specialnewarticle-checking' ).text() }}
+						{{ checkingMessage }}
 					</cdx-progress-indicator>
 				</div>
 
@@ -156,7 +156,7 @@ const { defineComponent, ref, onMounted, computed, watch, nextTick } = require( 
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxButton, CdxIcon, CdxProgressIndicator } = require( '../codex.js' );
 const { cdxIconInfo } = require( '../icons.json' );
-const { useSearch } = require( '../composables/useSearch.js' );
+const useSearchDelayed = require( '../composables/useSearchDelayed.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -189,8 +189,13 @@ module.exports = defineComponent( {
 
 		// Initialize search composable
 		const {
-			results, loading, error, performSearch, articleExist, checkExistence
-		} = useSearch( searchQuery, selectedLanguage );
+			results, loading, error, performSearch, articleExist, checkExistence, isDelayed
+		} = useSearchDelayed( searchQuery, selectedLanguage );
+
+		// The loading message based on the delay state.
+		const checkingMessage = computed( () => isDelayed.value ?
+			mw.msg( 'articleguidance-specialnewarticle-checking-subject-delayed' ) :
+			mw.msg( 'articleguidance-specialnewarticle-checking-subject' ) );
 
 		onMounted( () => {
 			store.loadOutlines();
@@ -330,7 +335,8 @@ module.exports = defineComponent( {
 			showResults,
 			showNoResults,
 			showSkipGuidance,
-			cdxIconInfo
+			cdxIconInfo,
+			checkingMessage
 		};
 	}
 } );

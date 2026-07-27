@@ -14,6 +14,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Placeholder text for the Wikidata search input field",
 	"articleguidance-specialnewarticle-loading": "Loading state message displayed while searching Wikidata",
 	"articleguidance-specialnewarticle-checking": "Progress indicator message displayed while checking search results against available outlines",
+	"articleguidance-specialnewarticle-checking-subject": "Progress indicator message displayed while checking search results for a matching subject in the search step",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Progress indicator message displayed when checking search results for a matching subject takes longer than the expected threshold in the search step",
 	"articleguidance-specialnewarticle-no-results": "Message shown when no Wikidata entities match the search query. Parameters: $1 is the search query text",
 	"articleguidance-specialnewarticle-search-error": "Error message shown inline in the search results area when all Wikidata queries fail even after a silent retry. Followed by a 'Try again' button.",
 	"articleguidance-specialnewarticle-search-retry": "Label for the inline button that lets the user manually retry after a search error in the search step.",

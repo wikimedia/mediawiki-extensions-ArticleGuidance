@@ -381,10 +381,12 @@
 			"packageFiles": [
 				"init.js",
 				"connectWikidata.js",
+				"instrument.js",
 				"PublishFollowUp.vue",
 				{
 					"name": "config.json",
 					"config": [
+						"ArticleGuidanceExperimentName",
 						"ArticleGuidanceWikidataUrls"
 					]
 				},

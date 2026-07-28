@@ -74,8 +74,10 @@ function useWikidataSearch( query, language ) {
 	 * @return {Promise<Object>} Mapped results, sparqlMatches, and outlineByType
 	 */
 	const processCandidates = async ( candidates, outlines, isTranslation = false ) => {
-		// Filter outlines to those with a valid article type
-		const validOutlines = outlines.filter( ( outline ) => outline.articleType );
+		// Filter outlines to those with at least one valid article type
+		const validOutlines = outlines.filter(
+			( outline ) => outline.articleTypes && outline.articleTypes.length > 0
+		);
 
 		if ( candidates.length === 0 || validOutlines.length === 0 ) {
 			return {
@@ -133,10 +135,13 @@ function useWikidataSearch( query, language ) {
 			directTypesByGroup[ key ] = itemTypeMap;
 		} );
 
-		// Build outline lookup, keyed by the article type each outline matches
+		// Build outline lookup, keyed by the article types each outline matches.
+		// A multi-item outline gets one entry per Q ID (many keys → same outline).
 		const outlineByType = {};
 		validOutlines.forEach( ( outline ) => {
-			outlineByType[ outline.articleType ] = outline;
+			outline.articleTypes.forEach( ( typeEntry ) => {
+				outlineByType[ typeEntry.id ] = outline;
+			} );
 		} );
 		const outlineQIdSet = new Set( Object.keys( outlineByType ) );
 
@@ -162,12 +167,16 @@ function useWikidataSearch( query, language ) {
 			const matchedQIds = sparqlMatches[ result.id ] || [];
 			const supported = matchedQIds.length > 0;
 			const outlineNames = [];
+			const seenOutlineTitles = new Set();
 			let outlineThumbnail = null;
 			matchedQIds.forEach( ( matchedQId ) => {
 				const outline = outlineByType[ matchedQId ];
-				if ( !outline ) {
+				// Dedupe by outline page title: an item can match a
+				// multi-item outline through several of its Q IDs
+				if ( !outline || seenOutlineTitles.has( outline.title ) ) {
 					return;
 				}
+				seenOutlineTitles.add( outline.title );
 				if ( outline.label && !outlineNames.includes( outline.label ) ) {
 					outlineNames.push( outline.label );
 				}

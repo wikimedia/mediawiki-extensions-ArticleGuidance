@@ -167,7 +167,7 @@ function pressAnyKey() {
 }
 
 async function validateOutline( title ) {
-	const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v0/outlines`;
+	const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v1/outlines`;
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	const restResponse = await fetch( restUrl, {
 		headers: { 'User-Agent': USER_AGENT, Cookie: serializeCookies() }
@@ -191,11 +191,12 @@ async function validateOutline( title ) {
 	if ( !outline.description ) {
 		missing.push( 'description' );
 	}
-	if ( !outline.articleType ) {
-		missing.push( 'articleType' );
-	}
-	if ( typeof outline.hierarchyDepth !== 'number' ) {
-		missing.push( 'hierarchyDepth' );
+	if ( !Array.isArray( outline.articleTypes ) || outline.articleTypes.length === 0 ) {
+		missing.push( 'articleTypes' );
+	} else if ( outline.articleTypes.some(
+		( t ) => !t.id || typeof t.hierarchyDepth !== 'number'
+	) ) {
+		missing.push( 'articleTypes[].id/hierarchyDepth' );
 	}
 	if ( missing.length > 0 ) {
 		return { ok: false, warn: true, reason: `missing or empty fields: ${ missing.join( ', ' ) }` };
@@ -362,7 +363,10 @@ async function main() {
 			try {
 				const result = await validateOutline( title );
 				if ( result.ok ) {
-					console.log( green( `  ✓ outline validated (hierarchyDepth: ${ result.outline.hierarchyDepth })` ) );
+					const depths = result.outline.articleTypes
+						.map( ( t ) => `${ t.id }: ${ t.hierarchyDepth }` )
+						.join( ', ' );
+					console.log( green( `  ✓ outline validated (hierarchyDepth: ${ depths })` ) );
 				} else if ( result.warn ) {
 					console.warn( yellow( `  ⚠ incomplete data — ${ result.reason }` ) );
 				} else {
@@ -390,7 +394,7 @@ async function main() {
 	console.log( '' );
 	console.log( 'Verifying outlines REST API…' );
 	try {
-		const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v0/outlines`;
+		const restUrl = `${ baseUrl }/w/rest.php/articleguidance/v1/outlines`;
 		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		const restResponse = await fetch( restUrl, {
 			headers: { 'User-Agent': USER_AGENT, Cookie: serializeCookies() }

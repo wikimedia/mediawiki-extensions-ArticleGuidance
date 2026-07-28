@@ -10,7 +10,7 @@
  */
 async function fetchOutlines() {
 	const api = new mw.Rest();
-	const response = await api.get( '/articleguidance/v0/outlines' );
+	const response = await api.get( '/articleguidance/v1/outlines' );
 	return response.outlines || [];
 }
 

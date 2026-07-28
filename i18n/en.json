@@ -51,6 +51,7 @@
 	"articleguidance-category-note": "Articles created from this outline will be added to $1.",
 	"articleguidance-header": "Article Guidance",
 	"articleguidance-type-label": "Type:",
+	"articleguidance-type-item-description": "– $1",
 	"articleguidance-invalid-article-type": "Invalid article-type: \"$1\" (expected format: Q12345)",
 	"articleguidance-notability-restrictions-title": "Notability restrictions",
 	"articleguidance-notability-warning": "New articles of this type are often deleted on this wiki. Starting with one of the options below gives new contributors a better chance to succeed",

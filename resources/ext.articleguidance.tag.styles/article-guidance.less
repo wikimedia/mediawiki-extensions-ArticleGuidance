@@ -29,12 +29,10 @@
 }
 
 .ext-articleguidance-type {
-	display: inline-block;
 	background-color: @background-color-neutral-subtle;
 	padding: 2px 8px;
 	border-radius: 2px;
 	font-size: 0.9em;
-	margin-right: 8px;
 }
 
 .ext-articleguidance-type-label {
@@ -42,6 +40,17 @@
 	color: @color-progressive;
 }
 
+.ext-articleguidance-type-item {
+	margin-top: 2px;
+}
+
+.ext-articleguidance-type-description {
+	font-style: italic;
+	color: @color-subtle;
+}
+
+// Only emitted by parser output cached before the one-row-per-item type list;
+// TODO: remove once those parser cache entries have expired.
 .ext-articleguidance-description {
 	font-style: italic;
 	color: @color-subtle;

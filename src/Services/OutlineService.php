@@ -35,15 +35,17 @@ class OutlineService {
 	}
 
 	/**
-	 * Get a single outline by its Wikidata Q-ID, or null if not found.
+	 * Get a single outline by any of its Wikidata Q-IDs, or null if not found.
 	 *
 	 * @param string $qId
 	 * @return array|null
 	 */
 	public function getOutlineByQId( string $qId ): ?array {
 		foreach ( $this->getOutlines() as $outline ) {
-			if ( ( $outline['articleType'] ?? null ) === $qId ) {
-				return $outline;
+			foreach ( $outline['articleTypes'] as $typeEntry ) {
+				if ( $typeEntry['id'] === $qId ) {
+					return $outline;
+				}
 			}
 		}
 		return null;
@@ -98,20 +100,34 @@ class OutlineService {
 			if ( !is_array( $pageData ) ) {
 				continue;
 			}
+			// Synthesize the per-ID list for blobs persisted before multi-item
+			// support (T421260). This is the only place the page property is
+			// read, so downstream consumers (REST, JS) can rely on articleTypes
+			// unconditionally.
+			$articleTypes = $pageData['articleTypes'] ?? [ [
+				'id' => $pageData['articleType'],
+				'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
+				'matchVia' => $pageData['matchVia'] ?? null,
+			] ];
 			// Capitalize the first letter at read time so labels persisted in
 			// page_props before the capitalization fix (T427201) are corrected
 			// without waiting for the pages to be re-parsed.
-			$label = $this->contentLanguage->ucfirst( $pageData['label'] ?? $pageData['articleType'] );
+			$label = $this->contentLanguage->ucfirst( $pageData['label'] ?? $articleTypes[0]['id'] );
 			$outlines[] = [
 				'title' => $member->getPrefixedText(),
 				'label' => $label,
 				'description' => $pageData['description'] ?? '',
-				'articleType' => $pageData['articleType'],
-				'matchVia' => $pageData['matchVia'] ?? null,
+				'articleTypes' => $articleTypes,
+				// The primary entry is also exposed through the pre-multi-item
+				// singular fields, so JS bundles still cached from before the
+				// deploy keep matching on it (T421260). TODO: Drop these three keys
+				// together with the /v0 route once that window has passed.
+				'articleType' => $articleTypes[0]['id'],
+				'hierarchyDepth' => $articleTypes[0]['hierarchyDepth'] ?? null,
+				'matchVia' => $articleTypes[0]['matchVia'] ?? null,
 				'instructions' => $pageData['instructions'] ?? null,
 				'thumbnail' => $pageData['image'] ?? null,
 				'notabilityRisk' => $pageData['notabilityRisk'] ?? [],
-				'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
 				'recommendedSources' => $pageData['recommendedSources'] ?? [],
 				'discouragedSources' => $pageData['discouragedSources'] ?? [],
 			];

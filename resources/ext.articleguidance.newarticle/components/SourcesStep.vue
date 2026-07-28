@@ -335,7 +335,7 @@ module.exports = defineComponent( {
 				const result = await validateSource(
 					url,
 					null,
-					selectedOutline.value && selectedOutline.value.articleType
+					selectedOutline.value && selectedOutline.value.articleTypes[ 0 ].id
 				);
 				const mandatory = minRequiredSources.value > 0;
 				if ( result.classification === 'spam' || result.classification === 'discouraged' ) {

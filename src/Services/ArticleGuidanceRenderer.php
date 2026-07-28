@@ -26,9 +26,9 @@ class ArticleGuidanceRenderer {
 	 * Render the article guidance HTML
 	 *
 	 * @param Language $targetLanguage Parser target/content language for message localization
-	 * @param string|null $wikidataId Wikidata Q ID
-	 * @param string|null $wikidataLabel Label from Wikidata
-	 * @param string|null $wikidataDescription Description from Wikidata
+	 * @param array $articleTypes Ordered list of { id, label, description, matchVia }
+	 *   entries, one per configured Wikidata item; label/description are null in
+	 *   preview. Empty when the article-type attribute is missing or invalid.
 	 * @param string|null $articleType Raw article-type attribute (for error display)
 	 * @param array $notabilityRisk Valid notability-risk tags
 	 * @param array $invalidNotabilityRisk Unknown notability-risk tags
@@ -37,15 +37,12 @@ class ArticleGuidanceRenderer {
 	 * @param array|null $discouragedSourcesHtml List of discouraged sources HTML
 	 * @param string|null $wikidataImage Wikidata image URL
 	 * @param array $notabilityThresholds Notability thresholds
-	 * @param string|null $matchVia Match-via property for tooltip info
 	 * @param string|null $categoryNoteHtml Pre-parsed category note HTML
 	 * @return string Rendered HTML
 	 */
 	public function render(
 		Language $targetLanguage,
-		?string $wikidataId,
-		?string $wikidataLabel,
-		?string $wikidataDescription,
+		array $articleTypes,
 		?string $articleType,
 		array $notabilityRisk,
 		array $invalidNotabilityRisk,
@@ -54,14 +51,16 @@ class ArticleGuidanceRenderer {
 		?array $discouragedSourcesHtml,
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
-		?string $matchVia = null,
 		?string $categoryNoteHtml = null
 	): string {
-		$isValid = $wikidataId !== null;
+		$isValid = $articleTypes !== [];
+		// The attribute was supplied but no ID survived parsing; distinct from the
+		// attribute being absent, which leaves $articleTypes empty too.
+		$hasInvalidType = !$isValid && $articleType !== null;
 
 		// Build CSS classes
 		$classes = [ 'ext-articleguidance' ];
-		if ( !$isValid && $articleType !== null ) {
+		if ( $hasInvalidType ) {
 			$classes[] = 'ext-articleguidance-invalid';
 		}
 
@@ -74,7 +73,7 @@ class ArticleGuidanceRenderer {
 			$topHtml .= Html::element( 'img', [
 				'src' => $wikidataImage,
 				'class' => 'ext-articleguidance-image',
-				'alt' => $wikidataLabel ?? ''
+				'alt' => $articleTypes[0]['label'] ?? ''
 			] );
 		}
 
@@ -82,40 +81,47 @@ class ArticleGuidanceRenderer {
 			Message::newFromKey( 'articleguidance-header' )->inLanguage( $targetLanguage )->text()
 		);
 
-		if ( $wikidataId ) {
+		if ( $isValid ) {
 			$typeHtml = Html::element( 'span', [ 'class' => 'ext-articleguidance-type-label' ],
-				Message::newFromKey( 'articleguidance-type-label' )->inLanguage( $targetLanguage )->text() . ' '
+				Message::newFromKey( 'articleguidance-type-label' )->inLanguage( $targetLanguage )->text()
 			);
-			$linkAttrs = [
-				'href' => $this->wikidataUrls->getPageUrl( $wikidataId ),
-				'target' => '_blank',
-			];
-			if ( $matchVia !== null ) {
-				$propName = WikidataProperties::PROPERTY_NAMES[$matchVia] ?? $matchVia;
-				$linkAttrs['title'] = "match-via: $matchVia ($propName)";
-			} else {
-				$p31 = WikidataProperties::PROP_INSTANCE_OF;
-				$p279 = WikidataProperties::PROP_SUBCLASS_OF;
-				$p31Name = WikidataProperties::PROPERTY_NAMES[$p31];
-				$p279Name = WikidataProperties::PROPERTY_NAMES[$p279];
-				$linkAttrs['title'] = "match-via: default ($p31 $p31Name / $p279 $p279Name*)";
-			}
-			$typeHtml .= Html::element( 'a', $linkAttrs, $wikidataId );
+			// One row per configured item: link + label + description
+			foreach ( $articleTypes as $entry ) {
+				$matchVia = $entry['matchVia'];
+				$linkAttrs = [
+					'href' => $this->wikidataUrls->getPageUrl( $entry['id'] ),
+					'target' => '_blank',
+				];
+				if ( $matchVia !== null ) {
+					$propName = WikidataProperties::PROPERTY_NAMES[$matchVia] ?? $matchVia;
+					$linkAttrs['title'] = "match-via: $matchVia ($propName)";
+				} else {
+					$p31 = WikidataProperties::PROP_INSTANCE_OF;
+					$p279 = WikidataProperties::PROP_SUBCLASS_OF;
+					$p31Name = WikidataProperties::PROPERTY_NAMES[$p31];
+					$p279Name = WikidataProperties::PROPERTY_NAMES[$p279];
+					$linkAttrs['title'] = "match-via: default ($p31 $p31Name / $p279 $p279Name*)";
+				}
+				$rowHtml = Html::element( 'a', $linkAttrs, $entry['id'] );
 
-			if ( $wikidataLabel ) {
-				$label = Html::element( 'span', [], $wikidataLabel );
-				$typeHtml .= ' ' . Message::newFromKey( 'parentheses' )
-					->inLanguage( $targetLanguage )->rawParams( $label )->escaped();
+				if ( $entry['label'] !== null && $entry['label'] !== '' ) {
+					$label = Html::element( 'span', [], $entry['label'] );
+					$rowHtml .= ' ' . Message::newFromKey( 'parentheses' )
+						->inLanguage( $targetLanguage )->rawParams( $label )->escaped();
+				}
+				if ( $entry['description'] !== null && $entry['description'] !== '' ) {
+					$rowHtml .= ' ' . Html::element( 'span',
+						[ 'class' => 'ext-articleguidance-type-description' ],
+						Message::newFromKey( 'articleguidance-type-item-description', $entry['description'] )
+							->inLanguage( $targetLanguage )->text()
+					);
+				}
+				$typeHtml .= Html::rawElement( 'div',
+					[ 'class' => 'ext-articleguidance-type-item' ], $rowHtml );
 			}
 
 			$topHtml .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-type' ], $typeHtml );
-
-			if ( $wikidataDescription ) {
-				$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-description' ],
-					$wikidataDescription
-				);
-			}
-		} elseif ( $articleType !== null ) {
+		} elseif ( $hasInvalidType ) {
 			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
 				Message::newFromKey( 'articleguidance-invalid-article-type', $articleType )
 					->inLanguage( $targetLanguage )->text()

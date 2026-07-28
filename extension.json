@@ -107,6 +107,14 @@
 	],
 	"RestRoutes": [
 		{
+			"path": "/articleguidance/v1/outlines",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ListOutlinesHandler",
+			"services": [
+				"ArticleGuidanceOutlineService"
+			]
+		},
+		{
 			"path": "/articleguidance/v0/outlines",
 			"method": "GET",
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ListOutlinesHandler",

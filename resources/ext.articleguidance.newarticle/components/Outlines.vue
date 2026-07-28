@@ -21,7 +21,7 @@
 		<div v-if="!loading && outlinesList.length > 0" class="ext-articleguidance-outlines-list">
 			<article-card
 				v-for="outlineItem in outlinesList"
-				:key="outlineItem.articleType"
+				:key="outlineItem.title"
 				:title="outlineItem.label"
 				:description="outlineItem.description"
 				:thumbnail="false"
@@ -85,7 +85,7 @@ module.exports = defineComponent( {
 		const handleSelectOutline = ( outlineItem ) => {
 			instrument.logSelectManualTopic( {
 				title: outlineItem.title,
-				qid: outlineItem.articleType
+				qid: outlineItem.articleTypes[ 0 ].id
 			} );
 			store.selectOutline( outlineItem );
 		};

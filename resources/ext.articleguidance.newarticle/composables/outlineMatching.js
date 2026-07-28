@@ -14,18 +14,26 @@ function propForGroup( key ) {
 }
 
 /**
- * Group outline articleType Q IDs by their matchVia property value.
+ * Group outline article-type Q IDs by their matchVia property value.
+ *
+ * An outline can list several Q IDs (T421260); each is bucketed by its own
+ * matchVia, since e.g. an occupation item and a class item on the same
+ * outline must be matched through different property paths.
  *
  * @param {Array} outlines
  * @return {Object} Map of matchVia key → array of Q IDs
  */
 function groupOutlinesByMatchVia( outlines ) {
 	return outlines.reduce( ( groups, outline ) => {
-		const key = outline.matchVia || 'default';
-		if ( !groups[ key ] ) {
-			groups[ key ] = [];
-		}
-		groups[ key ].push( outline.articleType );
+		outline.articleTypes.forEach( ( typeEntry ) => {
+			const key = typeEntry.matchVia || 'default';
+			if ( !groups[ key ] ) {
+				groups[ key ] = [];
+			}
+			if ( !groups[ key ].includes( typeEntry.id ) ) {
+				groups[ key ].push( typeEntry.id );
+			}
+		} );
 		return groups;
 	}, {} );
 }
@@ -100,17 +108,18 @@ function applyHierarchyMatches( matches, itemHierarchyMatches ) {
  * 2. Within the surviving strategy group, keep only the highest-depth matches.
  *
  * @param {Object} matches Map of { itemQId: string[] }
- * @param {Array} outlines Outline objects with articleType, matchVia, hierarchyDepth
+ * @param {Array} outlines Outline objects with an articleTypes array of
+ *   { id, hierarchyDepth, matchVia } entries
  * @return {Object} Filtered map of { itemQId: string[] }
  */
 function selectBestMatches( matches, outlines ) {
 	const depthByType = {};
 	const matchViaByType = {};
 	outlines.forEach( ( outline ) => {
-		if ( outline.articleType ) {
-			depthByType[ outline.articleType ] = outline.hierarchyDepth || 0;
-			matchViaByType[ outline.articleType ] = outline.matchVia || null;
-		}
+		outline.articleTypes.forEach( ( typeEntry ) => {
+			depthByType[ typeEntry.id ] = typeEntry.hierarchyDepth || 0;
+			matchViaByType[ typeEntry.id ] = typeEntry.matchVia || null;
+		} );
 	} );
 
 	const result = {};

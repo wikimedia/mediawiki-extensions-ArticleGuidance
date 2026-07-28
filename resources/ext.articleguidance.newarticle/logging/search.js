@@ -31,10 +31,14 @@ function reportSearchEvaluation( searchQuery, results, sparqlMatches, outlineByT
 
 	const formatOutline = ( qid ) => {
 		const outline = outlineByType[ qid ];
-		const label = outline ? ( outline.label || qid ) : qid;
-		const depth = ( outline && outline.hierarchyDepth !== null &&
-			outline.hierarchyDepth !== undefined ) ? outline.hierarchyDepth : '?';
-		return label + ' (depth ' + depth + ')';
+		if ( !outline ) {
+			return qid + ' (depth ?)';
+		}
+		// Depth is per matched Q ID, not per outline (T421260)
+		const typeEntry = ( outline.articleTypes || [] ).find( ( t ) => t.id === qid );
+		const depth = ( typeEntry && typeEntry.hierarchyDepth !== null &&
+			typeEntry.hierarchyDepth !== undefined ) ? typeEntry.hierarchyDepth : '?';
+		return ( outline.label || qid ) + ' (depth ' + depth + ')';
 	};
 
 	const rows = displayed.map( ( result ) => {

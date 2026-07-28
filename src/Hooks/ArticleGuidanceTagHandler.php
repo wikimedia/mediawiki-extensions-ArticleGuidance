@@ -78,7 +78,6 @@ class ArticleGuidanceTagHandler implements
 		if ( $explicitMatchVia !== null && !$this->isValidWikidataPropertyId( $explicitMatchVia ) ) {
 			$explicitMatchVia = null;
 		}
-		$matchVia = $explicitMatchVia;
 
 		$category = null;
 		$rawCategory = trim( $attributes['category'] ?? '' );
@@ -105,39 +104,63 @@ class ArticleGuidanceTagHandler implements
 			'crosswiki' => $this->mainConfig->get( 'ArticleGuidanceCrossWikiThreshold' ),
 		];
 
-		$wikidataId = null;
-		$wikidataLabel = null;
-		$wikidataDescription = null;
 		$wikidataImage = null;
-		$hierarchyDepth = null;
-		// Effective label used for storage and rendering; resolved against Wikidata below
-		$displayLabel = $customLabel !== '' ? $customLabel : null;
+		// Renderer-facing list of { id, label, description, matchVia } entries;
+		// labels/descriptions are resolved against Wikidata below when not previewing
+		$renderTypes = [];
 
 		if ( $articleType !== null ) {
-			if ( $this->isValidWikidataId( $articleType ) ) {
-				$wikidataId = $articleType;
+			$wikidataIds = $this->parseArticleTypes( $articleType );
+			if ( $wikidataIds !== [] ) {
+				foreach ( $wikidataIds as $id ) {
+					$renderTypes[] = [
+						'id' => $id,
+						'label' => null,
+						'description' => null,
+						'matchVia' => $explicitMatchVia,
+					];
+				}
 
 				if ( !$parser->getOptions()->getIsPreview() ) {
 					// Get user language
 					$language = $parser->getContentLanguage()->getCode();
 
-					$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
-						$wikidataId, $language, $explicitMatchVia
-					);
-					if ( $entityData ) {
-						$wikidataLabel = $entityData['label'] ?? null;
-						$wikidataDescription = $entityData['description'] ?? null;
-						$wikidataImage = $entityData['image'] ?? null;
-						$hierarchyDepth = $entityData['hierarchyDepth'] ?? null;
+					// Fetch entity data per ID; each ID keeps its own hierarchy
+					// depth and match-via since both are properties of the item
+					$typeEntries = [];
+					foreach ( $wikidataIds as $i => $id ) {
+						$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
+							$id, $language, $explicitMatchVia
+						);
 						// Use inferred match-via from entity data; explicit override takes precedence
-						$matchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
+						$entryMatchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
+						$typeEntries[] = [
+							'id' => $id,
+							'hierarchyDepth' => $entityData['hierarchyDepth'] ?? null,
+							'matchVia' => $entryMatchVia,
+						];
+						$renderTypes[$i]['label'] = $entityData['label'] ?? null;
+						$renderTypes[$i]['description'] = $entityData['description'] ?? null;
+						$renderTypes[$i]['matchVia'] = $entryMatchVia;
+						if ( $i === 0 ) {
+							// The first (primary) ID supplies the stored
+							// outline's image
+							$wikidataImage = $entityData['image'] ?? null;
+						}
 					}
 
-					// Custom label takes precedence over the Wikidata label
-					$displayLabel = $customLabel !== '' ? $customLabel : $wikidataLabel;
+					// The primary ID also supplies the stored outline's label and
+					// description; a custom label takes precedence over Wikidata's
+					$displayLabel = $customLabel !== '' ? $customLabel : $renderTypes[0]['label'];
+					$primaryDescription = $renderTypes[0]['description'];
 
-					$description = $wikidataDescription !== null ? ucfirst( $wikidataDescription ) : null;
-					$data = [ 'articleType' => $wikidataId ];
+					$description = $primaryDescription !== null ? ucfirst( $primaryDescription ) : null;
+					$data = [
+						// Singular primary ID kept for rollback compatibility with
+						// pre-multi-item readers; runtime consumers use articleTypes
+						'articleType' => $wikidataIds[0],
+						'articleTypes' => $typeEntries,
+					];
 					if ( $displayLabel !== null && $displayLabel !== '' ) {
 						$data['label'] = $displayLabel;
 					}
@@ -149,12 +172,6 @@ class ArticleGuidanceTagHandler implements
 					}
 					if ( $validTags !== [] ) {
 						$data['notabilityRisk'] = $validTags;
-					}
-					if ( $hierarchyDepth !== null ) {
-						$data['hierarchyDepth'] = $hierarchyDepth;
-					}
-					if ( $matchVia !== null ) {
-						$data['matchVia'] = $matchVia;
 					}
 					if ( $instructionsHtml !== null && $instructionsHtml !== '' ) {
 						$data['instructions'] = $instructionsHtml;
@@ -170,6 +187,12 @@ class ArticleGuidanceTagHandler implements
 						$data['discouragedSources'] = [ 'info' => $disInfo, 'urls' => $disUrls ];
 					}
 					$parser->getOutput()->setPageProperty( 'articleguidance-data', json_encode( $data ) );
+				}
+
+				// On the rendered card, a custom label replaces the primary
+				// entry's label; other entries keep their Wikidata labels
+				if ( $customLabel !== '' ) {
+					$renderTypes[0]['label'] = $customLabel;
 				}
 			}
 		}
@@ -192,9 +215,7 @@ class ArticleGuidanceTagHandler implements
 		// Render HTML using the renderer service
 		$html = $this->renderer->render(
 			$targetLanguage,
-			$wikidataId,
-			$displayLabel,
-			$wikidataDescription,
+			$renderTypes,
 			$articleType,
 			$validTags,
 			$invalidTags,
@@ -203,11 +224,34 @@ class ArticleGuidanceTagHandler implements
 			$discouragedSourcesHtml,
 			$wikidataImage,
 			$notabilityThresholds,
-			$matchVia,
 			$categoryNoteHtml
 		);
 
 		return $html;
+	}
+
+	/**
+	 * Parse the article-type attribute into a list of Wikidata Q IDs.
+	 *
+	 * Accepts one or more whitespace-separated Q IDs. Returns an empty array
+	 * when the attribute is blank or any token is malformed, so a typo
+	 * invalidates the whole attribute instead of silently matching fewer types.
+	 *
+	 * @param string $value Attribute value to parse
+	 * @return string[] Unique Q IDs in authoring order; the first is the primary
+	 */
+	private function parseArticleTypes( string $value ): array {
+		$tokens = preg_split( '/\s+/', trim( $value ), -1, PREG_SPLIT_NO_EMPTY );
+		$ids = [];
+		foreach ( $tokens as $token ) {
+			if ( !$this->isValidWikidataId( $token ) ) {
+				return [];
+			}
+			if ( !in_array( $token, $ids, true ) ) {
+				$ids[] = $token;
+			}
+		}
+		return $ids;
 	}
 
 	/**

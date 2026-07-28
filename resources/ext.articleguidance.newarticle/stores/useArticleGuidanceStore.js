@@ -162,7 +162,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		selectedResult.value = result;
 
 		const matchedOutline = outlines.value && outlines.value.find(
-			( o ) => o.articleType === result.matchedQId
+			( o ) => o.articleTypes.some( ( t ) => t.id === result.matchedQId )
 		);
 		selectedOutline.value = matchedOutline;
 		if ( topicExistsOnWiki.value ) {
@@ -211,8 +211,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	async function selectOutline( outline ) {
-		const currentQId = selectedOutline.value && selectedOutline.value.articleType;
-		if ( currentQId !== outline.articleType ) {
+		// Compare by page title: it uniquely identifies an outline, unlike a
+		// Q ID, which is one of possibly several (T421260)
+		const currentTitle = selectedOutline.value && selectedOutline.value.title;
+		if ( currentTitle !== outline.title ) {
 			references.value = [];
 		}
 		selectedOutline.value = outline;
@@ -262,7 +264,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		const outline = selectedOutline.value;
 		const state = buildNotabilityState();
 		const { tagResults, willShow } = evaluateNotabilityTags( outline, state );
-		reportNotabilityEvaluation( outline, tagResults, selectedResult.value );
+		reportNotabilityEvaluation( outline, tagResults, willShow, selectedResult.value );
 		return willShow;
 	}
 
@@ -300,7 +302,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	async function startWriting() {
 		instrument.logWriteStart( {
 			title: selectedOutline.value && selectedOutline.value.title,
-			qid: selectedOutline.value && selectedOutline.value.articleType
+			qid: selectedOutline.value && selectedOutline.value.articleTypes[ 0 ].id
 		} );
 
 		// Resolve Citoid wikitext for each reference. The promise is normally

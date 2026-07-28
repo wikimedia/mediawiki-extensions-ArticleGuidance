@@ -82,6 +82,8 @@
 	"articleguidance-updatetitle-cancel": "Jooji",
 	"articleguidance-updatetitle-originally-typed": "Waxaad markii hore qortay \"$1\".",
 	"articleguidance-updatetitle-use-original": "Isticmaal taas",
+	"articleguidance-updatetitle-redlink-reminder": "Beddelidda cinwaanka waxay ka tagaysaa \"$1\" isagoo ah xiriiriye cas.",
+	"articleguidance-updatetitle-restore-redlink": "Ka noqo",
 	"articleguidance-updatetitle-edit-label": "Tafatir cinwaanka maqaalka",
 	"tag-articleguidance": "Hagidda maqaalka",
 	"tag-articleguidance-description": "Wax ka beddelka waxaa lagu sameeyay iyadoo la adeegsanayo",

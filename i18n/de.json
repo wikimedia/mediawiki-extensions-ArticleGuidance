@@ -82,6 +82,8 @@
 	"articleguidance-updatetitle-cancel": "Abbrechen",
 	"articleguidance-updatetitle-originally-typed": "Du hast ursprünglich „$1“ eingegeben.",
 	"articleguidance-updatetitle-use-original": "Nutze das",
+	"articleguidance-updatetitle-redlink-reminder": "Durch die Änderung des Titels bleibt „$1“ als roter Link erhalten.",
+	"articleguidance-updatetitle-restore-redlink": "Rückgängig",
 	"articleguidance-updatetitle-edit-label": "Artikeltitel bearbeiten",
 	"tag-articleguidance": "Artikelleitfaden",
 	"tag-articleguidance-description": "Die Bearbeitung erfolgte mithilfe des Artikelleitfaden-Workflows.",

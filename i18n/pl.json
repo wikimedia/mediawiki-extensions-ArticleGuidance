@@ -84,6 +84,8 @@
 	"articleguidance-updatetitle-cancel": "Anuluj",
 	"articleguidance-updatetitle-originally-typed": "Pierwotnie wpisano „$1”.",
 	"articleguidance-updatetitle-use-original": "Użyj tego tytułu",
+	"articleguidance-updatetitle-redlink-reminder": "Po zmianie tytułu „$1” pozostaje czerwonym linkiem.",
+	"articleguidance-updatetitle-restore-redlink": "Cofnij",
 	"articleguidance-updatetitle-edit-label": "Edytuj tytuł artykułu",
 	"tag-articleguidance": "Pomoc redaktorska",
 	"tag-articleguidance-description": "Edycja dokonana przy użyciu Pomocy redaktorskiej",

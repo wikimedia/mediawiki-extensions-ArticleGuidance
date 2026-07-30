@@ -11,6 +11,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Título do artigo",
 	"articleguidance-specialnewarticle-loading": "Procurando...",
 	"articleguidance-specialnewarticle-checking": "Comprobando...",
+	"articleguidance-specialnewarticle-checking-subject": "Buscando un tema que coincida.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Aínda en proceso de comprobación. Isto pode levar un intre.",
 	"articleguidance-specialnewarticle-no-results": "Non se atoparon temas para «$1»",
 	"articleguidance-specialnewarticle-search-error": "Non se puido comprobar este tema.",
 	"articleguidance-specialnewarticle-search-retry": "Intentar de novo",

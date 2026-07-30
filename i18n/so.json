@@ -11,6 +11,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Cinwaanka maqaalka",
 	"articleguidance-specialnewarticle-loading": "Raadinta...",
 	"articleguidance-specialnewarticle-checking": "Hubin...",
+	"articleguidance-specialnewarticle-checking-subject": "Waxaa la hubinayaa mawduuc u dhigma.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Weli waa la hubinayaa. Tani waxay qaadan kartaa xoogaa daqiiqado ah.",
 	"articleguidance-specialnewarticle-no-results": "Mawduucyo looma helin \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Lama hubin karin mawduucan.",
 	"articleguidance-specialnewarticle-search-retry": "Mar kale isku day",

@@ -83,6 +83,8 @@
 	"articleguidance-updatetitle-cancel": "Annuleren",
 	"articleguidance-updatetitle-originally-typed": "U typte oorspronkelijk \"$1\".",
 	"articleguidance-updatetitle-use-original": "Dat gebruiken",
+	"articleguidance-updatetitle-redlink-reminder": "Als u de titel wijzigt, blijft \"$1\" als rode koppeling achter.",
+	"articleguidance-updatetitle-restore-redlink": "Ongedaan maken",
 	"articleguidance-updatetitle-edit-label": "Paginatitel bewerken",
 	"tag-articleguidance": "Paginarichtlijnen",
 	"tag-articleguidance-description": "De bewerking is uitgevoerd met behulp van de procedure voor paginabegeleiding.",

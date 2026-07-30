@@ -11,6 +11,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Artikeltitel",
 	"articleguidance-specialnewarticle-loading": "Suche …",
 	"articleguidance-specialnewarticle-checking": "Überprüfung...",
+	"articleguidance-specialnewarticle-checking-subject": "Es wird nach einem passenden Betreff gesucht.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Wir prüfen das noch. Das kann einen Moment dauern.",
 	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden.",
 	"articleguidance-specialnewarticle-search-error": "Das Thema konnte nicht geprüft werden.",
 	"articleguidance-specialnewarticle-search-retry": "Erneut versuchen",

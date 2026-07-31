@@ -12,6 +12,8 @@
 	"articleguidance-specialnewarticle-title-placeholder": "Paginanaam",
 	"articleguidance-specialnewarticle-loading": "Zoeken...",
 	"articleguidance-specialnewarticle-checking": "Controleren...",
+	"articleguidance-specialnewarticle-checking-subject": "Controleren of er een overeenkomend onderwerp is.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Bezig met controleren. Dit kan even duren.",
 	"articleguidance-specialnewarticle-no-results": "Geen onderwerpen gevonden voor \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Het onderwerp was niet niet te controleren.",
 	"articleguidance-specialnewarticle-search-retry": "Opnieuw proberen",

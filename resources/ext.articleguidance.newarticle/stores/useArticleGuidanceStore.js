@@ -36,7 +36,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		description: ( localArticle.value && localArticle.value.description ) ||
 			( selectedResult.value && selectedResult.value.description ) || '',
 		thumbnail: ( localArticle.value && localArticle.value.thumbnail ) ||
-			( selectedResult.value && selectedResult.value.thumbnail ) || null
+			( selectedResult.value && selectedResult.value.thumbnail ) || null,
+		outlineName: ( selectedResult.value && selectedResult.value.outlineName ) ||
+			( selectedOutline.value && selectedOutline.value.label ) || null
 	} ) );
 
 	const sitelinkCount = computed(

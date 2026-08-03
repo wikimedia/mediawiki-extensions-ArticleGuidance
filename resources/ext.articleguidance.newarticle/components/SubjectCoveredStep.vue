@@ -10,6 +10,7 @@
 			:thumbnail="localArticleInfo.thumbnail"
 			:title="localArticleInfo.title"
 			:description="localArticleInfo.description"
+			:outline-name="localArticleInfo.outlineName"
 			@click="handleReadArticle"
 		>
 		</article-card>

@@ -63,6 +63,7 @@
 					:title="selectedResult.label"
 					:description="selectedResult.description"
 					:thumbnail="selectedResult.thumbnail"
+					:outline-name="selectedResult.outlineName"
 				>
 				</article-card>
 				<article-card

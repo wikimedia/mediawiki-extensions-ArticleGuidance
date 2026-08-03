@@ -153,7 +153,7 @@ module.exports = defineComponent( {
 		);
 
 		const showRedLinkReminder = computed( () => isRedLink.value &&
-			redLinkTitle.value &&
+			titleOnOpen === redLinkTitle.value &&
 			localTitle.value !== redLinkTitle.value &&
 			titleExists.value !== true
 		);

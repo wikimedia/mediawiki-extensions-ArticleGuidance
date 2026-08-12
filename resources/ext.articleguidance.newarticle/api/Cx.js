@@ -66,7 +66,8 @@ async function translateQuery( text, sourceLang, targetLang ) {
 
 		// cxserver returns the translation as an HTML document; extract the plain
 		// text safely (DOMParser does not execute scripts, unlike $.html()).
-		const html = data && typeof data.html === 'string' ? data.html : '';
+		// We may need to update this after the T434057 resolves.
+		const html = data ? ( data.contents || data.html || '' ) : '';
 		const doc = new DOMParser().parseFromString( html, 'text/html' );
 		const translation = ( doc.body.textContent || '' ).trim();
 		return translation || null;

@@ -85,16 +85,33 @@ function useWikidataSearch( query, language ) {
 			// Fire a cxserver-translated search preemptively (in parallel, not after
 			// a zero-result) whenever the query is in a non-Latin script, so items
 			// that only have a label in the translation target language can still match.
-			const doTranslate = containsNonLatin( searchQuery );
+			const wikidataSearchPromise = withRetry( () => searchWikidata( searchQuery, language.value ) );
+			const outlinesPromise = withRetry( () => store.loadOutlines() );
+			const translationSearchPromise = containsNonLatin( searchQuery ) ?
+				searchViaTranslation( searchQuery ).catch( () => [] ) :
+				Promise.resolve( [] );
 
-			// Run the native-language Wikidata search, outline load, and (when
-			// applicable) the translated search in parallel.
-			const [ wikidataResults, outlines, translatedResults ] = await Promise.all( [
-				withRetry( () => searchWikidata( searchQuery, language.value ) ),
-				withRetry( () => store.loadOutlines() ),
-				doTranslate ? searchViaTranslation( searchQuery ) : Promise.resolve( [] )
+			// Await only the native-language Wikidata search and the outlines load first
+			const [ wikidataResults, outlines ] = await Promise.all( [
+				wikidataSearchPromise,
+				outlinesPromise
 			] );
 
+			// skip if the user types a new character during the search
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
+
+			// If the wikidata search returned 8 (MAX_RESULT) or more results,
+			// we skip/ignore translation.
+			// Note: stay in sync with MAX_TOTAL in SearchStep.vue
+			let translatedResults = [];
+			const MAX_RESULT = 8;
+			if ( wikidataResults.length < MAX_RESULT ) {
+				translatedResults = await translationSearchPromise;
+			}
+
+			// skip if the user types a new character during the search
 			if ( requestId !== latestRequestId ) {
 				return;
 			}

@@ -65,6 +65,143 @@ function useWikidataSearch( query, language ) {
 	};
 
 	/**
+	 * Process raw Wikidata search candidates: fetch claims, run SPARQL hierarchy match,
+	 * and map to display objects.
+	 *
+	 * @param {Array} candidates - Wikidata search results (candidates)
+	 * @param {Array} outlines - Loaded outlines
+	 * @param {boolean} isTranslation - Whether these candidates are from translation search
+	 * @return {Promise<Object>} Mapped results, sparqlMatches, and outlineByType
+	 */
+	const processCandidates = async ( candidates, outlines, isTranslation = false ) => {
+		// Filter outlines to those with a valid article type
+		const validOutlines = outlines.filter( ( outline ) => outline.articleType );
+
+		if ( candidates.length === 0 || validOutlines.length === 0 ) {
+			return {
+				results: [],
+				sparqlMatches: {},
+				outlineByType: {}
+			};
+		}
+
+		// Extract Q IDs from search results
+		const searchQIds = candidates.map( ( result ) => result.id );
+
+		// Group outlines by matchVia and collect the properties to look up
+		const groups = groupOutlinesByMatchVia( validOutlines );
+		const properties = [ ...new Set( Object.keys( groups ).map( propForGroup ) ) ];
+		const excludedItemTypesList =
+			mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
+
+		// Run wbgetentities and SPARQL hierarchy check in parallel
+		const [ entityData, itemHierarchyMatches ] = await Promise.all( [
+			withRetry( () => fetchEntityClaims( searchQIds, properties, language.value ) ),
+			withRetry( () => checkItemHierarchyMatches(
+				searchQIds, groups, excludedItemTypesList
+			) )
+		] );
+
+		// Exclude items whose P31 is (directly or via P279+) a configured excluded type
+		const excludedTypeSet = new Set( excludedItemTypesList );
+		const exclusionByItem = itemHierarchyMatches[ EXCLUDED_KEY ] || {};
+		const filteredQIds = searchQIds.filter( ( qid ) => {
+			const entity = entityData[ qid ];
+			if ( !entity || !entity.hasLabel ) {
+				return false;
+			}
+			const p31Values = entity.claims[ PROP_INSTANCE_OF ] || [];
+			const isDirectlyExcluded = p31Values.some( ( v ) => excludedTypeSet.has( v ) );
+			const isHierarchyExcluded =
+				exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
+			return !isDirectlyExcluded && !isHierarchyExcluded;
+		} );
+		const filteredQIdSet = new Set( filteredQIds );
+		const filteredCandidates = candidates.filter( ( r ) => filteredQIdSet.has( r.id ) );
+
+		// Build directTypesByGroup for 0-hop checks (uses wbgetentities data)
+		const directTypesByGroup = {};
+		Object.keys( groups ).forEach( ( key ) => {
+			const prop = propForGroup( key );
+			const itemTypeMap = {};
+			filteredQIds.forEach( ( qid ) => {
+				const typeValues = entityData[ qid ].claims[ prop ] || [];
+				if ( typeValues.length > 0 ) {
+					itemTypeMap[ qid ] = new Set( typeValues );
+				}
+			} );
+			directTypesByGroup[ key ] = itemTypeMap;
+		} );
+
+		// Build outline lookup, keyed by the article type each outline matches
+		const outlineByType = {};
+		validOutlines.forEach( ( outline ) => {
+			outlineByType[ outline.articleType ] = outline;
+		} );
+		const outlineQIdSet = new Set( Object.keys( outlineByType ) );
+
+		// Collect matches, starting with 0-hop cases
+		const matches = {};
+
+		// Pre-check: item is itself an outline type (e.g. searching for 'Animalia')
+		filteredQIds.forEach( ( qid ) => {
+			if ( outlineQIdSet.has( qid ) ) {
+				matches[ qid ] = [ qid ];
+			}
+		} );
+
+		// Direct property → outline-type match (0-hop via wbgetentities) across
+		// every matchVia group, since the SPARQL hierarchy query uses `+` and
+		// would miss e.g. an item whose P106 is itself an outline articleType.
+		collectDirectMatches( matches, filteredQIds, directTypesByGroup, outlineQIdSet );
+
+		applyHierarchyMatches( matches, itemHierarchyMatches );
+		const sparqlMatches = selectBestMatches( matches, validOutlines );
+
+		const processedResults = filteredCandidates.map( ( result ) => {
+			const matchedQIds = sparqlMatches[ result.id ] || [];
+			const supported = matchedQIds.length > 0;
+			const outlineNames = [];
+			let outlineThumbnail = null;
+			matchedQIds.forEach( ( matchedQId ) => {
+				const outline = outlineByType[ matchedQId ];
+				if ( !outline ) {
+					return;
+				}
+				if ( outline.label && !outlineNames.includes( outline.label ) ) {
+					outlineNames.push( outline.label );
+				}
+				if ( !outlineThumbnail && outline.thumbnail ) {
+					outlineThumbnail = outline.thumbnail;
+				}
+			} );
+			// entityData entry is guaranteed: filteredQIds requires it
+			const entity = entityData[ result.id ];
+			return {
+				id: result.id,
+				label: entity.label,
+				labelFallback: entity.labelFallback,
+				description: entity.description,
+				url: result.url,
+				matchedQId: supported ? matchedQIds[ 0 ] : null,
+				thumbnail: ( entity.imageFilename &&
+					getCommonsThumbUrl( entity.imageFilename ) ) || outlineThumbnail,
+				outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
+				supported,
+				sitelinkCount: entity.sitelinkCount,
+				localSitelink: entity.localSitelink,
+				viaTranslation: isTranslation
+			};
+		} );
+
+		return {
+			results: processedResults,
+			sparqlMatches,
+			outlineByType
+		};
+	};
+
+	/**
 	 * Perform search with current query and language
 	 *
 	 * @param {string} searchQuery - Query string to search for
@@ -85,7 +222,9 @@ function useWikidataSearch( query, language ) {
 			// Fire a cxserver-translated search preemptively (in parallel, not after
 			// a zero-result) whenever the query is in a non-Latin script, so items
 			// that only have a label in the translation target language can still match.
-			const wikidataSearchPromise = withRetry( () => searchWikidata( searchQuery, language.value ) );
+			const wikidataSearchPromise = withRetry(
+				() => searchWikidata( searchQuery, language.value )
+			);
 			const outlinesPromise = withRetry( () => store.loadOutlines() );
 			const translationSearchPromise = containsNonLatin( searchQuery ) ?
 				searchViaTranslation( searchQuery ).catch( () => [] ) :
@@ -102,198 +241,92 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
-			// If the wikidata search returned 8 (MAX_RESULT) or more results,
-			// we skip/ignore translation.
-			// Note: stay in sync with MAX_TOTAL in SearchStep.vue
-			let translatedResults = [];
+			// Process native Wikidata search results first
+			const {
+				results: processedWikidataResults,
+				sparqlMatches: nativeSparqlMatches,
+				outlineByType: nativeOutlineByType
+			} = await processCandidates( wikidataResults, outlines, false );
+
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
+
+			let processedTranslatedResults = [];
+			let translatedSparqlMatches = {};
+			let translatedOutlineByType = {};
+
 			const MAX_RESULT = 8;
-			if ( wikidataResults.length < MAX_RESULT ) {
-				translatedResults = await translationSearchPromise;
-			}
+			if ( processedWikidataResults.length < MAX_RESULT ) {
+				const translatedResults = await translationSearchPromise;
 
-			// skip if the user types a new character during the search
-			if ( requestId !== latestRequestId ) {
-				return;
-			}
-
-			// Merge native and translated candidates, de-duplicating by Q ID and
-			// tracking which items were found only via the translated query.
-			const translationOnlyQIds = new Set();
-			const seenQIds = new Set( wikidataResults.map( ( result ) => result.id ) );
-			const mergedResults = wikidataResults.slice();
-			translatedResults.forEach( ( result ) => {
-				if ( !seenQIds.has( result.id ) ) {
-					seenQIds.add( result.id );
-					mergedResults.push( result );
-					translationOnlyQIds.add( result.id );
-				}
-			} );
-
-			if ( mergedResults.length === 0 ) {
-				results.value = [];
-				return;
-			}
-
-			// Filter outlines to those with a valid article type
-			const validOutlines = outlines.filter( ( outline ) => outline.articleType );
-
-			if ( validOutlines.length === 0 ) {
-				// No outlines configured, show no results
-				results.value = [];
-				return;
-			}
-
-			// Extract Q IDs from search results
-			const searchQIds = mergedResults.map( ( result ) => result.id );
-
-			// Group outlines by matchVia and collect the properties to look up
-			const groups = groupOutlinesByMatchVia( validOutlines );
-			const properties = Object.keys( groups ).map( propForGroup ).filter(
-				( p, i, arr ) => arr.indexOf( p ) === i
-			);
-			const excludedItemTypesList =
-				mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
-
-			// Run wbgetentities and SPARQL hierarchy check in parallel
-			const [ entityData, itemHierarchyMatches ] = await Promise.all( [
-				withRetry( () => fetchEntityClaims( searchQIds, properties, language.value ) ),
-				withRetry( () => checkItemHierarchyMatches(
-					searchQIds, groups, excludedItemTypesList
-				) )
-			] );
-
-			if ( requestId !== latestRequestId ) {
-				return;
-			}
-
-			// Build directTypesByGroup for 0-hop checks (uses wbgetentities data)
-			const directTypesByGroup = {};
-			Object.keys( groups ).forEach( ( key ) => {
-				const prop = propForGroup( key );
-				const itemTypeMap = {};
-				searchQIds.forEach( ( qid ) => {
-					const typeValues =
-						( entityData[ qid ] && entityData[ qid ].claims[ prop ] ) || [];
-					if ( typeValues.length > 0 ) {
-						itemTypeMap[ qid ] = new Set( typeValues );
-					}
-				} );
-				directTypesByGroup[ key ] = itemTypeMap;
-			} );
-
-			// Exclude items whose P31 is (directly or via P279+) a configured excluded type
-			const excludedTypeSet = new Set( excludedItemTypesList );
-			const exclusionByItem = itemHierarchyMatches[ EXCLUDED_KEY ] || {};
-			const filteredQIds = searchQIds.filter( ( qid ) => {
-				const p31Values =
-					( entityData[ qid ] && entityData[ qid ].claims[ PROP_INSTANCE_OF ] ) || [];
-				const isDirectlyExcluded = p31Values.some( ( v ) => excludedTypeSet.has( v ) );
-				const isHierarchyExcluded =
-					exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
-				return !isDirectlyExcluded && !isHierarchyExcluded;
-			} );
-			const filteredWikidataResults = mergedResults.filter(
-				( r ) => filteredQIds.includes( r.id ) &&
-					entityData[ r.id ] && entityData[ r.id ].hasLabel
-			);
-
-			// Collect matches, starting with 0-hop cases
-			const outlineQIdSet = new Set(
-				validOutlines.map( ( o ) => o.articleType ).filter( Boolean )
-			);
-			const matches = {};
-
-			// Pre-check: item is itself an outline type (e.g. searching for 'Animalia')
-			filteredQIds.forEach( ( qid ) => {
-				if ( outlineQIdSet.has( qid ) ) {
-					matches[ qid ] = [ qid ];
-				}
-			} );
-
-			// Direct property → outline-type match (0-hop via wbgetentities) across
-			// every matchVia group, since the SPARQL hierarchy query uses `+` and
-			// would miss e.g. an item whose P106 is itself an outline articleType.
-			collectDirectMatches( matches, filteredQIds, directTypesByGroup, outlineQIdSet );
-
-			applyHierarchyMatches( matches, itemHierarchyMatches );
-			const sparqlMatches = selectBestMatches( matches, validOutlines );
-
-			// Build outline lookup and map SPARQL results to display objects
-			const outlineByType = {};
-			outlines.forEach( ( outline ) => {
-				if ( outline.articleType ) {
-					outlineByType[ outline.articleType ] = outline;
-				}
-			} );
-
-			const filteredResults = [];
-			filteredWikidataResults.forEach( ( result ) => {
-				const matchedQIds = sparqlMatches[ result.id ];
-				if ( !matchedQIds || matchedQIds.length === 0 ) {
+				if ( requestId !== latestRequestId ) {
 					return;
 				}
-				const outlineNames = [];
-				let thumbnail = null;
-				matchedQIds.forEach( ( matchedQId ) => {
-					const outline = outlineByType[ matchedQId ];
-					if ( !outline ) {
-						return;
-					}
-					if ( outline.label && !outlineNames.includes( outline.label ) ) {
-						outlineNames.push( outline.label );
-					}
-					if ( !thumbnail && outline.thumbnail ) {
-						thumbnail = outline.thumbnail;
-					}
-				} );
-				const entity = entityData[ result.id ];
-				const entityFilename = entity && entity.imageFilename;
-				filteredResults.push( {
-					id: result.id,
-					label: ( entity && entity.label ) || result.id,
-					labelFallback: entity ? entity.labelFallback : false,
-					description: ( entity && entity.description ) || '',
-					url: result.url,
-					matchedQId: matchedQIds[ 0 ],
-					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) ||
-						thumbnail,
-					outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
-					supported: true,
-					sitelinkCount: entity ? entity.sitelinkCount : 0,
-					localSitelink: entity ? entity.localSitelink : null,
-					viaTranslation: translationOnlyQIds.has( result.id )
-				} );
-			} );
 
-			filteredWikidataResults.forEach( ( result ) => {
-				const matchedQIds = sparqlMatches[ result.id ];
-				if ( matchedQIds && matchedQIds.length > 0 ) {
-					return;
+				// De-duplicate translation results by filtering out any candidates
+				// that were already present in the native Wikidata search results.
+				const wikidataIds = new Set( wikidataResults.map( ( r ) => r.id ) );
+				const newTranslatedCandidates = translatedResults.filter(
+					( r ) => !wikidataIds.has( r.id )
+				);
+
+				if ( newTranslatedCandidates.length > 0 ) {
+					const translationProcessResult = await processCandidates(
+						newTranslatedCandidates,
+						outlines,
+						true
+					);
+					processedTranslatedResults = translationProcessResult.results;
+					translatedSparqlMatches = translationProcessResult.sparqlMatches;
+					translatedOutlineByType = translationProcessResult.outlineByType;
 				}
-				const entity = entityData[ result.id ];
-				const entityFilename = entity && entity.imageFilename;
-				filteredResults.push( {
-					id: result.id,
-					label: ( entity && entity.label ) || result.id,
-					labelFallback: entity ? entity.labelFallback : false,
-					description: ( entity && entity.description ) || '',
-					url: result.url,
-					matchedQId: null,
-					thumbnail: ( entityFilename && getCommonsThumbUrl( entityFilename ) ) || null,
-					outlineName: null,
-					supported: false,
-					sitelinkCount: entity ? entity.sitelinkCount : 0,
-					localSitelink: entity ? entity.localSitelink : null,
-					viaTranslation: translationOnlyQIds.has( result.id )
-				} );
-			} );
-
-			reportSearchEvaluation( searchQuery, filteredResults, sparqlMatches, outlineByType );
+			}
 
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
-			results.value = filteredResults;
+
+			// Merge native and translated candidates, listing supported items first,
+			// and then listing unsupported items, preserving relative order.
+			const nativeSupported = processedWikidataResults.filter( ( r ) => r.supported );
+			const nativeUnsupported = processedWikidataResults.filter( ( r ) => !r.supported );
+			const translatedSupported = processedTranslatedResults.filter(
+				( r ) => r.supported
+			);
+			const translatedUnsupported = processedTranslatedResults.filter(
+				( r ) => !r.supported
+			);
+
+			const finalResults = [
+				...nativeSupported,
+				...translatedSupported,
+				...nativeUnsupported,
+				...translatedUnsupported
+			];
+
+			const combinedSparqlMatches = Object.assign(
+				{},
+				nativeSparqlMatches,
+				translatedSparqlMatches
+			);
+			const combinedOutlineByType = Object.assign(
+				{},
+				nativeOutlineByType,
+				translatedOutlineByType
+			);
+
+			reportSearchEvaluation(
+				searchQuery,
+				finalResults,
+				combinedSparqlMatches,
+				combinedOutlineByType
+			);
+
+			if ( requestId !== latestRequestId ) {
+				return;
+			}
+			results.value = finalResults;
 		} catch ( err ) {
 			if ( requestId !== latestRequestId ) {
 				return;

@@ -12,5 +12,14 @@ global.mw = {
 	},
 	log: {
 		warn: jest.fn()
+	},
+	// Renders as "key:param|param" so tests can assert which message was used.
+	message: ( key, ...params ) => ( {
+		text: () => params.length ? key + ':' + params.join( '|' ) : key
+	} ),
+	util: {
+		getUrl: ( title, params ) => '/wiki/' +
+			encodeURIComponent( title.replace( / /g, '_' ) ).replace( /%3A/g, ':' ) +
+			'?' + new URLSearchParams( params ).toString()
 	}
 };

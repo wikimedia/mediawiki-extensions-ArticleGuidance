@@ -73,6 +73,8 @@
 	"articleguidance-notability-tag-draft-location": "Your article will be created at \"$1\".",
 	"articleguidance-specialnewarticle-no-matching-type": "Can't find the right type?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggest a new type",
+	"articleguidance-feedback-missing-type-preloadtitle": "Couldn't find a matching article type for \"$1\"",
+	"articleguidance-feedback-request-support-preloadtitle": "Request for support: $1 ($2)",
 	"articleguidance-tracking-category": "Pages using article guidance",
 	"articleguidance-tracking-category-desc": "Pages in this category use the <article-guidance> tag to provide structured guidance for article creation.",
 	"articleguidance-subjectcovered-title": "Article already exists",

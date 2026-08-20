@@ -94,6 +94,10 @@
 		"ArticleGuidanceCxTargetLanguage": {
 			"value": "en",
 			"description": "Language code that non-Latin topic-matching queries are translated into before searching Wikidata."
+		},
+		"ArticleGuidanceFeedbackTalkPage": {
+			"value": "",
+			"description": "Full title of the local talk page that collects Article Guidance feedback, e.g. 'Wikipedia talk:Article Guidance'. Empty falls back to Talk:Article guidance on mediawiki.org."
 		}
 	},
 	"AutoloadNamespaces": {
@@ -262,7 +266,8 @@
 						"ArticleGuidanceExperimentName",
 						"ArticleGuidanceWikidataUrls",
 						"ArticleGuidanceCxServerUrl",
-						"ArticleGuidanceCxTargetLanguage"
+						"ArticleGuidanceCxTargetLanguage",
+						"ArticleGuidanceFeedbackTalkPage"
 					]
 				},
 				{
@@ -352,6 +357,8 @@
 				"articleguidance-notability-tag-draft-location",
 				"articleguidance-specialnewarticle-no-matching-type",
 				"articleguidance-specialnewarticle-missing-type-feedback",
+				"articleguidance-feedback-missing-type-preloadtitle",
+				"articleguidance-feedback-request-support-preloadtitle",
 				"articleguidance-subjectcovered-title",
 				"articleguidance-subjectcovered-description",
 				"articleguidance-subjectcovered-button",

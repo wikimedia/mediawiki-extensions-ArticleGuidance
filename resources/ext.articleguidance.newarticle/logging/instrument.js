@@ -56,10 +56,24 @@ function logInit( initialTitle, source ) {
  *
  * @param {string} query Search query that was submitted.
  * @param {number} resultCount Number of results returned.
+ * @param {string|null} path Search path taken:
+ *   - 'wikidata_direct': Native search results only (no MinT translation used).
+ *   - 'mint_fallback_success': Native search returned no results, MinT translation returned
+ *     results.
+ *   - 'wikidata_and_mint': Both native search and MinT translation returned results and were
+ *     merged.
+ * @param {number|null} duration Total search duration in milliseconds.
  */
-function logWriteTitle( query, resultCount ) {
+function logWriteTitle( query, resultCount, path = null, duration = null ) {
 	const data = {};
-	data.action_context = { query: query, result_count: resultCount };
+	const context = { query: query, result_count: resultCount };
+	if ( path !== null ) {
+		context.path = path;
+	}
+	if ( duration !== null ) {
+		context.duration = duration;
+	}
+	data.action_context = context;
 	submit( 'write_title', data );
 }
 

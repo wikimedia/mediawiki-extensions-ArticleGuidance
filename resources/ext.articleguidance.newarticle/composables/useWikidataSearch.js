@@ -35,6 +35,8 @@ function useWikidataSearch( query, language ) {
 	const results = ref( [] );
 	const loading = ref( false );
 	const error = ref( null );
+	const searchPath = ref( null );
+	const searchDuration = ref( null );
 	let debounceTimer = null;
 	let latestRequestId = 0;
 
@@ -221,9 +223,12 @@ function useWikidataSearch( query, language ) {
 		if ( !searchQuery || searchQuery.trim().length < 1 ) {
 			results.value = [];
 			loading.value = false;
+			searchPath.value = null;
+			searchDuration.value = null;
 			return;
 		}
 
+		const startTime = performance.now();
 		loading.value = true;
 		error.value = null;
 
@@ -264,6 +269,7 @@ function useWikidataSearch( query, language ) {
 			let processedTranslatedResults = [];
 			let translatedSparqlMatches = {};
 			let translatedOutlineByType = {};
+			let path = 'wikidata_direct';
 
 			const MAX_RESULT = 8;
 			if ( processedWikidataResults.length < MAX_RESULT ) {
@@ -289,6 +295,12 @@ function useWikidataSearch( query, language ) {
 					processedTranslatedResults = translationProcessResult.results;
 					translatedSparqlMatches = translationProcessResult.sparqlMatches;
 					translatedOutlineByType = translationProcessResult.outlineByType;
+				}
+
+				if ( processedTranslatedResults.length > 0 ) {
+					path = processedWikidataResults.length === 0 ?
+						'mint_fallback_success' :
+						'wikidata_and_mint';
 				}
 			}
 
@@ -336,12 +348,16 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 			results.value = finalResults;
+			searchPath.value = path;
+			searchDuration.value = Math.round( performance.now() - startTime );
 		} catch ( err ) {
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 			error.value = err.message || 'Failed to search Wikidata';
 			results.value = [];
+			searchPath.value = null;
+			searchDuration.value = null;
 		} finally {
 			if ( requestId === latestRequestId ) {
 				loading.value = false;
@@ -361,6 +377,8 @@ function useWikidataSearch( query, language ) {
 			latestRequestId++;
 			results.value = [];
 			loading.value = false;
+			searchPath.value = null;
+			searchDuration.value = null;
 			return;
 		}
 
@@ -382,6 +400,8 @@ function useWikidataSearch( query, language ) {
 		results,
 		loading,
 		error,
+		searchPath,
+		searchDuration,
 		performSearch
 	};
 }

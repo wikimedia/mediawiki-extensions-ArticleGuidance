@@ -189,7 +189,8 @@ module.exports = defineComponent( {
 
 		// Initialize search composable
 		const {
-			results, loading, error, performSearch, articleExist, checkExistence, isDelayed
+			results, loading, error, performSearch, articleExist, checkExistence, isDelayed,
+			searchPath, searchDuration
 		} = useSearchDelayed( searchQuery, selectedLanguage );
 
 		// The loading message based on the delay state.
@@ -209,7 +210,12 @@ module.exports = defineComponent( {
 
 		watch( loading, ( isLoading ) => {
 			if ( !isLoading && searchQuery.value ) {
-				instrument.logWriteTitle( searchQuery.value, results.value.length );
+				instrument.logWriteTitle(
+					searchQuery.value,
+					results.value.length,
+					searchPath.value,
+					searchDuration.value
+				);
 			}
 		} );
 

@@ -71,6 +71,8 @@
 	"articleguidance-notability-tag-draft-location": "Votre article sera créé sous le nom « $1 ».",
 	"articleguidance-specialnewarticle-no-matching-type": "Vous ne trouvez pas le bon type ?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggérer un nouveau type",
+	"articleguidance-feedback-missing-type-preloadtitle": "Type d'article correspondant à « $1 » non trouvé",
+	"articleguidance-feedback-request-support-preloadtitle": "Demande d'aide : $1 ($2)",
 	"articleguidance-tracking-category": "Page utilisant Article guidance",
 	"articleguidance-tracking-category-desc": "Les pages de cette catégorie utilisent la balise <article-guidance> permettant de fournir des directives structurées pour la création d'articles.",
 	"articleguidance-subjectcovered-title": "Cet article existe déjà",

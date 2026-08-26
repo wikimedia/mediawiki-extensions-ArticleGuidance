@@ -70,6 +70,8 @@
 	"articleguidance-notability-tag-draft-location": "Dein Artikel wird als „$1“ erstellt.",
 	"articleguidance-specialnewarticle-no-matching-type": "Kannst du den richtigen Typ nicht finden?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Einen neuen Typ vorschlagen",
+	"articleguidance-feedback-missing-type-preloadtitle": "Es konnte kein passender Artikeltyp für „$1“ gefunden werden.",
+	"articleguidance-feedback-request-support-preloadtitle": "Bitte um Unterstützung: $1 ($2)",
 	"articleguidance-tracking-category": "Seiten, die Artikelrichtlinien verwenden",
 	"articleguidance-tracking-category-desc": "Seiten in dieser Kategorie verwenden den <article-guidance>-Tag zur Bereitstellung einer strukturierten Anleitung für die Artikelerstellung.",
 	"articleguidance-subjectcovered-title": "Der Artikel existiert bereits.",

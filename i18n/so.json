@@ -70,6 +70,8 @@
 	"articleguidance-notability-tag-draft-location": "Maqaalkaaga waxaa lagu abuuri doonaa \"$1\".",
 	"articleguidance-specialnewarticle-no-matching-type": "Ma heli kartid nooca saxda ah?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Soo jeedi nooc cusub",
+	"articleguidance-feedback-missing-type-preloadtitle": "Lama helin nooc maqaal oo u dhigma \"$1\"",
+	"articleguidance-feedback-request-support-preloadtitle": "Codsi taageero: $1 ($2)",
 	"articleguidance-tracking-category": "Bogagga isticmaalaya hagidda maqaalka",
 	"articleguidance-tracking-category-desc": "Bogagga ku jira qaybtaan waxay isticmaalaan calaamadda <article-guidance> si ay u bixiyaan hagid qaabaysan oo ku saabsan abuurista maqaal.",
 	"articleguidance-subjectcovered-title": "Maqaalku hore ayuu u jiraa",

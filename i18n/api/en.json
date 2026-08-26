@@ -1,0 +1,6 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"apihelp-edit-param-articleguidance": "Record that this edit was made through <kbd>[[Special:NewArticle|Article guidance]]</kbd>, so it can be tagged accordingly."
+}

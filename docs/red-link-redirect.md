@@ -55,3 +55,15 @@ Title matching normalises both sides to DB keys (underscores, lowercase, namespa
 `Main Page` and `Main_Page` are treated identically. Category matching performs a live database
 query (`getParentCategories()`) and is only executed when the title list produces no match.
 Regardless of which rule matched, the analytics `source` param is always `redlink`.
+
+## Creating a redirect instead of an article
+
+When the chosen subject already has an article, the `subjectcovered` step offers
+**Create a redirect** (T426844); `isRedirectOfferable()` holds the conditions. The
+write is an ordinary `action=edit` with `createonly=1`, plus three details:
+
+- `#REDIRECT` comes from the server (`wgArticleGuidanceRedirectWord`) because it is
+  content-language and the client has only the interface language.
+- No summary is sent; MediaWiki's `autoredircomment` supplies one.
+- `articleguidance=1` marks the request for `EditTagHandler`, which otherwise sees
+  only the `SESSION_EDITING` entry left by a page navigation. Any caller can set it.

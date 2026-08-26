@@ -28,10 +28,11 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `guidance_shown` | Instructions step is shown | — | — | — |
 | `write_start` | User clicks "Start Writing" | — | — | `{"title":"<outline name>","qid":"<QID>"}` |
 | `subject_covered_shown` | Subject-covered step is shown | — | — | — |
-| `subject_covered_action` | User acts on the subject-covered step | — | `improve` or `read` | — |
+| `subject_covered_action` | User acts on the subject-covered step | — | `improve`, `read`, or `create_redirect` | — |
+| `redirect_created` | A redirect creation attempt finishes | — | `success` or `error` | `{"code":"<action API error code>"}` on error |
 | `title_conflict_shown` | Title-conflict step is shown | — | — | — |
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
 | `unsupported_subject_shown` | Unsupported-subject step is shown | — | — | — |
 | `unsupported_subject_action` | User acts on the unsupported-subject step | — | `request_support` or `start_writing` | — |
 | `editing_start` | User lands on the editor: after completing the AG workflow, or by following a red link while the redirect is off | — | — | `{"page":{"title":"<title>"}}` |
-| `article_saved` | User saves the first revision of a new article (fires for every new article, not only for AG-workflow participants) | — | — | `{"page":{"title":"<title>","id":<id>}}` |
+| `article_saved` | User saves the first revision of a new article (fires for every new article, not only for AG-workflow participants;  redirects are excluded, they are covered by `redirect_created`) | — | — | `{"page":{"title":"<title>","id":<id>}}` |

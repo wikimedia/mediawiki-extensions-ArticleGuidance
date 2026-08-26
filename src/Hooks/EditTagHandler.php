@@ -4,19 +4,25 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiEditPage;
+use MediaWiki\Api\Hook\APIGetAllowedParamsHook;
 use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
+use MediaWiki\Revision\SlotRecord;
+use Wikimedia\ParamValidator\ParamValidator;
 
 class EditTagHandler implements
+	APIGetAllowedParamsHook,
 	ChangeTagsListActiveHook,
 	ListDefinedTagsHook,
 	RevisionFromEditCompleteHook
 {
-
 	private const TAG = 'articleguidance';
+	private const API_PARAM = 'articleguidance';
 	// Both session values are maps keyed by prefixed title. The value carries the
 	// selected Wikidata item Q-id (or true when none was selected), so the item
 	// stays paired with its own article across concurrent edits in separate tabs.
@@ -32,6 +38,21 @@ class EditTagHandler implements
 	public function __construct(
 		private readonly ArticleGuidanceInstrumentFactory $instrumentFactory,
 	) {
+	}
+
+	/**
+	 * Declare the marker parameter on action=edit.
+	 *
+	 * @inheritDoc
+	 */
+	public function onAPIGetAllowedParams( $module, &$params, $flags ) {
+		if ( $module instanceof ApiEditPage ) {
+			$params[ self::API_PARAM ] = [
+				ParamValidator::PARAM_TYPE => 'boolean',
+				ParamValidator::PARAM_DEFAULT => false,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-edit-param-' . self::API_PARAM,
+			];
+		}
 	}
 
 	/**
@@ -68,9 +89,16 @@ class EditTagHandler implements
 			]
 		];
 
+		$fromApi = $request->getCheck( self::API_PARAM );
 		$editing = $session->get( self::SESSION_EDITING );
-		if ( is_array( $editing ) && isset( $editing[ $titleText ] ) ) {
+		$fromSession = is_array( $editing ) && isset( $editing[ $titleText ] );
+
+		if ( $fromApi || $fromSession ) {
 			$tags[] = self::TAG;
+			$eventData['action_source'] = 'articleguidance';
+		}
+
+		if ( $fromSession ) {
 			// Remove only this title; other tabs' in-flight edits stay tracked. Carry
 			// its value (the selected Wikidata item, or true) into the published set so
 			// the post-publish module can connect the new article to its item.
@@ -88,8 +116,14 @@ class EditTagHandler implements
 				preserve_keys: true
 			);
 			$session->set( self::SESSION_PUBLISHED, $published );
+		}
 
-			$eventData['action_source'] = 'articleguidance';
+		// Article Guidance can create redirects itself (T426844), and those are
+		// reported by their own redirect_created event. Leaving them out here keeps
+		// article_saved measuring article creation only.
+		$content = $rev->getContent( SlotRecord::MAIN );
+		if ( $content && $content->isRedirect() ) {
+			return;
 		}
 
 		$this->instrumentFactory->getInstrument()?->send( 'article_saved', $eventData );

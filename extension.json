@@ -166,7 +166,8 @@
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Specials\\SpecialNewArticle",
 			"services": [
 				"ContentLanguage",
-				"MainConfig"
+				"MainConfig",
+				"MagicWordFactory"
 			]
 		}
 	},
@@ -216,6 +217,7 @@
 	"Hooks": {
 		"BeforeInitialize": "RedLinkRedirect",
 		"ParserFirstCallInit": "ArticleGuidanceTag",
+		"APIGetAllowedParams": "EditTag",
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
 		"RevisionFromEditComplete": "EditTag",
@@ -231,7 +233,8 @@
 	},
 	"MessagesDirs": {
 		"ArticleGuidance": [
-			"i18n"
+			"i18n",
+			"i18n/api"
 		]
 	},
 	"ResourceModules": {
@@ -245,12 +248,14 @@
 				"App.vue",
 				"api/MediaWiki.js",
 				"api/Outlines.js",
+				"api/Redirect.js",
 				"api/Sources.js",
 				"api/Wikidata.js",
 				"api/Sparql.js",
 				"api/Citoid.js",
 				"api/Cx.js",
 				"composables/useArticleExist.js",
+				"composables/useRedirectCreation.js",
 				"composables/outlineMatching.js",
 				"composables/useSearch.js",
 				"composables/useSearchDelayed.js",
@@ -276,6 +281,7 @@
 				"utils/sources.js",
 				"utils/notability.js",
 				"utils/draft.js",
+				"utils/redirect.js",
 				"utils/mobile.js",
 				"utils/retry.js",
 				"utils/articleUrl.js",
@@ -305,6 +311,7 @@
 						"cdxIconAdd",
 						"cdxIconArrowPrevious",
 						"cdxIconArticle",
+						"cdxIconArticleRedirect",
 						"cdxIconUserTalk",
 						"cdxIconBook",
 						"cdxIconClose",
@@ -388,9 +395,16 @@
 				"articleguidance-specialnewarticle-missing-type-feedback",
 				"articleguidance-feedback-missing-type-preloadtitle",
 				"articleguidance-feedback-request-support-preloadtitle",
-				"articleguidance-subjectcovered-title",
-				"articleguidance-subjectcovered-description",
+				"articleguidance-subjectcovered-subtitle",
 				"articleguidance-subjectcovered-button",
+				"articleguidance-subjectcovered-redirect-description",
+				"articleguidance-subjectcovered-redirect-button",
+				"articleguidance-subjectcovered-redirect-saving",
+				"articleguidance-subjectcovered-redirect-success",
+				"articleguidance-subjectcovered-redirect-error",
+				"articleguidance-subjectcovered-redirect-error-exists",
+				"articleguidance-subjectcovered-redirect-error-permission",
+				"articleguidance-subjectcovered-redirect-retry",
 				"articleguidance-titleconflict-suggestion-prefix",
 				"articleguidance-titleconflict-continue",
 				"articleguidance-titleconflict-selected-subject",
@@ -413,7 +427,8 @@
 				"vue",
 				"pinia",
 				"mediawiki.util",
-				"mediawiki.Title"
+				"mediawiki.Title",
+				"mediawiki.api"
 			]
 		},
 		"ext.articleguidance.tag.styles": {

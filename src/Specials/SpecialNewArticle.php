@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Language\Language;
+use MediaWiki\Parser\MagicWordFactory;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
 
 class SpecialNewArticle extends UnlistedSpecialPage {
@@ -13,6 +14,7 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 	public function __construct(
 		private readonly Language $contentLanguage,
 		private readonly Config $config,
+		private readonly MagicWordFactory $magicWordFactory,
 	) {
 		parent::__construct( 'NewArticle' );
 	}
@@ -42,6 +44,10 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 		$out->addJsConfigVars(
 			'wgArticleGuidanceExcludedItemTypes',
 			$this->config->get( 'ArticleGuidanceExcludedItemTypes' )
+		);
+		$out->addJsConfigVars(
+			'wgArticleGuidanceRedirectWord',
+			$this->magicWordFactory->get( 'redirect' )->getSynonym( 0 )
 		);
 		$out->addModules( 'ext.articleguidance.newarticle' );
 		$out->addModuleStyles( [ 'ext.articleguidance.newarticle.styles' ] );

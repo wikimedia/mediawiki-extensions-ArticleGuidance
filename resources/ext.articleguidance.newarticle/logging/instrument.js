@@ -182,12 +182,28 @@ function logSubjectCoveredShown() {
 /**
  * Fire when the user acts on the subject-covered step.
  *
- * @param {string} subtype 'improve' or 'read'.
+ * @param {string} subtype 'improve', 'read', or 'create_redirect'.
  */
 function logSubjectCoveredAction( subtype ) {
 	const data = {};
 	data.action_subtype = subtype;
 	submit( 'subject_covered_action', data );
+}
+
+/**
+ * Fire when a redirect creation attempt finishes.
+ *
+ * @param {boolean} success Whether the redirect was created.
+ * @param {string} [code] Action API error code returned by the failing edit,
+ *   e.g. 'articleexists'.
+ */
+function logRedirectCreated( success, code ) {
+	const data = {};
+	data.action_subtype = success ? 'success' : 'error';
+	if ( !success ) {
+		data.action_context = { code: code || 'unknown' };
+	}
+	submit( 'redirect_created', data );
 }
 
 /**
@@ -250,6 +266,7 @@ module.exports = {
 	logWriteStart,
 	logSubjectCoveredShown,
 	logSubjectCoveredAction,
+	logRedirectCreated,
 	logTitleConflictShown,
 	logTitleConflictAction,
 	logUnsupportedSubjectShown,

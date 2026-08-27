@@ -73,6 +73,7 @@
 	"articleguidance-notability-tag-draft-location": "La tua voce verrà creata come \"$1\"",
 	"articleguidance-specialnewarticle-no-matching-type": "Non riesci a trovare il tipo giusto?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerisci un nuovo tipo",
+	"articleguidance-feedback-request-support-preloadtitle": "Richiesta di supporto: $1 ($2)",
 	"articleguidance-tracking-category": "Pagine che utilizzano il percorso guidato",
 	"articleguidance-tracking-category-desc": "Le pagine in questa categoria usano il tag <article-guidance> per fornire una guida strutturata per la creazione della voce.",
 	"articleguidance-subjectcovered-title": "Voce già esistente",

@@ -70,6 +70,8 @@
 	"articleguidance-notability-tag-draft-location": "O teu artigo crearase en «$1».",
 	"articleguidance-specialnewarticle-no-matching-type": "Non atopas o tipo axeitado?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suxerir un tipo novo",
+	"articleguidance-feedback-missing-type-preloadtitle": "Non se atopou ningún tipo de artigo que coincida con «$1»",
+	"articleguidance-feedback-request-support-preloadtitle": "Solicitude de axuda: $1 ($2)",
 	"articleguidance-tracking-category": "Páxinas que usan a guía de creación de artigos",
 	"articleguidance-tracking-category-desc": "As páxinas desta categoría usan a etiqueta <article-guidance> para proporcionar unha guía estruturada para a creación de artigos.",
 	"articleguidance-subjectcovered-title": "O artigo xa existe",

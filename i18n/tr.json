@@ -71,6 +71,8 @@
 	"articleguidance-notability-tag-draft-location": "Oluşturacağınız madde \"$1\" sayfasında yer alacaktır.",
 	"articleguidance-specialnewarticle-no-matching-type": "Doğru türü bulmakta zorlanıyor musunuz",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Yeni bir tür önerin",
+	"articleguidance-feedback-missing-type-preloadtitle": "\"$1\" için eşleşen bir madde türü bulunamadı",
+	"articleguidance-feedback-request-support-preloadtitle": "Destek talebi: $1 ($2)",
 	"articleguidance-tracking-category": "Madde rehberliğini kullanan sayfalar",
 	"articleguidance-tracking-category-desc": "Bu kategorideki sayfalar, madde oluşturma konusunda yapılandırılmış rehber sunmak için <article-guidance> etiketinden yararlanır.",
 	"articleguidance-subjectcovered-title": "Bu madde zaten mevcut",

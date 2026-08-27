@@ -71,6 +71,8 @@
 	"articleguidance-notability-tag-draft-location": "Uw pagina wordt aangemaakt op \"$1\".",
 	"articleguidance-specialnewarticle-no-matching-type": "Kunt u het juiste type niet vinden?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Stel een nieuw type voor",
+	"articleguidance-feedback-missing-type-preloadtitle": "Er kon geen overeenkomend artikeltype worden gevonden voor “$1”.",
+	"articleguidance-feedback-request-support-preloadtitle": "Verzoek om ondersteuning: $1 ($2)",
 	"articleguidance-tracking-category": "Pagina's die gebruikmaken van paginarichtlijnen",
 	"articleguidance-tracking-category-desc": "Pagina's in deze categorie gebruiken de tag <article-guidance> om gestructureerde richtlijnen te bieden voor het schrijven.",
 	"articleguidance-subjectcovered-title": "De pagina bestaat al",

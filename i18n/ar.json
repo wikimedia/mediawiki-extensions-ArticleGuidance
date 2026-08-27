@@ -73,6 +73,8 @@
 	"articleguidance-notability-tag-draft-location": "ستنشأ مقالتك في \"$1\".",
 	"articleguidance-specialnewarticle-no-matching-type": "لا يمكنك العثور على النوع المناسب؟",
 	"articleguidance-specialnewarticle-missing-type-feedback": "اقترح نوعًا جديدًا",
+	"articleguidance-feedback-missing-type-preloadtitle": "لم يتم العثور على نوع مقال مطابق لـ \" $1 \"",
+	"articleguidance-feedback-request-support-preloadtitle": "طلب الدعم: $1 ( $2 )",
 	"articleguidance-tracking-category": "الصفحات التي تستخدم إرشاد المقالة",
 	"articleguidance-tracking-category-desc": "تستخدم الصفحات في هذا التصنيف <article-guidance> وسم لتوفير إرشادات منظمة لإنشاء المقالات.",
 	"articleguidance-subjectcovered-title": "المقالة موجودة مسبقاً",

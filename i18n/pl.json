@@ -72,6 +72,8 @@
 	"articleguidance-notability-tag-draft-location": "Twój artykuł zostanie utworzony na stronie „$1”.",
 	"articleguidance-specialnewarticle-no-matching-type": "Nie możesz znaleźć odpowiedniego rodzaju?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Zaproponuj nowy rodzaj",
+	"articleguidance-feedback-missing-type-preloadtitle": "Nie znaleziono pasującego rodzaju artykułu: „$1”",
+	"articleguidance-feedback-request-support-preloadtitle": "Prośba o wsparcie: „$1” ($2)",
 	"articleguidance-tracking-category": "Strony używające Pomocy redaktorskiej",
 	"articleguidance-tracking-category-desc": "Strony w tej kategorii używają znacznika <article-guidance>, aby utworzyć ustrukturyzowane wsparcie przy tworzeniu artykułów.",
 	"articleguidance-subjectcovered-title": "Artykuł już istnieje",

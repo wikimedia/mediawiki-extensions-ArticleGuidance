@@ -70,6 +70,8 @@
 	"articleguidance-notability-tag-draft-location": "Вашата статија ќе биде создадена на „$1“.",
 	"articleguidance-specialnewarticle-no-matching-type": "Не го наоѓате соодветниот вид?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Предложи нов вид",
+	"articleguidance-feedback-missing-type-preloadtitle": "Не можев да најдам соодведен тип на статија за „$1“",
+	"articleguidance-feedback-request-support-preloadtitle": "Барање за поддршка: $1 ($2)",
 	"articleguidance-tracking-category": "Страници со упатства за статии",
 	"articleguidance-tracking-category-desc": "Страниците во оваа категорија ја користат ознаката <article-guidance> што дава структурирани упатства за создавање на статии.",
 	"articleguidance-subjectcovered-title": "Статијата веќе постои",

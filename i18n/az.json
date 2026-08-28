@@ -70,6 +70,8 @@
 	"articleguidance-notability-tag-draft-location": "Məqaləniz \"$1\" başlığı ilə yaradılacaq.",
 	"articleguidance-specialnewarticle-no-matching-type": "Düzgün növü tapa bilmirsiniz?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Yeni bir növ təklif et",
+	"articleguidance-feedback-missing-type-preloadtitle": "\"$1\" üçün uyğun məqalə növü tapılmadı",
+	"articleguidance-feedback-request-support-preloadtitle": "Dəstək sorğusu: $1 ($2)",
 	"articleguidance-tracking-category": "Məqalə təlimatlarından istifadə edən səhifələr",
 	"articleguidance-tracking-category-desc": "Bu kateqoriyadakı səhifələr  məqalənin yaradılması üçün strukturlaşdırılmış rəhbərlik təmin edən <article-guidance> teqindən istifadə edir.",
 	"articleguidance-subjectcovered-title": "Məqalə artıq mövcuddur",

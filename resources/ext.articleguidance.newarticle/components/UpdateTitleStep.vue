@@ -15,7 +15,16 @@
 			</cdx-text-input>
 
 			<cdx-message
-				v-if="titleExists === true"
+				v-if="invalidTitle"
+				type="error"
+				inline
+				class="ext-articleguidance-updatetitle-error"
+			>
+				{{ invalidTitleErrorText }}
+			</cdx-message>
+
+			<cdx-message
+				v-if="!invalidTitle && titleExists === true"
 				type="warning"
 				inline
 				class="ext-articleguidance-updatetitle-warning"
@@ -95,6 +104,7 @@ const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton } = require( '../codex.js' );
 const useArticleExist = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
+const { isValidTitle, getInvalidTitleCharacters } = require( '../utils/title.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 
@@ -117,10 +127,37 @@ module.exports = defineComponent( {
 		const localTitle = ref( store.articleTitle || store.searchQuery );
 		const titleInputRef = ref( null );
 
-		const { exists: titleExists, checkExistence } = useArticleExist( localTitle );
+		// Validate article title
+		const invalidTitle = computed( () => {
+			const query = localTitle.value && localTitle.value.trim();
+			return query ? !isValidTitle( query ) : false;
+		} );
+
+		// Extract invalid characters for error display
+		const invalidCharacters = computed( () => {
+			if ( !invalidTitle.value ) {
+				return '';
+			}
+			return getInvalidTitleCharacters( localTitle.value ).join( ', ' );
+		} );
+
+		const invalidTitleErrorText = computed( () => {
+			if ( invalidCharacters.value ) {
+				return mw.message(
+					'articleguidance-specialnewarticle-invalid-title',
+					invalidCharacters.value
+				).text();
+			}
+			return mw.message( 'articleguidance-specialnewarticle-invalid-title-generic' ).text();
+		} );
+
+		// Only check existence when the title is valid
+		const validTitle = computed( () => invalidTitle.value ? '' : localTitle.value );
+
+		const { exists: titleExists, checkExistence } = useArticleExist( validTitle );
 
 		onMounted( () => {
-			if ( localTitle.value ) {
+			if ( validTitle.value ) {
 				checkExistence();
 			}
 			if ( titleInputRef.value ) {
@@ -129,6 +166,7 @@ module.exports = defineComponent( {
 		} );
 
 		const canContinue = computed( () => localTitle.value.trim().length > 0 &&
+			!invalidTitle.value &&
 			titleExists.value === false
 		);
 
@@ -156,6 +194,7 @@ module.exports = defineComponent( {
 		const showRedLinkReminder = computed( () => isRedLink.value &&
 			titleOnOpen === redLinkTitle.value &&
 			localTitle.value !== redLinkTitle.value &&
+			!invalidTitle.value &&
 			titleExists.value !== true
 		);
 
@@ -176,6 +215,8 @@ module.exports = defineComponent( {
 		return {
 			localTitle,
 			titleInputRef,
+			invalidTitle,
+			invalidTitleErrorText,
 			titleExists,
 			existsWarningText,
 			originallyTypedText,
@@ -200,6 +241,10 @@ module.exports = defineComponent( {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+}
+
+.ext-articleguidance-updatetitle-error {
+	margin: 0;
 }
 
 .ext-articleguidance-updatetitle-warning {

@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Jeeputer",
 			"Mohammad ebz"
 		]
 	},
-	"articleguidance-specialnewarticle-missing-type-feedback": "پیشنهاد یک نوع جدید"
+	"articleguidance-specialnewarticle-missing-type-feedback": "پیشنهاد یک نوع جدید",
+	"articleguidance-feedback-missing-type-preloadtitle": "ناتوان در یافتن مقاله با نوع منطبق برای «$1»",
+	"articleguidance-feedback-request-support-preloadtitle": "درخواست پشتیبانی: $1 ($2)"
 }

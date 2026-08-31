@@ -31,7 +31,7 @@ global.mw = {
 	},
 	Title: {
 		newFromText: ( title ) => {
-			if ( !title || /[[\]<>]/.test( title ) ) {
+			if ( !title || /[[\]<>{}]/.test( title ) ) {
 				return null;
 			}
 			const colon = title.indexOf( ':' );

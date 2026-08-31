@@ -170,7 +170,7 @@ const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const { isMobile } = require( '../utils/mobile.js' );
-const { isValidTitle, getInvalidTitleCharacters } = require( '../utils/title.js' );
+const useTitleValidation = require( '../composables/useTitleValidation.js' );
 const Step = require( './Step.vue' );
 const ArticleCard = require( './ArticleCard.vue' );
 const Outlines = require( './Outlines.vue' );
@@ -197,33 +197,11 @@ module.exports = defineComponent( {
 
 		const searchInput = ref( null );
 
-		// Validate article title
-		const invalidTitle = computed( () => {
-			const query = searchQuery.value;
-			return query ? !isValidTitle( query ) : false;
-		} );
-
-		// Extract invalid characters for error display
-		const invalidCharacters = computed( () => {
-			if ( !invalidTitle.value ) {
-				return '';
-			}
-			return getInvalidTitleCharacters( searchQuery.value ).join( ', ' );
-		} );
-
-		// Error message for invalid title
-		const invalidTitleErrorText = computed( () => {
-			if ( invalidCharacters.value ) {
-				return mw.message(
-					'articleguidance-specialnewarticle-invalid-title',
-					invalidCharacters.value
-				).text();
-			}
-			return mw.message( 'articleguidance-specialnewarticle-invalid-title-generic' ).text();
-		} );
-
-		// Only search when the query is a valid article title
-		const validQuery = computed( () => invalidTitle.value ? '' : searchQuery.value );
+		const {
+			invalidTitle,
+			invalidTitleErrorText,
+			validTitle: validQuery
+		} = useTitleValidation( searchQuery );
 
 		// Initialize search composable with validated query
 		const {

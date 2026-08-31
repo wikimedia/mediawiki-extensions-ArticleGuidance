@@ -229,6 +229,7 @@
 				"composables/useSearch.js",
 				"composables/useSearchDelayed.js",
 				"composables/useWikidataSearch.js",
+				"composables/useTitleValidation.js",
 				"components/StepHeader.vue",
 				"components/Step.vue",
 				"components/SearchStep.vue",

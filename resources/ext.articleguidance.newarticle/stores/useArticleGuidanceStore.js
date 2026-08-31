@@ -153,6 +153,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	async function selectArticle( result, titleTaken ) {
+		const titleObj = mw.Title.newFromUserInput( result.label );
+		const label = titleObj ? titleObj.getMainText() : null;
 		articleTitle.value = null;
 		titleSuggestion.value = null;
 		originalTypedTitle.value = null;
@@ -175,13 +177,13 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		} else if ( !result.matchedQId ) {
 			goTo( 'unsupportedsubject' );
 		} else {
-			if ( !isRedLink.value && result.label &&
-				result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
-				if ( await routeIfTitleTaken( result.label, result ) ) {
+			if ( !isRedLink.value && label &&
+				label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
+				if ( await routeIfTitleTaken( label, result ) ) {
 					return;
 				}
 				originalTypedTitle.value = searchQuery.value;
-				articleTitle.value = result.label;
+				articleTitle.value = label;
 			}
 			if ( shouldShowNotabilityStep() ) {
 				goTo( 'notability' );

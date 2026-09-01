@@ -18,7 +18,7 @@ function isValidTitle( text ) {
 		return false;
 	}
 	const title = mw.Title.newFromText( trimmed );
-	return title !== null && title.getNamespaceId() === NS_MAIN;
+	return title !== null && title.getNamespaceId() === NS_MAIN && !title.getFragment();
 }
 
 /**

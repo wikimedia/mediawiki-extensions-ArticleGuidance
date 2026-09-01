@@ -34,17 +34,28 @@ global.mw = {
 			if ( !title || /[[\]<>{}]/.test( title ) ) {
 				return null;
 			}
-			const colon = title.indexOf( ':' );
-			const prefix = colon !== -1 ? title.slice( 0, colon ).toLowerCase() : '';
+			const hash = title.indexOf( '#' );
+			let fragment = '';
+			let pageTitle = title;
+			if ( hash >= 0 ) {
+				fragment = title.slice( hash + 1 );
+				pageTitle = title.slice( 0, hash );
+				if ( !pageTitle ) {
+					return null;
+				}
+			}
+			const colon = pageTitle.indexOf( ':' );
+			const prefix = colon >= 0 ? pageTitle.slice( 0, colon ).toLowerCase() : '';
 			const ns = prefix in configValues.wgNamespaceIds ?
 				configValues.wgNamespaceIds[ prefix ] : 0;
-			if ( colon !== -1 && !title.slice( colon + 1 ) ) {
+			if ( colon >= 0 && !pageTitle.slice( colon + 1 ) ) {
 				return null;
 			}
 			return {
-				getMain: () => title,
-				getPrefixedText: () => title,
-				getNamespaceId: () => ns
+				getMain: () => pageTitle,
+				getPrefixedText: () => pageTitle,
+				getNamespaceId: () => ns,
+				getFragment: () => fragment
 			};
 		}
 	}

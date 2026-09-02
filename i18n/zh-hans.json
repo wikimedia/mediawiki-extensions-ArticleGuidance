@@ -3,6 +3,7 @@
 		"authors": [
 			"Gsdn",
 			"GuoPC",
+			"Shizhao",
 			"Zhoucantd",
 			"沈澄心"
 		]
@@ -19,6 +20,8 @@
 	"articleguidance-specialnewarticle-no-results": "未找到与“$1”相关的主题",
 	"articleguidance-specialnewarticle-search-error": "无法检查此主题。",
 	"articleguidance-specialnewarticle-search-retry": "重试",
+	"articleguidance-specialnewarticle-invalid-title": "页面标题不能包含$1 。请删除这些字符并重试。",
+	"articleguidance-specialnewarticle-invalid-title-generic": "此页面标题无效。请尝试其他标题。",
 	"articleguidance-titleconflict-exists-warning": "已存在标题为“$1”的条目。",
 	"articleguidance-specialnewarticle-edit-existing": "编辑现有条目",
 	"articleguidance-specialnewarticle-disambiguation-title": "这是什么？",

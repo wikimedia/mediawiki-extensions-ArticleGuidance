@@ -17,7 +17,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `action` | Trigger | `action_source` | `action_subtype` | `action_context` |
 |---|---|---|---|---|
 | `init` | `Special:NewArticle` wizard is ready | `redlink`, `articlewizard`, or `direct` | — | `{"title":"<article title>"}` |
-| `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|wikidata_and_mint>","duration":<n>}` |
+| `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` |
 | `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>","outline":{"title":"<outline name>","qid":"<QID>"}}` |
 | `select_topic` | User picks an outline from the browse-by-type panel | — | `manual_topic` | `{"title":"<outline name>","qid":"<QID>"}` |
 | `add_source` | Source URL validated by the `/articleguidance/v0/source/validate` API | — | `valid` or `invalid` | `{"url":"<url>","domain":"<domain>","classification":"<classification>","mandatory":<bool>}` |

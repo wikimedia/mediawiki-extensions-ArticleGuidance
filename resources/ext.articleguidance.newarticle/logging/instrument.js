@@ -60,6 +60,8 @@ function logInit( initialTitle, source ) {
  *   - 'wikidata_direct': Native search results only (no MinT translation used).
  *   - 'mint_fallback_success': Native search returned no results, MinT translation returned
  *     results.
+ *   - 'mint_fallback_no_results': Native search returned no results, and MinT translation also
+ *     returned no results.
  *   - 'wikidata_and_mint': Both native search and MinT translation returned results and were
  *     merged.
  * @param {number|null} duration Total search duration in milliseconds.

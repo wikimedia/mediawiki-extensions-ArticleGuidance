@@ -297,10 +297,12 @@ function useWikidataSearch( query, language ) {
 					translatedOutlineByType = translationProcessResult.outlineByType;
 				}
 
-				if ( processedTranslatedResults.length > 0 ) {
-					path = processedWikidataResults.length === 0 ?
+				if ( processedWikidataResults.length === 0 ) {
+					path = processedTranslatedResults.length > 0 ?
 						'mint_fallback_success' :
-						'wikidata_and_mint';
+						'mint_fallback_no_results';
+				} else if ( processedTranslatedResults.length > 0 ) {
+					path = 'wikidata_and_mint';
 				}
 			}
 

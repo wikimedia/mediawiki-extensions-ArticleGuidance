@@ -4,13 +4,13 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
-use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
+use MediaWiki\Config\Config;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 class PreferencesHandler implements GetPreferencesHook {
 
 	public function __construct(
-		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
+		private readonly Config $mainConfig,
 	) {
 	}
 
@@ -18,8 +18,8 @@ class PreferencesHandler implements GetPreferencesHook {
 	 * @inheritDoc
 	 */
 	public function onGetPreferences( $user, &$preferences ): void {
-		$experiment = $this->experimentFactory->getExperiment();
-		if ( $experiment === null || !$experiment->isAssignedGroup( 'treatment' ) ) {
+		// Show the opt-out only on wikis where the redirect can happen.
+		if ( !$this->mainConfig->get( 'ArticleGuidanceRedirectEnabled' ) ) {
 			return;
 		}
 

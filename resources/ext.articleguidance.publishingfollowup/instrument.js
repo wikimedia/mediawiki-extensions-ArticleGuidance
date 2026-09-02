@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { ArticleGuidanceExperimentName: experimentName } = require( './config.json' );
+const { ArticleGuidanceInstrumentName: instrumentName } = require( './config.json' );
 
 // Funnel token seeded by the newarticle module earlier in the same session, so the
 // post-publish connect event joins the rest of the Article Guidance funnel. Read-only
@@ -12,7 +12,7 @@ let instrumentFailed = false;
 const pendingEvents = [];
 
 mw.loader.using( 'ext.testKitchen' ).then( () => {
-	instrument = mw.testKitchen.compat.getExperiment( experimentName );
+	instrument = mw.testKitchen.getInstrument( instrumentName );
 	pendingEvents.splice( 0 ).forEach( ( event ) => instrument.send( event[ 0 ], event[ 1 ] ) );
 } ).catch( () => {
 	instrumentFailed = true;

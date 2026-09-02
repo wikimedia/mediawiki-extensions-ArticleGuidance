@@ -1,12 +1,14 @@
 # Instrumentation
 
-ArticleGuidance uses [Test Kitchen](https://www.mediawiki.org/wiki/Test_Kitchen) for A/B
-experiments and funnel analytics, both controlled by `ArticleGuidanceExperimentName`. When set
-to a non-empty experiment name, only users assigned to the `treatment` group are redirected to
-`Special:NewArticle`; all others follow the default wiki behaviour.
+ArticleGuidance uses a [Test Kitchen](https://www.mediawiki.org/wiki/Test_Kitchen) instrument for
+funnel analytics, named by `ArticleGuidanceInstrumentName`. An empty name disables logging.
 
-Exposure is recorded just before the group assignment is checked, so it fires for both treatment
-and control users.
+The instrument does not control who is redirected to `Special:NewArticle`. That is controlled by
+`ArticleGuidanceRedirectEnabled`; see [red-link-redirect.md](red-link-redirect.md).
+
+An `entry_point` event is sent for every eligible user who clicks an in-scope red link or lands on
+a configured entry point, whether or not the redirect is enabled. These events are the funnel
+denominator.
 
 Funnel events are sent for every user who reaches `Special:NewArticle`, enabling drop-off
 analysis across wizard steps. Each session shares a `funnel_entry_token` stored in
@@ -16,6 +18,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 
 | `action` | Trigger | `action_source` | `action_subtype` | `action_context` |
 |---|---|---|---|---|
+| `entry_point` | Eligible user clicks an in-scope red link, or lands on a configured entry point | `redlink` or `articlewizard` | — | `{"redirected":<bool>}` |
 | `init` | `Special:NewArticle` wizard is ready | `redlink`, `articlewizard`, or `direct` | — | `{"title":"<article title>"}` |
 | `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` |
 | `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>","outline":{"title":"<outline name>","qid":"<QID>"}}` |
@@ -31,5 +34,5 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
 | `unsupported_subject_shown` | Unsupported-subject step is shown | — | — | — |
 | `unsupported_subject_action` | User acts on the unsupported-subject step | — | `request_support` or `start_writing` | — |
-| `editing_start` | User lands on the editor: treatment group after completing the AG workflow, or control group following a red link directly | — | — | `{"page":{"title":"<title>"}}` |
-| `article_saved` | User saves the first revision of a new article (fires for all groups, not only AG-workflow participants) | — | — | `{"page":{"title":"<title>","id":<id>}}` |
+| `editing_start` | User lands on the editor: after completing the AG workflow, or by following a red link while the redirect is off | — | — | `{"page":{"title":"<title>"}}` |
+| `article_saved` | User saves the first revision of a new article (fires for every new article, not only for AG-workflow participants) | — | — | `{"page":{"title":"<title>","id":<id>}}` |

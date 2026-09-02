@@ -6,9 +6,8 @@ namespace MediaWiki\Extension\ArticleGuidance\Tests\Integration;
 
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Extension\ArticleGuidance\Hooks\RedLinkRedirectHandler;
-use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
-use MediaWiki\Extension\TestKitchen\Sdk\ExperimentInterface;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
@@ -22,26 +21,24 @@ use MediaWikiIntegrationTestCase;
  */
 class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 
-	private function getHandler( bool $inTreatment = true ): RedLinkRedirectHandler {
-		// The experiment is typed against TestKitchen's ExperimentInterface, an
-		// optional dependency that is not loaded in the default CI phpunit job.
-		$this->markTestSkippedIfExtensionNotLoaded( 'TestKitchen' );
-
-		$experiment = $this->createMock( ExperimentInterface::class );
-		$experiment->method( 'isAssignedGroup' )->willReturn( $inTreatment );
-
-		$experimentFactory = $this->createMock( ArticleGuidanceExperimentFactory::class );
-		$experimentFactory->method( 'getExperiment' )->willReturn( $experiment );
+	private function getHandler( bool $redirectEnabled = true ): RedLinkRedirectHandler {
+		// An empty instrument name and no instrument manager make the factory return
+		// null, so no event is sent and TestKitchen stays out of the test.
+		$instrumentFactory = new ArticleGuidanceInstrumentFactory(
+			new HashConfig( [ 'ArticleGuidanceInstrumentName' => '' ] ),
+			null
+		);
 
 		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 		$userOptionsLookup->method( 'getBoolOption' )->willReturn( true );
 
 		// Empty referer/category lists => every referer is in scope; junior gate off.
 		$config = new HashConfig( [
-			'ArticleGuidanceExperimentRefererTitles' => [],
-			'ArticleGuidanceExperimentRefererCategories' => [],
-			'ArticleGuidanceExperimentEntryPointTitles' => [],
-			'ArticleGuidanceExperimentJuniorEditorsOnly' => false,
+			'ArticleGuidanceRedirectEnabled' => $redirectEnabled,
+			'ArticleGuidanceRedirectRefererTitles' => [],
+			'ArticleGuidanceRedirectRefererCategories' => [],
+			'ArticleGuidanceRedirectEntryPointTitles' => [],
+			'ArticleGuidanceRedirectJuniorEditorsOnly' => false,
 			'ArticleGuidanceJuniorEditorThreshold' => 100,
 		] );
 
@@ -49,7 +46,7 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			$this->createMock( TitleExtractor::class ),
 			$config,
 			$this->getServiceContainer()->getTitleFactory(),
-			$experimentFactory,
+			$instrumentFactory,
 			$userOptionsLookup,
 			$this->getServiceContainer()->getConnectionProvider(),
 		);
@@ -99,7 +96,7 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->getServiceContainer()->getLinkCache()->clear();
 	}
 
-	public function testMovedAwayArticleSkipsExperimentAndDoesNotRedirect(): void {
+	public function testMovedAwayArticleDoesNotRedirect(): void {
 		$from = Title::makeTitle( NS_MAIN, 'ArticleGuidanceMovedRedLink' );
 		$to = Title::makeTitle( NS_MAIN, 'ArticleGuidanceMovedRedLinkTarget' );
 		$this->createAndMovePage( $from, $to );
@@ -116,7 +113,7 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
 	}
 
-	public function testDeletedArticleSkipsExperimentAndDoesNotRedirect(): void {
+	public function testDeletedArticleDoesNotRedirect(): void {
 		$title = Title::makeTitle( NS_MAIN, 'ArticleGuidanceDeletedRedLink' );
 		$this->createAndDeletePage( $title );
 		$freshTitle = $this->getServiceContainer()->getTitleFactory()
@@ -132,7 +129,7 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
 	}
 
-	public function testNeverDeletedArticleStillRedirectsTreatmentGroup(): void {
+	public function testNeverDeletedArticleRedirects(): void {
 		$title = $this->getServiceContainer()->getTitleFactory()
 			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
 
@@ -143,6 +140,20 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
 		);
 
-		$this->assertFalse( $result, 'Treatment group with no deletion log should redirect.' );
+		$this->assertFalse( $result, 'A red link with no deletion log should redirect.' );
+	}
+
+	public function testDisabledRedirectDoesNotRedirect(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->never() )->method( 'redirect' );
+
+		$result = $this->getHandler( false )->onBeforeInitialize(
+			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
+		);
+
+		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
 	}
 }

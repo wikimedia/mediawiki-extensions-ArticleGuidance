@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 const SESSION_KEY = 'ArticleGuidanceFunnelToken';
 
-const { ArticleGuidanceExperimentName: experimentName } = require( '../config.json' );
+const { ArticleGuidanceInstrumentName: instrumentName } = require( '../config.json' );
 
 let instrument = null;
 let instrumentFailed = false;
 const pendingEvents = [];
 
 mw.loader.using( 'ext.testKitchen' ).then( () => {
-	instrument = mw.testKitchen.compat.getExperiment( experimentName );
+	instrument = mw.testKitchen.getInstrument( instrumentName );
 	pendingEvents.splice( 0 ).forEach( ( [ action, data ] ) => instrument.send( action, data ) );
 } ).catch( () => {
 	instrumentFailed = true;

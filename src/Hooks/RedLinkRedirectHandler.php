@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
-use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Logging\DatabaseLogEntry;
@@ -24,7 +24,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		private readonly TitleExtractor $titleExtractor,
 		private readonly Config $mainConfig,
 		private readonly TitleFactory $titleFactory,
-		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
+		private readonly ArticleGuidanceInstrumentFactory $instrumentFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly IConnectionProvider $connectionProvider,
 	) {
@@ -68,17 +68,12 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	}
 
 	/**
-	 * Check whether the user is in the experiment treatment group, or whether
-	 * traffic splitting is disabled (no experiment configured or TestKitchen unavailable).
+	 * Check whether the redirect to Article Guidance is enabled on this wiki.
 	 *
 	 * @return bool
 	 */
-	private function isInTreatmentGroup(): bool {
-		$experiment = $this->experimentFactory->getExperiment();
-		if ( $experiment === null ) {
-			return false;
-		}
-		return $experiment->isAssignedGroup( 'treatment' );
+	private function isRedirectEnabled(): bool {
+		return (bool)$this->mainConfig->get( 'ArticleGuidanceRedirectEnabled' );
 	}
 
 	/**
@@ -97,7 +92,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	}
 
 	/**
-	 * Check whether the request's referer page is within the configured experiment scope.
+	 * Check whether the request's referer page is within the configured scope.
 	 *
 	 * Title matching normalises both sides to DB keys to handle spaces/underscores and namespace
 	 * aliases. Category matching performs a DB query and only runs when the title list produces
@@ -107,8 +102,8 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isRefererInScope( WebRequest $request ): bool {
-		$refererTitles = $this->mainConfig->get( 'ArticleGuidanceExperimentRefererTitles' );
-		$refererCategories = $this->mainConfig->get( 'ArticleGuidanceExperimentRefererCategories' );
+		$refererTitles = $this->mainConfig->get( 'ArticleGuidanceRedirectRefererTitles' );
+		$refererCategories = $this->mainConfig->get( 'ArticleGuidanceRedirectRefererCategories' );
 
 		if ( !is_array( $refererTitles ) || !is_array( $refererCategories ) ) {
 			return false;
@@ -151,23 +146,28 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	}
 
 	/**
-	 * Check whether the user is within the experiment's target audience.
+	 * Check whether the user can create an article.
 	 *
 	 * @param User $user
 	 * @return bool
 	 */
 	private function isUserAllowed( User $user ): bool {
-		if ( !$user->isAllowed( 'createpage' ) || $user->getBlock() !== null ) {
-			return false;
+		return $user->isAllowed( 'createpage' ) && $user->getBlock() === null;
+	}
+
+	/**
+	 * Check whether the user is within the target audience. All users are, unless
+	 * ArticleGuidanceRedirectJuniorEditorsOnly limits the audience to junior editors.
+	 *
+	 * @param User $user
+	 * @return bool
+	 */
+	private function isEditorInScope( User $user ): bool {
+		if ( !$this->mainConfig->get( 'ArticleGuidanceRedirectJuniorEditorsOnly' ) ) {
+			return true;
 		}
-		if ( $this->mainConfig->get( 'ArticleGuidanceExperimentJuniorEditorsOnly' ) ) {
-			$threshold = $this->mainConfig->get( 'ArticleGuidanceJuniorEditorThreshold' );
-			$editCount = $user->getEditCount() ?? 0;
-			if ( $editCount >= $threshold ) {
-				return false;
-			}
-		}
-		return true;
+		$editCount = $user->getEditCount() ?? 0;
+		return $editCount < $this->mainConfig->get( 'ArticleGuidanceJuniorEditorThreshold' );
 	}
 
 	/**
@@ -189,7 +189,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isEntryPointPage( Title $title ): bool {
-		$entryPointTitles = $this->mainConfig->get( 'ArticleGuidanceExperimentEntryPointTitles' );
+		$entryPointTitles = $this->mainConfig->get( 'ArticleGuidanceRedirectEntryPointTitles' );
 		if ( !is_array( $entryPointTitles ) || $entryPointTitles === [] ) {
 			return false;
 		}
@@ -206,22 +206,34 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		return false;
 	}
 
-	private function sendExperimentExposure(): void {
-		$experiment = $this->experimentFactory->getExperiment();
-		if ( $experiment !== null ) {
-			$experiment->sendExposure();
-		}
+	/**
+	 * Send an event for each user who reaches an Article Guidance entry point, whether
+	 * or not the redirect is enabled. These events are the funnel denominator.
+	 *
+	 * @param string $source Entry point: 'redlink' or 'articlewizard'.
+	 * @param bool $redirected True when the user goes to Special:NewArticle.
+	 */
+	private function sendEntryPointEvent( string $source, bool $redirected ): void {
+		$this->instrumentFactory->getInstrument()?->send( 'entry_point', [
+			'action_source' => $source,
+			'action_context' => json_encode( [ 'redirected' => $redirected ] ),
+		] );
 	}
 
-	private function sendEditingStartedEvent( Title $title ): void {
-		$experiment = $this->experimentFactory->getExperiment();
-		if ( $experiment !== null ) {
-			$experiment->send( 'editing_start', [
-				'page' => [
-					'title' => $title->getPrefixedText(),
-				]
-			] );
-		}
+	/**
+	 * Send an event when the user starts to edit a new article.
+	 *
+	 * @param Title $title
+	 * @param string $source How the user reached the editor: 'articleguidance' when they
+	 *   came through Article Guidance, 'redlink' when they went directly to the editor.
+	 */
+	private function sendEditingStartedEvent( Title $title, string $source ): void {
+		$this->instrumentFactory->getInstrument()?->send( 'editing_start', [
+			'action_source' => $source,
+			'page' => [
+				'title' => $title->getPrefixedText(),
+			]
+		] );
 	}
 
 	/**
@@ -254,25 +266,33 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			$editing[ $titleText ] = $value;
 			$editing = array_slice( $editing, -EditTagHandler::MAX_TRACKED, null, true );
 			$session->set( EditTagHandler::SESSION_EDITING, $editing );
-			$this->sendEditingStartedEvent( $title );
+			$this->sendEditingStartedEvent( $title, 'articleguidance' );
 			return;
 		}
 
 		// Case 2: create a new article from a red link
-		if ( $this->isArticleRedLink( $title, $request )
-			&& $this->isRefererInScope( $request )
-			&& $this->isUserAllowed( $user )
-		) {
-			// Skip the experiment entirely for red links to deleted or moved-away
+		if ( $this->isArticleRedLink( $title, $request ) ) {
+			if ( !$this->isUserAllowed( $user ) ) {
+				return;
+			}
+			if ( !$this->isEditorInScope( $user ) ) {
+				return;
+			}
+			if ( !$this->isRefererInScope( $request ) ) {
+				return;
+			}
+
+			// Skip Article Guidance entirely for red links to deleted or moved-away
 			// articles so the editor opens as usual, showing the deletion/move log
-			// and (for those with permission) undelete tools. Excluded from both
-			// groups, so no exposure or editing_start event is sent. (T428146)
+			// and (for those with permission) undelete tools. No entry_point or
+			// editing_start event is sent for them. (T428146)
 			if ( $this->hasDeletionOrMoveLog( $title ) ) {
 				return;
 			}
 
-			$this->sendExperimentExposure();
-			if ( $this->isInTreatmentGroup() && $this->hasArticleGuidanceEnabled( $user ) ) {
+			$shouldRedirect = $this->isRedirectEnabled() && $this->hasArticleGuidanceEnabled( $user );
+			$this->sendEntryPointEvent( 'redlink', $shouldRedirect );
+			if ( $shouldRedirect ) {
 				// Outcome 1: go to Article Guidance
 				$this->performRedirect( $output, [
 					'newarticletitle' => $title->getPrefixedText(),
@@ -281,17 +301,23 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 				return false;
 			} else {
 				// Outcome 2: go directly to the editor
-				$this->sendEditingStartedEvent( $title );
+				$this->sendEditingStartedEvent( $title, 'redlink' );
 				return;
 			}
 		}
 
 		// Case 3: user lands on a configured entry point page (e.g. Special:ArticleWizard)
-		if ( $this->isEntryPointPage( $title )
-			&& $this->isUserAllowed( $user )
-		) {
-			$this->sendExperimentExposure();
-			if ( $this->isInTreatmentGroup() && $this->hasArticleGuidanceEnabled( $user ) ) {
+		if ( $this->isEntryPointPage( $title ) ) {
+			if ( !$this->isUserAllowed( $user ) ) {
+				return;
+			}
+			if ( !$this->isEditorInScope( $user ) ) {
+				return;
+			}
+
+			$shouldRedirect = $this->isRedirectEnabled() && $this->hasArticleGuidanceEnabled( $user );
+			$this->sendEntryPointEvent( 'articlewizard', $shouldRedirect );
+			if ( $shouldRedirect ) {
 				// Outcome 1: go to Article Guidance
 				$this->performRedirect( $output, [
 					'source' => 'articlewizard',

@@ -51,25 +51,29 @@
 			],
 			"description": "Wikidata Q IDs whose P31 presence causes an item to be excluded from article guidance search results. Q4167410 is the Wikimedia disambiguation page type."
 		},
-		"ArticleGuidanceExperimentName": {
-			"value": "",
-			"description": "TestKitchen experiment name used for A/B traffic splitting. When set, only users assigned to the 'treatment' group are redirected to Special:NewArticle. An empty string disables splitting and redirects all eligible traffic."
+		"ArticleGuidanceInstrumentName": {
+			"value": "article-guidance",
+			"description": "TestKitchen instrument name used to log analytics events. An empty string disables logging. This name does not control who is redirected to Special:NewArticle; use ArticleGuidanceRedirectEnabled for that."
 		},
-		"ArticleGuidanceExperimentRefererTitles": {
+		"ArticleGuidanceRedirectEnabled": {
+			"value": false,
+			"description": "When true, eligible users are redirected to Special:NewArticle from red links and from the configured entry points. Users can opt out with the articleguidance-enable preference. When false, all traffic follows the default wiki behaviour."
+		},
+		"ArticleGuidanceRedirectRefererTitles": {
 			"value": [],
 			"description": "Page titles (with optional namespace prefix, e.g. 'Wikipedia:Articles to create') whose red-links are in scope."
 		},
-		"ArticleGuidanceExperimentRefererCategories": {
+		"ArticleGuidanceRedirectRefererCategories": {
 			"value": [],
 			"description": "Category names (without 'Category:' prefix) whose pages' red-links are in scope."
 		},
-		"ArticleGuidanceExperimentEntryPointTitles": {
+		"ArticleGuidanceRedirectEntryPointTitles": {
 			"value": [],
 			"description": "Special page or page titles (e.g. 'Special:ArticleWizard') that act as alternative entry points into Article Guidance: qualifying junior mobile users visiting these pages will be redirected to Special:NewArticle. Empty array disables this redirect."
 		},
-		"ArticleGuidanceExperimentJuniorEditorsOnly": {
+		"ArticleGuidanceRedirectJuniorEditorsOnly": {
 			"value": false,
-			"description": "When true, the red-link/entry-point experiment only admits junior editors: in addition to the createpage permission and not being blocked, the user's edit count must be below ArticleGuidanceJuniorEditorThreshold. Default false admits all eligible logged-in users regardless of edit count."
+			"description": "When true, the red-link/entry-point redirect only admits junior editors: in addition to the createpage permission and not being blocked, the user's edit count must be below ArticleGuidanceJuniorEditorThreshold. Default false admits all eligible logged-in users regardless of edit count."
 		},
 		"ArticleGuidanceWikidataConnectEnabled": {
 			"value": false,
@@ -151,7 +155,7 @@
 				"ArticleGuidanceTitleExtractor",
 				"MainConfig",
 				"TitleFactory",
-				"ArticleGuidanceExperimentFactory",
+				"ArticleGuidanceInstrumentFactory",
 				"UserOptionsLookup",
 				"ConnectionProvider"
 			]
@@ -159,7 +163,7 @@
 		"Preferences": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreferencesHandler",
 			"services": [
-				"ArticleGuidanceExperimentFactory"
+				"MainConfig"
 			]
 		},
 		"ArticleGuidanceTag": {
@@ -174,7 +178,7 @@
 		"EditTag": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler",
 			"services": [
-				"ArticleGuidanceExperimentFactory"
+				"ArticleGuidanceInstrumentFactory"
 			]
 		},
 		"PreloadCleanup": {
@@ -265,7 +269,7 @@
 				{
 					"name": "config.json",
 					"config": [
-						"ArticleGuidanceExperimentName",
+						"ArticleGuidanceInstrumentName",
 						"ArticleGuidanceWikidataUrls",
 						"ArticleGuidanceCxServerUrl",
 						"ArticleGuidanceCxTargetLanguage",
@@ -420,7 +424,7 @@
 				{
 					"name": "config.json",
 					"config": [
-						"ArticleGuidanceExperimentName",
+						"ArticleGuidanceInstrumentName",
 						"ArticleGuidanceWikidataUrls"
 					]
 				},

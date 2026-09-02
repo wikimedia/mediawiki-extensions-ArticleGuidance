@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
@@ -18,14 +18,14 @@ use MediaWiki\Registration\ExtensionRegistry;
 
 /** @phpcs-require-sorted-array */
 return [
-	'ArticleGuidanceExperimentFactory' =>
-		static function ( MediaWikiServices $services ): ArticleGuidanceExperimentFactory {
-			$experimentManager = ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' )
-				? $services->getService( 'TestKitchen.ExperimentManager' )
+	'ArticleGuidanceInstrumentFactory' =>
+		static function ( MediaWikiServices $services ): ArticleGuidanceInstrumentFactory {
+			$instrumentManager = ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' )
+				? $services->getService( 'TestKitchen.InstrumentManager' )
 				: null;
-			return new ArticleGuidanceExperimentFactory(
+			return new ArticleGuidanceInstrumentFactory(
 				$services->getMainConfig(),
-				$experimentManager,
+				$instrumentManager,
 			);
 		},
 	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {

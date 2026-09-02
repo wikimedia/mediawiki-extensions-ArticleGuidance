@@ -7,7 +7,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 use MediaWiki\ChangeTags\Hook\ChangeTagsListActiveHook;
 use MediaWiki\ChangeTags\Hook\ListDefinedTagsHook;
 use MediaWiki\Context\RequestContext;
-use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceExperimentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 
 class EditTagHandler implements
@@ -30,7 +30,7 @@ class EditTagHandler implements
 	public const MAX_TRACKED = 50;
 
 	public function __construct(
-		private readonly ArticleGuidanceExperimentFactory $experimentFactory,
+		private readonly ArticleGuidanceInstrumentFactory $instrumentFactory,
 	) {
 	}
 
@@ -92,6 +92,6 @@ class EditTagHandler implements
 			$eventData['action_source'] = 'articleguidance';
 		}
 
-		$this->experimentFactory->getExperiment()?->send( 'article_saved', $eventData );
+		$this->instrumentFactory->getInstrument()?->send( 'article_saved', $eventData );
 	}
 }

@@ -16,6 +16,8 @@
 	"articleguidance-specialnewarticle-no-results": "Mawduucyo looma helin \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Lama hubin karin mawduucan.",
 	"articleguidance-specialnewarticle-search-retry": "Mar kale isku day",
+	"articleguidance-specialnewarticle-invalid-title": "Cinwaannada bogaggu kuma jiri karaan $1. Ka saar xarfahan oo mar kale isku day.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Cinwaanka boggani ma ansaxayo. Fadlan isku day cinwaan kale.",
 	"articleguidance-titleconflict-exists-warning": "Maqaal cinwaankiisu yahay \"$1\" hore ayuu u jiraa.",
 	"articleguidance-specialnewarticle-edit-existing": "Wax ka beddel maqaalka jira",
 	"articleguidance-specialnewarticle-disambiguation-title": "Tani waa maxay?",

@@ -16,6 +16,8 @@
 	"articleguidance-specialnewarticle-no-results": "Non se atoparon temas para «$1»",
 	"articleguidance-specialnewarticle-search-error": "Non se puido comprobar este tema.",
 	"articleguidance-specialnewarticle-search-retry": "Intentar de novo",
+	"articleguidance-specialnewarticle-invalid-title": "Os títulos das páxinas non poden incluír os seguintes caracteres: $1. Elimina estes caracteres e inténtao de novo.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "O título desta páxina non é válido. Proba con outro título.",
 	"articleguidance-titleconflict-exists-warning": "Xa existe un artigo titulado «$1».",
 	"articleguidance-specialnewarticle-edit-existing": "Editar o artigo existente",
 	"articleguidance-specialnewarticle-disambiguation-title": "Que é isto?",

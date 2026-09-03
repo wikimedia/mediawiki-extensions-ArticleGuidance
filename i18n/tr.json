@@ -17,6 +17,8 @@
 	"articleguidance-specialnewarticle-no-results": "\"$1\" için herhangi bir konu bulunamadı",
 	"articleguidance-specialnewarticle-search-error": "Bu konu denetlenemiyor.",
 	"articleguidance-specialnewarticle-search-retry": "Tekrar dene",
+	"articleguidance-specialnewarticle-invalid-title": "Sayfa başlıklarında $1 karakteri bulunamaz. Bu karakterleri kaldırın ve tekrar deneyin.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Bu sayfa başlığı geçersiz. Lütfen başka bir başlık deneyin.",
 	"articleguidance-titleconflict-exists-warning": "\"$1\" adlı bir madde zaten mevcut.",
 	"articleguidance-specialnewarticle-edit-existing": "Mevcut maddeyi düzenle",
 	"articleguidance-specialnewarticle-disambiguation-title": "Bu nedir?",

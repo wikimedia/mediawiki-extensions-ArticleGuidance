@@ -18,6 +18,8 @@
 	"articleguidance-specialnewarticle-no-results": "Nie znaleziono tematów dla „$1”",
 	"articleguidance-specialnewarticle-search-error": "Nie udało się sprawdzić tego tematu",
 	"articleguidance-specialnewarticle-search-retry": "Spróbuj ponownie",
+	"articleguidance-specialnewarticle-invalid-title": "Tytuły stron nie mogą zawierać znaków $1. Usuń je i spróbuj ponownie.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Ten tytuł strony jest nieprawidłowy. Wybierz inny tytuł.",
 	"articleguidance-titleconflict-exists-warning": "Atrykuł o nazwie „$1” już istnieje.",
 	"articleguidance-specialnewarticle-edit-existing": "Edytuj istniejący artykuł",
 	"articleguidance-specialnewarticle-disambiguation-title": "Co to jest?",

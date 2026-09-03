@@ -14,6 +14,8 @@
 	"articleguidance-specialnewarticle-no-results": "Hakusanalla ”$1” ei löytynyt aiheita",
 	"articleguidance-specialnewarticle-search-error": "Tätä aihetta ei voitu tarkistaa.",
 	"articleguidance-specialnewarticle-search-retry": "Yritä uudelleen",
+	"articleguidance-specialnewarticle-invalid-title": "Sivujen otsikot eivät voi sisältää merkkejä kuten $1. Poista nämä merkit ja yritä uudelleen.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Sivun otsikko on virheellinen. Kokeile toista otsikkoa.",
 	"articleguidance-titleconflict-exists-warning": "Artikkeli nimeltä ”$1” on jo olemassa.",
 	"articleguidance-specialnewarticle-edit-existing": "Muokkaa olemassa olevaa artikkelia",
 	"articleguidance-specialnewarticle-disambiguation-title": "Mikä tämä on?",

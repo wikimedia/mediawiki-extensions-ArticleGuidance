@@ -17,6 +17,8 @@
 	"articleguidance-specialnewarticle-no-results": "Geen onderwerpen gevonden voor \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Het onderwerp was niet niet te controleren.",
 	"articleguidance-specialnewarticle-search-retry": "Opnieuw proberen",
+	"articleguidance-specialnewarticle-invalid-title": "Paginatitels mogen deze tekens niet bevatten: $1. Verwijder deze tekens en probeer het opnieuw.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Deze paginatitel is onjuist. Probeer een andere titel.",
 	"articleguidance-titleconflict-exists-warning": "Er bestaat al een pagina met de titel \"$1\".",
 	"articleguidance-specialnewarticle-edit-existing": "Bestaande pagina bewerken",
 	"articleguidance-specialnewarticle-disambiguation-title": "Wat is dit?",

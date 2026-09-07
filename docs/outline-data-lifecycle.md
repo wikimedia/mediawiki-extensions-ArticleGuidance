@@ -8,13 +8,15 @@ re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
 1. Fetches entity metadata (label, description, image, hierarchy depth, match-via) from Wikidata
    via `WikidataInfoFetcher`, which caches results for one week. The `article-type` attribute
    accepts one or more whitespace-separated Q IDs (T421260); entity metadata is fetched per ID.
-   The first (primary) ID supplies the label, description and image, while every ID keeps its own
+   The first (primary) ID supplies the description and image, while every ID keeps its own
    hierarchy depth and match-via in an `articleTypes` array of `{ id, hierarchyDepth, matchVia }`
    entries. A singular `articleType` field holding the primary ID is also written, solely so a
    rollback to pre-multi-item code keeps working; runtime consumers use `articleTypes`. If any
-   token in the attribute is malformed, the whole attribute is treated as invalid. An optional
-   `label` attribute on the tag overrides the Wikidata-derived label everywhere — in the stored
-   outline list, and on the on-wiki guidance card, where it replaces the primary item's label.
+   token in the attribute is malformed, the whole attribute is treated as invalid. The outline's
+   label defaults to the last phrase of the outline page title (e.g. "Company" from
+   `Article guidance/Company`), or can be overridden by an optional `label` attribute on the tag;
+   the Wikidata item's label is not used for outline names. The outline label is used everywhere —
+   in the stored outline list, and on the on-wiki guidance card for the primary item.
 2. Parses the tag's inner content into fully-resolved HTML using `Parser::recursiveTagParseFully()`,
    resolving all strip markers (links, etc.) inline.
 3. Writes the structured outline data as a page property (`articleguidance-data`) via

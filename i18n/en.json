@@ -51,6 +51,7 @@
 	"articleguidance-instructions-start-writing": "Start writing",
 	"articleguidance-navigation-back": "Back",
 	"articleguidance-category-note": "Articles created from this outline will be added to $1.",
+	"articleguidance-custom-label-note": "This outline uses the custom label \"$1\".",
 	"articleguidance-header": "Article Guidance",
 	"articleguidance-type-label": "Type:",
 	"articleguidance-type-item-description": "– $1",

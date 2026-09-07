@@ -101,4 +101,30 @@ class ArticleGuidanceRendererTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( 'articleguidance-invalid-article-type', $html );
 		$this->assertStringNotContainsString( 'ext-articleguidance-type-item', $html );
 	}
+
+	public function testRendersCustomLabelNoteAtTop(): void {
+		$customLabelNote = 'This outline uses the custom label "Person".';
+		$html = $this->getRenderer()->render(
+			$this->getLanguage(),
+			[
+				[ 'id' => 'Q5', 'label' => 'human', 'description' => 'species', 'matchVia' => null ],
+			],
+			'Q5',
+			[],
+			[],
+			null,
+			null,
+			null,
+			null,
+			[],
+			null,
+			$customLabelNote
+		);
+
+		$this->assertStringContainsString( 'ext-articleguidance-custom-label-note', $html );
+		$this->assertStringContainsString( $customLabelNote, $html );
+		$notePos = strpos( $html, 'ext-articleguidance-custom-label-note' );
+		$typePos = strpos( $html, 'ext-articleguidance-type' );
+		$this->assertLessThan( $typePos, $notePos );
+	}
 }

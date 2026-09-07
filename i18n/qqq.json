@@ -52,6 +52,7 @@
 	"articleguidance-instructions-start-writing": "Button text to start writing the article in the editor",
 	"articleguidance-navigation-back": "Button text for the back navigation button",
 	"articleguidance-category-note": "Shown in the article-guidance tag box on outline pages when a category attribute is set. $1 is a wiki link to the category page that new articles will be added to.",
+	"articleguidance-custom-label-note": "Shown at the top of the article-guidance tag box on outline pages when a custom label attribute is set. Parameters:\n* $1 - The custom label string",
 	"articleguidance-header": "Heading shown at the top of the article-guidance tag box on outline pages.",
 	"articleguidance-type-label": "Label heading the list of configured Wikidata items in the article-guidance tag box. Followed by one row per item: a link to the Wikidata entity (e.g. \"Q12345\"), its label, and its description.",
 	"articleguidance-type-item-description": "Formats the Wikidata description shown after an item's link and label in the article-guidance tag box type list. Parameters:\n* $1 - The Wikidata description of the item",

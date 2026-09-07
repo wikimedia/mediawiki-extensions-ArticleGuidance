@@ -64,8 +64,9 @@ class ArticleGuidanceTagHandler implements
 
 		// Extract parameters
 		$articleType = $attributes['article-type'] ?? null;
-		// Optional custom label that overrides the Wikidata-derived label everywhere
-		$customLabel = trim( $attributes['label'] ?? '' );
+		// Optional custom label that overrides the default page-title-derived label
+		$customLabel = trim( $attributes['label'] ?? '' ) ?: null;
+		$outlineLabel = $customLabel ?? $this->getDefaultOutlineLabel( $parser->getTitle() );
 		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
 		$validTags = array_values( array_filter( $allTags,
 			static fn ( $tag ) => in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
@@ -149,9 +150,7 @@ class ArticleGuidanceTagHandler implements
 						}
 					}
 
-					// The primary ID also supplies the stored outline's label and
-					// description; a custom label takes precedence over Wikidata's
-					$displayLabel = $customLabel !== '' ? $customLabel : $renderTypes[0]['label'];
+					// The primary ID supplies the stored outline's description
 					$primaryDescription = $renderTypes[0]['description'];
 
 					$description = $primaryDescription !== null ? ucfirst( $primaryDescription ) : null;
@@ -160,10 +159,8 @@ class ArticleGuidanceTagHandler implements
 						// pre-multi-item readers; runtime consumers use articleTypes
 						'articleType' => $wikidataIds[0],
 						'articleTypes' => $typeEntries,
+						'label' => $outlineLabel,
 					];
-					if ( $displayLabel !== null && $displayLabel !== '' ) {
-						$data['label'] = $displayLabel;
-					}
 					if ( $description !== null && $description !== '' ) {
 						$data['description'] = $description;
 					}
@@ -189,17 +186,21 @@ class ArticleGuidanceTagHandler implements
 					$parser->getOutput()->setPageProperty( 'articleguidance-data', json_encode( $data ) );
 				}
 
-				// On the rendered card, a custom label replaces the primary
-				// entry's label; other entries keep their Wikidata labels
-				if ( $customLabel !== '' ) {
-					$renderTypes[0]['label'] = $customLabel;
-				}
 			}
 		}
 
 		// Localize in the parser's target/content language so the cached output is
 		// correct for all viewers, not just whoever renders the page first.
 		$targetLanguage = $parser->getTargetLanguage();
+
+		// Custom label note if a custom label is specified
+		$customLabelNote = null;
+		if ( $customLabel !== null ) {
+			$customLabelNote = Message::newFromKey(
+				'articleguidance-custom-label-note',
+				$customLabel
+			)->inLanguage( $targetLanguage )->plain();
+		}
 
 		// Parse the category note with the page parser (avoids Message::parse()
 		// spinning up a nested global parser inside this parse).
@@ -224,7 +225,8 @@ class ArticleGuidanceTagHandler implements
 			$discouragedSourcesHtml,
 			$wikidataImage,
 			$notabilityThresholds,
-			$categoryNoteHtml
+			$categoryNoteHtml,
+			$customLabelNote
 		);
 
 		return $html;
@@ -329,6 +331,22 @@ class ArticleGuidanceTagHandler implements
 		);
 
 		return [ $infoHtmlArray, $cleanUrlsArray ];
+	}
+
+	/**
+	 * Extract the default outline label from the page title's last phrase.
+	 *
+	 * E.g., "Company" from "MediaWiki English:Article guidance/Company" or "Article guidance/Company".
+	 *
+	 * @param Title $title
+	 * @return string
+	 */
+	private function getDefaultOutlineLabel( Title $title ): string {
+		$text = $title->getText();
+		$lastSlashPos = strrpos( $text, '/' );
+		$lastPhrase = $lastSlashPos !== false ? substr( $text, $lastSlashPos + 1 ) : $text;
+		$trimmed = trim( $lastPhrase );
+		return $trimmed !== '' ? $trimmed : $text;
 	}
 
 	/**

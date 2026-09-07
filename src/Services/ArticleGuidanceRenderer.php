@@ -38,6 +38,7 @@ class ArticleGuidanceRenderer {
 	 * @param string|null $wikidataImage Wikidata image URL
 	 * @param array $notabilityThresholds Notability thresholds
 	 * @param string|null $categoryNoteHtml Pre-parsed category note HTML
+	 * @param string|null $customLabelNote Custom label note text
 	 * @return string Rendered HTML
 	 */
 	public function render(
@@ -51,7 +52,8 @@ class ArticleGuidanceRenderer {
 		?array $discouragedSourcesHtml,
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
-		?string $categoryNoteHtml = null
+		?string $categoryNoteHtml = null,
+		?string $customLabelNote = null
 	): string {
 		$isValid = $articleTypes !== [];
 		// The attribute was supplied but no ID survived parsing; distinct from the
@@ -80,6 +82,12 @@ class ArticleGuidanceRenderer {
 		$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-header' ],
 			Message::newFromKey( 'articleguidance-header' )->inLanguage( $targetLanguage )->text()
 		);
+
+		if ( $customLabelNote !== null ) {
+			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-custom-label-note' ],
+				$customLabelNote
+			);
+		}
 
 		if ( $isValid ) {
 			$typeHtml = Html::element( 'span', [ 'class' => 'ext-articleguidance-type-label' ],

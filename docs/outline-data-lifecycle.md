@@ -38,23 +38,35 @@ The `/articleguidance/v1/outlines` REST endpoint calls `OutlineService::getOutli
    `articleTypes`. The primary entry is additionally served under the singular `articleType`,
    `hierarchyDepth` and `matchVia` keys, for JS still cached from before multi-item support.
 
-The result is memoized on the service instance, so `getLastModified()` (called by the framework
-for 304 checking) and `getOutlines()` (called in `execute()`) share the same two DB queries within
-a single request.
+The result is memoized on the service instance, so `getLastModified()` and `getETag()` (called by
+the framework for conditional-request checking) and `getOutlines()` (called in `execute()`) share
+the same two DB queries within a single request.
 
 ## HTTP caching
 
-The endpoint sets `Cache-Control: public, s-maxage=300`, allowing CDNs to cache responses for
-5 minutes. It also implements `Last-Modified` via a `MAX(page_touched)` query across category
-members, enabling 304 Not Modified responses for clients that send `If-Modified-Since`.
+The endpoint sets `Cache-Control: public, s-maxage=300, max-age=0, must-revalidate`. CDNs cache
+responses for 5 minutes. `s-maxage` applies to shared caches only, so it gives a browser no
+freshness lifetime, and the browser would then compute one from `Last-Modified` and send no
+conditional request. `max-age=0` and `must-revalidate` remove that lifetime, so a browser
+revalidates on every request.
 
-Because freshness depends on page edits alone, a deployed change to the response shape never
-reaches a client holding a cached body — it revalidates into a 304 until an outline page is next
-edited. **Changing the shape therefore means adding a path version** (`v1` → `v2`), which gives
-the new payload a cache entry no client can already hold. Keep the previous path registered for
-one release: JS bundles cached across the deploy still request it, and would otherwise 404. The
-version currently in use is `v1`; `v0` remains only for that reason, alongside the singular
-`articleType`/`hierarchyDepth`/`matchVia` keys, and both can be dropped in a later release.
+Freshness uses two validators:
+
+- **`ETag`** — a SHA-1 of the JSON payload. The value is derived from the bytes that the response
+  contains, so it changes whenever the response changes. This includes changes that no page edit
+  causes: a `refreshLinks` run that rewrites `page_props`, a new response shape, or a message or
+  config change. `If-None-Match` takes precedence over `If-Modified-Since` (RFC 9110), so this is
+  the authoritative validator.
+- **`Last-Modified`** — `MAX(page_touched)` across category members. It stays as metadata and for
+  clients that send only `If-Modified-Since`. It cannot be the only validator, because
+  `page_touched` does not move when `page_props` changes without an edit.
+
+A **breaking** change to the response shape still needs a path version bump (`v1` → `v2`), because
+JS bundles cached across the deploy expect the old shape. Keep the previous path registered for one
+release, or those bundles 404. Additive and data-only changes no longer need a bump, because the
+ETag already changes with them. The version currently in use is `v1`; `v0` remains only for the
+bundle-compat reason, alongside the singular `articleType`/`hierarchyDepth`/`matchVia` keys, and
+both can be dropped in a later release.
 
 ## Rendering on-wiki
 

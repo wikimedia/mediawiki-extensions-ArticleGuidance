@@ -5,6 +5,8 @@
 			"Wikipeedikko"
 		]
 	},
+	"articleguidance-pref-enable-label": "Käytä ohjattua artikkelin luontia uusia artikkeleita luotaessa",
+	"articleguidance-pref-enable-help": "Kun tämä on käytössä, uuden artikkelin luominen avaa ohjaustilan oletusmuokkaimen sijaan.",
 	"articleguidance-specialnewarticle-title": "Uusi artikkeli",
 	"articleguidance-specialnewarticle-title-placeholder": "Artikkelin nimi",
 	"articleguidance-specialnewarticle-loading": "Haetaan...",
@@ -23,6 +25,7 @@
 	"articleguidance-specialnewarticle-browse-outlines-link": "Valitse sen sijaan tyyppi",
 	"articleguidance-specialnewarticle-skip-guidance-prefix": "Ohita ohjeet.",
 	"articleguidance-specialnewarticle-skip-guidance-link": "Muokkaa ilman yhteisön ohjeita.",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "Lisätietoja ohjatusta artikkelin luonnista",
 	"articleguidance-specialnewarticle-language-fallback-notice": "Osa tuloksista näytetään toisella kielellä",
 	"articleguidance-sources-title": "Lisää lähteitä",
 	"articleguidance-sources-subtitle": "Lähteet auttavat lukijaa tarkistamaan faktat, ja ne osoittavat, miksi aihe on merkittävä.",
@@ -46,7 +49,7 @@
 	"articleguidance-instructions-start-writing": "Aloita kirjoittaminen",
 	"articleguidance-navigation-back": "Takaisin",
 	"articleguidance-category-note": "Tämän rungon pohjalta luodut artikkelit lisätään luokkaan $1 .",
-	"articleguidance-header": "Artikkelin ohjeet",
+	"articleguidance-header": "Ohjattu artikkelin luonti",
 	"articleguidance-type-label": "Tyyppi:",
 	"articleguidance-invalid-article-type": "Virheellinen article-type-attribuutti: ”$1” (odotettu muoto: Q12345)",
 	"articleguidance-notability-restrictions-title": "Merkittävyysrajoitukset",
@@ -67,6 +70,8 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Ehdota uutta tyyppiä",
 	"articleguidance-feedback-missing-type-preloadtitle": "Artikkelityyppiä ”$1” ei löytynyt",
 	"articleguidance-feedback-request-support-preloadtitle": "Tukipyyntö: $1 ($2)",
+	"articleguidance-tracking-category": "Article guidancea käyttävät sivut",
+	"articleguidance-tracking-category-desc": "Tämän luokan sivut käyttävät <article-guidance>-elementtiä, joka tarjoaa jäsennellyn ohjauksen artikkelien luomiseen.",
 	"articleguidance-subjectcovered-title": "Artikkeli on jo olemassa",
 	"articleguidance-subjectcovered-description": "Tästä aiheesta on jo artikkeli tässä wikissä. Voit lukea tai parantaa sitä.",
 	"articleguidance-subjectcovered-button": "Paranna artikkelia",
@@ -82,11 +87,15 @@
 	"articleguidance-updatetitle-redlink-reminder": "Otsikon muuttaminen jättää linkin ”$1” punaiseksi linkiksi.",
 	"articleguidance-updatetitle-restore-redlink": "Kumoa",
 	"articleguidance-updatetitle-edit-label": "Muokkaa artikkelin otsikkoa",
+	"tag-articleguidance": "Ohjattu artikkelin luonti",
+	"tag-articleguidance-description": "Muokkaus tehtiin Ohjattu artikkelin luonti -tilassa",
 	"articleguidance-publish-followup-confirmation-title": "Artikkeli on julkaistu!",
 	"articleguidance-publish-followup-community-review": "Muut muokkaajat arvioivat tämän artikkelin. Voit sillä välin katsoa uudelleen ehdotuksia artikkelin parantamiseksi.",
 	"articleguidance-publish-followup-edit-more-button": "Paranna artikkelia",
 	"articleguidance-publish-followup-close-button": "Sulje",
+	"articleguidance-unsupported-subject-heading": "Tälle aiheelle ei ole vielä ohjausta",
 	"articleguidance-unsupported-subject-request-title": "Pyydä tukea tälle tyypille",
 	"articleguidance-unsupported-subject-request-description": "Pyydä yhteisöltä apua tämän tyyppisten artikkelien luontiin.",
-	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen"
+	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen",
+	"articleguidance-unsupported-subject-start-description": "Kirjoita artikkeli ilman ohjattua artikelin luontia."
 }

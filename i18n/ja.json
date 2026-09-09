@@ -19,6 +19,8 @@
 	"articleguidance-specialnewarticle-no-results": "「$1」に一致する主題が見つかりませんでした",
 	"articleguidance-specialnewarticle-search-error": "この主題を確認できませんでした。",
 	"articleguidance-specialnewarticle-search-retry": "もう一度お試しください",
+	"articleguidance-specialnewarticle-invalid-title": "ページ名に $1 を含めることはできません。これらの文字を除去して、もう一度試してみてください。",
+	"articleguidance-specialnewarticle-invalid-title-generic": "このページ名は無効です。別の名前を入力してください。",
 	"articleguidance-titleconflict-exists-warning": "「$1」という記事は既に存在します。",
 	"articleguidance-specialnewarticle-edit-existing": "既存の記事を編集",
 	"articleguidance-specialnewarticle-disambiguation-title": "これは以下のものに当てはまりますか?",

@@ -7,6 +7,7 @@
 	>
 		<article-card
 			:fit-width="true"
+			:interactive="true"
 			:thumbnail="localArticleInfo.thumbnail"
 			:title="localArticleInfo.title"
 			:description="localArticleInfo.description"

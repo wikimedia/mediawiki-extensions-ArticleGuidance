@@ -107,5 +107,13 @@
 	"articleguidance-unsupported-subject-request-title": "Title of the 'request support' option in the unsupported subject step. Clicking opens a new topic on the wiki's own Article Guidance talk page, or on \"Talk:Article guidance\" on mediawiki.org when the wiki has none.",
 	"articleguidance-unsupported-subject-request-description": "Description of the 'request support' option in the unsupported subject step.",
 	"articleguidance-unsupported-subject-start-title": "Title of the 'start writing' option in the unsupported subject step. Clicking opens VisualEditor for the article title without guidance.",
-	"articleguidance-unsupported-subject-start-description": "Description of the 'start writing' option in the unsupported subject step."
+	"articleguidance-unsupported-subject-start-description": "Description of the 'start writing' option in the unsupported subject step.",
+	"communityconfiguration-articleguidance-title": "Name of the Article Guidance configuration form, shown on Special:CommunityConfiguration.",
+	"communityconfiguration-articleguidance-description": "Short description of the Article Guidance configuration form, shown under {{msg-mw|communityconfiguration-articleguidance-title}} on Special:CommunityConfiguration.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Heading of the section of the Article Guidance configuration form that holds the redirect settings, on Special:CommunityConfiguration/ArticleGuidance.",
+	"communityconfiguration-articleguidance-redirect-section-description": "Text shown under the {{msg-mw|communityconfiguration-articleguidance-redirect-section-label}} section heading.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Label of the checkbox that turns the Article Guidance redirect on or off, on Special:CommunityConfiguration/ArticleGuidance.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Help text shown under the {{msg-mw|communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label}} checkbox.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Label of the checkbox that limits the Article Guidance redirect to editors with few edits, on Special:CommunityConfiguration/ArticleGuidance.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Help text shown under the {{msg-mw|communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label}} checkbox. \"The setting above\" is {{msg-mw|communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label}}, which the form always shows first. Do not state the edit count as a number: it comes from the wiki's site configuration (ArticleGuidanceJuniorEditorThreshold, 100 by default) and the form cannot substitute it."
 }

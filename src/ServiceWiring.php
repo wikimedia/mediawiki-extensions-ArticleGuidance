@@ -2,6 +2,7 @@
 
 declare( strict_types = 1 );
 
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
@@ -18,6 +19,16 @@ use MediaWiki\Registration\ExtensionRegistry;
 
 /** @phpcs-require-sorted-array */
 return [
+	'ArticleGuidanceConfig' => static function ( MediaWikiServices $services ): Config {
+		// The Community Configuration router reads the variables in ArticleGuidanceSchema,
+		// and falls back to MainConfig for all the others. Each variable in the schema has a
+		// dynamic default that returns the site configuration value, so a wiki with no
+		// on-wiki configuration page keeps the behaviour of its site configuration.
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'CommunityConfiguration' ) ) {
+			return $services->getService( 'CommunityConfiguration.MediaWikiConfigRouter' );
+		}
+		return $services->getMainConfig();
+	},
 	'ArticleGuidanceInstrumentFactory' =>
 		static function ( MediaWikiServices $services ): ArticleGuidanceInstrumentFactory {
 			$instrumentManager = ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' )

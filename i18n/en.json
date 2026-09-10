@@ -106,5 +106,13 @@
 	"articleguidance-unsupported-subject-request-title": "Request support for this type",
 	"articleguidance-unsupported-subject-request-description": "Ask the community to add guidance for this type of article.",
 	"articleguidance-unsupported-subject-start-title": "Start writing",
-	"articleguidance-unsupported-subject-start-description": "Write this article without article guidance."
+	"articleguidance-unsupported-subject-start-description": "Write this article without article guidance.",
+	"communityconfiguration-articleguidance-title": "Article guidance",
+	"communityconfiguration-articleguidance-description": "Settings for the guided new-article experience on this wiki.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Guided article creation",
+	"communityconfiguration-articleguidance-redirect-section-description": "These settings decide who is taken to the guided new-article experience instead of the standard editor.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Use the guided new-article experience",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "When enabled, following a red link to a missing article opens the guided experience. Editors who prefer the standard editor can switch this off for themselves in their preferences.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limit to newer editors",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "This setting has an effect only while the setting above is on. When enabled, only editors below this wiki's newer-editor edit count get the guided experience, and everyone else keeps the standard editor."
 }

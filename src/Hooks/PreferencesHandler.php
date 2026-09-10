@@ -10,7 +10,7 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 class PreferencesHandler implements GetPreferencesHook {
 
 	public function __construct(
-		private readonly Config $mainConfig,
+		private readonly Config $config,
 	) {
 	}
 
@@ -19,7 +19,7 @@ class PreferencesHandler implements GetPreferencesHook {
 	 */
 	public function onGetPreferences( $user, &$preferences ): void {
 		// Show the opt-out only on wikis where the redirect can happen.
-		if ( !$this->mainConfig->get( 'ArticleGuidanceRedirectEnabled' ) ) {
+		if ( !$this->config->get( 'ArticleGuidanceRedirectEnabled' ) ) {
 			return;
 		}
 

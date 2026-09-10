@@ -22,7 +22,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 
 	public function __construct(
 		private readonly TitleExtractor $titleExtractor,
-		private readonly Config $mainConfig,
+		private readonly Config $config,
 		private readonly TitleFactory $titleFactory,
 		private readonly ArticleGuidanceInstrumentFactory $instrumentFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
@@ -73,7 +73,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isRedirectEnabled(): bool {
-		return (bool)$this->mainConfig->get( 'ArticleGuidanceRedirectEnabled' );
+		return (bool)$this->config->get( 'ArticleGuidanceRedirectEnabled' );
 	}
 
 	/**
@@ -102,8 +102,8 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isRefererInScope( WebRequest $request ): bool {
-		$refererTitles = $this->mainConfig->get( 'ArticleGuidanceRedirectRefererTitles' );
-		$refererCategories = $this->mainConfig->get( 'ArticleGuidanceRedirectRefererCategories' );
+		$refererTitles = $this->config->get( 'ArticleGuidanceRedirectRefererTitles' );
+		$refererCategories = $this->config->get( 'ArticleGuidanceRedirectRefererCategories' );
 
 		if ( !is_array( $refererTitles ) || !is_array( $refererCategories ) ) {
 			return false;
@@ -163,11 +163,11 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isEditorInScope( User $user ): bool {
-		if ( !$this->mainConfig->get( 'ArticleGuidanceRedirectJuniorEditorsOnly' ) ) {
+		if ( !$this->config->get( 'ArticleGuidanceRedirectJuniorEditorsOnly' ) ) {
 			return true;
 		}
 		$editCount = $user->getEditCount() ?? 0;
-		return $editCount < $this->mainConfig->get( 'ArticleGuidanceJuniorEditorThreshold' );
+		return $editCount < $this->config->get( 'ArticleGuidanceJuniorEditorThreshold' );
 	}
 
 	/**
@@ -189,7 +189,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	 * @return bool
 	 */
 	private function isEntryPointPage( Title $title ): bool {
-		$entryPointTitles = $this->mainConfig->get( 'ArticleGuidanceRedirectEntryPointTitles' );
+		$entryPointTitles = $this->config->get( 'ArticleGuidanceRedirectEntryPointTitles' );
 		if ( !is_array( $entryPointTitles ) || $entryPointTitles === [] ) {
 			return false;
 		}

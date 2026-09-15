@@ -51,6 +51,7 @@
 	"articleguidance-instructions-start-writing": "Zacznij pisać",
 	"articleguidance-navigation-back": "Wstecz",
 	"articleguidance-category-note": "Artykuły utworzone na podstawie tego szablonu zostaną dodane do $1.",
+	"articleguidance-custom-label-note": "Ten szablon wykorzystuje niestandardową etykietę „$1”.",
 	"articleguidance-header": "Pomoc redaktorska",
 	"articleguidance-type-label": "Rodzaj:",
 	"articleguidance-invalid-article-type": "Nieprawidłowy rodzaj artykułu: „$1” (oczekiwany format: Q12345)",
@@ -103,5 +104,13 @@
 	"articleguidance-unsupported-subject-request-title": "Poproś o wsparcie dla tego rodzaju",
 	"articleguidance-unsupported-subject-request-description": "Poproś społeczność o dodanie wsparcia dla tego rodzaju artykułów.",
 	"articleguidance-unsupported-subject-start-title": "Zacznij pisać",
-	"articleguidance-unsupported-subject-start-description": "Napisz ten artykuł bez wsparcia."
+	"articleguidance-unsupported-subject-start-description": "Napisz ten artykuł bez wsparcia.",
+	"communityconfiguration-articleguidance-title": "Pomoc redaktorska",
+	"communityconfiguration-articleguidance-description": "Ustawienia funkcji tworzenia artykułów z pomocą redaktorską w tej wiki.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Tworzenie artykułów z pomocą redaktorską",
+	"communityconfiguration-articleguidance-redirect-section-description": "Te ustawienia określają, które osoby zostaną przekierowane do trybu tworzenia artykułów z pomocą redaktorską zamiast do standardowego edytora.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Korzystaj z trybu tworzenia artykułów z pomocą redaktorską",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Gdy opcja jest włączona, kliknięcie czerwonego linku do nieistniejącego artykułu otwiera tryb tworzenia artykułów z pomocą redaktorską. Redaktorzy, którzy wolą standardowy edytor, mogą wyłączyć tę opcję w swoich preferencjach.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Ogranicz do nowych edytujących",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "To ustawienie działa tylko wtedy, gdy włączone jest powyższe ustawienie. Po włączeniu, tylko edytujący, którzy mają mniej edycji niż określona liczba dla nowych edytujących na tej wiki, korzystają z trybu z pomocą redaktorską, a wszyscy inni nadal używają standardowego edytora."
 }

@@ -49,6 +49,7 @@
 	"articleguidance-instructions-start-writing": "Bilow qorista",
 	"articleguidance-navigation-back": "Dib u noqo",
 	"articleguidance-category-note": "Maqaallada laga abuuro qaabkan waxay ku dari doonaan $1.",
+	"articleguidance-custom-label-note": "Qaab dhismeedkani wuxuu isticmaalayaa summadda gaarka ah ee \"$1\".",
 	"articleguidance-header": "Hagidda Maqaalka",
 	"articleguidance-type-label": "Nooca:",
 	"articleguidance-invalid-article-type": "Nooca maqaalka waa khalad: \"$1\" (qaabka la filayo waa: Q12345)",
@@ -101,5 +102,13 @@
 	"articleguidance-unsupported-subject-request-title": "Codso taageero noocan ah",
 	"articleguidance-unsupported-subject-request-description": "Waydii bulshada inay ku daraan hagitaan noocan maqaalka ah.",
 	"articleguidance-unsupported-subject-start-title": "Bilow qorista",
-	"articleguidance-unsupported-subject-start-description": "Qor maqaalkan adigoon isticmaalin hagidda maqaalka."
+	"articleguidance-unsupported-subject-start-description": "Qor maqaalkan adigoon isticmaalin hagidda maqaalka.",
+	"communityconfiguration-articleguidance-title": "Hagidda maqaalka",
+	"communityconfiguration-articleguidance-description": "Dejinta khibradda hagidda abuurista maqaal cusub ee wiki-gan.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Abuurista maqaalka oo la hagayo",
+	"communityconfiguration-articleguidance-redirect-section-description": "Dejimahan ayaa go'aamiya cidda loo gudbinayo khibradda hagidda abuurista maqaal cusub halkii laga geyn lahaa tafatiraha caadiga ah.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Isticmaal khibradda hagidda abuurista maqaal cusub",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Marka la hawlgeliyo, raacista xiriiriye cas oo u gudbaya maqaal maqan waxay furaysaa khibradda hagidda. Tafatirayaasha doorbida tafatiraha caadiga ah waxay tan naftooda uga damin karaan dookhyadooda.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Ku xaddid tafatirayaasha cusub",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Dejintani waxay saamaynaysaa oo keliya marka dejinta kore ay hawlgal tahay. Marka la hawlgeliyo, kaliya tafatirayaasha tirada tafatirradoodu ka yar tahay xadka tafatirayaasha cusub ee wiki-gan ayaa heli doona khibradda hagidda, halka dhammaan kuwa kale ay sii wadan doonaan tafatiraha caadiga ah."
 }

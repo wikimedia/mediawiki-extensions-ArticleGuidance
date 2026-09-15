@@ -17,6 +17,8 @@
 	"articleguidance-specialnewarticle-no-results": "Aucune correspondance trouvée pour « $1 »",
 	"articleguidance-specialnewarticle-search-error": "Échec de la recherche de ce sujet.",
 	"articleguidance-specialnewarticle-search-retry": "Réessayer",
+	"articleguidance-specialnewarticle-invalid-title": "Les titres de page ne peuvent pas contenir $1. Supprimez ces caractères et réessayez.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Le titre de cette page est invalide. Veuillez choisir un autre titre.",
 	"articleguidance-titleconflict-exists-warning": "Un article intitulé « $1 » existe déjà.",
 	"articleguidance-specialnewarticle-edit-existing": "Modifier l'article existant",
 	"articleguidance-specialnewarticle-disambiguation-title": "Qu’est-ce ?",

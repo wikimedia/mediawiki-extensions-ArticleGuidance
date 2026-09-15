@@ -29,6 +29,36 @@ function mockMw() {
 	};
 }
 
+describe( 'searchWikidata', () => {
+	let searchWikidata;
+
+	beforeEach( () => {
+		mockMw();
+		jest.resetModules();
+		( { searchWikidata } = require( '../../../resources/ext.articleguidance.newarticle/api/Wikidata.js' ) );
+	} );
+
+	it( 'only allows results from the main namespace', async () => {
+		// The ns: 120 entry simulates the search backend widening the searched
+		// namespaces because the query text parsed as a namespace prefix.
+		global.fetch = mockFetch( {
+			query: { search: [
+				{ ns: 120, title: 'Property:P31' },
+				{ ns: 0, title: 'Q42' }
+			] }
+		} );
+
+		const result = await searchWikidata( 'Property:instance of', 'en' );
+
+		expect( result ).toEqual( [ {
+			id: 'Q42',
+			label: 'Q42',
+			description: '',
+			url: 'https://www.wikidata.org/wiki/Q42'
+		} ] );
+	} );
+} );
+
 describe( 'fetchEntityClaims', () => {
 	let fetchEntityClaims;
 

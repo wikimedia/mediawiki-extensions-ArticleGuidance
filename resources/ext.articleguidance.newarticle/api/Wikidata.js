@@ -1,5 +1,7 @@
 const { buildApiUrl, getPageUrl } = require( '../utils/wikidata.js' );
 
+const NS_MAIN = 0;
+
 // Page-scoped cache: cleared automatically on page reload.
 // Key: qid, Value: entity data object (claims, label, description, imageFilename, sitelinkCount,
 //   localSitelink)
@@ -23,7 +25,7 @@ async function searchWikidata( query, language, limit = 20 ) {
 		action: 'query',
 		list: 'search',
 		srsearch: query.trim(),
-		srnamespace: '0',
+		srnamespace: NS_MAIN,
 		srlimit: limit.toString(),
 		uselang: language
 	} );
@@ -41,8 +43,9 @@ async function searchWikidata( query, language, limit = 20 ) {
 			return [];
 		}
 
+		// Filter by the result's actual namespace
 		return searchData.query.search
-			.filter( ( item ) => /^Q\d+$/.test( item.title ) )
+			.filter( ( item ) => item.ns === NS_MAIN && /^Q\d+$/.test( item.title ) )
 			.map( ( item ) => ( {
 				id: item.title,
 				label: item.title,

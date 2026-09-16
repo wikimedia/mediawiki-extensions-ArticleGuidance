@@ -28,23 +28,23 @@ to occur:
 When all conditions are met, the handler issues an HTTP redirect to
 `Special:NewArticle?newarticletitle=<title>&source=redlink`, pre-filling the article title.
 
-## Entry-point redirect
+## Linking to Article Guidance
 
-In addition to red-link interception, the handler supports direct entry-point pages configured via
-`ArticleGuidanceRedirectEntryPointTitles`. When a qualifying user visits one of those pages, they
-are redirected to `Special:NewArticle?source=articlewizard` without a pre-filled title. This path
-does not check the referer.
+Red links are the only pages that redirect. A community that wants an explicit entry point links to
+`Special:NewArticle` from its own page, for example from an article wizard. Add `?source=<name>` to
+the link to identify the entry point in the analytics `init` event.
+`Special:NewArticle?source=articlewizard` reports `articlewizard`; a link without the parameter
+reports `direct`.
 
 ## Configuration
 
 | Config key | Default | Description |
 |---|---|---|
-| `ArticleGuidanceRedirectEnabled` | `false` | Master switch for both redirect paths. |
+| `ArticleGuidanceRedirectEnabled` | `false` | Master switch for the redirect. |
 | `ArticleGuidanceJuniorEditorThreshold` | `100` | Edit count below which a user is considered a junior editor. |
-| `ArticleGuidanceRedirectJuniorEditorsOnly` | `false` | Restrict both redirect paths to junior editors. |
+| `ArticleGuidanceRedirectJuniorEditorsOnly` | `false` | Restrict the redirect to junior editors. |
 | `ArticleGuidanceRedirectRefererTitles` | `[]` | Pages whose red-links are in scope. Supports namespace prefixes. |
 | `ArticleGuidanceRedirectRefererCategories` | `[]` | Categories (without `Category:` prefix) whose members' red-links are in scope. |
-| `ArticleGuidanceRedirectEntryPointTitles` | `[]` | Pages that act as direct entry points. Empty array disables this path. |
 
 Analytics are configured separately, with `ArticleGuidanceInstrumentName`. See
 [instrumentation.md](instrumentation.md).

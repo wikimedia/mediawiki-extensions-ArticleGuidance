@@ -37,7 +37,6 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			'ArticleGuidanceRedirectEnabled' => $redirectEnabled,
 			'ArticleGuidanceRedirectRefererTitles' => [],
 			'ArticleGuidanceRedirectRefererCategories' => [],
-			'ArticleGuidanceRedirectEntryPointTitles' => [],
 			'ArticleGuidanceRedirectJuniorEditorsOnly' => false,
 			'ArticleGuidanceJuniorEditorThreshold' => 100,
 		] );

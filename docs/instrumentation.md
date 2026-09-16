@@ -6,9 +6,8 @@ funnel analytics, named by `ArticleGuidanceInstrumentName`. An empty name disabl
 The instrument does not control who is redirected to `Special:NewArticle`. That is controlled by
 `ArticleGuidanceRedirectEnabled`; see [red-link-redirect.md](red-link-redirect.md).
 
-An `entry_point` event is sent for every eligible user who clicks an in-scope red link or lands on
-a configured entry point, whether or not the redirect is enabled. These events are the funnel
-denominator.
+An `entry_point` event is sent for every eligible user who clicks an in-scope red link, whether or
+not the redirect is enabled. These events are the funnel denominator.
 
 Funnel events are sent for every user who reaches `Special:NewArticle`, enabling drop-off
 analysis across wizard steps. Each session shares a `funnel_entry_token` stored in
@@ -18,7 +17,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 
 | `action` | Trigger | `action_source` | `action_subtype` | `action_context` |
 |---|---|---|---|---|
-| `entry_point` | Eligible user clicks an in-scope red link, or lands on a configured entry point | `redlink` or `articlewizard` | — | `{"redirected":<bool>}` |
+| `entry_point` | Eligible user clicks an in-scope red link | `redlink` | — | `{"redirected":<bool>}` |
 | `init` | `Special:NewArticle` wizard is ready | `redlink`, `articlewizard`, or `direct` | — | `{"title":"<article title>"}` |
 | `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` |
 | `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>","outline":{"title":"<outline name>","qid":"<QID>"}}` |

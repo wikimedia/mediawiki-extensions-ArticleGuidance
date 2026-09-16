@@ -183,34 +183,10 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	}
 
 	/**
-	 * Check whether the current page is a configured entry-point title.
-	 *
-	 * @param Title $title
-	 * @return bool
-	 */
-	private function isEntryPointPage( Title $title ): bool {
-		$entryPointTitles = $this->config->get( 'ArticleGuidanceRedirectEntryPointTitles' );
-		if ( !is_array( $entryPointTitles ) || $entryPointTitles === [] ) {
-			return false;
-		}
-		$dbKey = $title->getPrefixedDBkey();
-		foreach ( $entryPointTitles as $configured ) {
-			if ( !is_string( $configured ) ) {
-				continue;
-			}
-			$configTitle = $this->titleFactory->newFromText( $configured );
-			if ( $configTitle !== null && $configTitle->getPrefixedDBkey() === $dbKey ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Send an event for each user who reaches an Article Guidance entry point, whether
 	 * or not the redirect is enabled. These events are the funnel denominator.
 	 *
-	 * @param string $source Entry point: 'redlink' or 'articlewizard'.
+	 * @param string $source Entry point: 'redlink'.
 	 * @param bool $redirected True when the user goes to Special:NewArticle.
 	 */
 	private function sendEntryPointEvent( string $source, bool $redirected ): void {
@@ -303,30 +279,6 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 				// Outcome 2: go directly to the editor
 				$this->sendEditingStartedEvent( $title, 'redlink' );
 				return;
-			}
-		}
-
-		// Case 3: user lands on a configured entry point page (e.g. Special:ArticleWizard)
-		if ( $this->isEntryPointPage( $title ) ) {
-			if ( !$this->isUserAllowed( $user ) ) {
-				return;
-			}
-			if ( !$this->isEditorInScope( $user ) ) {
-				return;
-			}
-
-			$shouldRedirect = $this->isRedirectEnabled() && $this->hasArticleGuidanceEnabled( $user );
-			$this->sendEntryPointEvent( 'articlewizard', $shouldRedirect );
-			if ( $shouldRedirect ) {
-				// Outcome 1: go to Article Guidance
-				$this->performRedirect( $output, [
-					'source' => 'articlewizard',
-				] );
-				return false;
-			} else {
-				// Outcome 2: stay on the entry point page
-				// TODO: log something here when we have the ability to tag articles created
-				// after going through the article wizard.
 			}
 		}
 	}

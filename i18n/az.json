@@ -49,6 +49,7 @@
 	"articleguidance-instructions-start-writing": "Yazmağa başla",
 	"articleguidance-navigation-back": "Geriyə",
 	"articleguidance-category-note": "Bu plandan yaradılan məqalələr $1 kateqoriyasına əlavə olunacaq.",
+	"articleguidance-custom-label-note": "Bu plan xüsusi \"$1\" etiketindən istifadə edir.",
 	"articleguidance-header": "Məqalə təlimatı",
 	"articleguidance-type-label": "Tipi:",
 	"articleguidance-invalid-article-type": "Yanlış məqalə növü: \"$1\" (gözlənilən format: Q12345)",
@@ -101,5 +102,13 @@
 	"articleguidance-unsupported-subject-request-title": "Bu növ üçün dəstək tələb edin",
 	"articleguidance-unsupported-subject-request-description": "Bu tip məqalə üçün icmadan təlimat əlavə etmələrini xahiş edin.",
 	"articleguidance-unsupported-subject-start-title": "Yazmağa başla",
-	"articleguidance-unsupported-subject-start-description": "Bu məqaləni məqalə təlimatı olmadan yaz."
+	"articleguidance-unsupported-subject-start-description": "Bu məqaləni məqalə təlimatı olmadan yaz.",
+	"communityconfiguration-articleguidance-title": "Məqalə təlimatı",
+	"communityconfiguration-articleguidance-description": "Bu vikidə yeni məqalə təcrübəsi üçün parametrlər.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Təlimatla məqalələrin yaradılması",
+	"communityconfiguration-articleguidance-redirect-section-description": "Bu parametrlər standart redaktor əvəzinə kimin yeni məqalə təcrübəsinə yönləndiriləcəyinə qərar verir.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Yeni məqalə yaratma təcrübəsindən istifadə et",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Aktivləşdirildikdə, mövcud olmayan məqaləyə qırmızı keçidi izləmək bu təcrübəni açacaqm. Defolt redaktoru istifadə etmək istəyən redaktorlar bunu öz nizamlamalarında deaktiv edə bilərlər.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Yeni redaktorlara məhdudlaşdır",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Bu parametr yalnız yuxarıdakı parametr aktiv olduqda qüvvədədir. Aktiv edildikdə yalnız bu vikinin yeni redaktorlar üçün müəyyən etdiyi redaktə sayından az redaktəsi olan istifadəçilər yönləndirilən redaktə təcrübəsindən yararlanır, digərləri isə standart redaktorla işləməyə davam edir."
 }

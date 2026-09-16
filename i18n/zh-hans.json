@@ -53,6 +53,7 @@
 	"articleguidance-instructions-start-writing": "开始编辑",
 	"articleguidance-navigation-back": "返回",
 	"articleguidance-category-note": "根据此大纲创建的条目会被添加到$1。",
+	"articleguidance-custom-label-note": "此大纲使用自定义标签“$1”。",
 	"articleguidance-header": "条目指引",
 	"articleguidance-type-label": "类型：",
 	"articleguidance-invalid-article-type": "无效的条目类型：“$1”（期望格式：Q12345）",
@@ -105,5 +106,13 @@
 	"articleguidance-unsupported-subject-request-title": "请求对此类型的支持",
 	"articleguidance-unsupported-subject-request-description": "请求社群为此类条目添加指引。",
 	"articleguidance-unsupported-subject-start-title": "开始编辑",
-	"articleguidance-unsupported-subject-start-description": "不借助条目指引编辑此条目。"
+	"articleguidance-unsupported-subject-start-description": "不借助条目指引编辑此条目。",
+	"communityconfiguration-articleguidance-title": "条目指引",
+	"communityconfiguration-articleguidance-description": "本wiki引导式新条目体验的设置。",
+	"communityconfiguration-articleguidance-redirect-section-label": "引导式条目创建",
+	"communityconfiguration-articleguidance-redirect-section-description": "这些设置决定了哪些用户会被引导至新条目编辑体验，而不是标准编辑器。",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "使用引导式新条目体验",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "启用此功能后，点击指向缺失条目的红色链接即可打开引导式编辑体验。偏好标准编辑器的编者可以在参数设置中自行关闭此功能。",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "仅限新手编者",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "此设置仅在启用上述设置时生效。启用后，只有编辑次数低于本wiki“新手编者次数”的编者才能体验引导式编辑，其他编者仍使用标准编辑器。"
 }

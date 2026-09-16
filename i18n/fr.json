@@ -50,6 +50,7 @@
 	"articleguidance-instructions-start-writing": "Commencer la rédaction",
 	"articleguidance-navigation-back": "Retour",
 	"articleguidance-category-note": "Les articles créés avec ce plan seront ajoutés à $1.",
+	"articleguidance-custom-label-note": "Ce plan utilise le label personnalisé « $1 ».",
 	"articleguidance-header": "Aide à la rédaction d'articles",
 	"articleguidance-type-label": "Objet :",
 	"articleguidance-invalid-article-type": "Type d'article invalide : « $1 » (format attendu : Q12345)",
@@ -102,5 +103,13 @@
 	"articleguidance-unsupported-subject-request-title": "Demander le support de ce type",
 	"articleguidance-unsupported-subject-request-description": "Demandez à la communauté d'ajouter un accompagnement pour ce type d'article.",
 	"articleguidance-unsupported-subject-start-title": "Commencer la rédaction",
-	"articleguidance-unsupported-subject-start-description": "Rédiger cet article sans accompagnement."
+	"articleguidance-unsupported-subject-start-description": "Rédiger cet article sans accompagnement.",
+	"communityconfiguration-articleguidance-title": "Aide à la création d'articles",
+	"communityconfiguration-articleguidance-description": "Paramètres de l'accompagnement à la création d'articles sur ce wiki.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Aide à la création d'article",
+	"communityconfiguration-articleguidance-redirect-section-description": "Ces paramètres déterminent qui est dirigé vers l'assistant de création d'articles au lieu de l'éditeur standard.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Utiliser l'aide à la création d'articles",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Lorsque cette option est activée, cliquer sur un lien rouge vers un article manquant lance l'expérience guidée. Les rédacteurs qui préfèrent l'éditeur standard peuvent désactiver cette option dans leurs préférences.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limiter aux nouveaux contributeurs",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Ce paramètre n'a d'effet que si le paramètre précédent est activé. Lorsqu'il est activé, seuls les contributeurs ayant un nombre de modifications inférieur au seuil de contributions de ce wiki bénéficient de l'interface guidée ; les autres conservent l'éditeur standard."
 }

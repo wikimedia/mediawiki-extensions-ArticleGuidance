@@ -49,6 +49,7 @@
 	"articleguidance-instructions-start-writing": "Comezar a escribir",
 	"articleguidance-navigation-back": "Volver",
 	"articleguidance-category-note": "Os artigos creados a partir deste esquema engadiranse a «$1».",
+	"articleguidance-custom-label-note": "Este esquema usa a etiqueta personalizada «$1».",
 	"articleguidance-header": "Guía de creación de artigos",
 	"articleguidance-type-label": "Tipo:",
 	"articleguidance-invalid-article-type": "Tipo de artigo non válido: «$1» (formato esperado: «Q12345»)",
@@ -101,5 +102,13 @@
 	"articleguidance-unsupported-subject-request-title": "Solicitar asistencia para este tipo",
 	"articleguidance-unsupported-subject-request-description": "Pídelle á comunidade que engada unha guía para este tipo de artigo.",
 	"articleguidance-unsupported-subject-start-title": "Comezar a escribir",
-	"articleguidance-unsupported-subject-start-description": "Escribir este artigo sen a guía."
+	"articleguidance-unsupported-subject-start-description": "Escribir este artigo sen a guía.",
+	"communityconfiguration-articleguidance-title": "Guía de artigos",
+	"communityconfiguration-articleguidance-description": "Configuración para a experiencia guiada de artigos novos neste wiki.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Creación guiada de artigos",
+	"communityconfiguration-articleguidance-redirect-section-description": "Esta configuración decide quen accede á experiencia guiada de artigos novos en lugar do editor estándar.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Usar a experiencia guiada de artigos novos",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Cando a opción está activada, ao seguires unha ligazón vermella a un artigo que falta, ábrese a experiencia guiada. Os editores que prefiran o editor estándar poden desactivar esta opción nas súas preferencias.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limitar aos editores máis novos",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Esta configuración só ten efecto mentres a configuración anterior estea activada. Cando a opción está activada, só os editores que teñan menos edicións do número para se consideraren editores novos do wiki obteñen a experiencia guiada; todos os demais editores manteñen o editor estándar."
 }

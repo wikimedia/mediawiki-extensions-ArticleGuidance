@@ -50,6 +50,7 @@
 	"articleguidance-instructions-start-writing": "Yazmaya başla",
 	"articleguidance-navigation-back": "Geri",
 	"articleguidance-category-note": "Bu taslaktan oluşturulacak maddeler $1 kategorisine eklenecektir.",
+	"articleguidance-custom-label-note": "Bu taslak, \"$1\" adlı özel etiketi kullanıyor.",
 	"articleguidance-header": "Madde Rehberliği",
 	"articleguidance-type-label": "Tür:",
 	"articleguidance-invalid-article-type": "Geçersiz madde türü: \"$1\" (istenen format: Q12345)",
@@ -102,5 +103,13 @@
 	"articleguidance-unsupported-subject-request-title": "Bu tür için destek talep et",
 	"articleguidance-unsupported-subject-request-description": "Topluluktan bu tür maddeler için rehberlik sağlamasını iste.",
 	"articleguidance-unsupported-subject-start-title": "Yazmaya başla",
-	"articleguidance-unsupported-subject-start-description": "Bu maddeyi madde rehberliği olmadan yaz."
+	"articleguidance-unsupported-subject-start-description": "Bu maddeyi madde rehberliği olmadan yaz.",
+	"communityconfiguration-articleguidance-title": "Madde Kılavuzu",
+	"communityconfiguration-articleguidance-description": "Bu viki'deki yeni madde deneyimi kılavuzunun ayarları.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Madde kılavuzu oluşturma",
+	"communityconfiguration-articleguidance-redirect-section-description": "Bu ayarlar, standart düzenleyici yerine kimin \"yeni madde oluşturma kılavuzu\"na yönlendirileceğini belirler.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Kılavuzlu yeni madde deneyimini kullanın",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Bu özellik etkinleştirilince mevcut olmayan bir maddeye yönlendiren kırmızı bir bağlantıya tıklandığında kılavuzlu deneyim açılır. Standart düzenleyiciyi tercih eden editörler, bu özelliği kendi tercihlerinden devre dışı bırakabilirler.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Yalnızca yeni editörlerle sınırla",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Bu ayar, yalnızca yukarıdaki ayar etkin olduğu sürece geçerlidir. Etkinleştirildiğinde yalnızca bu vikideki \"yeni editör\" düzenleme sayısının altındaki düzenleyiciler kılavuzlu deneyimi yaşarken diğer herkes standart düzenleyiciyi kullanmaya devam eder."
 }

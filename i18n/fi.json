@@ -97,5 +97,13 @@
 	"articleguidance-unsupported-subject-request-title": "Pyydä tukea tälle tyypille",
 	"articleguidance-unsupported-subject-request-description": "Pyydä yhteisöltä apua tämän tyyppisten artikkelien luontiin.",
 	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen",
-	"articleguidance-unsupported-subject-start-description": "Kirjoita artikkeli ilman ohjattua artikelin luontia."
+	"articleguidance-unsupported-subject-start-description": "Kirjoita artikkeli ilman ohjattua artikelin luontia.",
+	"communityconfiguration-articleguidance-title": "Ohjattu artikkelin luonti",
+	"communityconfiguration-articleguidance-description": "Asetukset tämän wikin ohjatulle uusien artikkelien luontityökalulle.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Ohjattu artikkelin luonti",
+	"communityconfiguration-articleguidance-redirect-section-description": "Nämä asetukset määrittävät, ketkä ohjataan ohjattuun uusien artikkelien luontityökaluun tavallisen muokkaimen sijaan.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Käytä ohjattua artikkelien luontityökalua",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Kun tämä on käytössä, puuttuvan artikkelin punaisen linkin napsauttaminen avaa ohjatun luontityökalun. Muokkaajat, jotka suosivat tavallista muokkainta, voivat poistaa tämän ominaisuuden käytöstä omissa asetuksissaan.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Rajoita tuoreisiin muokkaajiin",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Tällä asetuksella on vaikutusta vain, kun yllä oleva asetus on käytössä. Kun tämä on käytössä, ainoastaan muokkaajat, joilla on tämän wikin tuoreiden muokkaajien muokkausrajaa vähemmän muokkauksia, näkevät ohjatun luontityökalun, ja kaikki muut näkevät tavallisen muokkaimen."
 }

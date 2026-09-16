@@ -7,6 +7,8 @@
 		]
 	},
 	"articleguidance-desc": "Enables users to create articles through a guided, assisted workflow",
+	"articleguidance-disabled-title": "Article guidance is not available",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Article Guidance]] is not enabled on this wiki.",
 	"articleguidance-pref-enable-label": "Use article guidance when creating new articles",
 	"articleguidance-pref-enable-help": "When enabled, creating a new article opens the guided experience instead of the standard editor.",
 	"articleguidance-specialnewarticle-title": "New article",
@@ -116,10 +118,14 @@
 	"articleguidance-unsupported-subject-start-description": "Write this article without article guidance.",
 	"communityconfiguration-articleguidance-title": "Article guidance",
 	"communityconfiguration-articleguidance-description": "Settings for the guided new-article experience on this wiki.",
+	"communityconfiguration-articleguidance-feature-section-label": "Availability",
+	"communityconfiguration-articleguidance-feature-section-description": "This setting decides whether the guided new-article experience is available on this wiki at all.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Enable article guidance on this wiki",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "When this is off, article guidance is not available: red links open the standard editor, the guided page cannot be used, and the personal preference is hidden. The settings below have an effect only while this is on.",
 	"communityconfiguration-articleguidance-redirect-section-label": "Guided article creation",
 	"communityconfiguration-articleguidance-redirect-section-description": "These settings decide who is taken to the guided new-article experience instead of the standard editor.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Use the guided new-article experience",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "When enabled, following a red link to a missing article opens the guided experience. Editors who prefer the standard editor can switch this off for themselves in their preferences.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Open the guided experience from red links",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "When enabled, following a red link to a missing article opens the guided experience instead of the standard editor. Editors who prefer the standard editor can switch this off for themselves in their preferences.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limit to newer editors",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "This setting has an effect only while the setting above is on. When enabled, only editors below this wiki's newer-editor edit count get the guided experience, and everyone else keeps the standard editor."
 }

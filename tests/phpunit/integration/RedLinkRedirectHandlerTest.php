@@ -7,6 +7,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Tests\Integration;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Extension\ArticleGuidance\Hooks\RedLinkRedirectHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
@@ -21,25 +22,31 @@ use MediaWikiIntegrationTestCase;
  */
 class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 
-	private function getHandler( bool $redirectEnabled = true ): RedLinkRedirectHandler {
-		// An empty instrument name and no instrument manager make the factory return
-		// null, so no event is sent and TestKitchen stays out of the test.
-		$instrumentFactory = new ArticleGuidanceInstrumentFactory(
-			new HashConfig( [ 'ArticleGuidanceInstrumentName' => '' ] ),
-			null
-		);
-
-		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
-		$userOptionsLookup->method( 'getBoolOption' )->willReturn( true );
-
+	private function getHandler(
+		bool $redirectEnabled = true,
+		bool $enabled = true
+	): RedLinkRedirectHandler {
 		// Empty referer/category lists => every referer is in scope; junior gate off.
 		$config = new HashConfig( [
+			'ArticleGuidanceEnabled' => $enabled,
 			'ArticleGuidanceRedirectEnabled' => $redirectEnabled,
 			'ArticleGuidanceRedirectRefererTitles' => [],
 			'ArticleGuidanceRedirectRefererCategories' => [],
 			'ArticleGuidanceRedirectJuniorEditorsOnly' => false,
 			'ArticleGuidanceJuniorEditorThreshold' => 100,
 		] );
+		$featureState = new FeatureState( $config );
+
+		// An empty instrument name and no instrument manager make the factory return
+		// null, so no event is sent and TestKitchen stays out of the test.
+		$instrumentFactory = new ArticleGuidanceInstrumentFactory(
+			new HashConfig( [ 'ArticleGuidanceInstrumentName' => '' ] ),
+			null,
+			$featureState
+		);
+
+		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
+		$userOptionsLookup->method( 'getBoolOption' )->willReturn( true );
 
 		return new RedLinkRedirectHandler(
 			$this->createMock( TitleExtractor::class ),
@@ -48,6 +55,7 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			$instrumentFactory,
 			$userOptionsLookup,
 			$this->getServiceContainer()->getConnectionProvider(),
+			$featureState,
 		);
 	}
 
@@ -61,6 +69,19 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			}
 		);
 		$request->method( 'getCheck' )->willReturn( false );
+		$request->method( 'getHeader' )->willReturn( false );
+		return $request;
+	}
+
+	/**
+	 * Build a request that comes back to the editor from Article Guidance.
+	 */
+	private function makeArticleGuidanceRequest(): WebRequest {
+		$request = $this->createMock( WebRequest::class );
+		$request->method( 'getVal' )->willReturnCallback(
+			static fn ( $name ) => $name === 'action' ? 'edit' : null
+		);
+		$request->method( 'getCheck' )->willReturn( true );
 		$request->method( 'getHeader' )->willReturn( false );
 		return $request;
 	}
@@ -154,5 +175,39 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		);
 
 		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
+	}
+
+	public function testDisabledFeatureDoesNotRedirect(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->never() )->method( 'redirect' );
+
+		// Redirect on, feature off: the global switch has precedence.
+		$result = $this->getHandler( true, false )->onBeforeInitialize(
+			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
+		);
+
+		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
+	}
+
+	public function testDisabledFeatureIgnoresArticleGuidanceParameter(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceParameterRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->never() )->method( 'addModules' );
+
+		$result = $this->getHandler( true, false )->onBeforeInitialize(
+			$title,
+			null,
+			$output,
+			$this->makeUser(),
+			$this->makeArticleGuidanceRequest(),
+			null
+		);
+
+		$this->assertNull( $result, 'Handler should not track the edit as an Article Guidance edit.' );
 	}
 }

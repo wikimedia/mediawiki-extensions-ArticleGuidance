@@ -34,6 +34,12 @@ class ArticleGuidanceSchema extends JsonSchema {
 
 	public const UI_SCHEMA = ArticleGuidanceUISchema::class;
 
+	public const ArticleGuidanceEnabled = [
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false,
+		self::DYNAMIC_DEFAULT => [ 'callback' => [ self::class, 'getEnabledDefault' ] ],
+	];
+
 	public const ArticleGuidanceRedirectEnabled = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false,
@@ -47,6 +53,13 @@ class ArticleGuidanceSchema extends JsonSchema {
 			'callback' => [ self::class, 'getRedirectJuniorEditorsOnlyDefault' ],
 		],
 	];
+
+	/**
+	 * Dynamic default of ArticleGuidanceEnabled.
+	 */
+	public static function getEnabledDefault(): bool {
+		return (bool)self::getSiteConfig()->get( 'ArticleGuidanceEnabled' );
+	}
 
 	/**
 	 * Dynamic default of ArticleGuidanceRedirectEnabled.

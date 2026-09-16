@@ -39,6 +39,10 @@
 		}
 	},
 	"config": {
+		"ArticleGuidanceEnabled": {
+			"value": false,
+			"description": "Master switch for the whole user-facing feature. When false, the wiki behaves as if Article Guidance were not enabled: red links never redirect, Special:NewArticle gives no access to the workflow, the articleguidance-enable preference is hidden, and no analytics event is sent. It has precedence over the more specific settings, such as ArticleGuidanceRedirectEnabled. With the CommunityConfiguration extension installed, this value is the default and MediaWiki:ArticleGuidanceConfig.json overrides it."
+		},
 		"ArticleGuidanceUserAgent": {
 			"value": "MediaWiki/ArticleGuidance language-product-localization@wikimedia.org",
 			"description": "User-Agent header sent with server-side HTTP requests to Wikidata APIs (wbgetentities, SPARQL)."
@@ -83,7 +87,7 @@
 		},
 		"ArticleGuidanceRedirectEnabled": {
 			"value": false,
-			"description": "When true, eligible users are redirected to Special:NewArticle from red links. Users can opt out with the articleguidance-enable preference. When false, all traffic follows the default wiki behaviour. With the CommunityConfiguration extension installed, this value is the default and MediaWiki:ArticleGuidanceConfig.json overrides it."
+			"description": "When true, eligible users are redirected to Special:NewArticle from red links. Users can opt out with the articleguidance-enable preference. When false, all traffic follows the default wiki behaviour. This setting has an effect only when ArticleGuidanceEnabled is true. With the CommunityConfiguration extension installed, this value is the default and MediaWiki:ArticleGuidanceConfig.json overrides it."
 		},
 		"ArticleGuidanceRedirectRefererTitles": {
 			"value": [],
@@ -167,7 +171,8 @@
 			"services": [
 				"ContentLanguage",
 				"MainConfig",
-				"MagicWordFactory"
+				"MagicWordFactory",
+				"ArticleGuidanceFeatureState"
 			]
 		}
 	},
@@ -180,13 +185,14 @@
 				"TitleFactory",
 				"ArticleGuidanceInstrumentFactory",
 				"UserOptionsLookup",
-				"ConnectionProvider"
+				"ConnectionProvider",
+				"ArticleGuidanceFeatureState"
 			]
 		},
 		"Preferences": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreferencesHandler",
 			"services": [
-				"ArticleGuidanceConfig"
+				"ArticleGuidanceFeatureState"
 			]
 		},
 		"ArticleGuidanceTag": {
@@ -210,7 +216,8 @@
 		"PublishFollowUp": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PublishFollowUpHandler",
 			"services": [
-				"MainConfig"
+				"MainConfig",
+				"ArticleGuidanceFeatureState"
 			]
 		}
 	},

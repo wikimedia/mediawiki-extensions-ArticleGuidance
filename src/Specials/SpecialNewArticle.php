@@ -5,6 +5,8 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Specials;
 
 use MediaWiki\Config\Config;
+use MediaWiki\Exception\ErrorPageError;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Language\Language;
 use MediaWiki\Parser\MagicWordFactory;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
@@ -15,6 +17,7 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 		private readonly Language $contentLanguage,
 		private readonly Config $config,
 		private readonly MagicWordFactory $magicWordFactory,
+		private readonly FeatureState $featureState,
 	) {
 		parent::__construct( 'NewArticle' );
 	}
@@ -23,6 +26,15 @@ class SpecialNewArticle extends UnlistedSpecialPage {
 	 * @param string|null $subPage
 	 */
 	public function execute( $subPage ) {
+		// A wiki without Article Guidance must not give access to the workflow, not even
+		// through a direct link to this page.
+		if ( !$this->featureState->isEnabled() ) {
+			throw new ErrorPageError(
+				'articleguidance-disabled-title',
+				'articleguidance-disabled'
+			);
+		}
+
 		$this->setHeaders();
 		$this->outputHeader();
 

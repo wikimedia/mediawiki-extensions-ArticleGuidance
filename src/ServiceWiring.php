@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
@@ -29,6 +30,11 @@ return [
 		}
 		return $services->getMainConfig();
 	},
+	'ArticleGuidanceFeatureState' => static function ( MediaWikiServices $services ): FeatureState {
+		return new FeatureState(
+			$services->getService( 'ArticleGuidanceConfig' )
+		);
+	},
 	'ArticleGuidanceInstrumentFactory' =>
 		static function ( MediaWikiServices $services ): ArticleGuidanceInstrumentFactory {
 			$instrumentManager = ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' )
@@ -37,6 +43,7 @@ return [
 			return new ArticleGuidanceInstrumentFactory(
 				$services->getMainConfig(),
 				$instrumentManager,
+				$services->getService( 'ArticleGuidanceFeatureState' ),
 			);
 		},
 	'ArticleGuidanceOutlineService' => static function ( MediaWikiServices $services ): OutlineService {

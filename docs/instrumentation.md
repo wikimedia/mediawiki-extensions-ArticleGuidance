@@ -3,6 +3,10 @@
 ArticleGuidance uses a [Test Kitchen](https://www.mediawiki.org/wiki/Test_Kitchen) instrument for
 funnel analytics, named by `ArticleGuidanceInstrumentName`. An empty name disables logging.
 
+A wiki that does not have the feature sends no event at all: `ArticleGuidanceInstrumentFactory`
+returns no instrument while `ArticleGuidanceEnabled` is false, and the client-side modules that
+log events are never loaded.
+
 The instrument does not control who is redirected to `Special:NewArticle`. That is controlled by
 `ArticleGuidanceRedirectEnabled`; see [red-link-redirect.md](red-link-redirect.md).
 

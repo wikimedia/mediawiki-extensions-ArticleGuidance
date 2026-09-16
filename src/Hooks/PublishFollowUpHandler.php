@@ -5,12 +5,14 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Hook\BeforePageDisplayHook;
 
 class PublishFollowUpHandler implements BeforePageDisplayHook {
 
 	public function __construct(
 		private readonly Config $config,
+		private readonly FeatureState $featureState,
 	) {
 	}
 
@@ -26,6 +28,13 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 		if ( $out->getUser()->isAnon() || !$out->getTitle()?->isContentPage() ) {
 			return;
 		}
+
+		// This hook runs on each page view, so the tests above come first: they cost
+		// nothing, while the feature state can read the on-wiki configuration.
+		if ( !$this->featureState->isEnabled() ) {
+			return;
+		}
+
 		$session = $out->getRequest()->getSession();
 		$titleText = $out->getTitle()->getPrefixedText();
 		$published = $session->get( EditTagHandler::SESSION_PUBLISHED );

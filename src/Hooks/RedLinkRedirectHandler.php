@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Logging\DatabaseLogEntry;
@@ -27,6 +28,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 		private readonly ArticleGuidanceInstrumentFactory $instrumentFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly IConnectionProvider $connectionProvider,
+		private readonly FeatureState $featureState,
 	) {
 	}
 
@@ -65,15 +67,6 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			&& $request->getVal( 'redlink' ) === '1'
 			&& $title->getNamespace() === NS_MAIN
 			&& !$title->exists();
-	}
-
-	/**
-	 * Check whether the redirect to Article Guidance is enabled on this wiki.
-	 *
-	 * @return bool
-	 */
-	private function isRedirectEnabled(): bool {
-		return (bool)$this->config->get( 'ArticleGuidanceRedirectEnabled' );
 	}
 
 	/**
@@ -220,6 +213,13 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			return;
 		}
 
+		// A wiki without Article Guidance keeps the default behaviour on each of the
+		// paths below. This hook runs on each request, so the two tests above come
+		// first: they cost nothing, and most requests stop there.
+		if ( !$this->featureState->isEnabled() ) {
+			return;
+		}
+
 		// Case 1: user arrived at the editor from Article Guidance
 		if ( $request->getCheck( 'articleguidance' )
 			&& ( $request->getVal( 'action' ) === 'edit' || $request->getVal( 'veaction' ) === 'edit' )
@@ -266,7 +266,8 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 				return;
 			}
 
-			$shouldRedirect = $this->isRedirectEnabled() && $this->hasArticleGuidanceEnabled( $user );
+			$shouldRedirect = $this->featureState->isRedirectEnabled()
+				&& $this->hasArticleGuidanceEnabled( $user );
 			$this->sendEntryPointEvent( 'redlink', $shouldRedirect );
 			if ( $shouldRedirect ) {
 				// Outcome 1: go to Article Guidance

@@ -4,13 +4,13 @@ declare( strict_types = 1 );
 
 namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
-use MediaWiki\Config\Config;
+use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 class PreferencesHandler implements GetPreferencesHook {
 
 	public function __construct(
-		private readonly Config $config,
+		private readonly FeatureState $featureState,
 	) {
 	}
 
@@ -19,7 +19,7 @@ class PreferencesHandler implements GetPreferencesHook {
 	 */
 	public function onGetPreferences( $user, &$preferences ): void {
 		// Show the opt-out only on wikis where the redirect can happen.
-		if ( !$this->config->get( 'ArticleGuidanceRedirectEnabled' ) ) {
+		if ( !$this->featureState->isRedirectEnabled() ) {
 			return;
 		}
 

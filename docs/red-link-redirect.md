@@ -10,8 +10,12 @@ The redirect is handled by `RedLinkRedirectHandler`, which implements the `Befor
 It fires early in the request lifecycle, before any output is generated, and works on both desktop
 and mobile.
 
-On each request, the handler evaluates four independent conditions. All must be true for a redirect
-to occur:
+The handler first checks the global switch, `ArticleGuidanceEnabled`, through the
+`FeatureState` service. When the wiki does not have the feature, the handler returns immediately
+and every path below keeps the default wiki behaviour.
+
+On each request, the handler then evaluates four independent conditions. All must be true for a
+redirect to occur:
 
 1. **Red-link detection** — the target title does not exist, the `action` query parameter is
    `edit`, the `redlink` query parameter is `1`, and the title is in the main namespace.
@@ -23,7 +27,7 @@ to occur:
    `ArticleGuidanceRedirectRefererCategories`. If both lists are empty, all referers are in scope.
 4. **Redirect enabled** — `ArticleGuidanceRedirectEnabled` is true and the user has not switched
    off the `articleguidance-enable` preference. The preference is on by default, and it is only
-   shown when `ArticleGuidanceRedirectEnabled` is true.
+   shown when both `ArticleGuidanceEnabled` and `ArticleGuidanceRedirectEnabled` are true.
 
 When all conditions are met, the handler issues an HTTP redirect to
 `Special:NewArticle?newarticletitle=<title>&source=redlink`, pre-filling the article title.
@@ -38,9 +42,14 @@ reports `direct`.
 
 ## Configuration
 
+Both `ArticleGuidanceEnabled` and `ArticleGuidanceRedirectEnabled` are available in Community
+Configuration, so a community can change them without a deployment. The global switch has
+precedence: when it is off, the redirect settings have no effect.
+
 | Config key | Default | Description |
 |---|---|---|
-| `ArticleGuidanceRedirectEnabled` | `false` | Master switch for the redirect. |
+| `ArticleGuidanceEnabled` | `false` | Master switch for the whole feature. When false, the wiki behaves as if Article Guidance were not enabled. |
+| `ArticleGuidanceRedirectEnabled` | `false` | Switch for the redirect. Has an effect only when `ArticleGuidanceEnabled` is true. |
 | `ArticleGuidanceJuniorEditorThreshold` | `100` | Edit count below which a user is considered a junior editor. |
 | `ArticleGuidanceRedirectJuniorEditorsOnly` | `false` | Restrict the redirect to junior editors. |
 | `ArticleGuidanceRedirectRefererTitles` | `[]` | Pages whose red-links are in scope. Supports namespace prefixes. |

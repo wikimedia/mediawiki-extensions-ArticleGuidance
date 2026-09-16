@@ -26,6 +26,13 @@ class ArticleGuidanceUISchema extends UISchema {
 		self::ELEMENTS => [
 			[
 				self::TYPE => self::TYPE_GROUP,
+				self::LABEL => 'feature',
+				self::ELEMENTS => [
+					'#/properties/ArticleGuidanceEnabled',
+				],
+			],
+			[
+				self::TYPE => self::TYPE_GROUP,
 				self::LABEL => 'redirect',
 				self::ELEMENTS => [
 					'#/properties/ArticleGuidanceRedirectEnabled',

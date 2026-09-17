@@ -53,3 +53,38 @@ describe( 'checkPagesExist', () => {
 		expect( result ).toEqual( {} );
 	} );
 } );
+
+describe( 'getPageNamespaces', () => {
+	let getPageNamespaces;
+
+	beforeEach( () => {
+		jest.resetModules();
+		( { getPageNamespaces } = require( MODULE ) );
+	} );
+
+	it( 'resolves each title to its namespace ID, following normalization', async () => {
+		mockApi( {
+			normalized: [ { from: 'wikipedia:sandbox', to: 'Wikipedia:Sandbox' } ],
+			pages: [
+				{ title: 'Douglas Adams', ns: 0 },
+				{ title: 'Wikipedia:Sandbox', ns: 4 }
+			]
+		} );
+
+		const result = await getPageNamespaces( [ 'Douglas Adams', 'wikipedia:sandbox' ] );
+
+		expect( result ).toEqual( {
+			'Douglas Adams': 0,
+			'wikipedia:sandbox': 4
+		} );
+	} );
+
+	it( 'does not call the API for an empty title list', async () => {
+		const get = mockApi( { pages: [] } );
+
+		const result = await getPageNamespaces( [] );
+
+		expect( get ).not.toHaveBeenCalled();
+		expect( result ).toEqual( {} );
+	} );
+} );

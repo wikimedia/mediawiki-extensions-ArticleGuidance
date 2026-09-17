@@ -1,10 +1,11 @@
 const { buildApiUrl, getPageUrl } = require( '../utils/wikidata.js' );
+const { getPageNamespaces } = require( './MediaWiki.js' );
 
 const NS_MAIN = 0;
 
 // Page-scoped cache: cleared automatically on page reload.
 // Key: qid, Value: entity data object (claims, label, description, imageFilename, sitelinkCount,
-//   localSitelink)
+//   localSitelink, localSitelinkOutsideMainNamespace)
 const entityClaimsCache = new Map();
 
 /**
@@ -43,9 +44,8 @@ async function searchWikidata( query, language, limit = 20 ) {
 			return [];
 		}
 
-		// Filter by the result's actual namespace
 		return searchData.query.search
-			.filter( ( item ) => item.ns === NS_MAIN && /^Q\d+$/.test( item.title ) )
+			.filter( ( item ) => /^Q\d+$/.test( item.title ) )
 			.map( ( item ) => ( {
 				id: item.title,
 				label: item.title,
@@ -66,7 +66,9 @@ async function searchWikidata( query, language, limit = 20 ) {
  * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
  * @param {string} language Language code for labels and descriptions
  * @return {Promise<Object>} Map of qid to entity data, each with claims, label, hasLabel,
- *   description, imageFilename, sitelinkCount, and localSitelink for the current wiki
+ *   description, imageFilename, sitelinkCount, localSitelink for the current wiki (null if
+ *   none, or if the only local sitelink is outside the Main namespace), and
+ *   localSitelinkOutsideMainNamespace
  */
 async function fetchEntityClaims( qids, properties, language ) {
 	if ( !qids || qids.length === 0 ) {
@@ -108,6 +110,20 @@ async function fetchEntityClaims( qids, properties, language ) {
 	}
 
 	const wiki = mw.config.get( 'wgDBname' );
+
+	// Gather each candidate's local-wiki sitelink up front, so all of them can be
+	// resolved to a namespace in a single batched API call.
+	const localSitelinkByQid = {};
+	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
+		const sitelink = ( entity.sitelinks || {} )[ wiki ];
+		if ( sitelink && sitelink.url && sitelink.url.includes( 'wikipedia.org' ) ) {
+			localSitelinkByQid[ qid ] = sitelink;
+		}
+	}
+	const namespaceByTitle = await getPageNamespaces(
+		Object.values( localSitelinkByQid ).map( ( sitelink ) => sitelink.title )
+	);
+
 	const freshResult = {};
 	for ( const [ qid, entity ] of Object.entries( data.entities ) ) {
 		if ( entity.missing !== undefined ) {
@@ -126,16 +142,12 @@ async function fetchEntityClaims( qids, properties, language ) {
 			( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
 				s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'string'
 		);
-		let sitelinkCount = 0;
-		let localSitelink = null;
-		for ( const [ key, sitelink ] of Object.entries( entity.sitelinks || {} ) ) {
-			if ( sitelink.url && sitelink.url.includes( 'wikipedia.org' ) ) {
-				sitelinkCount++;
-				if ( key === wiki ) {
-					localSitelink = sitelink;
-				}
-			}
-		}
+		const sitelinkCount = Object.values( entity.sitelinks || {} )
+			.filter( ( sitelink ) => sitelink.url && sitelink.url.includes( 'wikipedia.org' ) )
+			.length;
+		const localSitelink = localSitelinkByQid[ qid ];
+		const isLocalSitelinkMain = !!localSitelink &&
+			namespaceByTitle[ localSitelink.title ] === NS_MAIN;
 		const labelEntry = entity.labels && entity.labels[ language ];
 		const descEntry = entity.descriptions && entity.descriptions[ language ];
 		const labelFallback = !!labelEntry &&
@@ -149,7 +161,8 @@ async function fetchEntityClaims( qids, properties, language ) {
 			description: descEntry ? descEntry.value : '',
 			imageFilename: imageStatement ? imageStatement.mainsnak.datavalue.value : null,
 			sitelinkCount,
-			localSitelink
+			localSitelink: isLocalSitelinkMain ? localSitelink : null,
+			localSitelinkOutsideMainNamespace: !!localSitelink && !isLocalSitelinkMain
 		};
 		entityClaimsCache.set( qid, freshResult[ qid ] );
 	}

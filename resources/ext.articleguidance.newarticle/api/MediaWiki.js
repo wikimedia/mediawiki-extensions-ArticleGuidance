@@ -61,6 +61,54 @@ async function checkPagesExist( titles ) {
 }
 
 /**
+ * Get the namespace ID of multiple local wiki titles in a single API call.
+ *
+ * @param {string[]} titles - Page titles to check
+ * @return {Promise<Object>} Map of input title → namespace ID
+ * @throws {Error} If the API call fails
+ */
+async function getPageNamespaces( titles ) {
+	const inputTitles = ( titles || [] ).filter( ( t ) => t.trim() );
+	if ( inputTitles.length === 0 ) {
+		return {};
+	}
+	const trimmedTitles = inputTitles.map( ( t ) => t.trim() );
+
+	try {
+		const api = new mw.Api();
+		const response = await api.get( {
+			action: 'query',
+			titles: trimmedTitles.join( '|' ),
+			formatversion: 2
+		} );
+
+		const normalMap = {};
+		if ( response.query.normalized ) {
+			for ( let i = 0; i < response.query.normalized.length; i++ ) {
+				const n = response.query.normalized[ i ];
+				normalMap[ n.from ] = n.to;
+			}
+		}
+
+		const nsByCanonical = {};
+		for ( let i = 0; i < response.query.pages.length; i++ ) {
+			const page = response.query.pages[ i ];
+			nsByCanonical[ page.title ] = page.ns;
+		}
+
+		const result = {};
+		for ( let i = 0; i < inputTitles.length; i++ ) {
+			const title = trimmedTitles[ i ];
+			const canonical = normalMap[ title ] || title;
+			result[ inputTitles[ i ] ] = nsByCanonical[ canonical ];
+		}
+		return result;
+	} catch ( error ) {
+		throw new Error( 'Failed to get page namespaces: ' + error.message );
+	}
+}
+
+/**
  * Fetch the description and thumbnail for a local wiki page.
  *
  * @param {string} title Page title
@@ -86,5 +134,6 @@ async function fetchLocalArticleData( title ) {
 
 module.exports = {
 	checkPagesExist,
+	getPageNamespaces,
 	fetchLocalArticleData
 };

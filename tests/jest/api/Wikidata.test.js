@@ -21,43 +21,27 @@ function mockFetch( data, ok = true ) {
 }
 
 function mockMw() {
-	global.mw = {
+	global.mw = Object.assign( {}, global.mw, {
 		config: {
 			get: ( key ) => ( key === 'wgDBname' ? 'testwiki' : null )
 		},
 		log: { warn: jest.fn() }
-	};
+	} );
 }
 
-describe( 'searchWikidata', () => {
-	let searchWikidata;
-
-	beforeEach( () => {
-		mockMw();
-		jest.resetModules();
-		( { searchWikidata } = require( '../../../resources/ext.articleguidance.newarticle/api/Wikidata.js' ) );
+/**
+ * Mock mw.Api().get() for getPageNamespaces, keyed by title → namespace ID.
+ *
+ * @param {Object} namespaceByTitle
+ */
+function mockPageNamespaces( namespaceByTitle ) {
+	const get = jest.fn().mockResolvedValue( {
+		query: {
+			pages: Object.entries( namespaceByTitle ).map( ( [ title, ns ] ) => ( { title, ns } ) )
+		}
 	} );
-
-	it( 'only allows results from the main namespace', async () => {
-		// The ns: 120 entry simulates the search backend widening the searched
-		// namespaces because the query text parsed as a namespace prefix.
-		global.fetch = mockFetch( {
-			query: { search: [
-				{ ns: 120, title: 'Property:P31' },
-				{ ns: 0, title: 'Q42' }
-			] }
-		} );
-
-		const result = await searchWikidata( 'Property:instance of', 'en' );
-
-		expect( result ).toEqual( [ {
-			id: 'Q42',
-			label: 'Q42',
-			description: '',
-			url: 'https://www.wikidata.org/wiki/Q42'
-		} ] );
-	} );
-} );
+	global.mw.Api = jest.fn().mockImplementation( () => ( { get } ) );
+}
 
 describe( 'fetchEntityClaims', () => {
 	let fetchEntityClaims;
@@ -159,5 +143,55 @@ describe( 'fetchEntityClaims', () => {
 
 		expect( result.Q42.hasLabel ).toBe( true );
 		expect( result.Q999.hasLabel ).toBe( false );
+	} );
+
+	it( 'keeps a local sitelink that points to a main-namespace page', async () => {
+		const sitelink = {
+			site: 'testwiki',
+			title: 'Douglas Adams',
+			url: 'https://test.wikipedia.org/wiki/Douglas_Adams'
+		};
+		global.fetch = mockFetch( {
+			entities: {
+				Q42: {
+					labels: {},
+					descriptions: {},
+					claims: {},
+					sitelinks: { testwiki: sitelink }
+				}
+			}
+		} );
+		mockPageNamespaces( { 'Douglas Adams': 0 } );
+
+		const result = await fetchEntityClaims( [ 'Q42' ], [], 'en' );
+
+		expect( result.Q42.localSitelink ).toEqual( sitelink );
+		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( false );
+	} );
+
+	it( 'drops a local sitelink that points outside the main namespace, e.g. a Wikipedia: page', async () => {
+		global.fetch = mockFetch( {
+			entities: {
+				Q42: {
+					labels: {},
+					descriptions: {},
+					claims: {},
+					sitelinks: {
+						testwiki: {
+							site: 'testwiki',
+							title: 'Wikipedia:Sandbox',
+							url: 'https://test.wikipedia.org/wiki/Wikipedia:Sandbox'
+						}
+					}
+				}
+			}
+		} );
+		// Namespace 4 (Project) here, resolved server-side regardless of query text or language.
+		mockPageNamespaces( { 'Wikipedia:Sandbox': 4 } );
+
+		const result = await fetchEntityClaims( [ 'Q42' ], [], 'en' );
+
+		expect( result.Q42.localSitelink ).toBeNull();
+		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( true );
 	} );
 } );

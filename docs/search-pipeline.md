@@ -2,6 +2,7 @@
 
 ![Search pipeline flowchart](search-pipeline.jpg)
 
+Article creation and subject search are scoped to the Main namespace. For a candidate's local-wiki sitelink, the namespace is resolved server-side (`getPageNamespaces` in `api/MediaWiki.js`) rather than parsed client-side, so it's correct regardless of the current interface language.
 
 When a user types in the search box, `useWikidataSearch` debounces the input and fires the following requests in parallel:
 
@@ -33,7 +34,7 @@ If the number of processed native results is less than 8 (`MAX_RESULT`), the tra
 
 Zero-hop matches are resolved from the `wbgetentities` data in JavaScript: if a candidate's Q-ID is itself one of an outline's article-type Q-IDs, or if its direct P31 value is one, it is recorded without touching the SPARQL results. The SPARQL results (1+ hops only, since `+` is used rather than `*`) are then merged in by `applyHierarchyMatches`, which does a direct item→outline lookup from the item-keyed map.
 
-Items are filtered out before matching if their P31 value is a configured excluded type (direct check via `wbgetentities`) or if the SPARQL exclusion query (`P31/wdt:P279*`) found a match.
+Items are filtered out before matching if their P31 value is a configured excluded type (direct check via `wbgetentities`), if the SPARQL exclusion query (`P31/wdt:P279*`) found a match, or if their local-wiki sitelink is outside the Main namespace.
 
 Finally, `selectBestMatches` resolves ambiguity when a candidate matches multiple outlines: it first prefers outlines matched via a non-default `matchVia` strategy (preventing a broad type like Q5/human from drowning out a specific occupation match), then among survivors keeps only the highest-`hierarchyDepth` match, which corresponds to the most specific outline in the configured taxonomy.
 

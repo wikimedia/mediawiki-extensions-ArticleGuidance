@@ -123,7 +123,8 @@ function useWikidataSearch( query, language ) {
 			const isDirectlyExcluded = p31Values.some( ( v ) => excludedTypeSet.has( v ) );
 			const isHierarchyExcluded =
 				exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
-			return !isDirectlyExcluded && !isHierarchyExcluded;
+			return !isDirectlyExcluded && !isHierarchyExcluded &&
+				!entity.localSitelinkOutsideMainNamespace;
 		} );
 		const filteredQIdSet = new Set( filteredQIds );
 		const filteredCandidates = candidates.filter( ( r ) => filteredQIdSet.has( r.id ) );

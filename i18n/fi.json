@@ -53,6 +53,8 @@
 	"articleguidance-notability-tag-draft-location": "Artikkelesi luodaan sivulle ”$1”.",
 	"articleguidance-specialnewarticle-no-matching-type": "Etkö löydä oikeaa tyyppiä?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Ehdota uutta tyyppiä",
+	"articleguidance-tracking-category": "Article guidancea käyttävät sivut",
+	"articleguidance-tracking-category-desc": "Tämän luokan sivut käyttävät <article-guidance>-elementtiä, joka tarjoaa jäsennellyn ohjauksen artikkelien luomiseen.",
 	"articleguidance-subjectcovered-title": "Artikkeli on jo olemassa",
 	"articleguidance-subjectcovered-description": "Tästä aiheesta on jo artikkeli tässä wikissä. Voit lukea tai parantaa sitä.",
 	"articleguidance-subjectcovered-button": "Paranna artikkelia",
@@ -60,11 +62,15 @@
 	"articleguidance-titleconflict-continue": "Jatka",
 	"articleguidance-titleconflict-selected-subject": "Valittu aihe",
 	"articleguidance-titleconflict-viewexisting": "Näytä olemassa oleva artikkeli",
+	"tag-articleguidance": "Ohjattu artikkelin luonti",
+	"tag-articleguidance-description": "Muokkaus tehtiin Ohjattu artikkelin luonti -tilassa",
 	"articleguidance-publish-followup-confirmation-title": "Artikkeli on julkaistu!",
 	"articleguidance-publish-followup-community-review": "Muut muokkaajat arvioivat tämän artikkelin. Voit sillä välin katsoa uudelleen ehdotuksia artikkelin parantamiseksi.",
 	"articleguidance-publish-followup-edit-more-button": "Paranna artikkelia",
 	"articleguidance-publish-followup-close-button": "Sulje",
+	"articleguidance-unsupported-subject-heading": "Tälle aiheelle ei ole vielä ohjausta",
 	"articleguidance-unsupported-subject-request-title": "Pyydä tukea tälle tyypille",
 	"articleguidance-unsupported-subject-request-description": "Pyydä yhteisöltä apua tämän tyyppisten artikkelien luontiin.",
-	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen"
+	"articleguidance-unsupported-subject-start-title": "Aloita kirjoittaminen",
+	"articleguidance-unsupported-subject-start-description": "Kirjoita artikkeli ilman ohjattua artikelin luontia."
 }

@@ -77,8 +77,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "طلب الدعم: $1 ( $2 )",
 	"articleguidance-tracking-category": "الصفحات التي تستخدم إرشاد المقالة",
 	"articleguidance-tracking-category-desc": "تستخدم الصفحات في هذا التصنيف <article-guidance> وسم لتوفير إرشادات منظمة لإنشاء المقالات.",
-	"articleguidance-subjectcovered-title": "المقالة موجودة مسبقاً",
-	"articleguidance-subjectcovered-description": "هذا الموضوع له مقالة موجودة مسبقاً على هذا الويكي. يمكنك قراءته أو تحسينه.",
 	"articleguidance-subjectcovered-button": "تحسين المقالة",
 	"articleguidance-titleconflict-suggestion-prefix": "اقتراح:",
 	"articleguidance-titleconflict-continue": "استمرار",

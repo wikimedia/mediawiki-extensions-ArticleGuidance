@@ -62,8 +62,6 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Foreslå en ny type",
 	"articleguidance-tracking-category": "Sider som bruker artikkelveileder",
 	"articleguidance-tracking-category-desc": "Sider i denne kategorien bruker <article-guidance>-taggen for å gi strukturert veiledelse til opprettelse av artikler.",
-	"articleguidance-subjectcovered-title": "Artikkel finnes allerede",
-	"articleguidance-subjectcovered-description": "Dette emnet har allerede en artikkel på denne wikien. Du kan lese eller forbedre den.",
 	"articleguidance-subjectcovered-button": "Forbedre artikkel",
 	"articleguidance-titleconflict-suggestion-prefix": "Forslag:",
 	"articleguidance-titleconflict-continue": "Fortsett",

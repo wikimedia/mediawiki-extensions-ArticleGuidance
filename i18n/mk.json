@@ -76,8 +76,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "Барање за поддршка: $1 ($2)",
 	"articleguidance-tracking-category": "Страници со упатства за статии",
 	"articleguidance-tracking-category-desc": "Страниците во оваа категорија ја користат ознаката <article-guidance> што дава структурирани упатства за создавање на статии.",
-	"articleguidance-subjectcovered-title": "Статијата веќе постои",
-	"articleguidance-subjectcovered-description": "Оваа тема веќе има статија на ова вики. Можете да ја читате или да ја подобрите.",
 	"articleguidance-subjectcovered-button": "Подобрете ја статијата",
 	"articleguidance-titleconflict-suggestion-prefix": "Предлог:",
 	"articleguidance-titleconflict-continue": "Продолжи",

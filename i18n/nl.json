@@ -77,8 +77,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "Verzoek om ondersteuning: $1 ($2)",
 	"articleguidance-tracking-category": "Pagina's die gebruikmaken van paginarichtlijnen",
 	"articleguidance-tracking-category-desc": "Pagina's in deze categorie gebruiken de tag <article-guidance> om gestructureerde richtlijnen te bieden voor het schrijven.",
-	"articleguidance-subjectcovered-title": "De pagina bestaat al",
-	"articleguidance-subjectcovered-description": "Over dit onderwerp bestaat al een pagina op deze wiki. U kunt het lezen of verbeteren.",
 	"articleguidance-subjectcovered-button": "Pagina verbeteren",
 	"articleguidance-titleconflict-suggestion-prefix": "Suggestie:",
 	"articleguidance-titleconflict-continue": "Doorgaan",

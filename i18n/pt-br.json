@@ -65,8 +65,6 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Sugira um novo tipo",
 	"articleguidance-tracking-category": "Páginas que seguem as orientações para artigos",
 	"articleguidance-tracking-category-desc": "As páginas desta categoria usam a etiqueta <article-guidance> para fornecer orientação estruturada para a criação de artigos.",
-	"articleguidance-subjectcovered-title": "O artigo já existe",
-	"articleguidance-subjectcovered-description": "Já existe um artigo sobre este assunto nesta wiki. Você pode lê-lo ou melhorá-lo.",
 	"articleguidance-subjectcovered-button": "Melhorar artigo",
 	"articleguidance-titleconflict-suggestion-prefix": "Sugestão:",
 	"articleguidance-titleconflict-continue": "Continuar",

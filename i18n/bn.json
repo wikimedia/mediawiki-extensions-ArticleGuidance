@@ -71,8 +71,6 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "একটি নতুন ধরন/টাইপের পরামর্শ দিন",
 	"articleguidance-tracking-category": "নিবন্ধ নির্দেশিকা ব্যবহার করা পাতা",
 	"articleguidance-tracking-category-desc": "এই বিষয়শ্রেণীর পাতাগুলো নিবন্ধ তৈরির জন্য কাঠামোবদ্ধ নির্দেশনা দিতে <article-guidance> ট্যাগ ব্যবহার করে।",
-	"articleguidance-subjectcovered-title": "নিবন্ধটি ইতিমধ্যেই বিদ্যমান",
-	"articleguidance-subjectcovered-description": "এই উইকিতে এই বিষয়টি নিয়ে ইতিমধ্যেই একটি নিবন্ধ রয়েছে। আপনি সেটি পড়তে পারেন অথবা সেটিকে আরও উন্নত করতে পারেন।",
 	"articleguidance-subjectcovered-button": "নিবন্ধের উন্নতি করুন",
 	"articleguidance-titleconflict-suggestion-prefix": "পরামর্শ:",
 	"articleguidance-titleconflict-continue": "অগ্রসর হোন",

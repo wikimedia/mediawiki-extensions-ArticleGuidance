@@ -76,8 +76,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "Bitte um Unterstützung: $1 ($2)",
 	"articleguidance-tracking-category": "Seiten, die Artikelrichtlinien verwenden",
 	"articleguidance-tracking-category-desc": "Seiten in dieser Kategorie verwenden den <article-guidance>-Tag zur Bereitstellung einer strukturierten Anleitung für die Artikelerstellung.",
-	"articleguidance-subjectcovered-title": "Der Artikel existiert bereits.",
-	"articleguidance-subjectcovered-description": "Zu diesem Thema gibt es bereits einen Artikel in diesem Wiki. Du kannst ihn lesen oder verbessern.",
 	"articleguidance-subjectcovered-button": "Artikel verbessern",
 	"articleguidance-titleconflict-suggestion-prefix": "Vorschlag:",
 	"articleguidance-titleconflict-continue": "Fortfahren",

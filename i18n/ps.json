@@ -76,8 +76,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "د ملاتړ غوښتنه: $1 ($2)",
 	"articleguidance-tracking-category": "هغه مخونه چې د ليکنې لارښوونې کاروي",
 	"articleguidance-tracking-category-desc": "د دې وېشنيزې مخونه <article-guidance> نښلن کاروي؛ ترڅو د ليکنې جوړولو لپاره جوړښتي لارښوونې چمتو کړي.",
-	"articleguidance-subjectcovered-title": "ليکنه لادمخه شتون لري",
-	"articleguidance-subjectcovered-description": "دې ويکي کې د دې سکالو اړوند لادمخه يوه ليکنه شته. تاسو کولی شئ دا ولولئ يا يې ښه کړئ.",
 	"articleguidance-subjectcovered-button": "ليکنه ښه‌کول",
 	"articleguidance-titleconflict-suggestion-prefix": "وړانديز:",
 	"articleguidance-titleconflict-continue": "دوام ورکول",

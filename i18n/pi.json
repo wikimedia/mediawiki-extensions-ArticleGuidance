@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"咽頭べさ"
+		]
+	},
+	"articleguidance-subjectcovered-subtitle": "तुय्हं चितं फलं एकं लेखनं धारेति",
+	"articleguidance-subjectcovered-redirect-description": "“$1” लोकेन्ता पाठाका $2 स्मिं पतिट्ठिस्सन्ति॥ अनिब्बत्तं नवं लेखनं",
+	"articleguidance-subjectcovered-redirect-button": "निय्यामना पुन आनयनं करोहि",
+	"articleguidance-subjectcovered-redirect-saving": "निय्यामना पुन आनयनं करोन्तो",
+	"articleguidance-subjectcovered-redirect-success": "\"$1\" इदानि \"$2\" अभिमुखं पहिनोति॥",
+	"articleguidance-subjectcovered-redirect-error": "निय्यामना पुन आनयनं कातुं न सक्कोति॥",
+	"articleguidance-subjectcovered-redirect-error-exists": "\"$1\" नामेन पिट्ठं पुब्बे वे कतं भवति॥",
+	"articleguidance-subjectcovered-redirect-error-permission": "इमं पिट्ठं कातुं त्वं न अनुञ्ञातो सि॥",
+	"articleguidance-subjectcovered-redirect-retry": "पुन करोहि"
+}

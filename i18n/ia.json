@@ -67,8 +67,6 @@
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerer un nove typo",
 	"articleguidance-tracking-category": "Paginas que usa le guida al creation de articulos",
 	"articleguidance-tracking-category-desc": "Le paginas in iste categoria usa le etiquetta <article-guidance> pro fornir un guida structurate pro le creation de articulos.",
-	"articleguidance-subjectcovered-title": "Articulo ja existe",
-	"articleguidance-subjectcovered-description": "Pro iste subjecto existe ja un articulo sur iste wiki. Tu pote leger lo o meliorar lo.",
 	"articleguidance-subjectcovered-button": "Meliorar articulo",
 	"articleguidance-titleconflict-suggestion-prefix": "Suggestion:",
 	"articleguidance-titleconflict-continue": "Continuar",

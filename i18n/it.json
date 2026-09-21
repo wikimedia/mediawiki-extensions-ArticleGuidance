@@ -82,8 +82,6 @@
 	"articleguidance-feedback-request-support-preloadtitle": "Richiesta di supporto: $1 ($2)",
 	"articleguidance-tracking-category": "Pagine che utilizzano il percorso guidato",
 	"articleguidance-tracking-category-desc": "Le pagine in questa categoria usano il tag <article-guidance> per fornire una guida strutturata per la creazione della voce.",
-	"articleguidance-subjectcovered-title": "Voce già esistente",
-	"articleguidance-subjectcovered-description": "Questo soggetto ha già una voce su questo wiki. Puoi leggerla o migliorarla.",
 	"articleguidance-subjectcovered-button": "Migliora voce",
 	"articleguidance-titleconflict-suggestion-prefix": "Suggerimento:",
 	"articleguidance-titleconflict-continue": "Continua",

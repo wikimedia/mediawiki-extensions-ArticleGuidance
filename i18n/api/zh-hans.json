@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"GuoPC"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "记录此编辑是通过<kbd>[[Special:NewArticle|条目指引]]</kbd>做出的，以便可以相应地添加标签。"
+}

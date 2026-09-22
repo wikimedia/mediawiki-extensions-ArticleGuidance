@@ -117,7 +117,7 @@
 	"communityconfiguration-articleguidance-redirect-section-label": "Tworzenie artykułów z pomocą redaktorską",
 	"communityconfiguration-articleguidance-redirect-section-description": "Te ustawienia określają, które osoby zostaną przekierowane do trybu tworzenia artykułów z pomocą redaktorską zamiast do standardowego edytora.",
 	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Korzystaj z trybu tworzenia artykułów z pomocą redaktorską",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Gdy opcja jest włączona, kliknięcie czerwonego linku do nieistniejącego artykułu otwiera tryb tworzenia artykułów z pomocą redaktorską. Redaktorzy, którzy wolą standardowy edytor, mogą wyłączyć tę opcję w swoich preferencjach.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Gdy opcja jest włączona, kliknięcie czerwonego linku do nieistniejącego artykułu otwiera tryb tworzenia artykułów z pomocą redaktorską zamiast standardowego edytora. Redaktorzy, którzy wolą standardowy edytor, mogą wyłączyć tę opcję w swoich preferencjach.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Ogranicz do nowych edytujących",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "To ustawienie działa tylko wtedy, gdy włączone jest powyższe ustawienie. Po włączeniu, tylko edytujący, którzy mają mniej edycji niż określona liczba dla nowych edytujących na tej wiki, korzystają z trybu z pomocą redaktorską, a wszyscy inni nadal używają standardowego edytora."
 }

@@ -26,6 +26,21 @@ re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
 
 Storage only occurs on full saves, not previews.
 
+## The generic guidance outline
+
+A wiki may have one outline that is linked to no Wikidata item (T435605), marked by
+`article-type="*"`. The sentinel must stand alone: mixing it with Q IDs invalidates the
+attribute. At most one is expected (T424186).
+
+Declaring no article types is what keeps this outline out of topic matching (T428152). The
+workflow falls back to it when no other outline matches, at the point the user picks a
+subject rather than while matching runs.
+
+Having no Q ID of its own, it is addressed by the same `*` sentinel wherever an outline is
+identified by Q ID. That is what lets it carry recommended and discouraged source lists
+like any other outline, which suits the sources that are reliable or unreliable whatever
+the subject is.
+
 ## Serving
 
 The `/articleguidance/v1/outlines` REST endpoint calls `OutlineService::getOutlines()`, which:

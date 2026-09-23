@@ -1,0 +1,52 @@
+<article-guidance article-type="*" notability-risk="sources">
+
+<instructions>
+Wikipedia covers subjects that have received significant coverage in reliable sources that are independent of the subject. Before you write, check that such coverage exists. If it does not, the article is likely to be deleted however well it is written.
+
+Quick considerations:
+
+* Summarise what independent sources say. Do not add your own analysis, opinion or conclusions.
+* Open with a short lead that says what the subject is and why it is notable.
+* Cite a source for every claim that a reader could reasonably question.
+* Write in a neutral tone. Avoid promotional language and loaded words.
+* Do not write about yourself, your employer, your family or your friends.
+* Do not copy text from other websites or books. Write it in your own words.
+</instructions>
+
+<recommended-sources>
+  <info>News organisations with editorial oversight and a record of fact-checking</info>
+  <info>Peer-reviewed academic journals and books from academic publishers</info>
+  <info>Books from established publishers, and reference works with named editors</info>
+  <info>Official records from governments and regulators, for factual details</info>
+</recommended-sources>
+
+<discouraged-sources>
+  <info>The subject's own website, social media accounts and press releases</info>
+  <info>Press release distribution services and sponsored content</info>
+  <info>Blogs, forums, and other self-published material</info>
+  <info>Other Wikipedia articles and user-generated wikis</info>
+  <info>Directory listings and aggregator databases used as the sole source</info>
+</discouraged-sources>
+
+</article-guidance>
+
+'''[Subject name]''' is [what the subject is].{{Citation needed}}
+It is known for [what independent sources say the subject is notable for].{{Citation needed}}
+
+
+== History ==
+[What happened, in the order it happened, as reported by independent sources.]{{Citation needed}}
+
+
+== Reception ==
+[How independent commentators, reviewers or analysts have assessed the subject.]{{Citation needed}}
+
+== References ==
+
+<references>
+$1
+</references>
+
+== External links ==
+
+* [Official website, if the subject has one]

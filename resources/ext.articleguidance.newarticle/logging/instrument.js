@@ -83,14 +83,15 @@ function logWriteTitle( query, resultCount, path = null, duration = null ) {
  * Fire when the user selects a Wikidata search result card.
  *
  * @param {string} resultQid QID of the clicked Wikidata item.
- * @param {{title: string, qid: string|null}} outline Matched outline type. qid is null when the
- *   result has no matching outline (unsupported topic), which routes the user to the unsupported
- *   subject step. The action_subtype reflects this: 'suggested_topic' when supported,
- *   'unsupported_topic' when not.
+ * @param {Object} outline Outline the workflow will use, from outlineEventContext(). Its qids
+ *   are ['*'] for the generic guidance outline, which the result falls back to when nothing
+ *   matches, and empty when there is no outline at all, which routes the user to the
+ *   unsupported subject step. The action_subtype reflects this: 'suggested_topic' when the
+ *   workflow continues, 'unsupported_topic' when it does not.
  */
 function logSelectSuggestedTopic( resultQid, outline ) {
 	const data = {};
-	data.action_subtype = outline.qid ? 'suggested_topic' : 'unsupported_topic';
+	data.action_subtype = outline.qids.length ? 'suggested_topic' : 'unsupported_topic';
 	data.action_context = { result_qid: resultQid, outline: outline };
 	submit( 'select_topic', data );
 }
@@ -98,12 +99,13 @@ function logSelectSuggestedTopic( resultQid, outline ) {
 /**
  * Fire when the user picks an outline from the browse-by-type panel.
  *
- * @param {{title: string, qid: string}} outline Selected outline type.
+ * @param {Object} outline Selected outline, from outlineEventContext(). Its matched_qid is
+ *   always null: the user chose the outline, no Wikidata match did.
  */
 function logSelectManualTopic( outline ) {
 	const data = {};
 	data.action_subtype = 'manual_topic';
-	data.action_context = outline;
+	data.action_context = { outline: outline };
 	submit( 'select_topic', data );
 }
 
@@ -164,11 +166,12 @@ function logGuidanceShown() {
 /**
  * Fire when the user clicks "Start Writing".
  *
- * @param {{title: string, qid: string}} outline Selected outline type.
+ * @param {Object} outline Selected outline, from outlineEventContext(). It reports the same
+ *   outline that select_topic reported for this session.
  */
 function logWriteStart( outline ) {
 	const data = {};
-	data.action_context = outline;
+	data.action_context = { outline: outline };
 	submit( 'write_start', data );
 }
 

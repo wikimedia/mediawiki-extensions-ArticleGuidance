@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
+use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Message\Message;
@@ -64,8 +65,11 @@ class ArticleGuidanceTagHandler implements
 
 		// Extract parameters
 		$articleType = $attributes['article-type'] ?? null;
-		// Optional custom label that overrides the default page-title-derived label
-		$customLabel = trim( $attributes['label'] ?? '' ) ?: null;
+		$isGeneric = $articleType !== null
+			&& trim( $articleType ) === OutlineService::GENERIC_ARTICLE_TYPE;
+		// Optional custom label that overrides the default page-title-derived label.
+		// The interface never names the generic outline, so it ignores the label.
+		$customLabel = $isGeneric ? null : ( trim( $attributes['label'] ?? '' ) ?: null );
 		$outlineLabel = $customLabel ?? $this->getDefaultOutlineLabel( $parser->getTitle() );
 		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
 		$validTags = array_values( array_filter( $allTags,
@@ -110,83 +114,93 @@ class ArticleGuidanceTagHandler implements
 		// labels/descriptions are resolved against Wikidata below when not previewing
 		$renderTypes = [];
 
-		if ( $articleType !== null ) {
+		// A generic outline keeps an empty list of article types, which keeps it
+		// out of the search step's topic matching.
+		$wikidataIds = [];
+		if ( $articleType !== null && !$isGeneric ) {
 			$wikidataIds = $this->parseArticleTypes( $articleType );
+		}
+
+		foreach ( $wikidataIds as $id ) {
+			$renderTypes[] = [
+				'id' => $id,
+				'label' => null,
+				'description' => null,
+				'matchVia' => $explicitMatchVia,
+			];
+		}
+
+		if ( ( $isGeneric || $wikidataIds !== [] ) && !$parser->getOptions()->getIsPreview() ) {
+			$typeEntries = [];
+			$description = null;
+
 			if ( $wikidataIds !== [] ) {
-				foreach ( $wikidataIds as $id ) {
-					$renderTypes[] = [
+				// Get user language
+				$language = $parser->getContentLanguage()->getCode();
+
+				// Fetch entity data per ID; each ID keeps its own hierarchy
+				// depth and match-via since both are properties of the item
+				foreach ( $wikidataIds as $i => $id ) {
+					$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
+						$id, $language, $explicitMatchVia
+					);
+					// Use inferred match-via from entity data; explicit override takes precedence
+					$entryMatchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
+					$typeEntries[] = [
 						'id' => $id,
-						'label' => null,
-						'description' => null,
-						'matchVia' => $explicitMatchVia,
+						'hierarchyDepth' => $entityData['hierarchyDepth'] ?? null,
+						'matchVia' => $entryMatchVia,
 					];
+					$renderTypes[$i]['label'] = $entityData['label'] ?? null;
+					$renderTypes[$i]['description'] = $entityData['description'] ?? null;
+					$renderTypes[$i]['matchVia'] = $entryMatchVia;
+					if ( $i === 0 ) {
+						// The first (primary) ID supplies the stored
+						// outline's image
+						$wikidataImage = $entityData['image'] ?? null;
+					}
 				}
 
-				if ( !$parser->getOptions()->getIsPreview() ) {
-					// Get user language
-					$language = $parser->getContentLanguage()->getCode();
+				// The primary ID supplies the stored outline's description
+				$primaryDescription = $renderTypes[0]['description'];
 
-					// Fetch entity data per ID; each ID keeps its own hierarchy
-					// depth and match-via since both are properties of the item
-					$typeEntries = [];
-					foreach ( $wikidataIds as $i => $id ) {
-						$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
-							$id, $language, $explicitMatchVia
-						);
-						// Use inferred match-via from entity data; explicit override takes precedence
-						$entryMatchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
-						$typeEntries[] = [
-							'id' => $id,
-							'hierarchyDepth' => $entityData['hierarchyDepth'] ?? null,
-							'matchVia' => $entryMatchVia,
-						];
-						$renderTypes[$i]['label'] = $entityData['label'] ?? null;
-						$renderTypes[$i]['description'] = $entityData['description'] ?? null;
-						$renderTypes[$i]['matchVia'] = $entryMatchVia;
-						if ( $i === 0 ) {
-							// The first (primary) ID supplies the stored
-							// outline's image
-							$wikidataImage = $entityData['image'] ?? null;
-						}
-					}
-
-					// The primary ID supplies the stored outline's description
-					$primaryDescription = $renderTypes[0]['description'];
-
-					$description = $primaryDescription !== null ? ucfirst( $primaryDescription ) : null;
-					$data = [
-						// Singular primary ID kept for rollback compatibility with
-						// pre-multi-item readers; runtime consumers use articleTypes
-						'articleType' => $wikidataIds[0],
-						'articleTypes' => $typeEntries,
-						'label' => $outlineLabel,
-					];
-					if ( $description !== null && $description !== '' ) {
-						$data['description'] = $description;
-					}
-					if ( $wikidataImage !== null ) {
-						$data['image'] = $wikidataImage;
-					}
-					if ( $validTags !== [] ) {
-						$data['notabilityRisk'] = $validTags;
-					}
-					if ( $instructionsHtml !== null && $instructionsHtml !== '' ) {
-						$data['instructions'] = $instructionsHtml;
-					}
-					$recInfo = $recommendedSourcesHtml[0] ?? [];
-					$recUrls = $recommendedSourcesHtml[1] ?? [];
-					if ( $recInfo !== [] || $recUrls !== [] ) {
-						$data['recommendedSources'] = [ 'info' => $recInfo, 'urls' => $recUrls ];
-					}
-					$disInfo = $discouragedSourcesHtml[0] ?? [];
-					$disUrls = $discouragedSourcesHtml[1] ?? [];
-					if ( $disInfo !== [] || $disUrls !== [] ) {
-						$data['discouragedSources'] = [ 'info' => $disInfo, 'urls' => $disUrls ];
-					}
-					$parser->getOutput()->setPageProperty( 'articleguidance-data', json_encode( $data ) );
-				}
-
+				$description = $primaryDescription !== null ? ucfirst( $primaryDescription ) : null;
 			}
+
+			$data = [
+				'articleTypes' => $typeEntries,
+				'label' => $outlineLabel,
+			];
+			if ( $isGeneric ) {
+				$data['generic'] = true;
+			} else {
+				// Singular primary ID kept for rollback compatibility with
+				// pre-multi-item readers; runtime consumers use articleTypes
+				$data['articleType'] = $wikidataIds[0];
+			}
+			if ( $description !== null && $description !== '' ) {
+				$data['description'] = $description;
+			}
+			if ( $wikidataImage !== null ) {
+				$data['image'] = $wikidataImage;
+			}
+			if ( $validTags !== [] ) {
+				$data['notabilityRisk'] = $validTags;
+			}
+			if ( $instructionsHtml !== null && $instructionsHtml !== '' ) {
+				$data['instructions'] = $instructionsHtml;
+			}
+			$recInfo = $recommendedSourcesHtml[0] ?? [];
+			$recUrls = $recommendedSourcesHtml[1] ?? [];
+			if ( $recInfo !== [] || $recUrls !== [] ) {
+				$data['recommendedSources'] = [ 'info' => $recInfo, 'urls' => $recUrls ];
+			}
+			$disInfo = $discouragedSourcesHtml[0] ?? [];
+			$disUrls = $discouragedSourcesHtml[1] ?? [];
+			if ( $disInfo !== [] || $disUrls !== [] ) {
+				$data['discouragedSources'] = [ 'info' => $disInfo, 'urls' => $disUrls ];
+			}
+			$parser->getOutput()->setPageProperty( 'articleguidance-data', json_encode( $data ) );
 		}
 
 		// Localize in the parser's target/content language so the cached output is
@@ -226,7 +240,8 @@ class ArticleGuidanceTagHandler implements
 			$wikidataImage,
 			$notabilityThresholds,
 			$categoryNoteHtml,
-			$customLabelNote
+			$customLabelNote,
+			$isGeneric
 		);
 
 		return $html;

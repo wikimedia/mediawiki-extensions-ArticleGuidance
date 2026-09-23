@@ -66,9 +66,7 @@
 						{{ $i18n( 'articleguidance-sources-unreliable-warning-title' ).text() }}
 					</strong>
 					<div class="ext-articleguidance-unreliable-description">
-						{{
-							$i18n( 'articleguidance-sources-unreliable-warning-description' ).text()
-						}}
+						{{ unreliableWarningDescription }}
 					</div>
 				</cdx-message>
 
@@ -231,6 +229,7 @@ const {
 const { cdxIconAdd, cdxIconInfoFilled } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
+const { getOutlineLookupQId } = require( '../utils/outlineSelection.js' );
 const { validateSource } = require( '../api/Sources.js' );
 const { fetchAllCitationsWikitext } = require( '../api/Citoid.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -251,7 +250,9 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, minRequiredSources, hasInstructions } = storeToRefs( store );
+		const {
+			selectedOutline, isGenericOutlineSelected, minRequiredSources, hasInstructions
+		} = storeToRefs( store );
 
 		onMounted( () => {
 			instrument.logSourcesShown();
@@ -266,9 +267,16 @@ module.exports = defineComponent( {
 		const hasTips = computed(
 			() => recommendedSources.value.length > 0 || discouragedSources.value.length > 0
 		);
-		const tipsTitle = computed( () => mw.message(
-			'articleguidance-sources-tips-title', selectedOutline.value.label
-		).text() );
+		// The generic outline is not a type of article, so its label does not
+		// fit "Tips for $1 articles"
+		const tipsTitle = computed( () => isGenericOutlineSelected.value ?
+			mw.message( 'articleguidance-sources-tips-title-generic' ).text() :
+			mw.message( 'articleguidance-sources-tips-title', selectedOutline.value.label ).text()
+		);
+		const unreliableWarningDescription = computed( () => isGenericOutlineSelected.value ?
+			mw.message( 'articleguidance-sources-unreliable-warning-description-generic' ).text() :
+			mw.message( 'articleguidance-sources-unreliable-warning-description' ).text()
+		);
 		const recommendedTitle = computed(
 			() => mw.message( 'articleguidance-sources-tips-content-recommended' ).text()
 		);
@@ -335,7 +343,10 @@ module.exports = defineComponent( {
 				const result = await validateSource(
 					url,
 					null,
-					selectedOutline.value && selectedOutline.value.articleTypes[ 0 ].id
+					// '*' for the generic outline, which the endpoint resolves
+					// to the same outline. Its source lists apply like any
+					// other outline's. null only when no outline is selected.
+					getOutlineLookupQId( selectedOutline.value )
 				);
 				const mandatory = minRequiredSources.value > 0;
 				if ( result.classification === 'spam' || result.classification === 'discouraged' ) {
@@ -411,6 +422,9 @@ module.exports = defineComponent( {
 				return mw.message( 'articleguidance-sources-helper' ).text();
 			}
 			if ( verifiedSources.value.length === 0 ) {
+				if ( isGenericOutlineSelected.value ) {
+					return mw.message( 'articleguidance-sources-helper-required-generic' ).text();
+				}
 				const label = selectedOutline.value && selectedOutline.value.label || '';
 				return mw.message( 'articleguidance-sources-helper-required', label ).text();
 			}
@@ -441,7 +455,9 @@ module.exports = defineComponent( {
 
 		const subtitleMessage = computed( () => {
 			if ( isMandatory.value ) {
-				return mw.message( 'articleguidance-sources-subtitle-notability-risk' ).text();
+				return isGenericOutlineSelected.value ?
+					mw.message( 'articleguidance-sources-subtitle-notability-risk-generic' ).text() :
+					mw.message( 'articleguidance-sources-subtitle-notability-risk' ).text();
 			}
 			return mw.message( 'articleguidance-sources-subtitle' ).text();
 		} );
@@ -456,6 +472,7 @@ module.exports = defineComponent( {
 			helperText,
 			validationError,
 			unreliableWarning,
+			unreliableWarningDescription,
 			verifiedSources,
 			handleVerifyUrl,
 			handlePaste,

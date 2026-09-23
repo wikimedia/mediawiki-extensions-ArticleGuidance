@@ -190,4 +190,110 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertNull( $service->getOutlineByQId( 'Q999999' ) );
 	}
+
+	public function testServesGenericOutlineWithNoArticleTypes(): void {
+		// A generic outline has no Wikidata item (T435605), so its blob has
+		// neither articleType nor the description and image that come with it
+		$service = $this->getService(
+			[ $this->makeMember( 1, 'Wikipedia:General outline' ) ],
+			[
+				1 => json_encode( [
+					'articleTypes' => [],
+					'label' => 'General guidance',
+					'generic' => true,
+					'instructions' => '<p>Write a lead.</p>',
+				] ),
+			]
+		);
+
+		$outlines = $service->getOutlines();
+		$this->assertCount( 1, $outlines );
+		$this->assertTrue( $outlines[0]['generic'] );
+		$this->assertSame( [], $outlines[0]['articleTypes'] );
+		$this->assertSame( 'General guidance', $outlines[0]['label'] );
+		$this->assertSame( '<p>Write a lead.</p>', $outlines[0]['instructions'] );
+		// No primary entry, so the legacy singular fields have nothing to mirror
+		$this->assertNull( $outlines[0]['articleType'] );
+		$this->assertNull( $outlines[0]['hierarchyDepth'] );
+		$this->assertNull( $outlines[0]['matchVia'] );
+	}
+
+	public function testGenericOutlineIsDistinctFromRegularOnes(): void {
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Company outline' ),
+				$this->makeMember( 2, 'Wikipedia:General outline' ),
+			],
+			[
+				1 => json_encode( [
+					'articleType' => 'Q4830453',
+					'label' => 'Company',
+				] ),
+				2 => json_encode( [
+					'articleTypes' => [],
+					'label' => 'General guidance',
+					'generic' => true,
+				] ),
+			]
+		);
+
+		$outlines = $service->getOutlines();
+		// A regular outline is never mistaken for the generic one
+		$this->assertFalse( $outlines[0]['generic'] );
+		$this->assertTrue( $outlines[1]['generic'] );
+
+		// The generic outline has no Q ID, so no Q ID lookup finds it
+		$this->assertNull( $service->getOutlineByQId( OutlineService::GENERIC_ARTICLE_TYPE ) );
+
+		// It is reachable by the dedicated lookup instead. SourceValidator uses
+		// this when the client sends the sentinel as the outline Q ID.
+		$generic = $service->getGenericOutline();
+		$this->assertNotNull( $generic );
+		$this->assertSame( 'Wikipedia:General outline', $generic['title'] );
+	}
+
+	public function testGetGenericOutlineReturnsNullWhenThereIsNone(): void {
+		$service = $this->getService(
+			[ $this->makeMember( 1, 'Wikipedia:Company outline' ) ],
+			[
+				1 => json_encode( [
+					'articleType' => 'Q4830453',
+					'label' => 'Company',
+				] ),
+			]
+		);
+
+		$this->assertNull( $service->getGenericOutline() );
+	}
+
+	/**
+	 * A generic outline can list source domains, and they survive the page
+	 * property round trip like any other outline's (T435605). SourceValidator
+	 * reads exactly these keys to classify a source.
+	 */
+	public function testGenericOutlineCarriesSourceLists(): void {
+		$service = $this->getService(
+			[ $this->makeMember( 1, 'Wikipedia:General outline' ) ],
+			[
+				1 => json_encode( [
+					'articleTypes' => [],
+					'label' => 'General guidance',
+					'generic' => true,
+					'recommendedSources' => [
+						'info' => [ 'News organisations with editorial oversight' ],
+						'urls' => [ 'reuters.com' ],
+					],
+					'discouragedSources' => [
+						'info' => [ 'Self-published material' ],
+						'urls' => [ 'facebook.com' ],
+					],
+				] ),
+			]
+		);
+
+		$generic = $service->getGenericOutline();
+		$this->assertNotNull( $generic );
+		$this->assertSame( [ 'reuters.com' ], $generic['recommendedSources']['urls'] );
+		$this->assertSame( [ 'facebook.com' ], $generic['discouragedSources']['urls'] );
+	}
 }

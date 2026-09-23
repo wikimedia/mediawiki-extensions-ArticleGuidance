@@ -15,6 +15,13 @@ use MediaWiki\Title\TitleFactory;
  */
 class OutlineService {
 
+	/**
+	 * Marks the generic guidance outline, which is not linked to a Wikidata
+	 * item (T435605). It is the value of the article-type tag attribute, and
+	 * the value that identifies the outline where a Q ID is otherwise used.
+	 */
+	public const GENERIC_ARTICLE_TYPE = '*';
+
 	/** @var array{outlines: array, lastModified: string|null}|null */
 	private ?array $cache = null;
 
@@ -37,6 +44,8 @@ class OutlineService {
 	/**
 	 * Get a single outline by any of its Wikidata Q-IDs, or null if not found.
 	 *
+	 * A generic outline has no Q-ID, so this method never returns one.
+	 *
 	 * @param string $qId
 	 * @return array|null
 	 */
@@ -46,6 +55,26 @@ class OutlineService {
 				if ( $typeEntry['id'] === $qId ) {
 					return $outline;
 				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get the generic guidance outline, or null if the wiki has none.
+	 *
+	 * The generic outline has no Q ID, so getOutlineByQId() cannot find it.
+	 * Callers that resolve an outline from a Q ID must come here instead when
+	 * that Q ID is self::GENERIC_ARTICLE_TYPE.
+	 *
+	 * If the wiki has more than one, the first category member wins (T424186).
+	 *
+	 * @return array|null
+	 */
+	public function getGenericOutline(): ?array {
+		foreach ( $this->getOutlines() as $outline ) {
+			if ( $outline['generic'] ) {
+				return $outline;
 			}
 		}
 		return null;
@@ -103,26 +132,32 @@ class OutlineService {
 			// Synthesize the per-ID list for blobs persisted before multi-item
 			// support (T421260). This is the only place the page property is
 			// read, so downstream consumers (REST, JS) can rely on articleTypes
-			// unconditionally.
-			$articleTypes = $pageData['articleTypes'] ?? [ [
+			// unconditionally. A generic outline has neither key (T435605).
+			$articleTypes = $pageData['articleTypes'] ?? ( isset( $pageData['articleType'] ) ? [ [
 				'id' => $pageData['articleType'],
 				'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
 				'matchVia' => $pageData['matchVia'] ?? null,
-			] ];
+			] ] : [] );
 			// Capitalize the first letter at read time so labels persisted in
 			// page_props before the capitalization fix (T427201) are corrected
-			// without waiting for the pages to be re-parsed.
-			$label = $this->contentLanguage->ucfirst( $pageData['label'] ?? $articleTypes[0]['id'] );
+			// without waiting for the pages to be re-parsed. The page title is
+			// the last resort: a blob has no label only if it predates the
+			// label key, and such a blob always has an article type. The title
+			// keeps a blob with neither from getting an empty label.
+			$label = $this->contentLanguage->ucfirst(
+				$pageData['label'] ?? $articleTypes[0]['id'] ?? $member->getPrefixedText()
+			);
 			$outlines[] = [
 				'title' => $member->getPrefixedText(),
 				'label' => $label,
 				'description' => $pageData['description'] ?? '',
 				'articleTypes' => $articleTypes,
+				'generic' => (bool)( $pageData['generic'] ?? false ),
 				// The primary entry is also exposed through the pre-multi-item
 				// singular fields, so JS bundles still cached from before the
 				// deploy keep matching on it (T421260). TODO: Drop these three keys
 				// together with the /v0 route once that window has passed.
-				'articleType' => $articleTypes[0]['id'],
+				'articleType' => $articleTypes[0]['id'] ?? null,
 				'hierarchyDepth' => $articleTypes[0]['hierarchyDepth'] ?? null,
 				'matchVia' => $articleTypes[0]['matchVia'] ?? null,
 				'instructions' => $pageData['instructions'] ?? null,

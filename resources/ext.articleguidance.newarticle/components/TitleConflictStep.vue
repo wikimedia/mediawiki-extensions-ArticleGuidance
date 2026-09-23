@@ -53,28 +53,30 @@
 			</div>
 
 			<!-- Selected subject -->
-			<div class="ext-articleguidance-titleconflict-selected-subject">
-				{{ $i18n( 'articleguidance-titleconflict-selected-subject' ).text() }}
-			</div>
-			<div class="ext-articleguidance-titleconflict-subject-card-wrapper">
-				<article-card
-					v-if="selectedResult"
-					:fit-width="true"
-					:title="selectedResult.label"
-					:description="selectedResult.description"
-					:thumbnail="selectedResult.thumbnail"
-					:outline-name="selectedResult.outlineName"
-				>
-				</article-card>
-				<article-card
-					v-else-if="selectedOutline"
-					:fit-width="true"
-					:title="selectedOutline.label"
-					:description="selectedOutline.description"
-					:icon="articleIcon"
-				>
-				</article-card>
-			</div>
+			<template v-if="showSelectedSubject">
+				<div class="ext-articleguidance-titleconflict-selected-subject">
+					{{ $i18n( 'articleguidance-titleconflict-selected-subject' ).text() }}
+				</div>
+				<div class="ext-articleguidance-titleconflict-subject-card-wrapper">
+					<article-card
+						v-if="selectedResult"
+						:fit-width="true"
+						:title="selectedResult.label"
+						:description="selectedResult.description"
+						:thumbnail="selectedResult.thumbnail"
+						:outline-name="selectedResult.outlineName"
+					>
+					</article-card>
+					<article-card
+						v-else-if="selectedOutline"
+						:fit-width="true"
+						:title="selectedOutline.label"
+						:description="selectedOutline.description"
+						:icon="articleIcon"
+					>
+					</article-card>
+				</div>
+			</template>
 
 			<!-- Actions: Back + Continue -->
 			<div class="ext-articleguidance-titleconflict-actions">
@@ -121,7 +123,9 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedResult, selectedOutline, titleSuggestion } = storeToRefs( store );
+		const {
+			selectedResult, selectedOutline, isGenericOutlineSelected, titleSuggestion
+		} = storeToRefs( store );
 
 		const localTitle = ref( store.articleTitle || '' );
 
@@ -137,6 +141,12 @@ module.exports = defineComponent( {
 		watch( localTitle, ( newTitle ) => {
 			store.setArticleTitle( newTitle );
 		} );
+
+		// Without a Wikidata result, the card shows the type that the user
+		// picked. The generic outline is not a type, so there is nothing to
+		// show (T435605).
+		const showSelectedSubject = computed( () => !!selectedResult.value ||
+			!!( selectedOutline.value && !isGenericOutlineSelected.value ) );
 
 		const canContinue = computed( () => titleExists.value === false );
 
@@ -169,6 +179,7 @@ module.exports = defineComponent( {
 			titleSuggestion,
 			selectedResult,
 			selectedOutline,
+			showSelectedSubject,
 			articleIcon: cdxIconArticle,
 			canContinue,
 			handleBack,

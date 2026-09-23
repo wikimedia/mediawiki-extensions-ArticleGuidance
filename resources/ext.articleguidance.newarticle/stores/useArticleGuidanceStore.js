@@ -10,6 +10,11 @@ const {
 } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
 const { getDraftTitle } = require( '../utils/draft.js' );
+const {
+	findGenericOutline,
+	selectOutlineForResult,
+	outlineEventContext
+} = require( '../utils/outlineSelection.js' );
 const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
 const instrument = require( '../logging/instrument.js' );
 
@@ -29,6 +34,12 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const redLinkTitle = ref( null );
 	const isRedLink = computed( () => redLinkTitle.value !== null );
 
+	// The generic outline is not a type of article, so it is never named as one
+	// in the interface.
+	const isGenericOutlineSelected = computed(
+		() => !!( selectedOutline.value && selectedOutline.value.generic )
+	);
+
 	const localArticleInfo = computed( () => ( {
 		title: ( localArticle.value && localArticle.value.title ) ||
 			( selectedResult.value && selectedResult.value.localSitelink &&
@@ -38,7 +49,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		thumbnail: ( localArticle.value && localArticle.value.thumbnail ) ||
 			( selectedResult.value && selectedResult.value.thumbnail ) || null,
 		outlineName: ( selectedResult.value && selectedResult.value.outlineName ) ||
-			( selectedOutline.value && selectedOutline.value.label ) || null
+			( !isGenericOutlineSelected.value && selectedOutline.value &&
+			selectedOutline.value.label ) || null
 	} ) );
 
 	const sitelinkCount = computed(
@@ -49,10 +61,14 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		() => !!( selectedResult.value && selectedResult.value.localSitelink )
 	);
 
+	// The browse panel lists types of article, so the generic outline stays out
+	// of it. The panel shows it on a separate card instead.
 	const outlinesList = computed( () => ( outlines.value || [] )
-		.slice()
+		.filter( ( outline ) => !outline.generic )
 		.sort( ( a, b ) => a.label.localeCompare( b.label ) )
 	);
+	// Null if the wiki has no generic outline, or until the outlines load
+	const genericOutline = computed( () => findGenericOutline( outlines.value ) );
 	const showOutlines = ref( false );
 
 	function goTo( step ) {
@@ -110,7 +126,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			candidates.push( result.label );
 		}
 
-		if ( selectedOutline.value && selectedOutline.value.label ) {
+		// The generic outline's label is not a disambiguator. It would give
+		// titles such as "Paris (General guidance)".
+		if ( !isGenericOutlineSelected.value &&
+			selectedOutline.value && selectedOutline.value.label ) {
 			candidates.push( searchQuery.value + ' (' + selectedOutline.value.label + ')' );
 		}
 
@@ -163,10 +182,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		}
 		selectedResult.value = result;
 
-		const matchedOutline = outlines.value && outlines.value.find(
-			( o ) => o.articleTypes.some( ( t ) => t.id === result.matchedQId )
-		);
-		selectedOutline.value = matchedOutline;
+		selectedOutline.value = selectOutlineForResult( outlines.value, result.matchedQId );
 		if ( topicExistsOnWiki.value ) {
 			await loadLocalArticle();
 			goTo( 'subjectcovered' );
@@ -174,7 +190,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			articleTitle.value = searchQuery.value;
 			titleSuggestion.value = await findTitleSuggestion( result );
 			goTo( 'titleconflict' );
-		} else if ( !result.matchedQId ) {
+		} else if ( !selectedOutline.value ) {
+			// No outline matches the topic, and the wiki has no generic outline
 			goTo( 'unsupportedsubject' );
 		} else {
 			if ( !isRedLink.value && label &&
@@ -302,10 +319,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	 * step.
 	 */
 	async function startWriting() {
-		instrument.logWriteStart( {
-			title: selectedOutline.value && selectedOutline.value.title,
-			qid: selectedOutline.value && selectedOutline.value.articleTypes[ 0 ].id
-		} );
+		instrument.logWriteStart( outlineEventContext(
+			selectedOutline.value,
+			selectedResult.value && selectedResult.value.matchedQId
+		) );
 
 		// Resolve Citoid wikitext for each reference. The promise is normally
 		// pre-started in SourcesStep (often already resolved by the time the
@@ -329,7 +346,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function confirmTitle() {
-		if ( selectedResult.value && !selectedResult.value.matchedQId ) {
+		if ( selectedResult.value && !selectedOutline.value ) {
 			goTo( 'unsupportedsubject' );
 		} else if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
@@ -396,6 +413,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		references,
 		outlines,
 		outlinesList,
+		genericOutline,
+		isGenericOutlineSelected,
 		outlinesLoading,
 		outlinesError,
 		showOutlines,

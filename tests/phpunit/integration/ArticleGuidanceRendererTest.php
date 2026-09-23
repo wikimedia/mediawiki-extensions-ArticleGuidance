@@ -102,6 +102,31 @@ class ArticleGuidanceRendererTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringNotContainsString( 'ext-articleguidance-type-item', $html );
 	}
 
+	public function testRendersNoteForGenericOutline(): void {
+		// A generic outline has no article types (T435605), so it must not get
+		// the error that a malformed article-type gets
+		$html = $this->getRenderer()->render(
+			$this->getLanguage(),
+			[],
+			'*',
+			[],
+			[],
+			null,
+			null,
+			null,
+			null,
+			[],
+			null,
+			null,
+			true
+		);
+
+		$this->assertStringContainsString( 'ext-articleguidance-generic-note', $html );
+		$this->assertStringContainsString( 'articleguidance-generic-note', $html );
+		$this->assertStringNotContainsString( 'ext-articleguidance-invalid', $html );
+		$this->assertStringNotContainsString( 'ext-articleguidance-type-item', $html );
+	}
+
 	public function testRendersCustomLabelNoteAtTop(): void {
 		$customLabelNote = 'This outline uses the custom label "Person".';
 		$html = $this->getRenderer()->render(

@@ -11,7 +11,8 @@
 		>
 			<cdx-icon :icon="cdxIconEdit"></cdx-icon>
 		</cdx-button>
-		<cdx-info-chip>
+		<!-- The chip names the type of article. The generic outline is not one. -->
+		<cdx-info-chip v-if="!isGenericOutlineSelected">
 			{{ selectedOutline.label }}
 		</cdx-info-chip>
 	</div>
@@ -33,7 +34,8 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline, creationTitle } = storeToRefs( store );
+		const { selectedOutline, creationTitle, isGenericOutlineSelected } =
+			storeToRefs( store );
 
 		const handleEditTitle = () => {
 			store.goToUpdateTitle();
@@ -42,6 +44,7 @@ module.exports = defineComponent( {
 		return {
 			selectedOutline,
 			creationTitle,
+			isGenericOutlineSelected,
 			handleEditTitle,
 			cdxIconEdit
 		};

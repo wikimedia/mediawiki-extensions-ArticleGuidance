@@ -36,3 +36,9 @@ Zero-hop matches are resolved from the `wbgetentities` data in JavaScript: if a 
 Items are filtered out before matching if their P31 value is a configured excluded type (direct check via `wbgetentities`) or if the SPARQL exclusion query (`P31/wdt:P279*`) found a match.
 
 Finally, `selectBestMatches` resolves ambiguity when a candidate matches multiple outlines: it first prefers outlines matched via a non-default `matchVia` strategy (preventing a broad type like Q5/human from drowning out a specific occupation match), then among survivors keeps only the highest-`hierarchyDepth` match, which corresponds to the most specific outline in the configured taxonomy.
+
+## Selecting the Outline
+
+Matching decides only what a result card shows. The outline the workflow uses is chosen later, when the user picks a subject. An unmatched result is therefore not a dead end: it falls back to the generic guidance outline, which is excluded from matching above and so never appears on a card.
+
+Matching therefore runs even when no outline can match, so that a wiki whose only outline is the generic one still shows results. On a wiki with no outlines at all, results now appear where the list used to be empty, and each one leads to the unsupported-subject step.

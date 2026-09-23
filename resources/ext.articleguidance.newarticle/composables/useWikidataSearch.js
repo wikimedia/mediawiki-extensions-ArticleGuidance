@@ -76,12 +76,17 @@ function useWikidataSearch( query, language ) {
 	 * @return {Promise<Object>} Mapped results, sparqlMatches, and outlineByType
 	 */
 	const processCandidates = async ( candidates, outlines, isTranslation = false ) => {
-		// Filter outlines to those with at least one valid article type
+		// Filter outlines to those with at least one valid article type. This
+		// drops the generic outline, which declares none (T428152). The workflow
+		// falls back to it at selection time instead.
 		const validOutlines = outlines.filter(
 			( outline ) => outline.articleTypes && outline.articleTypes.length > 0
 		);
 
-		if ( candidates.length === 0 || validOutlines.length === 0 ) {
+		// With no outline to match against, the steps below return every
+		// candidate as unsupported. A wiki whose only outline is the generic one
+		// must still show results (T435605).
+		if ( candidates.length === 0 ) {
 			return {
 				results: [],
 				sparqlMatches: {},

@@ -167,6 +167,8 @@ const { cdxIconInfo } = require( '../icons.json' );
 const useSearchDelayed = require( '../composables/useSearchDelayed.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
+const { selectOutlineForResult, outlineEventContext } =
+	require( '../utils/outlineSelection.js' );
 const instrument = require( '../logging/instrument.js' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const { isMobile } = require( '../utils/mobile.js' );
@@ -193,7 +195,7 @@ module.exports = defineComponent( {
 		const selectedLanguage = ref( mw.config.get( 'wgUserLanguage' ) );
 
 		const store = useArticleGuidanceStore();
-		const { searchQuery, showOutlines } = storeToRefs( store );
+		const { searchQuery, showOutlines, outlines } = storeToRefs( store );
 
 		const searchInput = ref( null );
 
@@ -262,10 +264,15 @@ module.exports = defineComponent( {
 
 		// Handle result selection
 		const handleSelect = ( result ) => {
-			instrument.logSelectSuggestedTopic( result.id, {
-				title: result.outlineName,
-				qid: result.matchedQId
-			} );
+			// Derive the outline the way the store derives it, so the event
+			// cannot report an outline that the workflow does not use. A
+			// result that matches nothing falls back to the generic outline
+			// (T435605).
+			const outline = selectOutlineForResult( outlines.value, result.matchedQId );
+			instrument.logSelectSuggestedTopic(
+				result.id,
+				outlineEventContext( outline, result.matchedQId )
+			);
 			store.selectArticle( result, articleExist.value === true );
 		};
 

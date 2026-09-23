@@ -39,6 +39,8 @@ class ArticleGuidanceRenderer {
 	 * @param array $notabilityThresholds Notability thresholds
 	 * @param string|null $categoryNoteHtml Pre-parsed category note HTML
 	 * @param string|null $customLabelNote Custom label note text
+	 * @param bool $isGeneric Whether this is the generic guidance outline, which
+	 *   has no article types
 	 * @return string Rendered HTML
 	 */
 	public function render(
@@ -53,12 +55,13 @@ class ArticleGuidanceRenderer {
 		?string $wikidataImage = null,
 		array $notabilityThresholds = [],
 		?string $categoryNoteHtml = null,
-		?string $customLabelNote = null
+		?string $customLabelNote = null,
+		bool $isGeneric = false
 	): string {
 		$isValid = $articleTypes !== [];
 		// The attribute was supplied but no ID survived parsing; distinct from the
-		// attribute being absent, which leaves $articleTypes empty too.
-		$hasInvalidType = !$isValid && $articleType !== null;
+		// attribute being absent or generic, which leaves $articleTypes empty too.
+		$hasInvalidType = !$isValid && !$isGeneric && $articleType !== null;
 
 		// Build CSS classes
 		$classes = [ 'ext-articleguidance' ];
@@ -129,6 +132,11 @@ class ArticleGuidanceRenderer {
 			}
 
 			$topHtml .= Html::rawElement( 'div', [ 'class' => 'ext-articleguidance-type' ], $typeHtml );
+		} elseif ( $isGeneric ) {
+			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-generic-note' ],
+				Message::newFromKey( 'articleguidance-generic-note' )
+					->inLanguage( $targetLanguage )->text()
+			);
 		} elseif ( $hasInvalidType ) {
 			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
 				Message::newFromKey( 'articleguidance-invalid-article-type', $articleType )

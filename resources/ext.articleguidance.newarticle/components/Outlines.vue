@@ -29,6 +29,18 @@
 				@click="handleSelectOutline( outlineItem )"
 			>
 			</article-card>
+			<!-- The generic outline is not a type, so it comes last (T435605) -->
+			<article-card
+				v-if="genericOutline"
+				:title="$i18n( 'articleguidance-specialnewarticle-outlines-other' ).text()"
+				:description="$i18n(
+					'articleguidance-specialnewarticle-outlines-other-description'
+				).text()"
+				:thumbnail="false"
+				:interactive="true"
+				@click="handleSelectOutline( genericOutline )"
+			>
+			</article-card>
 		</div>
 
 		<!-- Exit path: no matching type -->
@@ -60,6 +72,7 @@ const { cdxIconLinkExternal } = require( '../icons.json' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getMissingTypeFeedbackUrl } = require( '../utils/projectFeedback.js' );
+const { outlineEventContext } = require( '../utils/outlineSelection.js' );
 const instrument = require( '../logging/instrument.js' );
 const ArticleCard = require( './ArticleCard.vue' );
 const StateMessage = require( './StateMessage.vue' );
@@ -74,8 +87,9 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { outlinesList, outlinesLoading: loading, outlinesError: error } =
-			storeToRefs( store );
+		const {
+			outlinesList, genericOutline, outlinesLoading: loading, outlinesError: error
+		} = storeToRefs( store );
 
 		onMounted( () => {
 			store.loadOutlines();
@@ -83,10 +97,8 @@ module.exports = defineComponent( {
 		} );
 
 		const handleSelectOutline = ( outlineItem ) => {
-			instrument.logSelectManualTopic( {
-				title: outlineItem.title,
-				qid: outlineItem.articleTypes[ 0 ].id
-			} );
+			// The user chose the outline directly, so no Q ID matched.
+			instrument.logSelectManualTopic( outlineEventContext( outlineItem, null ) );
 			store.selectOutline( outlineItem );
 		};
 
@@ -97,6 +109,7 @@ module.exports = defineComponent( {
 
 		return {
 			outlinesList,
+			genericOutline,
 			loading,
 			error,
 			handleSelectOutline,

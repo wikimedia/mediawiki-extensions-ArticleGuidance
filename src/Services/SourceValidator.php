@@ -77,14 +77,20 @@ class SourceValidator {
 
 	/**
 	 * @param string $domain
-	 * @param string|null $outlineQId
+	 * @param string|null $outlineQId Q ID of the selected outline,
+	 *   OutlineService::GENERIC_ARTICLE_TYPE for the generic outline, or null
+	 *   when the session has no outline
 	 * @return string 'recommended', 'discouraged', or 'neutral'
 	 */
 	private function classifyDomain( string $domain, ?string $outlineQId ): string {
 		if ( $outlineQId === null ) {
 			return 'neutral';
 		}
-		$outline = $this->outlineService->getOutlineByQId( $outlineQId );
+		// The generic outline has no Q ID, so it is addressed by sentinel. Its
+		// source lists apply to every subject that no other outline matches.
+		$outline = $outlineQId === OutlineService::GENERIC_ARTICLE_TYPE
+			? $this->outlineService->getGenericOutline()
+			: $this->outlineService->getOutlineByQId( $outlineQId );
 		if ( $outline === null ) {
 			return 'neutral';
 		}

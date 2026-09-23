@@ -7,6 +7,7 @@
 		]
 	},
 	"articleguidance-desc": "Umożliwia użytkownikom tworzenie artykułów przy użyciu wspomaganego procesu",
+	"articleguidance-disabled-title": "Pomoc redaktorska jest niedostępna",
 	"articleguidance-pref-enable-label": "Korzystaj ze wsparcia przy tworzeniu nowych artykułów",
 	"articleguidance-pref-enable-help": "Po włączeniu tej opcji tworzenie nowych artykułów otwiera proces ze wsparciem zamiast standardowego edytora.",
 	"articleguidance-specialnewarticle-title": "Nowy artykuł",
@@ -114,6 +115,7 @@
 	"articleguidance-unsupported-subject-start-description": "Napisz ten artykuł bez wsparcia.",
 	"communityconfiguration-articleguidance-title": "Pomoc redaktorska",
 	"communityconfiguration-articleguidance-description": "Ustawienia funkcji tworzenia artykułów z pomocą redaktorską w tej wiki.",
+	"communityconfiguration-articleguidance-feature-section-label": "Dostępność",
 	"communityconfiguration-articleguidance-redirect-section-label": "Tworzenie artykułów z pomocą redaktorską",
 	"communityconfiguration-articleguidance-redirect-section-description": "Te ustawienia określają, które osoby zostaną przekierowane do trybu tworzenia artykułów z pomocą redaktorską zamiast do standardowego edytora.",
 	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Korzystaj z trybu tworzenia artykułów z pomocą redaktorską",

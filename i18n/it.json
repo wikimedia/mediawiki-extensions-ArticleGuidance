@@ -114,5 +114,6 @@
 	"articleguidance-unsupported-subject-request-title": "Richiedi assistenza per questo tipo",
 	"articleguidance-unsupported-subject-request-description": "Chiedi alla comunità di aggiungere un percorso guidato per questo tipo di voce.",
 	"articleguidance-unsupported-subject-start-title": "inizia a scrivere",
-	"articleguidance-unsupported-subject-start-description": "Scrivi questa voce saltando il percorso guidato."
+	"articleguidance-unsupported-subject-start-description": "Scrivi questa voce saltando il percorso guidato.",
+	"communityconfiguration-articleguidance-feature-section-label": "Disponibilità"
 }

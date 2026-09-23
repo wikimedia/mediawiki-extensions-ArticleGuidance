@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Waxay u suurtagelisaa isticmaaleyaasha inay abuuraan maqaalyo iyagoo adeegsanaya hab hagid iyo caawin leh",
+	"articleguidance-disabled-title": "Hagidda maqaalka lama heli karo",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Hagidda maqaalka]] lagama hawlgelin wiki-gan.",
 	"articleguidance-pref-enable-label": "Isticmaal hagista maqaalka marka aad abuurayso maqaallo cusub",
 	"articleguidance-pref-enable-help": "Marka la daaro, abuurista maqaal cusub waxay fureysaa khibradda hagidda halkii ay ka furi lahayd tifaftiraha caadiga ah.",
 	"articleguidance-specialnewarticle-title": "Maqaal cusub",
@@ -112,10 +114,14 @@
 	"articleguidance-unsupported-subject-start-description": "Qor maqaalkan adigoon isticmaalin hagidda maqaalka.",
 	"communityconfiguration-articleguidance-title": "Hagidda maqaalka",
 	"communityconfiguration-articleguidance-description": "Dejinta khibradda hagidda abuurista maqaal cusub ee wiki-gan.",
+	"communityconfiguration-articleguidance-feature-section-label": "Helitaanka",
+	"communityconfiguration-articleguidance-feature-section-description": "Dejintani waxay go'aamisaa in khibradda hagidda ee abuurista maqaal cusub laga heli karo wiki-gan iyo in kale.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Ka hawlgeli hagidda maqaalka wiki-gan",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Marka tani dansan tahay, hagidda maqaalka lama heli karo: xiriiriyeyaasha cas waxay furaan tifaftiraha caadiga ah, bogga la hagayo lama isticmaali karo, dookha shakhsiga ahna waa la qariyaa. Dejimaha hoose waxay saameyn leeyihiin oo keliya marka tani shidan tahay.",
 	"communityconfiguration-articleguidance-redirect-section-label": "Abuurista maqaalka oo la hagayo",
 	"communityconfiguration-articleguidance-redirect-section-description": "Dejimahan ayaa go'aamiya cidda loo gudbinayo khibradda hagidda abuurista maqaal cusub halkii laga geyn lahaa tafatiraha caadiga ah.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Isticmaal khibradda hagidda abuurista maqaal cusub",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Marka la hawlgeliyo, raacista xiriiriye cas oo u gudbaya maqaal maqan waxay furaysaa khibradda hagidda. Tafatirayaasha doorbida tafatiraha caadiga ah waxay tan naftooda uga damin karaan dookhyadooda.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Ka fur khibradda la hagayo xiriiriyeyaasha cas",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Marka la hawlgeliyo, raacista xiriiriye cas oo u gudbaya maqaal maqan waxay furaysaa khibradda hagidda tifaftiraha caadiga ah. Tafatirayaasha doorbida tafatiraha caadiga ah waxay tan naftooda uga damin karaan dookhyadooda.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Ku xaddid tafatirayaasha cusub",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Dejintani waxay saamaynaysaa oo keliya marka dejinta kore ay hawlgal tahay. Marka la hawlgeliyo, kaliya tafatirayaasha tirada tafatirradoodu ka yar tahay xadka tafatirayaasha cusub ee wiki-gan ayaa heli doona khibradda hagidda, halka dhammaan kuwa kale ay sii wadan doonaan tafatiraha caadiga ah."
 }

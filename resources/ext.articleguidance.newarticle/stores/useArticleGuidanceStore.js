@@ -37,9 +37,17 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const isRedLink = computed( () => redLinkTitle.value !== null );
 
 	// The generic outline is not a type of article, so it is never named as one
-	// in the interface.
+	// in the interface. This is true for the wiki's own generic outline and for
+	// the default one.
 	const isGenericOutlineSelected = computed(
 		() => !!( selectedOutline.value && selectedOutline.value.generic )
+	);
+	// The default outline is the generic outline that the server builds from
+	// i18n messages when the wiki has none (T437432). Unlike the wiki's own, it
+	// is not written by the wiki's editors, so the interface does not credit
+	// them for it.
+	const isDefaultOutlineSelected = computed(
+		() => !!( selectedOutline.value && selectedOutline.value.default )
 	);
 
 	const localArticleInfo = computed( () => ( {
@@ -69,8 +77,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		.filter( ( outline ) => !outline.generic )
 		.sort( ( a, b ) => a.label.localeCompare( b.label ) )
 	);
-	// Null if the wiki has no generic outline, or until the outlines load
+	// The server always serves a generic outline: the wiki's own, or the
+	// default one (T437432). It is null only until the outlines load.
 	const genericOutline = computed( () => findGenericOutline( outlines.value ) );
+	const hasTypedOutlines = computed( () => outlinesList.value.length > 0 );
 	const showOutlines = ref( false );
 
 	function goTo( step ) {
@@ -95,6 +105,14 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		loadingPromise = ( async () => {
 			try {
 				const data = await fetchOutlines();
+				// The server always adds a generic outline (T437432), and the
+				// workflow relies on it. A payload without one comes from an
+				// older server, for example from the CDN cache during a
+				// deploy. Reject it, so that the search step shows its retry
+				// state instead of a step with no outline.
+				if ( !findGenericOutline( data ) ) {
+					throw new Error( 'Outlines have no generic outline' );
+				}
 				outlines.value = data;
 				return data;
 			} catch ( err ) {
@@ -192,9 +210,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			articleTitle.value = trimmedQuery.value;
 			titleSuggestion.value = await findTitleSuggestion( result );
 			goTo( 'titleconflict' );
-		} else if ( !selectedOutline.value ) {
-			// No outline matches the topic, and the wiki has no generic outline
-			goTo( 'unsupportedsubject' );
 		} else {
 			if ( !isRedLink.value && label &&
 				label.toLowerCase() !== trimmedQuery.value.toLowerCase() ) {
@@ -238,6 +253,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		if ( currentTitle !== outline.title ) {
 			references.value = [];
 		}
+		// The user picks the outline, so a result selected earlier no longer applies
+		selectedResult.value = null;
 		selectedOutline.value = outline;
 		articleTitle.value = null;
 		titleSuggestion.value = null;
@@ -335,6 +352,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		const wikitexts = await ( citationWikitextsPromise || fetchAllCitationsWikitext( urls ) );
 		const refs = urls.map( ( url, i ) => ( wikitexts && wikitexts[ i ] ) || url );
 
+		// The outline page is the preload page. The default outline has no
+		// page: its title is MediaWiki:Articleguidance-default-outline-preload,
+		// and core preloads a MediaWiki page from the i18n message of the same
+		// name (T437432).
 		location.href = getCreateArticleUrl(
 			creationTitle.value,
 			selectedOutline.value.title,
@@ -348,9 +369,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function confirmTitle() {
-		if ( selectedResult.value && !selectedOutline.value ) {
-			goTo( 'unsupportedsubject' );
-		} else if ( shouldShowNotabilityStep() ) {
+		if ( shouldShowNotabilityStep() ) {
 			goTo( 'notability' );
 		} else {
 			goTo( 'sources' );
@@ -417,7 +436,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		outlines,
 		outlinesList,
 		genericOutline,
+		hasTypedOutlines,
 		isGenericOutlineSelected,
+		isDefaultOutlineSelected,
 		outlinesLoading,
 		outlinesError,
 		showOutlines,

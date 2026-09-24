@@ -15,7 +15,12 @@
 
 		<!-- Guidance: contained reading column (carded on desktop) -->
 		<div class="ext-articleguidance-guidance-card">
-			<div class="ext-articleguidance-guidance-intro">
+			<!-- The default outline is not written on the wiki, so the intro
+			that credits the wiki's editors does not apply (T437432) -->
+			<div
+				v-if="!isDefaultOutlineSelected"
+				class="ext-articleguidance-guidance-intro"
+			>
 				{{ $i18n( 'articleguidance-instructions-guidance-intro' ).text() }}
 			</div>
 
@@ -68,7 +73,7 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedOutline } = storeToRefs( store );
+		const { selectedOutline, isDefaultOutlineSelected } = storeToRefs( store );
 
 		// Container holding the community-authored guidance HTML.
 		const tipsContainer = ref( null );
@@ -111,6 +116,7 @@ module.exports = defineComponent( {
 
 		return {
 			selectedOutline,
+			isDefaultOutlineSelected,
 			tipsContainer,
 			handleStartWriting,
 			handleBack

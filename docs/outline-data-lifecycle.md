@@ -44,6 +44,20 @@ identified by Q ID. That is what lets it carry recommended and discouraged sourc
 like any other outline, which suits the sources that are reliable or unreliable whatever
 the subject is.
 
+### The default generic outline
+
+A wiki that has no generic outline gets a default one (T437432), so the workflow always
+has a generic outline to fall back to. `OutlineService` builds it from
+`articleguidance-default-outline-*` messages.
+
+The workflow preloads the editor from the outline's page, but the default outline has no
+page. Its title is `MediaWiki:Articleguidance-default-outline-preload`. For a title in the
+MediaWiki namespace, core preloads the message of the same name, with the references as `$1`.
+
+To change the guidance for one wiki, create a generic outline on that wiki. It replaces the
+default. Interface administrators can also override the default messages on-wiki, like any
+interface message, but that is not the supported way.
+
 ## Serving
 
 The `/articleguidance/v1/outlines` REST endpoint calls `OutlineService::getOutlines()`, which:

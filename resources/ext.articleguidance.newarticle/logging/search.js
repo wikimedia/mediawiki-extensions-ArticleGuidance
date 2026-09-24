@@ -10,13 +10,13 @@
  * Multiple matches on a single result are flagged with ⚠.
  *
  * @param {string} searchQuery   The search query string
- * @param {Array}  results       Ordered display results (supported first, then unsupported)
+ * @param {Array}  results       Ordered display results (matched first, then unmatched)
  * @param {Object} sparqlMatches Post-selectBestMatches map { itemQId: string[] }
  * @param {Object} outlineByType Map of { articleTypeQId: outline }
  */
-// Must stay in sync with MAX_TOTAL / MAX_UNSUPPORTED in SearchStep.vue
+// Must stay in sync with MAX_TOTAL / MAX_UNMATCHED in SearchStep.vue
 const MAX_TOTAL = 8;
-const MAX_UNSUPPORTED = 3;
+const MAX_UNMATCHED = 3;
 
 function reportSearchEvaluation( searchQuery, results, sparqlMatches, outlineByType ) {
 	const debugParam = mw.util.getParamValue( 'debug' );
@@ -25,8 +25,8 @@ function reportSearchEvaluation( searchQuery, results, sparqlMatches, outlineByT
 	}
 
 	const displayed = results
-		.filter( ( r ) => r.supported )
-		.concat( results.filter( ( r ) => !r.supported ).slice( 0, MAX_UNSUPPORTED ) )
+		.filter( ( r ) => r.matched )
+		.concat( results.filter( ( r ) => !r.matched ).slice( 0, MAX_UNMATCHED ) )
 		.slice( 0, MAX_TOTAL );
 
 	const formatOutline = ( qid ) => {

@@ -6,9 +6,6 @@
 		<update-title-step v-else-if="currentStep === 'updatetitle'"></update-title-step>
 		<sources-step v-else-if="currentStep === 'sources'"></sources-step>
 		<notability-step v-else-if="currentStep === 'notability'"></notability-step>
-		<unsupported-subject-step
-			v-else-if="currentStep === 'unsupportedsubject'"
-		></unsupported-subject-step>
 		<instructions-step v-else-if="currentStep === 'instructions'"></instructions-step>
 	</div>
 </template>
@@ -21,7 +18,6 @@ const SearchStep = require( './components/SearchStep.vue' );
 const SourcesStep = require( './components/SourcesStep.vue' );
 const InstructionsStep = require( './components/InstructionsStep.vue' );
 const NotabilityStep = require( './components/NotabilityStep.vue' );
-const UnsupportedSubjectStep = require( './components/UnsupportedSubjectStep.vue' );
 const SubjectCoveredStep = require( './components/SubjectCoveredStep.vue' );
 const TitleConflictStep = require( './components/TitleConflictStep.vue' );
 const UpdateTitleStep = require( './components/UpdateTitleStep.vue' );
@@ -36,7 +32,6 @@ module.exports = defineComponent( {
 		UpdateTitleStep,
 		SourcesStep,
 		NotabilityStep,
-		UnsupportedSubjectStep,
 		InstructionsStep
 	},
 	props: {

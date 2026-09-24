@@ -85,13 +85,12 @@ function logWriteTitle( query, resultCount, path = null, duration = null ) {
  * @param {string} resultQid QID of the clicked Wikidata item.
  * @param {Object} outline Outline the workflow will use, from outlineEventContext(). Its qids
  *   are ['*'] for the generic guidance outline, which the result falls back to when nothing
- *   matches, and empty when there is no outline at all, which routes the user to the
- *   unsupported subject step. The action_subtype reflects this: 'suggested_topic' when the
- *   workflow continues, 'unsupported_topic' when it does not.
+ *   matches. The server always serves a generic outline (T437432), so every result continues
+ *   the workflow.
  */
 function logSelectSuggestedTopic( resultQid, outline ) {
 	const data = {};
-	data.action_subtype = outline.qids.length ? 'suggested_topic' : 'unsupported_topic';
+	data.action_subtype = 'suggested_topic';
 	data.action_context = { result_qid: resultQid, outline: outline };
 	submit( 'select_topic', data );
 }
@@ -105,6 +104,21 @@ function logSelectSuggestedTopic( resultQid, outline ) {
 function logSelectManualTopic( outline ) {
 	const data = {};
 	data.action_subtype = 'manual_topic';
+	data.action_context = { outline: outline };
+	submit( 'select_topic', data );
+}
+
+/**
+ * Fire when the user continues with the generic outline from the search step.
+ * The search step offers this in place of the browse-by-type panel when the
+ * wiki has no types (T437432).
+ *
+ * @param {Object} outline The generic outline, from outlineEventContext(). Its
+ *   matched_qid is always null: the user chose the outline, no Wikidata match did.
+ */
+function logContinueWithGeneric( outline ) {
+	const data = {};
+	data.action_subtype = 'continue_generic';
 	data.action_context = { outline: outline };
 	submit( 'select_topic', data );
 }
@@ -238,29 +252,12 @@ function logSkipGuidance( title ) {
 	submit( 'skip_guidance', data );
 }
 
-/**
- * Fire when the unsupported-subject step mounts.
- */
-function logUnsupportedSubjectShown() {
-	submit( 'unsupported_subject_shown' );
-}
-
-/**
- * Fire when the user acts on the unsupported-subject step.
- *
- * @param {string} subtype 'request_support' or 'start_writing'.
- */
-function logUnsupportedSubjectAction( subtype ) {
-	const data = {};
-	data.action_subtype = subtype;
-	submit( 'unsupported_subject_action', data );
-}
-
 module.exports = {
 	logInit,
 	logWriteTitle,
 	logSelectSuggestedTopic,
 	logSelectManualTopic,
+	logContinueWithGeneric,
 	logAddSource,
 	logNotabilityAction,
 	logNotabilityCheckShown,
@@ -272,7 +269,5 @@ module.exports = {
 	logRedirectCreated,
 	logTitleConflictShown,
 	logTitleConflictAction,
-	logUnsupportedSubjectShown,
-	logUnsupportedSubjectAction,
 	logSkipGuidance
 };

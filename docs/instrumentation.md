@@ -26,6 +26,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` |
 | `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>","outline":{…}}` [see below](#how-an-outline-is-reported) |
 | `select_topic` | User picks an outline from the browse-by-type panel, or picks "Other" there | — | `manual_topic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`matched_qid` always null) |
+| `select_topic` | User clicks "Continue anyway" on the search step, which replaces the browse-by-type link when the wiki has no types | — | `continue_generic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`qids` always `["*"]`, `matched_qid` always null) |
 | `add_source` | Source URL validated by the `/articleguidance/v0/source/validate` API | — | `valid` or `invalid` | `{"url":"<url>","domain":"<domain>","classification":"<classification>","mandatory":<bool>}` |
 | `notability_action` | User clicks an option on the notability step | — | `wikidata_item`, `sandbox`, or `learn` | — |
 | `notability_check_shown` | Notability step is shown | — | — | `{"tags":["<tag>",…]}` |
@@ -36,8 +37,6 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `redirect_created` | A redirect creation attempt finishes | — | `success` or `error` | `{"code":"<action API error code>"}` on error |
 | `title_conflict_shown` | Title-conflict step is shown | — | — | — |
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
-| `unsupported_subject_shown` | Unsupported-subject step is shown | — | — | — |
-| `unsupported_subject_action` | User acts on the unsupported-subject step | — | `request_support` or `start_writing` | — |
 | `editing_start` | User lands on the editor: after completing the AG workflow, or by following a red link while the redirect is off | — | — | `{"page":{"title":"<title>"}}` |
 | `article_saved` | User saves the first revision of a new article (fires for every new article, not only for AG-workflow participants;  redirects are excluded, they are covered by `redirect_created`) | — | — | `{"page":{"title":"<title>","id":<id>}}` |
 
@@ -57,7 +56,11 @@ outline linked to a single Q ID.
 
 ### The generic guidance outline
 
-A wiki that gains a generic outline stops sending `unsupported_topic`: those results now
-continue through the workflow as `suggested_topic` with `qids` of `["*"]`. This
-reclassifies events without changing what users do, so a time series that crosses that day
-shows a step. Count the two together to compare across it.
+Every wiki has a generic outline: its own, or the default one (T437432). A result that
+matches no outline continues as `suggested_topic` with `qids` of `["*"]`, and
+`unsupported_topic`, `unsupported_subject_shown` and `unsupported_subject_action` are no
+longer sent. A time series that crosses the deploy therefore shows a step. Count
+`unsupported_topic` and `suggested_topic` together to compare across it.
+
+The default outline's `title` is `MediaWiki:Articleguidance-default-outline-preload` on
+every wiki. Use it to tell the default apart from a wiki's own generic outline.

@@ -11,8 +11,7 @@ jest.mock(
 );
 
 const {
-	getMissingTypeFeedbackUrl,
-	getRequestSupportUrl
+	getMissingTypeFeedbackUrl
 } = require( '../../../resources/ext.articleguidance.newarticle/utils/projectFeedback.js' );
 
 beforeEach( () => {
@@ -39,22 +38,6 @@ describe( 'getMissingTypeFeedbackUrl', () => {
 	it( 'falls back to an English heading on mediawiki.org when none is configured', () => {
 		expect( getMissingTypeFeedbackUrl( 'Foo' ) ).toBe(
 			'https://www.mediawiki.org/wiki/Talk:Article_guidance?action=edit&section=new&dtpreload=1&preloadtitle=Couldn%27t+find+a+matching+article+type+for+%22Foo%22+%28testwiki%29'
-		);
-	} );
-} );
-
-describe( 'getRequestSupportUrl', () => {
-	it( 'builds a request-for-support URL with the selected result', () => {
-		mockConfig.ArticleGuidanceFeedbackTalkPage = 'Wikipedia talk:Article Guidance';
-
-		expect( getRequestSupportUrl( { label: 'Bar', id: 'Q123' } ) ).toBe(
-			'/wiki/Wikipedia_talk:Article_Guidance?action=edit&section=new&dtpreload=1&preloadtitle=articleguidance-feedback-request-support-preloadtitle%3ABar%7CQ123'
-		);
-	} );
-
-	it( 'falls back to a generic heading when no result is selected', () => {
-		expect( getRequestSupportUrl( null ) ).toBe(
-			'https://www.mediawiki.org/wiki/Talk:Article_guidance?action=edit&section=new&dtpreload=1&preloadtitle=Request+for+support+%28testwiki%29'
 		);
 	} );
 } );

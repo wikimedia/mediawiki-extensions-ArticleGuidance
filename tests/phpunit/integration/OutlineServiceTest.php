@@ -81,6 +81,20 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		] );
 	}
 
+	/**
+	 * Get the outlines that come from wiki pages, without the default generic
+	 * outline that the service adds when the wiki has no generic outline.
+	 *
+	 * @param OutlineService $service
+	 * @return array
+	 */
+	private function getWikiOutlines( OutlineService $service ): array {
+		return array_values( array_filter(
+			$service->getOutlines(),
+			static fn ( array $outline ): bool => !( $outline['default'] ?? false )
+		) );
+	}
+
 	public function testSynthesizesArticleTypesFromLegacyBlob(): void {
 		// Blob persisted before multi-item support (T421260): singular fields only
 		$service = $this->getService(
@@ -94,7 +108,7 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			]
 		);
 
-		$outlines = $service->getOutlines();
+		$outlines = $this->getWikiOutlines( $service );
 
 		$this->assertCount( 1, $outlines );
 		$this->assertSame(
@@ -116,7 +130,7 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			]
 		);
 
-		$outlines = $service->getOutlines();
+		$outlines = $this->getWikiOutlines( $service );
 
 		$this->assertCount( 1, $outlines );
 		$this->assertSame( 'Q4830453', $outlines[0]['label'] );
@@ -137,7 +151,7 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			]
 		);
 
-		$outlines = $service->getOutlines();
+		$outlines = $this->getWikiOutlines( $service );
 
 		$this->assertCount( 1, $outlines );
 		$this->assertSame( $articleTypes, $outlines[0]['articleTypes'] );
@@ -236,11 +250,10 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		// It is reachable by the dedicated lookup instead. SourceValidator uses
 		// this when the client sends the sentinel as the outline Q ID.
 		$generic = $service->getGenericOutline();
-		$this->assertNotNull( $generic );
 		$this->assertSame( 'Wikipedia:General outline', $generic['title'] );
 	}
 
-	public function testGetGenericOutlineReturnsNullWhenThereIsNone(): void {
+	public function testAddsDefaultGenericOutlineWhenThereIsNone(): void {
 		$service = $this->getService(
 			[ $this->makeMember( 1, 'Wikipedia:Company outline' ) ],
 			[
@@ -253,7 +266,59 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			]
 		);
 
-		$this->assertNull( $service->getGenericOutline() );
+		$outlines = $service->getOutlines();
+		$this->assertCount( 2, $outlines );
+		$this->assertSame( 'Wikipedia:Company outline', $outlines[0]['title'] );
+
+		// The default comes last and has the same keys as a wiki outline
+		$default = $outlines[1];
+		$this->assertSame(
+			array_keys( $outlines[0] ),
+			array_values( array_diff( array_keys( $default ), [ 'default' ] ) )
+		);
+		$this->assertTrue( $default['generic'] );
+		$this->assertTrue( $default['default'] );
+		$this->assertSame( OutlineService::DEFAULT_GENERIC_OUTLINE_TITLE, $default['title'] );
+		$this->assertSame( [], $default['articleTypes'] );
+		$this->assertSame( [ 'junior', 'sources' ], $default['notabilityRisk'] );
+		$this->assertSame( '', $default['label'] );
+		$this->assertNotSame( '', trim( $default['instructions'] ) );
+		$this->assertCount( 3, $default['recommendedSources']['info'] );
+		$this->assertCount( 4, $default['discouragedSources']['info'] );
+		// No domain lists, so only SpamBlacklist classifies a source
+		$this->assertSame( [], $default['recommendedSources']['urls'] );
+		$this->assertSame( [], $default['discouragedSources']['urls'] );
+
+		$this->assertSame( $default, $service->getGenericOutline() );
+		// No Q ID lookup finds it
+		$this->assertNull( $service->getOutlineByQId( OutlineService::GENERIC_ARTICLE_TYPE ) );
+	}
+
+	public function testAddsDefaultGenericOutlineToAnEmptyCategory(): void {
+		$service = $this->getService( [], [] );
+
+		$outlines = $service->getOutlines();
+		$this->assertCount( 1, $outlines );
+		$this->assertTrue( $outlines[0]['default'] );
+		$this->assertNull( $service->getLastModified() );
+	}
+
+	public function testWikiGenericOutlineReplacesTheDefault(): void {
+		$service = $this->getService(
+			[ $this->makeMember( 1, 'Wikipedia:General outline' ) ],
+			[
+				1 => json_encode( [
+					'articleTypes' => [],
+					'label' => 'General guidance',
+					'generic' => true,
+				] ),
+			]
+		);
+
+		$outlines = $service->getOutlines();
+		$this->assertCount( 1, $outlines );
+		$this->assertArrayNotHasKey( 'default', $outlines[0] );
+		$this->assertSame( 'Wikipedia:General outline', $service->getGenericOutline()['title'] );
 	}
 
 	/**
@@ -282,7 +347,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		);
 
 		$generic = $service->getGenericOutline();
-		$this->assertNotNull( $generic );
 		$this->assertSame( [ 'reuters.com' ], $generic['recommendedSources']['urls'] );
 		$this->assertSame( [ 'facebook.com' ], $generic['discouragedSources']['urls'] );
 	}
@@ -326,7 +390,7 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			[ 7 => $this->makeBlob( [ 'Q3314483' ] ), 3 => $this->makeBlob( [ 'Q3314483' ] ) ]
 		);
 
-		$outlines = $service->getOutlines();
+		$outlines = $this->getWikiOutlines( $service );
 
 		$this->assertSame( [ 'Wikipedia:Fruit' ], array_column( $outlines, 'title' ) );
 		$this->assertSame( 'Wikipedia:Fruit', $service->getOutlineByQId( 'Q3314483' )['title'] );

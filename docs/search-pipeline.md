@@ -27,7 +27,7 @@ If the number of processed native results is less than 8 (`MAX_RESULT`), the tra
 1. We await the parallel `translationSearchPromise` results.
 2. We de-duplicate translation results by filtering out candidates that were already present in the native Wikidata search results.
 3. If there are new translation candidates, we process them separately through the same entity claims fetching and SPARQL matching pipeline.
-4. Finally, the processed native and translation results are merged (with supported native/translation results first, followed by unsupported native/translation results).
+4. Finally, the processed native and translation results are merged (with matched native/translation results first, followed by unmatched native/translation results).
 
 ## Candidate Filtering and Matching
 
@@ -41,4 +41,4 @@ Finally, `selectBestMatches` resolves ambiguity when a candidate matches multipl
 
 Matching decides only what a result card shows. The outline the workflow uses is chosen later, when the user picks a subject. An unmatched result is therefore not a dead end: it falls back to the generic guidance outline, which is excluded from matching above and so never appears on a card.
 
-Matching therefore runs even when no outline can match, so that a wiki whose only outline is the generic one still shows results. On a wiki with no outlines at all, results now appear where the list used to be empty, and each one leads to the unsupported-subject step.
+Matching therefore runs even when no outline can match, so that a wiki whose only outline is the generic one still shows results. A wiki with no outlines at all gets the default generic outline (T437432), so every result continues through the workflow.

@@ -42,12 +42,12 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 	/**
 	 * Build a validator over a wiki that has the given outlines.
 	 *
-	 * @param array|null $genericOutline What getGenericOutline() returns
+	 * @param array $genericOutline What getGenericOutline() returns
 	 * @param array|null $qIdOutline What getOutlineByQId() returns
 	 * @return SourceValidator
 	 */
 	private function getValidator(
-		?array $genericOutline = null,
+		array $genericOutline,
 		?array $qIdOutline = null
 	): SourceValidator {
 		$outlineService = $this->createMock( OutlineService::class );
@@ -133,11 +133,18 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * A wiki with no generic outline gets no classification from the sentinel,
-	 * rather than an error.
+	 * A wiki with no generic outline gets the default one (T437432). It has
+	 * no domain lists, so the sentinel classifies no source.
 	 */
-	public function testSentinelIsNeutralWhenTheWikiHasNoGenericOutline(): void {
-		$validator = $this->getValidator( null );
+	public function testSentinelIsNeutralForTheDefaultGenericOutline(): void {
+		$validator = $this->getValidator( [
+			'title' => OutlineService::DEFAULT_GENERIC_OUTLINE_TITLE,
+			'generic' => true,
+			'default' => true,
+			'articleTypes' => [],
+			'recommendedSources' => [ 'info' => [ 'News organisations' ], 'urls' => [] ],
+			'discouragedSources' => [ 'info' => [ 'Blogs' ], 'urls' => [] ],
+		] );
 
 		$result = $validator->validate(
 			'https://reuters.com/world',

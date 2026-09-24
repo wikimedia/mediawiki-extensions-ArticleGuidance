@@ -67,7 +67,7 @@ describe( 'selectOutlineForResult', () => {
 	it( 'falls back to the generic outline when the matched Q ID has no outline', () => {
 		// Defensive. Matching and selection read the same outline list, so a
 		// matched Q ID normally has an outline. This keeps a result that loses
-		// its outline from stranding the user on the unsupported-subject step.
+		// its outline from leaving the workflow without an outline.
 		expect( selectOutlineForResult( [ companyOutline, genericOutline ], 'Q5' ) )
 			.toBe( genericOutline );
 	} );
@@ -128,7 +128,6 @@ describe( 'outlineEventContext', () => {
 	} );
 
 	it( 'reports empty qids when there is no outline', () => {
-		// logSelectSuggestedTopic reads this as the unsupported_topic case
 		expect( outlineEventContext( null, null ) ).toEqual( {
 			qids: [],
 			matched_qid: null,

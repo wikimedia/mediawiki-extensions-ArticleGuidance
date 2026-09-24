@@ -4,6 +4,10 @@
  * A wiki can have one generic guidance outline (T435605). It is not linked to a
  * Wikidata item, so it never matches a search result. The workflow falls back to
  * it when no other outline matches the selected topic.
+ *
+ * The store rejects loaded outlines that have no generic outline (T437432), so
+ * the workflow always has one. These functions still accept a list without
+ * one, because the store uses findGenericOutline() to do that check.
  */
 
 /**

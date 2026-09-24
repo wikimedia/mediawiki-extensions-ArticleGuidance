@@ -84,7 +84,7 @@ function useWikidataSearch( query, language ) {
 		);
 
 		// With no outline to match against, the steps below return every
-		// candidate as unsupported. A wiki whose only outline is the generic one
+		// candidate as unmatched. A wiki whose only outline is the generic one
 		// must still show results (T435605).
 		if ( candidates.length === 0 ) {
 			return {
@@ -172,7 +172,7 @@ function useWikidataSearch( query, language ) {
 
 		const processedResults = filteredCandidates.map( ( result ) => {
 			const matchedQIds = sparqlMatches[ result.id ] || [];
-			const supported = matchedQIds.length > 0;
+			const matched = matchedQIds.length > 0;
 			const outlineNames = [];
 			const seenOutlineTitles = new Set();
 			let outlineThumbnail = null;
@@ -199,11 +199,11 @@ function useWikidataSearch( query, language ) {
 				labelFallback: entity.labelFallback,
 				description: entity.description,
 				url: result.url,
-				matchedQId: supported ? matchedQIds[ 0 ] : null,
+				matchedQId: matched ? matchedQIds[ 0 ] : null,
 				thumbnail: ( entity.imageFilename &&
 					getCommonsThumbUrl( entity.imageFilename ) ) || outlineThumbnail,
 				outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
-				supported,
+				matched,
 				sitelinkCount: entity.sitelinkCount,
 				localSitelink: entity.localSitelink,
 				viaTranslation: isTranslation
@@ -315,22 +315,22 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
-			// Merge native and translated candidates, listing supported items first,
-			// and then listing unsupported items, preserving relative order.
-			const nativeSupported = processedWikidataResults.filter( ( r ) => r.supported );
-			const nativeUnsupported = processedWikidataResults.filter( ( r ) => !r.supported );
-			const translatedSupported = processedTranslatedResults.filter(
-				( r ) => r.supported
+			// Merge native and translated candidates, listing matched items first,
+			// and then listing unmatched items, preserving relative order.
+			const nativeMatched = processedWikidataResults.filter( ( r ) => r.matched );
+			const nativeUnmatched = processedWikidataResults.filter( ( r ) => !r.matched );
+			const translatedMatched = processedTranslatedResults.filter(
+				( r ) => r.matched
 			);
-			const translatedUnsupported = processedTranslatedResults.filter(
-				( r ) => !r.supported
+			const translatedUnmatched = processedTranslatedResults.filter(
+				( r ) => !r.matched
 			);
 
 			const finalResults = [
-				...nativeSupported,
-				...translatedSupported,
-				...nativeUnsupported,
-				...translatedUnsupported
+				...nativeMatched,
+				...translatedMatched,
+				...nativeUnmatched,
+				...translatedUnmatched
 			];
 
 			const combinedSparqlMatches = Object.assign(

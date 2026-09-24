@@ -111,6 +111,20 @@
 						}}
 					</span>
 					<cdx-button
+						v-if="continuesWithGeneric"
+						class="ext-articleguidance-browse-link"
+						weight="quiet"
+						action="progressive"
+						@click="handleContinueWithGeneric"
+					>
+						{{
+							$i18n(
+								'articleguidance-specialnewarticle-browse-outlines-continue'
+							).text()
+						}}
+					</cdx-button>
+					<cdx-button
+						v-else
 						class="ext-articleguidance-browse-link"
 						weight="quiet"
 						action="progressive"
@@ -195,7 +209,9 @@ module.exports = defineComponent( {
 		const selectedLanguage = ref( mw.config.get( 'wgUserLanguage' ) );
 
 		const store = useArticleGuidanceStore();
-		const { searchQuery, showOutlines, outlines } = storeToRefs( store );
+		const {
+			searchQuery, showOutlines, outlines, genericOutline, hasTypedOutlines
+		} = storeToRefs( store );
 
 		const searchInput = ref( null );
 
@@ -276,9 +292,23 @@ module.exports = defineComponent( {
 			store.selectArticle( result, articleExist.value === true );
 		};
 
+		// With no types to browse, the panel would only offer the generic
+		// outline, so the link continues with it directly (T437432). The
+		// generic outline is set only when the outlines are loaded. If they
+		// are not, for example after a load error, the link opens the panel,
+		// which loads them again.
+		const continuesWithGeneric = computed(
+			() => !!genericOutline.value && !hasTypedOutlines.value
+		);
+
 		// Handle browse outlines
 		const handleBrowseOutlines = () => {
 			store.browseOutlines();
+		};
+
+		const handleContinueWithGeneric = () => {
+			instrument.logContinueWithGeneric( outlineEventContext( genericOutline.value, null ) );
+			store.selectOutline( genericOutline.value );
 		};
 
 		// Handle going back from outlines
@@ -315,16 +345,16 @@ module.exports = defineComponent( {
 		);
 
 		const MAX_TOTAL = 8;
-		const MAX_UNSUPPORTED = 3;
+		const MAX_UNMATCHED = 3;
 
-		const supportedResults = computed(
-			() => results.value.filter( ( r ) => r.supported )
+		const matchedResults = computed(
+			() => results.value.filter( ( r ) => r.matched )
 		);
-		const unsupportedResults = computed(
-			() => results.value.filter( ( r ) => !r.supported ).slice( 0, MAX_UNSUPPORTED )
+		const unmatchedResults = computed(
+			() => results.value.filter( ( r ) => !r.matched ).slice( 0, MAX_UNMATCHED )
 		);
 		const visibleResults = computed(
-			() => supportedResults.value.concat( unsupportedResults.value ).slice( 0, MAX_TOTAL )
+			() => matchedResults.value.concat( unmatchedResults.value ).slice( 0, MAX_TOTAL )
 		);
 
 		const hasFallbackLabels = computed(
@@ -359,7 +389,9 @@ module.exports = defineComponent( {
 			visibleResults,
 			hasFallbackLabels,
 			handleSelect,
+			continuesWithGeneric,
 			handleBrowseOutlines,
+			handleContinueWithGeneric,
 			handleHideOutlines,
 			handleRetry,
 			handleSkipGuidance,

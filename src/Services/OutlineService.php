@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Category\Category;
 use MediaWiki\Language\Language;
+use MediaWiki\Message\Message;
 use MediaWiki\Page\PageProps;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -25,8 +26,21 @@ class OutlineService {
 	/** Blob fields of an articleTypes entry that are not served */
 	private const ITEM_FIELDS = [ 'itemLabel' => true, 'itemDescription' => true, 'itemImage' => true ];
 
-	/** @var array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}|null */
+	/**
+	 * Page title of the default generic outline (T437432). The workflow passes
+	 * it to the editor as the preload page. Core preloads a page in the
+	 * MediaWiki namespace from the i18n message of the same name, so the page
+	 * does not have to exist.
+	 */
+	public const DEFAULT_GENERIC_OUTLINE_TITLE = 'MediaWiki:Articleguidance-default-outline-preload';
+
+	/**
+	 * @var array{outlines: array, generic: ?array, lastModified: ?string, claims: array<string,array<int,Title>>}|null
+	 */
 	private ?array $cache = null;
+
+	/** @var array|null The default generic outline, built when first needed */
+	private ?array $defaultGenericOutline = null;
 
 	public function __construct(
 		private readonly TitleFactory $titleFactory,
@@ -36,12 +50,17 @@ class OutlineService {
 	}
 
 	/**
-	 * Get all outlines in the wiki.
+	 * Get all outlines in the wiki. If the wiki has no generic outline, the
+	 * default generic outline comes last (T437432).
 	 *
 	 * @return array Array of outline data
 	 */
 	public function getOutlines(): array {
-		return $this->getData()['outlines'];
+		$data = $this->getData();
+		if ( $data['generic'] !== null ) {
+			return $data['outlines'];
+		}
+		return array_merge( $data['outlines'], [ $this->getDefaultGenericOutline() ] );
 	}
 
 	/**
@@ -53,7 +72,8 @@ class OutlineService {
 	 * @return array|null
 	 */
 	public function getOutlineByQId( string $qId ): ?array {
-		foreach ( $this->getOutlines() as $outline ) {
+		// Only the wiki's outlines have Q IDs. Do not build the default one.
+		foreach ( $this->getData()['outlines'] as $outline ) {
 			foreach ( $outline['articleTypes'] as $typeEntry ) {
 				if ( $typeEntry['id'] === $qId ) {
 					return $outline;
@@ -64,23 +84,19 @@ class OutlineService {
 	}
 
 	/**
-	 * Get the generic guidance outline, or null if the wiki has none.
+	 * Get the generic guidance outline.
 	 *
 	 * The generic outline has no Q ID, so getOutlineByQId() cannot find it.
 	 * Callers that resolve an outline from a Q ID must come here instead when
 	 * that Q ID is self::GENERIC_ARTICLE_TYPE.
 	 *
 	 * If the wiki has more than one, the oldest one wins (T424186).
+	 * If the wiki has none, this is the default generic outline (T437432).
 	 *
-	 * @return array|null
+	 * @return array
 	 */
-	public function getGenericOutline(): ?array {
-		foreach ( $this->getOutlines() as $outline ) {
-			if ( $outline['generic'] ) {
-				return $outline;
-			}
-		}
-		return null;
+	public function getGenericOutline(): array {
+		return $this->getData()['generic'] ?? $this->getDefaultGenericOutline();
 	}
 
 	/**
@@ -160,7 +176,7 @@ class OutlineService {
 	}
 
 	/**
-	 * @return array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}
+	 * @return array{outlines: array, generic: ?array, lastModified: ?string, claims: array<string,array<int,Title>>}
 	 */
 	private function getData(): array {
 		$this->cache ??= $this->fetchData();
@@ -174,7 +190,11 @@ class OutlineService {
 	 * (the oldest page) owns it. The other outlines lose that Q-ID, and outlines
 	 * that lose all their Q-IDs are left out (T424186).
 	 *
-	 * @return array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}
+	 * This does not include the default generic outline. It is built from
+	 * messages only when a caller needs it, because parsing the messages is
+	 * not free and most callers do not need them.
+	 *
+	 * @return array{outlines: array, generic: ?array, lastModified: ?string, claims: array<string,array<int,Title>>}
 	 */
 	private function fetchData(): array {
 		$categoryTitle = $this->titleFactory->makeTitle( NS_CATEGORY, $this->getCategoryName() );
@@ -260,7 +280,87 @@ class OutlineService {
 			];
 		}
 
-		return [ 'outlines' => $outlines, 'lastModified' => $lastModified, 'claims' => $claims ];
+		// A wiki generic outline replaces the default one (T437432)
+		$generic = null;
+		foreach ( $outlines as $outline ) {
+			if ( $outline['generic'] ) {
+				$generic = $outline;
+				break;
+			}
+		}
+
+		return [
+			'outlines' => $outlines,
+			'generic' => $generic,
+			'lastModified' => $lastModified,
+			'claims' => $claims,
+		];
+	}
+
+	private function getDefaultGenericOutline(): array {
+		$this->defaultGenericOutline ??= $this->buildDefaultGenericOutline();
+		return $this->defaultGenericOutline;
+	}
+
+	/**
+	 * Build the default generic outline from i18n messages (T437432).
+	 *
+	 * It has the same keys as an outline read from page props. The default
+	 * key tells it apart from a wiki generic outline.
+	 *
+	 * @return array
+	 */
+	private function buildDefaultGenericOutline(): array {
+		return [
+			'title' => self::DEFAULT_GENERIC_OUTLINE_TITLE,
+			'label' => '',
+			'description' => '',
+			'articleTypes' => [],
+			'generic' => true,
+			'default' => true,
+			'instructions' => $this->contentMessage( 'articleguidance-default-outline-instructions' )->parse(),
+			'thumbnail' => null,
+			'notabilityRisk' => [ 'junior', 'sources' ],
+			'recommendedSources' => [
+				'info' => $this->parseMessages( [
+					'articleguidance-default-outline-recommended-source-1',
+					'articleguidance-default-outline-recommended-source-2',
+					'articleguidance-default-outline-recommended-source-3',
+				] ),
+				'urls' => [],
+			],
+			'discouragedSources' => [
+				'info' => $this->parseMessages( [
+					'articleguidance-default-outline-discouraged-source-1',
+					'articleguidance-default-outline-discouraged-source-2',
+					'articleguidance-default-outline-discouraged-source-3',
+					'articleguidance-default-outline-discouraged-source-4',
+				] ),
+				'urls' => [],
+			],
+		];
+	}
+
+	/**
+	 * Parse messages. A message that is disabled ("-") or empty is left out,
+	 * so that a translation or an on-wiki override can remove a tip.
+	 *
+	 * @param string[] $keys Message keys
+	 * @return string[] Parsed HTML of each message that is not left out
+	 */
+	private function parseMessages( array $keys ): array {
+		$html = [];
+		foreach ( $keys as $key ) {
+			$message = $this->contentMessage( $key );
+			if ( !$message->isDisabled() ) {
+				$html[] = $message->parse();
+			}
+		}
+		return $html;
+	}
+
+	private function contentMessage( string $key ): Message {
+		return wfMessage( $key )->inContentLanguage();
 	}
 
 	/**

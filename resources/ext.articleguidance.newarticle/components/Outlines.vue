@@ -14,7 +14,7 @@
 			v-if="error"
 			type="error"
 			class="ext-articleguidance-error">
-			{{ error }}
+			{{ $i18n( 'articleguidance-specialnewarticle-outlines-error' ).text() }}
 		</cdx-message>
 
 		<!-- Outlines list -->
@@ -29,9 +29,10 @@
 				@click="handleSelectOutline( outlineItem )"
 			>
 			</article-card>
-			<!-- The generic outline is not a type, so it comes last (T435605) -->
+			<!-- The generic outline is not a type, so it comes last (T437432).
+			The list shows only when the outlines are loaded, and loaded
+			outlines always include a generic one. -->
 			<article-card
-				v-if="genericOutline"
 				:title="$i18n( 'articleguidance-specialnewarticle-outlines-other' ).text()"
 				:description="$i18n(
 					'articleguidance-specialnewarticle-outlines-other-description'

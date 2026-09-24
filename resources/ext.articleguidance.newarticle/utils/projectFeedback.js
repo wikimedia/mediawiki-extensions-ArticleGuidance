@@ -52,31 +52,6 @@ function getMissingTypeFeedbackUrl( title ) {
 	);
 }
 
-/**
- * Build the feedback URL for users requesting support for an unsupported subject.
- *
- * @param {Object|null} result Selected result, when available
- * @return {string}
- */
-function getRequestSupportUrl( result ) {
-	if ( !result ) {
-		return getFeedbackUrl(
-			mw.message( 'articleguidance-unsupported-subject-request-title' ).text(),
-			'Request for support'
-		);
-	}
-
-	return getFeedbackUrl(
-		mw.message(
-			'articleguidance-feedback-request-support-preloadtitle',
-			result.label,
-			result.id
-		).text(),
-		`Request for support: ${ result.label } (${ result.id })`
-	);
-}
-
 module.exports = {
-	getMissingTypeFeedbackUrl,
-	getRequestSupportUrl
+	getMissingTypeFeedbackUrl
 };

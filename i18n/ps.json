@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "کارنانو ته د لارښود شوي، مرستياله کاري‌بهير له لارې د ليکنو رامنځته کولو توان ورکوي.",
+	"articleguidance-disabled-title": "د ليکنې لارښود شتون نلري",
+	"articleguidance-disabled": "دې ويکي کې د [[mw:Special:MyLanguage/Article_guidance|ليکنې لارښود]] چارن نه دی‌.",
 	"articleguidance-pref-enable-label": "د نوو ليکنو جوړولو پرمهال د ليکنې لارښوونې وکاروئ",
 	"articleguidance-pref-enable-help": "کله چې چارن شي، د نوې ليکنې جوړل به د کره سمونگر پرځای لارښود تجربه پرانېځي.",
 	"articleguidance-specialnewarticle-title": "نوې ليکنه",
@@ -112,10 +114,14 @@
 	"articleguidance-unsupported-subject-start-description": "دا ليکنه د ليکنې له لارښوونې پرته وليکئ.",
 	"communityconfiguration-articleguidance-title": "د ليکنې لارښوونه",
 	"communityconfiguration-articleguidance-description": "دې ويکي کې د لارښود شوې نوې ليکنې تجربه کولو اوڼنې.",
+	"communityconfiguration-articleguidance-feature-section-label": "لاسرسي وړتيا",
+	"communityconfiguration-articleguidance-feature-section-description": "دا اوڼنې پرېکړه کوي چې ايا د نوې ليکنې لارښود تجربه په دې ويکي کې شتون لري.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "په دې ويکي کې د ليکنې لارښود چارن کړئ",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "کله چې دا گل وي؛ نو ليکنې لارښود شتون نلري: سره تړوني کره سمونگر پرانېځي، لارښود مخ نشي کارېدای او ځانواله غوره‌توبونه پټ وي. لاندې اوڼنې يوازې هغه وخت اغېزمنېږي چې دا بل وي.",
 	"communityconfiguration-articleguidance-redirect-section-label": "د لارښوول شوې ليکنې جوړول",
 	"communityconfiguration-articleguidance-redirect-section-description": "دا اوڼنې پرېکړه کوي چې څوک د کره سمونگر پرځای د لارښود شوې نوې ليکنې ازمېښت ته يوړل شي.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "د لارښود شوې نوې ليکنې تجربه وکاروئ",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "کله چې چارن شي، د ورکې شوې ليکنې سور تړونی د لارښوونې تجربه پرانېځي. هغه کارنان چې کره سمونگر غوره گڼي کولی شي دا د خپل ځان لپاره په غوره‌توبونو کې گل کړي.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "له سور تړوني څخه لارښود شوې تجربه پرانېځئ",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "کله چې چارن شي، د ورکې شوې ليکنې سور تړونی د کره سمونگر پرځای د  لارښوونې تجربه پرانېځي. هغه کارنان چې کره سمونگر غوره گڼي کولی شي دا د خپل ځان لپاره په غوره‌توبونو کې گل کړي.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "نويو سمونگرانو پورې محدوديت",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "دا اوڼنې يوازې هغه وخت اغېز لري، کله چې پورته اوڼنې بلې وي. کله چې چارن شي، يوازې هغه سمونگران چې د دې ويکي د نوي سمونگر د شمېر څخه کښته وي، دا تجربه ترلاسه کوي؛ نور هر څوک کره سمونگر ساتي."
 }

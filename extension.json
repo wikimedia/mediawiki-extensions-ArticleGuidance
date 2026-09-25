@@ -213,6 +213,14 @@
 		"PreloadCleanup": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PreloadCleanupHandler"
 		},
+		"DuplicateOutlineNotice": {
+			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\DuplicateOutlineNoticeHandler",
+			"services": [
+				"ArticleGuidanceOutlineService",
+				"LinkRenderer",
+				"ArticleGuidanceWikidataUrls"
+			]
+		},
 		"PublishFollowUp": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\PublishFollowUpHandler",
 			"services": [
@@ -230,6 +238,7 @@
 		"RevisionFromEditComplete": "EditTag",
 		"EditFormPreloadText": "PreloadCleanup",
 		"BeforePageDisplay": "PublishFollowUp",
+		"OutputPageParserOutput": "DuplicateOutlineNotice",
 		"GetPreferences": "Preferences"
 	},
 	"DefaultUserOptions": {

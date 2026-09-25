@@ -9,8 +9,11 @@ re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
    via `WikidataInfoFetcher`, which caches results for one week. The `article-type` attribute
    accepts one or more whitespace-separated Q IDs (T421260); entity metadata is fetched per ID.
    The first (primary) ID supplies the description and image, while every ID keeps its own
-   hierarchy depth and match-via in an `articleTypes` array of `{ id, hierarchyDepth, matchVia }`
-   entries. A singular `articleType` field holding the primary ID is also written, solely so a
+   hierarchy depth and match-via in an `articleTypes` array of
+   `{ id, hierarchyDepth, matchVia, itemLabel, itemDescription, itemImage }` entries. The `item*`
+   fields hold the Wikidata item's label, description and image in the content language. The
+   duplicate notices use `itemLabel`, and duplicate resolution uses the description and image (see
+   below). They are not served to the client. A singular `articleType` field holding the primary ID is also written, solely so a
    rollback to pre-multi-item code keeps working; runtime consumers use `articleTypes`. If any
    token in the attribute is malformed, the whole attribute is treated as invalid. The outline's
    label defaults to the last phrase of the outline page title (e.g. "Company" from
@@ -30,7 +33,8 @@ Storage only occurs on full saves, not previews.
 
 A wiki may have one outline that is linked to no Wikidata item (T435605), marked by
 `article-type="*"`. The sentinel must stand alone: mixing it with Q IDs invalidates the
-attribute. At most one is expected (T424186).
+attribute. If a wiki has more than one, the oldest one is used and the others show a warning
+(see [Duplicate resolution](#duplicate-resolution)).
 
 Declaring no article types is what keeps this outline out of topic matching (T428152). The
 workflow falls back to it when no other outline matches, at the point the user picks a
@@ -50,14 +54,45 @@ The `/articleguidance/v1/outlines` REST endpoint calls `OutlineService::getOutli
    via `PageProps::getProperties()`.
 3. JSON-decodes each value and assembles the outlines list. Pages with no property (not yet saved
    since deploy) are omitted. Blobs persisted before multi-item support get an `articleTypes`
-   array synthesized from their legacy singular fields at read time. This is the only place the
-   page property is read, so the synthesis happens exactly once and all consumers can rely on
-   `articleTypes`. The primary entry is additionally served under the singular `articleType`,
+   array synthesized from their legacy singular fields at read time by
+   `OutlineService::getArticleTypes()`, so all consumers can rely on `articleTypes`. The primary entry is additionally served under the singular `articleType`,
    `hierarchyDepth` and `matchVia` keys, for JS still cached from before multi-item support.
+
+4. Resolves duplicates (see [Duplicate resolution](#duplicate-resolution)), so each Q ID appears
+   in at most one outline.
 
 The result is memoized on the service instance, so `getLastModified()` and `getETag()` (called by
 the framework for conditional-request checking) and `getOutlines()` (called in `execute()`) share
 the same two DB queries within a single request.
+
+## Duplicate resolution
+
+Several outline pages can list the same Wikidata item (T424186). The outline page that was created
+first (the lowest `page_id`) owns the item, and Article Guidance uses only that outline for it.
+
+The rule applies to each Q ID separately. If outline A lists Q1 and Q2, and a newer outline B lists
+Q2 and Q3, A owns Q1 and Q2 and B owns Q3. `OutlineService` removes the Q IDs that an outline does
+not own from its `articleTypes`, and leaves out outlines that own none. The outline's description
+and thumbnail come from the first Q ID that it still owns, so two outlines never show the same
+item's description. A blob saved before the `item*` fields existed has only the primary item's
+description and image; if another outline owns that item, the outline has no description or
+thumbnail until it is re-parsed. So the REST payload,
+`getOutlineByQId()` and the client all see one outline per Q ID. Only exact Q ID matches count as
+duplicates. Hierarchy overlaps (for example an outline for Q5 and one matched via P106) are
+handled by the client ranking, not here.
+
+A generic outline claims the `*` sentinel in place of a Q ID, so the same rule applies to it: the
+oldest generic outline is served, and newer ones are left out.
+
+`DuplicateOutlineNoticeHandler` (an `OutputPageParserOutput` hook) shows a Codex message on an
+outline page when other outlines claim its items: a notice on the owner, and a warning on an outline
+that loses some or all of its items. The notices are added when the page is viewed, not by the tag
+handler, because the parser cache does not change when another outline is edited or deleted. The
+handler reads the page's Q IDs from its current `ParserOutput`, so the notice is correct right
+after a save, before `LinksUpdate` writes `page_props`. Logged-out readers can see an old notice
+until the CDN entry expires; editors are logged in and skip the CDN.
+
+To fix a duplicate, remove the Q ID from one of the outlines, or merge the two outlines.
 
 ## HTTP caching
 

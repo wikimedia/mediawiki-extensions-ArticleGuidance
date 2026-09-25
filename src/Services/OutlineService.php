@@ -22,7 +22,10 @@ class OutlineService {
 	 */
 	public const GENERIC_ARTICLE_TYPE = '*';
 
-	/** @var array{outlines: array, lastModified: string|null}|null */
+	/** Blob fields of an articleTypes entry that are not served */
+	private const ITEM_FIELDS = [ 'itemLabel' => true, 'itemDescription' => true, 'itemImage' => true ];
+
+	/** @var array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}|null */
 	private ?array $cache = null;
 
 	public function __construct(
@@ -67,7 +70,7 @@ class OutlineService {
 	 * Callers that resolve an outline from a Q ID must come here instead when
 	 * that Q ID is self::GENERIC_ARTICLE_TYPE.
 	 *
-	 * If the wiki has more than one, the first category member wins (T424186).
+	 * If the wiki has more than one, the oldest one wins (T424186).
 	 *
 	 * @return array|null
 	 */
@@ -81,6 +84,72 @@ class OutlineService {
 	}
 
 	/**
+	 * Find the other outlines that claim the same Wikidata items as a page.
+	 *
+	 * The page is a candidate with its own page ID and Q-IDs, so the result is
+	 * correct before LinksUpdate stores its new page property.
+	 *
+	 * @param int $pageId Page being viewed
+	 * @param string[] $qIds Q-IDs from the page's current ParserOutput, or
+	 *   self::GENERIC_ARTICLE_TYPE for a generic outline
+	 * @return array<string,array{owner:?Title,others:Title[]}> Keyed by Q-ID. The
+	 *   owner is null when the page owns the Q-ID. The others are the remaining
+	 *   outlines that claim it. Q-IDs that no other outline claims are left out.
+	 */
+	public function getDuplicates( int $pageId, array $qIds ): array {
+		$claims = $this->getData()['claims'];
+		$duplicates = [];
+		foreach ( $qIds as $qId ) {
+			$claimants = $claims[$qId] ?? [];
+			unset( $claimants[$pageId] );
+			if ( $claimants === [] ) {
+				continue;
+			}
+			$ownerId = min( array_keys( $claimants ) );
+			if ( $pageId < $ownerId ) {
+				$duplicates[$qId] = [ 'owner' => null, 'others' => array_values( $claimants ) ];
+			} else {
+				$owner = $claimants[$ownerId];
+				unset( $claimants[$ownerId] );
+				$duplicates[$qId] = [ 'owner' => $owner, 'others' => array_values( $claimants ) ];
+			}
+		}
+		return $duplicates;
+	}
+
+	/**
+	 * Get the per-ID type list of an articleguidance-data blob.
+	 *
+	 * @param array $pageData Decoded articleguidance-data blob
+	 * @return array[]
+	 */
+	public static function getArticleTypes( array $pageData ): array {
+		// Synthesize the per-ID list for blobs persisted before multi-item
+		// support (T421260), so consumers can rely on articleTypes. A generic
+		// outline has neither key (T435605).
+		return $pageData['articleTypes'] ?? ( isset( $pageData['articleType'] ) ? [ [
+			'id' => $pageData['articleType'],
+			'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
+			'matchVia' => $pageData['matchVia'] ?? null,
+		] ] : [] );
+	}
+
+	/**
+	 * Get the keys that an articleguidance-data blob claims.
+	 *
+	 * @param array $pageData Decoded articleguidance-data blob
+	 * @return string[] The Q-IDs, or self::GENERIC_ARTICLE_TYPE for a generic outline
+	 */
+	public static function getClaimKeys( array $pageData ): array {
+		// The generic outline claims the sentinel, so the uniqueness rule for
+		// Q-IDs also applies to it
+		if ( $pageData['generic'] ?? false ) {
+			return [ self::GENERIC_ARTICLE_TYPE ];
+		}
+		return array_column( self::getArticleTypes( $pageData ), 'id' );
+	}
+
+	/**
 	 * Get the timestamp of the most recently touched category member.
 	 * Used by the REST handler for Last-Modified / 304 support.
 	 *
@@ -91,7 +160,7 @@ class OutlineService {
 	}
 
 	/**
-	 * @return array{outlines: array, lastModified: string|null}
+	 * @return array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}
 	 */
 	private function getData(): array {
 		$this->cache ??= $this->fetchData();
@@ -101,7 +170,11 @@ class OutlineService {
 	/**
 	 * Fetch all outlines and the max page_touched timestamp from page props.
 	 *
-	 * @return array{outlines: array, lastModified: string|null}
+	 * When several outlines claim the same Q-ID, the outline with the lowest page ID
+	 * (the oldest page) owns it. The other outlines lose that Q-ID, and outlines
+	 * that lose all their Q-IDs are left out (T424186).
+	 *
+	 * @return array{outlines: array, lastModified: string|null, claims: array<string,array<int,Title>>}
 	 */
 	private function fetchData(): array {
 		$categoryTitle = $this->titleFactory->makeTitle( NS_CATEGORY, $this->getCategoryName() );
@@ -119,7 +192,8 @@ class OutlineService {
 
 		$propsById = $this->pageProps->getProperties( $memberList, 'articleguidance-data' );
 
-		$outlines = [];
+		$pages = [];
+		$claims = [];
 		foreach ( $memberList as $member ) {
 			$pageId = $member->getArticleID();
 			if ( !isset( $propsById[$pageId] ) ) {
@@ -129,15 +203,37 @@ class OutlineService {
 			if ( !is_array( $pageData ) ) {
 				continue;
 			}
-			// Synthesize the per-ID list for blobs persisted before multi-item
-			// support (T421260). This is the only place the page property is
-			// read, so downstream consumers (REST, JS) can rely on articleTypes
-			// unconditionally. A generic outline has neither key (T435605).
-			$articleTypes = $pageData['articleTypes'] ?? ( isset( $pageData['articleType'] ) ? [ [
-				'id' => $pageData['articleType'],
-				'hierarchyDepth' => $pageData['hierarchyDepth'] ?? null,
-				'matchVia' => $pageData['matchVia'] ?? null,
-			] ] : [] );
+			$pages[$pageId] = [ $member, $pageData ];
+			foreach ( self::getClaimKeys( $pageData ) as $claimKey ) {
+				$claims[$claimKey][$pageId] = $member;
+			}
+		}
+
+		$outlines = [];
+		foreach ( $pages as $pageId => [ $member, $pageData ] ) {
+			$isOwner = static fn ( string $claimKey ) => min( array_keys( $claims[$claimKey] ) ) === $pageId;
+			$isGeneric = (bool)( $pageData['generic'] ?? false );
+			$allArticleTypes = self::getArticleTypes( $pageData );
+			$articleTypes = array_values( array_filter(
+				$allArticleTypes,
+				static fn ( array $typeEntry ) => $isOwner( $typeEntry['id'] )
+			) );
+			if ( $isGeneric ? !$isOwner( self::GENERIC_ARTICLE_TYPE ) : $articleTypes === [] ) {
+				continue;
+			}
+			$primary = $articleTypes[0] ?? null;
+			if ( $primary !== null && array_key_exists( 'itemDescription', $primary ) ) {
+				$description = $primary['itemDescription'];
+				$image = $primary['itemImage'] ?? null;
+			} elseif ( $primary === null || $primary['id'] === $allArticleTypes[0]['id'] ) {
+				$description = $pageData['description'] ?? null;
+				$image = $pageData['image'] ?? null;
+			} else {
+				// The top-level fields of an older blob describe an item that another
+				// outline owns. Two outlines would show the same description and image.
+				$description = null;
+				$image = null;
+			}
 			// Capitalize the first letter at read time so labels persisted in
 			// page_props before the capitalization fix (T427201) are corrected
 			// without waiting for the pages to be re-parsed. The page title is
@@ -145,30 +241,33 @@ class OutlineService {
 			// label key, and such a blob always has an article type. The title
 			// keeps a blob with neither from getting an empty label.
 			$label = $this->contentLanguage->ucfirst(
-				$pageData['label'] ?? $articleTypes[0]['id'] ?? $member->getPrefixedText()
+				$pageData['label'] ?? $primary['id'] ?? $member->getPrefixedText()
 			);
 			$outlines[] = [
 				'title' => $member->getPrefixedText(),
 				'label' => $label,
-				'description' => $pageData['description'] ?? '',
-				'articleTypes' => $articleTypes,
-				'generic' => (bool)( $pageData['generic'] ?? false ),
+				'description' => $description ?? '',
+				'articleTypes' => array_map(
+					static fn ( array $typeEntry ) => array_diff_key( $typeEntry, self::ITEM_FIELDS ),
+					$articleTypes
+				),
+				'generic' => $isGeneric,
 				// The primary entry is also exposed through the pre-multi-item
 				// singular fields, so JS bundles still cached from before the
 				// deploy keep matching on it (T421260). TODO: Drop these three keys
 				// together with the /v0 route once that window has passed.
-				'articleType' => $articleTypes[0]['id'] ?? null,
-				'hierarchyDepth' => $articleTypes[0]['hierarchyDepth'] ?? null,
-				'matchVia' => $articleTypes[0]['matchVia'] ?? null,
+				'articleType' => $primary['id'] ?? null,
+				'hierarchyDepth' => $primary['hierarchyDepth'] ?? null,
+				'matchVia' => $primary['matchVia'] ?? null,
 				'instructions' => $pageData['instructions'] ?? null,
-				'thumbnail' => $pageData['image'] ?? null,
+				'thumbnail' => $image,
 				'notabilityRisk' => $pageData['notabilityRisk'] ?? [],
 				'recommendedSources' => $pageData['recommendedSources'] ?? [],
 				'discouragedSources' => $pageData['discouragedSources'] ?? [],
 			];
 		}
 
-		return [ 'outlines' => $outlines, 'lastModified' => $lastModified ];
+		return [ 'outlines' => $outlines, 'lastModified' => $lastModified, 'claims' => $claims ];
 	}
 
 	/**

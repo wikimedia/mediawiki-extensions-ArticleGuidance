@@ -68,6 +68,20 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		};
 	}
 
+	/**
+	 * @param string[] $qIds
+	 * @return string articleguidance-data JSON blob
+	 */
+	private function makeBlob( array $qIds ): string {
+		return json_encode( [
+			'articleType' => $qIds[0],
+			'articleTypes' => array_map(
+				static fn ( string $qId ) => [ 'id' => $qId, 'hierarchyDepth' => null, 'matchVia' => null ],
+				$qIds
+			),
+		] );
+	}
+
 	public function testSynthesizesArticleTypesFromLegacyBlob(): void {
 		// Blob persisted before multi-item support (T421260): singular fields only
 		$service = $this->getService(
@@ -295,5 +309,215 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertNotNull( $generic );
 		$this->assertSame( [ 'reuters.com' ], $generic['recommendedSources']['urls'] );
 		$this->assertSame( [ 'facebook.com' ], $generic['discouragedSources']['urls'] );
+	}
+
+	public function testOldestGenericOutlineWins(): void {
+		$genericBlob = json_encode( [ 'articleTypes' => [], 'label' => 'General guidance', 'generic' => true ] );
+		// Members are in sort-key order, which is not creation order
+		$service = $this->getService(
+			[
+				$this->makeMember( 5, 'Wikipedia:General outline' ),
+				$this->makeMember( 2, 'Wikipedia:Generic' ),
+				$this->makeMember( 9, 'Wikipedia:Other generic' ),
+			],
+			[ 5 => $genericBlob, 2 => $genericBlob, 9 => $genericBlob ]
+		);
+
+		$this->assertSame( [ 'Wikipedia:Generic' ], array_column( $service->getOutlines(), 'title' ) );
+		$this->assertSame( 'Wikipedia:Generic', $service->getGenericOutline()['title'] );
+
+		$duplicates = $service->getDuplicates( 5, [ OutlineService::GENERIC_ARTICLE_TYPE ] );
+		$this->assertSame(
+			'Wikipedia:Generic',
+			$duplicates[OutlineService::GENERIC_ARTICLE_TYPE]['owner']->getPrefixedText()
+		);
+		$this->assertSame(
+			[ 'Wikipedia:Other generic' ],
+			array_map(
+				static fn ( Title $title ) => $title->getPrefixedText(),
+				$duplicates[OutlineService::GENERIC_ARTICLE_TYPE]['others']
+			)
+		);
+	}
+
+	public function testOldestOutlineOwnsSharedQIdWhateverTheMemberOrder(): void {
+		// Members are in sort-key order, which is not creation order
+		$service = $this->getService(
+			[
+				$this->makeMember( 7, 'Wikipedia:Citrus' ),
+				$this->makeMember( 3, 'Wikipedia:Fruit' ),
+			],
+			[ 7 => $this->makeBlob( [ 'Q3314483' ] ), 3 => $this->makeBlob( [ 'Q3314483' ] ) ]
+		);
+
+		$outlines = $service->getOutlines();
+
+		$this->assertSame( [ 'Wikipedia:Fruit' ], array_column( $outlines, 'title' ) );
+		$this->assertSame( 'Wikipedia:Fruit', $service->getOutlineByQId( 'Q3314483' )['title'] );
+	}
+
+	public function testPartialOverlapKeepsOnlyOwnedQIds(): void {
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Company' ),
+				$this->makeMember( 2, 'Wikipedia:Research group' ),
+			],
+			[
+				1 => $this->makeBlob( [ 'Q1', 'Q2' ] ),
+				2 => $this->makeBlob( [ 'Q2', 'Q3' ] ),
+			]
+		);
+
+		$outlines = $service->getOutlines();
+
+		$this->assertSame( [ 'Q1', 'Q2' ], array_column( $outlines[0]['articleTypes'], 'id' ) );
+		$this->assertSame( [ 'Q3' ], array_column( $outlines[1]['articleTypes'], 'id' ) );
+		// The legacy singular fields come from the first remaining entry
+		$this->assertSame( 'Q3', $outlines[1]['articleType'] );
+		$this->assertSame( 'Wikipedia:Company', $service->getOutlineByQId( 'Q2' )['title'] );
+	}
+
+	public function testGetDuplicatesForOwner(): void {
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Person' ),
+				$this->makeMember( 2, 'Wikipedia:People' ),
+				$this->makeMember( 3, 'Wikipedia:Human' ),
+				$this->makeMember( 4, 'Wikipedia:Company' ),
+			],
+			[
+				1 => $this->makeBlob( [ 'Q5' ] ),
+				2 => $this->makeBlob( [ 'Q5' ] ),
+				3 => $this->makeBlob( [ 'Q5' ] ),
+				4 => $this->makeBlob( [ 'Q4830453' ] ),
+			]
+		);
+
+		$duplicates = $service->getDuplicates( 1, [ 'Q5' ] );
+
+		$this->assertSame( [ 'Q5' ], array_keys( $duplicates ) );
+		$this->assertNull( $duplicates['Q5']['owner'] );
+		$this->assertSame(
+			[ 'Wikipedia:People', 'Wikipedia:Human' ],
+			array_map( static fn ( Title $title ) => $title->getPrefixedText(), $duplicates['Q5']['others'] )
+		);
+		$this->assertSame( [], $service->getDuplicates( 4, [ 'Q4830453' ] ) );
+	}
+
+	public function testGetDuplicatesForShadowedOutline(): void {
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Person' ),
+				$this->makeMember( 2, 'Wikipedia:People' ),
+				$this->makeMember( 3, 'Wikipedia:Human' ),
+			],
+			[
+				1 => $this->makeBlob( [ 'Q5' ] ),
+				2 => $this->makeBlob( [ 'Q5' ] ),
+				3 => $this->makeBlob( [ 'Q5', 'Q215627' ] ),
+			]
+		);
+
+		$duplicates = $service->getDuplicates( 3, [ 'Q5', 'Q215627' ] );
+
+		$this->assertSame( [ 'Q5' ], array_keys( $duplicates ) );
+		$this->assertSame( 'Wikipedia:Person', $duplicates['Q5']['owner']->getPrefixedText() );
+		$this->assertSame(
+			[ 'Wikipedia:People' ],
+			array_map( static fn ( Title $title ) => $title->getPrefixedText(), $duplicates['Q5']['others'] )
+		);
+	}
+
+	public function testGetDuplicatesUsesTheGivenQIdsForTheViewedPage(): void {
+		// Page 9 is new: it is not a category member yet, and its stored
+		// QIDs are not in page_props yet
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Person' ),
+				$this->makeMember( 12, 'Wikipedia:Human' ),
+			],
+			[
+				1 => $this->makeBlob( [ 'Q5' ] ),
+				12 => $this->makeBlob( [ 'Q215627' ] ),
+			]
+		);
+
+		$duplicates = $service->getDuplicates( 9, [ 'Q5', 'Q215627' ] );
+
+		$this->assertSame( 'Wikipedia:Person', $duplicates['Q5']['owner']->getPrefixedText() );
+		$this->assertNull( $duplicates['Q215627']['owner'] );
+		$this->assertSame(
+			[ 'Wikipedia:Human' ],
+			array_map( static fn ( Title $title ) => $title->getPrefixedText(), $duplicates['Q215627']['others'] )
+		);
+	}
+
+	public function testDescriptionAndImageComeFromFirstOwnedItem(): void {
+		$entry = static fn ( string $qId ) => [
+			'id' => $qId,
+			'hierarchyDepth' => null,
+			'matchVia' => null,
+			'itemLabel' => "label $qId",
+			'itemDescription' => "Description $qId",
+			'itemImage' => "https://example.org/$qId.jpg",
+		];
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Business' ),
+				$this->makeMember( 2, 'Wikipedia:Research group' ),
+			],
+			[
+				1 => json_encode( [
+					'articleType' => 'Q2',
+					'articleTypes' => [ $entry( 'Q2' ) ],
+					'description' => 'Description Q2',
+					'image' => 'https://example.org/Q2.jpg',
+				] ),
+				2 => json_encode( [
+					'articleType' => 'Q2',
+					'articleTypes' => [ $entry( 'Q2' ), $entry( 'Q3' ) ],
+					'description' => 'Description Q2',
+					'image' => 'https://example.org/Q2.jpg',
+				] ),
+			]
+		);
+
+		$outlines = $service->getOutlines();
+
+		$this->assertSame( 'Description Q2', $outlines[0]['description'] );
+		$this->assertSame( 'Description Q3', $outlines[1]['description'] );
+		$this->assertSame( 'https://example.org/Q3.jpg', $outlines[1]['thumbnail'] );
+		// The item fields are for the page notice, not for the client
+		$this->assertSame(
+			[ [ 'id' => 'Q3', 'hierarchyDepth' => null, 'matchVia' => null ] ],
+			$outlines[1]['articleTypes']
+		);
+	}
+
+	public function testOlderBlobDropsDescriptionAndImageOfShadowedPrimaryItem(): void {
+		// Blobs saved before the item fields: only the primary item's description and image
+		$makeBlob = static fn ( array $qIds ) => json_encode( [
+			'articleType' => $qIds[0],
+			'articleTypes' => array_map(
+				static fn ( string $qId ) => [ 'id' => $qId, 'hierarchyDepth' => null, 'matchVia' => null ],
+				$qIds
+			),
+			'description' => "Description $qIds[0]",
+			'image' => "https://example.org/$qIds[0].jpg",
+		] );
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Business' ),
+				$this->makeMember( 2, 'Wikipedia:Research group' ),
+			],
+			[ 1 => $makeBlob( [ 'Q2' ] ), 2 => $makeBlob( [ 'Q2', 'Q3' ] ) ]
+		);
+
+		$outlines = $service->getOutlines();
+
+		$this->assertSame( 'Description Q2', $outlines[0]['description'] );
+		$this->assertSame( 'https://example.org/Q2.jpg', $outlines[0]['thumbnail'] );
+		$this->assertSame( '', $outlines[1]['description'] );
+		$this->assertNull( $outlines[1]['thumbnail'] );
 	}
 }

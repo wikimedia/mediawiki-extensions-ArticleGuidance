@@ -146,10 +146,18 @@ class ArticleGuidanceTagHandler implements
 					);
 					// Use inferred match-via from entity data; explicit override takes precedence
 					$entryMatchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
+					$itemDescription = $entityData['description'] ?? null;
 					$typeEntries[] = [
 						'id' => $id,
 						'hierarchyDepth' => $entityData['hierarchyDepth'] ?? null,
 						'matchVia' => $entryMatchVia,
+						// The duplicate notice names the item without a Wikidata
+						// request at view time. When another outline owns the
+						// primary ID, OutlineService takes the description and
+						// image from the first ID that this outline owns.
+						'itemLabel' => $entityData['label'] ?? null,
+						'itemDescription' => $itemDescription !== null ? ucfirst( $itemDescription ) : null,
+						'itemImage' => $entityData['image'] ?? null,
 					];
 					$renderTypes[$i]['label'] = $entityData['label'] ?? null;
 					$renderTypes[$i]['description'] = $entityData['description'] ?? null;

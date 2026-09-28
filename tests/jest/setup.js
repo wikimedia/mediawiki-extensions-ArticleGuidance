@@ -1,5 +1,8 @@
 'use strict';
 
+// jsdom does not expose TextEncoder.
+global.TextEncoder = require( 'util' ).TextEncoder;
+
 const configValues = {
 	wgArticleGuidanceJuniorEditorThreshold: 10,
 	wgArticleGuidanceCrossWikiThreshold: 5,

@@ -16,8 +16,6 @@ use Wikimedia\ObjectCache\WANObjectCache;
  */
 class WikidataInfoFetcher {
 
-	private const THUMB_WIDTH = 60;
-
 	public function __construct(
 		private readonly HttpRequestFactory $httpRequestFactory,
 		private readonly LanguageFactory $languageFactory,
@@ -26,33 +24,8 @@ class WikidataInfoFetcher {
 		private readonly array $matchViaRules,
 		private readonly string $userAgent,
 		private readonly WikidataUrls $wikidataUrls,
+		private readonly CommonsThumb $commonsThumb,
 	) {
-	}
-
-	/**
-	 * Convert a Wikimedia Commons image filename to a thumbnail URL
-	 *
-	 * @param string $filename Image filename from Wikidata
-	 * @return string Thumbnail URL
-	 */
-	private function getCommonsImageUrl( string $filename ): string {
-		// Replace spaces with underscores
-		$filename = str_replace( ' ', '_', $filename );
-
-		// Create MD5 hash for directory structure
-		$md5 = md5( $filename );
-		$dir1 = substr( $md5, 0, 1 );
-		$dir2 = substr( $md5, 0, 2 );
-
-		// Build Commons thumbnail URL
-		return sprintf(
-			'https://upload.wikimedia.org/wikipedia/commons/thumb/%s/%s/%s/%dpx-%s',
-			$dir1,
-			$dir2,
-			rawurlencode( $filename ),
-			self::THUMB_WIDTH,
-			rawurlencode( $filename )
-		);
 	}
 
 	/**
@@ -198,7 +171,7 @@ class WikidataInfoFetcher {
 		$image = null;
 		if ( isset( $entity['claims'][WikidataProperties::PROP_IMAGE][0]['mainsnak']['datavalue']['value'] ) ) {
 			$imageName = $entity['claims'][WikidataProperties::PROP_IMAGE][0]['mainsnak']['datavalue']['value'];
-			$image = $this->getCommonsImageUrl( $imageName );
+			$image = $this->commonsThumb->getUrl( $imageName );
 		}
 
 		// Return null if we got no useful data

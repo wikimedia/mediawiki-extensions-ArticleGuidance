@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
+use MediaWiki\Extension\ArticleGuidance\Services\CommonsThumb;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
@@ -90,7 +91,8 @@ return [
 			$services->getMainWANObjectCache(),
 			$config->get( 'ArticleGuidanceMatchViaRules' ),
 			$config->get( 'ArticleGuidanceUserAgent' ),
-			new WikidataUrls( $urls )
+			new WikidataUrls( $urls ),
+			new CommonsThumb()
 		);
 	},
 	'ArticleGuidanceWikidataUrls' => static function ( MediaWikiServices $services ): WikidataUrls {

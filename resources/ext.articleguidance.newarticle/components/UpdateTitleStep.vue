@@ -232,6 +232,7 @@ module.exports = defineComponent( {
 
 .ext-articleguidance-updatetitle-input {
 	width: 100%;
+	font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
 
 	.cdx-text-input {
 		&__input {

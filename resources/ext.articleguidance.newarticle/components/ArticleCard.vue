@@ -6,7 +6,7 @@
 			'ext-articleguidance-article-card--fit-width': fitWidth
 		}"
 		:thumbnail="cardThumbnail"
-		:icon="icon"
+		:custom-placeholder-icon="cdxIconArticle"
 		:role="interactive ? 'button' : undefined"
 		:tabindex="interactive ? 0 : undefined"
 		@keydown.enter.prevent="interactive && $emit( 'click' )"
@@ -33,6 +33,7 @@
 <script>
 const { defineComponent, computed } = require( 'vue' );
 const { CdxCard } = require( '../codex.js' );
+const { cdxIconArticle } = require( '../icons.json' );
 
 module.exports = defineComponent( {
 	name: 'ArticleCard',
@@ -48,10 +49,6 @@ module.exports = defineComponent( {
 		},
 		thumbnail: {
 			type: [ String, Boolean ],
-			default: null
-		},
-		icon: {
-			type: [ String, Object ],
 			default: null
 		},
 		interactive: {
@@ -71,7 +68,7 @@ module.exports = defineComponent( {
 	setup( props ) {
 		const cardThumbnail = computed( () => {
 			// Do not show thumbnail
-			if ( props.icon || props.thumbnail === false ) {
+			if ( props.thumbnail === false ) {
 				return null;
 			}
 
@@ -86,7 +83,7 @@ module.exports = defineComponent( {
 			return {};
 		} );
 
-		return { cardThumbnail };
+		return { cardThumbnail, cdxIconArticle };
 	}
 } );
 </script>

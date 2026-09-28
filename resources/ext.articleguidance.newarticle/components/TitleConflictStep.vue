@@ -72,7 +72,6 @@
 						:fit-width="true"
 						:title="selectedOutline.label"
 						:description="selectedOutline.description"
-						:icon="articleIcon"
 					>
 					</article-card>
 				</div>
@@ -104,7 +103,7 @@
 const { defineComponent, ref, computed, watch, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton, CdxIcon } = require( '../codex.js' );
-const { cdxIconLinkExternal, cdxIconArticle } = require( '../icons.json' );
+const { cdxIconLinkExternal } = require( '../icons.json' );
 const useArticleExist = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -180,7 +179,6 @@ module.exports = defineComponent( {
 			selectedResult,
 			selectedOutline,
 			showSelectedSubject,
-			articleIcon: cdxIconArticle,
 			canContinue,
 			handleBack,
 			handleContinue,

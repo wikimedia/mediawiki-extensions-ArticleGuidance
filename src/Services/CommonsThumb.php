@@ -31,7 +31,7 @@ class CommonsThumb {
 
 		// Build Commons thumbnail URL
 		return sprintf(
-			'https://upload.wikimedia.org/wikipedia/commons/thumb/%s/%s/%s/%dpx-%s%s',
+			'https://thumb.wikimedia.org/wikipedia/commons/thumb/%s/%s/%s/%dpx-%s%s',
 			$dir1,
 			$dir2,
 			rawurlencode( $filename ),

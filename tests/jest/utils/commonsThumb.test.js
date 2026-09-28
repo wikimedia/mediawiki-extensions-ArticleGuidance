@@ -11,7 +11,7 @@ describe( 'getCommonsThumbUrl', () => {
 
 	it( 'adds a .png suffix for an SVG image', () => {
 		expect( getCommonsThumbUrl( 'Lawrencium.svg' ) ).toBe(
-			'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Lawrencium.svg/60px-Lawrencium.svg.png'
+			'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Lawrencium.svg/60px-Lawrencium.svg.png'
 		);
 	} );
 

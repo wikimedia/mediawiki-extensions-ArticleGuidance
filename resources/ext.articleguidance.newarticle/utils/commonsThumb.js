@@ -32,7 +32,7 @@ function getCommonsThumbUrl( filename ) {
 		.replace( /\*/g, '%2A' );
 	// Commons renders SVG thumbnails as PNG.
 	const suffix = /\.svg$/i.test( normalized ) ? '.png' : '';
-	return 'https://upload.wikimedia.org/wikipedia/commons/thumb/' +
+	return 'https://thumb.wikimedia.org/wikipedia/commons/thumb/' +
 		dir1 + '/' + dir2 + '/' + encoded + '/' + THUMB_WIDTH + 'px-' + encoded + suffix;
 }
 

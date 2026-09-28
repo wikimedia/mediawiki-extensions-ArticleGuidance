@@ -123,8 +123,8 @@ module.exports = defineComponent( {
 			selectedResult, originalTypedTitle, isRedLink, redLinkTitle
 		} = storeToRefs( store );
 
-		const titleOnOpen = store.articleTitle || store.searchQuery;
-		const localTitle = ref( store.articleTitle || store.searchQuery );
+		const titleOnOpen = store.articleTitle || store.trimmedQuery;
+		const localTitle = ref( titleOnOpen );
 		const titleInputRef = ref( null );
 
 		const {

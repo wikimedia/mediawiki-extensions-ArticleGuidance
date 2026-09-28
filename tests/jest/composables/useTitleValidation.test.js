@@ -28,6 +28,22 @@ describe( 'useTitleValidation', () => {
 		expect( validTitle.value ).toBe( 'Valid Article' );
 	} );
 
+	it( 'trims surrounding whitespace from valid title', () => {
+		const title = ref( '  Valid Article  ' );
+		const { invalidTitle, validTitle } = useTitleValidation( title );
+
+		expect( invalidTitle.value ).toBe( false );
+		expect( validTitle.value ).toBe( 'Valid Article' );
+	} );
+
+	it( 'returns empty valid title for whitespace-only input', () => {
+		const title = ref( '   ' );
+		const { invalidTitle, validTitle } = useTitleValidation( title );
+
+		expect( invalidTitle.value ).toBe( false );
+		expect( validTitle.value ).toBe( '' );
+	} );
+
 	it( 'flags invalid title with illegal characters and formats error message', () => {
 		const title = ref( 'Article [with] brackets' );
 		const {

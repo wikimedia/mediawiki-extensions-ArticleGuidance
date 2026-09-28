@@ -14,16 +14,18 @@ async function checkPagesExist( titles ) {
 		return {};
 	}
 
-	titles = titles.map( ( t ) => t.trim() ).filter( Boolean );
-	if ( titles.length === 0 ) {
+	// Key the result by the caller's titles, so callers can look up untrimmed input
+	const inputTitles = titles.filter( ( t ) => t.trim() );
+	if ( inputTitles.length === 0 ) {
 		return {};
 	}
+	const trimmedTitles = inputTitles.map( ( t ) => t.trim() );
 
 	try {
 		const api = new mw.Api();
 		const response = await api.get( {
 			action: 'query',
-			titles: titles.join( '|' ),
+			titles: trimmedTitles.join( '|' ),
 			formatversion: 2
 		} );
 
@@ -47,10 +49,10 @@ async function checkPagesExist( titles ) {
 
 		// Map each input title to its existence status
 		const result = {};
-		for ( let i = 0; i < titles.length; i++ ) {
-			const title = titles[ i ];
+		for ( let i = 0; i < inputTitles.length; i++ ) {
+			const title = trimmedTitles[ i ];
 			const canonical = normalMap[ title ] || title;
-			result[ title ] = !!existingTitles[ canonical ];
+			result[ inputTitles[ i ] ] = !!existingTitles[ canonical ];
 		}
 		return result;
 	} catch ( error ) {

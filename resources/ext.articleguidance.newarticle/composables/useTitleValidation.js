@@ -34,7 +34,10 @@ function useTitleValidation( titleRef ) {
 		return mw.message( 'articleguidance-specialnewarticle-invalid-title-generic' ).text();
 	} );
 
-	const validTitle = computed( () => invalidTitle.value ? '' : titleRef.value );
+	// Trim so that search, messages and the edit link use the normalized title
+	const validTitle = computed(
+		() => invalidTitle.value ? '' : ( titleRef.value || '' ).trim()
+	);
 
 	return {
 		invalidTitle,

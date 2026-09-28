@@ -21,6 +21,8 @@ const instrument = require( '../logging/instrument.js' );
 const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const currentStep = ref( 'search' );
 	const searchQuery = ref( '' );
+	// Title-building and comparisons use the query without surrounding whitespace
+	const trimmedQuery = computed( () => ( searchQuery.value || '' ).trim() );
 	const selectedResult = ref( null );
 	const selectedOutline = ref( null );
 	const references = ref( [] );
@@ -122,7 +124,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		const candidates = [];
 
 		if ( result && result.label &&
-			result.label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
+			result.label.toLowerCase() !== trimmedQuery.value.toLowerCase() ) {
 			candidates.push( result.label );
 		}
 
@@ -130,7 +132,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		// titles such as "Paris (General guidance)".
 		if ( !isGenericOutlineSelected.value &&
 			selectedOutline.value && selectedOutline.value.label ) {
-			candidates.push( searchQuery.value + ' (' + selectedOutline.value.label + ')' );
+			candidates.push( trimmedQuery.value + ' (' + selectedOutline.value.label + ')' );
 		}
 
 		if ( candidates.length === 0 ) {
@@ -187,7 +189,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			await loadLocalArticle();
 			goTo( 'subjectcovered' );
 		} else if ( titleTaken ) {
-			articleTitle.value = searchQuery.value;
+			articleTitle.value = trimmedQuery.value;
 			titleSuggestion.value = await findTitleSuggestion( result );
 			goTo( 'titleconflict' );
 		} else if ( !selectedOutline.value ) {
@@ -195,11 +197,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			goTo( 'unsupportedsubject' );
 		} else {
 			if ( !isRedLink.value && label &&
-				label.toLowerCase() !== searchQuery.value.toLowerCase() ) {
+				label.toLowerCase() !== trimmedQuery.value.toLowerCase() ) {
 				if ( await routeIfTitleTaken( label, result ) ) {
 					return;
 				}
-				originalTypedTitle.value = searchQuery.value;
+				originalTypedTitle.value = trimmedQuery.value;
 				articleTitle.value = label;
 			}
 			if ( shouldShowNotabilityStep() ) {
@@ -240,7 +242,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		articleTitle.value = null;
 		titleSuggestion.value = null;
 		originalTypedTitle.value = null;
-		if ( await routeIfTitleTaken( searchQuery.value, null ) ) {
+		if ( await routeIfTitleTaken( trimmedQuery.value, null ) ) {
 			return;
 		}
 		if ( shouldShowNotabilityStep() ) {
@@ -299,7 +301,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	} );
 
 	const creationTitle = computed( () => {
-		const title = articleTitle.value || searchQuery.value;
+		const title = articleTitle.value || trimmedQuery.value;
 		if ( !getActiveNotabilityTags().includes( 'draft' ) ) {
 			return title;
 		}
@@ -342,7 +344,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	function setArticleTitle( title ) {
-		articleTitle.value = title;
+		articleTitle.value = title && title.trim();
 	}
 
 	function confirmTitle() {
@@ -408,6 +410,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	return {
 		currentStep,
 		searchQuery,
+		trimmedQuery,
 		selectedResult,
 		selectedOutline,
 		references,

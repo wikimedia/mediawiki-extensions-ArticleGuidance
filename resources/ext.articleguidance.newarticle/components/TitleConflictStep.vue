@@ -149,7 +149,10 @@ module.exports = defineComponent( {
 
 		const canContinue = computed( () => titleExists.value === false );
 
-		const existsWarningText = computed( () => mw.message( 'articleguidance-titleconflict-exists-warning', localTitle.value ).text() );
+		const existsWarningText = computed( () => mw.message(
+			'articleguidance-titleconflict-exists-warning',
+			localTitle.value.trim()
+		).text() );
 
 		const handleBack = () => {
 			store.resetTitleConflict();

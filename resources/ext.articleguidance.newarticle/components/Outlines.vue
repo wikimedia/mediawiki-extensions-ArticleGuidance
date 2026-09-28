@@ -103,7 +103,7 @@ module.exports = defineComponent( {
 		};
 
 		const missingTypeFeedbackUrl = computed( () => {
-			const title = store.articleTitle || store.searchQuery;
+			const title = store.articleTitle || store.trimmedQuery;
 			return getMissingTypeFeedbackUrl( title );
 		} );
 

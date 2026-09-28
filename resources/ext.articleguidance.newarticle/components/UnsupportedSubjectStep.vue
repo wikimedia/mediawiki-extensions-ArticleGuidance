@@ -57,14 +57,14 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { selectedResult, searchQuery, articleTitle } = storeToRefs( store );
+		const { selectedResult, trimmedQuery, articleTitle } = storeToRefs( store );
 
 		const requestSupportUrl = computed(
 			() => getRequestSupportUrl( selectedResult.value )
 		);
 
 		const startWritingUrl = computed(
-			() => mw.util.getUrl( articleTitle.value || searchQuery.value, { veaction: 'edit' } )
+			() => mw.util.getUrl( articleTitle.value || trimmedQuery.value, { veaction: 'edit' } )
 		);
 
 		const requestTitle = computed(

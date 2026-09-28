@@ -5,6 +5,8 @@
 		]
 	},
 	"articleguidance-desc": "Permite aos usuarios crear artigos mediante un fluxo de traballo guiado e asistido",
+	"articleguidance-disabled-title": "A guía de artigos non está dispoñible",
+	"articleguidance-disabled": "A [[mw:Special:MyLanguage/Article_guidance|guía de artigos]] non está activada neste wiki.",
 	"articleguidance-pref-enable-label": "Utilizar a guía de artigos ao creares artigos novos",
 	"articleguidance-pref-enable-help": "Cando a opción está activada, ao creares un artigo novo abrirase a experiencia guiada en lugar do editor estándar.",
 	"articleguidance-specialnewarticle-title": "Artigo novo",
@@ -112,10 +114,14 @@
 	"articleguidance-unsupported-subject-start-description": "Escribir este artigo sen a guía.",
 	"communityconfiguration-articleguidance-title": "Guía de artigos",
 	"communityconfiguration-articleguidance-description": "Configuración para a experiencia guiada de artigos novos neste wiki.",
+	"communityconfiguration-articleguidance-feature-section-label": "Dispoñibilidade",
+	"communityconfiguration-articleguidance-feature-section-description": "Esta configuración decide se a experiencia guiada de artigos novos está dispoñible neste wiki.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Activar a guía de artigos neste wiki",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Cando isto está desactivado, a guía de artigos non está dispoñible: as ligazóns vermellas abren o editor estándar, non se pode usar a páxina guiada e a preferencia persoal está agochada. A seguinte configuración só ten efecto mentres isto está activado.",
 	"communityconfiguration-articleguidance-redirect-section-label": "Creación guiada de artigos",
 	"communityconfiguration-articleguidance-redirect-section-description": "Esta configuración decide quen accede á experiencia guiada de artigos novos en lugar do editor estándar.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Usar a experiencia guiada de artigos novos",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Cando a opción está activada, ao seguires unha ligazón vermella a un artigo que falta, ábrese a experiencia guiada. Os editores que prefiran o editor estándar poden desactivar esta opción nas súas preferencias.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Abrir a experiencia guiada desde as ligazóns vermellas",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Cando a opción está activada, ao seguires unha ligazón vermella a un artigo que falta, ábrese a experiencia guiada no canto do editor estándar. Os editores que prefiran o editor estándar poden desactivar esta opción nas súas preferencias.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limitar aos editores máis novos",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Esta configuración só ten efecto mentres a configuración anterior estea activada. Cando a opción está activada, só os editores que teñan menos edicións do número para se consideraren editores novos do wiki obteñen a experiencia guiada; todos os demais editores manteñen o editor estándar."
 }

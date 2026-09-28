@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Siebrand"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Noteer dat deze bewerking is uitgevoerd via <kbd>[[Special:NewArticle|Article guidance]]</kbd>, zodat deze dienovereenkomstig kan worden gelabeld."
+}

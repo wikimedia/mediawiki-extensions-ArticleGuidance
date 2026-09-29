@@ -149,14 +149,6 @@
 			]
 		},
 		{
-			"path": "/articleguidance/v0/outlines",
-			"method": "GET",
-			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ListOutlinesHandler",
-			"services": [
-				"ArticleGuidanceOutlineService"
-			]
-		},
-		{
 			"path": "/articleguidance/v0/source/validate",
 			"method": "GET",
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Rest\\ValidateSourceHandler",

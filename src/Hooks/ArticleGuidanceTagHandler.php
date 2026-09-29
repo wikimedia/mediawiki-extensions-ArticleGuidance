@@ -181,10 +181,6 @@ class ArticleGuidanceTagHandler implements
 			];
 			if ( $isGeneric ) {
 				$data['generic'] = true;
-			} else {
-				// Singular primary ID kept for rollback compatibility with
-				// pre-multi-item readers; runtime consumers use articleTypes
-				$data['articleType'] = $wikidataIds[0];
 			}
 			if ( $description !== null && $description !== '' ) {
 				$data['description'] = $description;

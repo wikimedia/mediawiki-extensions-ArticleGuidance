@@ -74,7 +74,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 	 */
 	private function makeBlob( array $qIds ): string {
 		return json_encode( [
-			'articleType' => $qIds[0],
 			'articleTypes' => array_map(
 				static fn ( string $qId ) => [ 'id' => $qId, 'hierarchyDepth' => null, 'matchVia' => null ],
 				$qIds
@@ -104,37 +103,15 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
-	public function testReExposesPrimaryTypeAsLegacySingularFields(): void {
-		// Pre-multi-item JS bundles cached across a deploy read the singular
-		// fields, so the primary entry is served under them as well
-		$service = $this->getService(
-			[ $this->makeMember( 1, 'Wikipedia:Tennis player outline' ) ],
-			[
-				1 => json_encode( [
-					'articleType' => 'Q10833314',
-					'articleTypes' => [
-						[ 'id' => 'Q10833314', 'hierarchyDepth' => 4, 'matchVia' => 'P106' ],
-						[ 'id' => 'Q13381863', 'hierarchyDepth' => 6, 'matchVia' => 'P106' ],
-					],
-					'label' => 'Tennis player',
-				] ),
-			]
-		);
-
-		$outlines = $service->getOutlines();
-
-		$this->assertSame( 'Q10833314', $outlines[0]['articleType'] );
-		$this->assertSame( 4, $outlines[0]['hierarchyDepth'] );
-		$this->assertSame( 'P106', $outlines[0]['matchVia'] );
-	}
-
 	public function testLabelFallsBackToPrimaryQId(): void {
-		// Legacy blob without a stored label: the (ucfirst'd) primary Q ID is used
+		// Outline blob without a stored label: the (ucfirst'd) primary Q ID is used
 		$service = $this->getService(
 			[ $this->makeMember( 1, 'Wikipedia:Company outline' ) ],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q4830453',
+					'articleTypes' => [
+						[ 'id' => 'Q4830453', 'hierarchyDepth' => 5, 'matchVia' => null ],
+					],
 				] ),
 			]
 		);
@@ -154,7 +131,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			[ $this->makeMember( 1, 'Wikipedia:Company outline' ) ],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q4830453',
 					'articleTypes' => $articleTypes,
 					'label' => 'Company',
 				] ),
@@ -175,7 +151,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q4830453',
 					'articleTypes' => [
 						[ 'id' => 'Q4830453', 'hierarchyDepth' => 5, 'matchVia' => null ],
 						[ 'id' => 'Q783794', 'hierarchyDepth' => 7, 'matchVia' => null ],
@@ -183,7 +158,9 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 					'label' => 'Company',
 				] ),
 				2 => json_encode( [
-					'articleType' => 'Q5',
+					'articleTypes' => [
+						[ 'id' => 'Q5', 'hierarchyDepth' => 10, 'matchVia' => null ],
+					],
 					'label' => 'Person',
 				] ),
 			]
@@ -197,17 +174,16 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 'Wikipedia:Company outline', $byPrimary['title'] );
 		$this->assertSame( 'Wikipedia:Company outline', $bySecondary['title'] );
 
-		// Legacy single-item outline still resolves via its synthesized list
-		$legacy = $service->getOutlineByQId( 'Q5' );
-		$this->assertNotNull( $legacy );
-		$this->assertSame( 'Wikipedia:Person outline', $legacy['title'] );
+		$person = $service->getOutlineByQId( 'Q5' );
+		$this->assertNotNull( $person );
+		$this->assertSame( 'Wikipedia:Person outline', $person['title'] );
 
 		$this->assertNull( $service->getOutlineByQId( 'Q999999' ) );
 	}
 
 	public function testServesGenericOutlineWithNoArticleTypes(): void {
 		// A generic outline has no Wikidata item (T435605), so its blob has
-		// neither articleType nor the description and image that come with it
+		// neither articleTypes nor the description and image that come with it
 		$service = $this->getService(
 			[ $this->makeMember( 1, 'Wikipedia:General outline' ) ],
 			[
@@ -226,10 +202,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( [], $outlines[0]['articleTypes'] );
 		$this->assertSame( 'General guidance', $outlines[0]['label'] );
 		$this->assertSame( '<p>Write a lead.</p>', $outlines[0]['instructions'] );
-		// No primary entry, so the legacy singular fields have nothing to mirror
-		$this->assertNull( $outlines[0]['articleType'] );
-		$this->assertNull( $outlines[0]['hierarchyDepth'] );
-		$this->assertNull( $outlines[0]['matchVia'] );
 	}
 
 	public function testGenericOutlineIsDistinctFromRegularOnes(): void {
@@ -240,7 +212,9 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q4830453',
+					'articleTypes' => [
+						[ 'id' => 'Q4830453', 'hierarchyDepth' => 5, 'matchVia' => null ],
+					],
 					'label' => 'Company',
 				] ),
 				2 => json_encode( [
@@ -271,7 +245,9 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			[ $this->makeMember( 1, 'Wikipedia:Company outline' ) ],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q4830453',
+					'articleTypes' => [
+						[ 'id' => 'Q4830453', 'hierarchyDepth' => 5, 'matchVia' => null ],
+					],
 					'label' => 'Company',
 				] ),
 			]
@@ -372,8 +348,6 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertSame( [ 'Q1', 'Q2' ], array_column( $outlines[0]['articleTypes'], 'id' ) );
 		$this->assertSame( [ 'Q3' ], array_column( $outlines[1]['articleTypes'], 'id' ) );
-		// The legacy singular fields come from the first remaining entry
-		$this->assertSame( 'Q3', $outlines[1]['articleType'] );
 		$this->assertSame( 'Wikipedia:Company', $service->getOutlineByQId( 'Q2' )['title'] );
 	}
 
@@ -468,13 +442,11 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 			],
 			[
 				1 => json_encode( [
-					'articleType' => 'Q2',
 					'articleTypes' => [ $entry( 'Q2' ) ],
 					'description' => 'Description Q2',
 					'image' => 'https://example.org/Q2.jpg',
 				] ),
 				2 => json_encode( [
-					'articleType' => 'Q2',
 					'articleTypes' => [ $entry( 'Q2' ), $entry( 'Q3' ) ],
 					'description' => 'Description Q2',
 					'image' => 'https://example.org/Q2.jpg',

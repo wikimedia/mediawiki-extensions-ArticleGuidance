@@ -45,7 +45,7 @@ function groupOutlinesByMatchVia( outlines ) {
  * (P31, P106, etc.) and records a match when the value is itself the article
  * type of an outline. This complements the SPARQL hierarchy query, which uses
  * `+` (one or more P279 hops) and therefore would miss e.g. an item whose P106
- * is exactly an outline's articleType.
+ * is exactly one of an outline's articleTypes.
  *
  * @param {Object} matches Mutable map of { itemQId: outlineQId[] }
  * @param {string[]} itemQIds Item Q IDs to consider

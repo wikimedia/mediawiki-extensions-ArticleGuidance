@@ -236,7 +236,7 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 		$data = $this->getStoredData();
 		$this->assertNotNull( $data );
 		$this->assertArrayNotHasKey( 'generic', $data );
-		$this->assertSame( 'Q4830453', $data['articleType'] );
+		$this->assertArrayNotHasKey( 'articleType', $data );
 		$this->assertSame( 'Q4830453', $data['articleTypes'][0]['id'] );
 		$this->assertSame( 5, $data['articleTypes'][0]['hierarchyDepth'] );
 		// Stored capitalized, so page_props needs no fixing at read time

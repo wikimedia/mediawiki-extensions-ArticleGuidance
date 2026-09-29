@@ -252,13 +252,6 @@ class OutlineService {
 					$articleTypes
 				),
 				'generic' => $isGeneric,
-				// The primary entry is also exposed through the pre-multi-item
-				// singular fields, so JS bundles still cached from before the
-				// deploy keep matching on it (T421260). TODO: Drop these three keys
-				// together with the /v0 route once that window has passed.
-				'articleType' => $primary['id'] ?? null,
-				'hierarchyDepth' => $primary['hierarchyDepth'] ?? null,
-				'matchVia' => $primary['matchVia'] ?? null,
 				'instructions' => $pageData['instructions'] ?? null,
 				'thumbnail' => $image,
 				'notabilityRisk' => $pageData['notabilityRisk'] ?? [],

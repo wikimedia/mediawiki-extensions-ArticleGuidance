@@ -11,7 +11,7 @@ use MediaWiki\Rest\Response;
 /**
  * REST handler for listing article guidance outlines.
  *
- * Serves both /v0/outlines and /v1/outlines with the same payload.
+ * Serves /v1/outlines.
  *
  * The ETag is a hash of the payload, so the validator comes from the response
  * bytes. The page_touched timestamp that getLastModified() returns comes from

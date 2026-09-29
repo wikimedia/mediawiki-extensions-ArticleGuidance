@@ -164,7 +164,7 @@ function useWikidataSearch( query, language ) {
 
 		// Direct property → outline-type match (0-hop via wbgetentities) across
 		// every matchVia group, since the SPARQL hierarchy query uses `+` and
-		// would miss e.g. an item whose P106 is itself an outline articleType.
+		// would miss e.g. an item whose P106 is itself one of an outline's article types.
 		collectDirectMatches( matches, filteredQIds, directTypesByGroup, outlineQIdSet );
 
 		applyHierarchyMatches( matches, itemHierarchyMatches );

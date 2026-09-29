@@ -13,8 +13,7 @@ re-parsed. The `ArticleGuidanceTagHandler` processes the tag and:
    `{ id, hierarchyDepth, matchVia, itemLabel, itemDescription, itemImage }` entries. The `item*`
    fields hold the Wikidata item's label, description and image in the content language. The
    duplicate notices use `itemLabel`, and duplicate resolution uses the description and image (see
-   below). They are not served to the client. A singular `articleType` field holding the primary ID is also written, solely so a
-   rollback to pre-multi-item code keeps working; runtime consumers use `articleTypes`. If any
+   below). They are not served to the client. If any
    token in the attribute is malformed, the whole attribute is treated as invalid. The outline's
    label defaults to the last phrase of the outline page title (e.g. "Company" from
    `Article guidance/Company`), or can be overridden by an optional `label` attribute on the tag;
@@ -55,9 +54,7 @@ The `/articleguidance/v1/outlines` REST endpoint calls `OutlineService::getOutli
 3. JSON-decodes each value and assembles the outlines list. Pages with no property (not yet saved
    since deploy) are omitted. Blobs persisted before multi-item support get an `articleTypes`
    array synthesized from their legacy singular fields at read time by
-   `OutlineService::getArticleTypes()`, so all consumers can rely on `articleTypes`. The primary entry is additionally served under the singular `articleType`,
-   `hierarchyDepth` and `matchVia` keys, for JS still cached from before multi-item support.
-
+   `OutlineService::getArticleTypes()`, so all consumers can rely on `articleTypes`.
 4. Resolves duplicates (see [Duplicate resolution](#duplicate-resolution)), so each Q ID appears
    in at most one outline.
 
@@ -116,9 +113,7 @@ Freshness uses two validators:
 A **breaking** change to the response shape still needs a path version bump (`v1` → `v2`), because
 JS bundles cached across the deploy expect the old shape. Keep the previous path registered for one
 release, or those bundles 404. Additive and data-only changes no longer need a bump, because the
-ETag already changes with them. The version currently in use is `v1`; `v0` remains only for the
-bundle-compat reason, alongside the singular `articleType`/`hierarchyDepth`/`matchVia` keys, and
-both can be dropped in a later release.
+ETag already changes with them. The version currently in use is `v1`.
 
 ## Rendering on-wiki
 

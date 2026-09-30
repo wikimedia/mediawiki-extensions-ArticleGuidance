@@ -1,10 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Budhiastawa"
+			"Budhiastawa",
+			"Veracious"
 		]
 	},
+	"articleguidance-sources-tips-title-generic": "Tips dalam memilih sumber",
 	"articleguidance-notability-warning-crosswiki": "Topik ini belum ada di Wikipedia lain. Cari tahu apa yang diperlukan untuk menerbitkan artikel di sini.",
 	"articleguidance-notability-warning-wikidata": "Anda hanya dapat membuat jenis artikel ini untuk subjek yang memiliki entri Wikidata.",
-	"articleguidance-notability-warning-draft": "Artikel ini awalnya berupa draf. Anda dapat menerbitkannya setelah siap."
+	"articleguidance-notability-warning-draft": "Artikel ini awalnya berupa draf. Anda dapat menerbitkannya setelah siap.",
+	"articleguidance-subjectcovered-redirect-retry": "Coba lagi"
 }

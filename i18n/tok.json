@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ookap",
 			"Palinasin",
 			"Recqy"
 		]
@@ -11,7 +12,7 @@
 	"articleguidance-specialnewarticle-checking": "mi alasa...",
 	"articleguidance-specialnewarticle-no-results": "mi alasa e ala tan nimi \"$1\"",
 	"articleguidance-sources-title": "o pana e toki tan",
-	"articleguidance-sources-subtitle": "o pana e tan sona tawa lipu \"$1\"",
+	"articleguidance-sources-subtitle": "tan sona la pona la jan lukin li ken sona e lon pi sona ni e suli pi ijo ni.",
 	"articleguidance-sources-continue": "o awen",
 	"articleguidance-instructions-start-writing": "o open sitelen",
 	"articleguidance-navigation-back": "lipu pini"

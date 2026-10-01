@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ansony89",
 			"LowensteinYang",
 			"臺灣象象"
 		]
 	},
 	"articleguidance-desc": "使用戶能夠透過引導式輔助工作流程建立條目。",
-	"articleguidance-type-label": "類型："
+	"articleguidance-type-label": "類型：",
+	"articleguidance-default-outline-recommended-source-1": "具備編輯監督機制且有事實查核紀錄的新聞機構"
 }

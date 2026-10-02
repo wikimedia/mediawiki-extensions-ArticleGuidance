@@ -25,7 +25,7 @@
 	"articleguidance-sources-duplicate": "To źródło zostało już dodane",
 	"articleguidance-sources-continue": "Kontynuuj",
 	"articleguidance-sources-helper": "Możesz dodawać źródła podczas pisania.",
-	"articleguidance-sources-helper-required": "Artykuły oznaczone jako „$1” na tej wiki wymagają źródeł.",
+	"articleguidance-sources-helper-required": "Artykuły oznaczone jako „$1” w tej wiki wymagają źródeł.",
 	"articleguidance-sources-helper-progress": "Dodano $1 z {{PLURAL:$2|$2 źródła|$2 źródeł}}.",
 	"articleguidance-sources-unreliable-warning-title": "Niezalecane przez społeczność",
 	"articleguidance-sources-unreliable-warning-description": "Ten rodzaj źródła jest rzadko akceptowany dla tego rodzaju artykułów.",

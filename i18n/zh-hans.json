@@ -27,7 +27,7 @@
 	"articleguidance-sources-duplicate": "此来源已被添加",
 	"articleguidance-sources-continue": "继续",
 	"articleguidance-sources-helper": "您可以在撰写时添加来源。",
-	"articleguidance-sources-helper-required": "此wiki的$1条目需要来源。",
+	"articleguidance-sources-helper-required": "本wiki的$1条目需要提供来源。",
 	"articleguidance-sources-helper-progress": "已添加$1个来源（最少需要{{PLURAL:$2|$2个来源}}）。",
 	"articleguidance-sources-unreliable-warning-title": "社群不推荐",
 	"articleguidance-sources-unreliable-warning-description": "对于此类条目，这类来源很少被接受。",

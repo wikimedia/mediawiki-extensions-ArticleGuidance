@@ -23,6 +23,10 @@ describe( 'title utils', () => {
 			expect( isValidTitle( 'Article#Section' ) ).toBe( false );
 			expect( isValidTitle( '#Section' ) ).toBe( false );
 			expect( isValidTitle( '#' ) ).toBe( false );
+			expect( isValidTitle( 'nyc#' ) ).toBe( false );
+			expect( isValidTitle( ':nyc' ) ).toBe( false );
+			expect( isValidTitle( '_nyc' ) ).toBe( false );
+			expect( isValidTitle( 'nyc_' ) ).toBe( false );
 		} );
 
 		it( 'returns false for titles in non-main namespaces', () => {
@@ -46,6 +50,7 @@ describe( 'title utils', () => {
 			expect( getInvalidTitleCharacters( '[Draft]' ) ).toEqual( [ '[', ']' ] );
 			expect( getInvalidTitleCharacters( '{Formula} | <Test> #' ) ).toEqual( [ '{', '}', '|', '<', '>', '#' ] );
 			expect( getInvalidTitleCharacters( 'Article#Section' ) ).toEqual( [ '#' ] );
+			expect( getInvalidTitleCharacters( 'nyc#' ) ).toEqual( [ '#' ] );
 			expect( getInvalidTitleCharacters( '[[Multiple]][[Duplicates]]' ) ).toEqual( [ '[', ']' ] );
 		} );
 

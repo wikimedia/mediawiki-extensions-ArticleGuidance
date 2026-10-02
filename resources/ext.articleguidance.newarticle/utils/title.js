@@ -17,6 +17,18 @@ function isValidTitle( text ) {
 	if ( !trimmed ) {
 		return false;
 	}
+	// '#' is never allowed in page titles (reserved for section fragments in links)
+	// Leading ':' forces mainspace in link targets, but is illegal in page titles
+	// Leading or trailing underscores are stripped by link normalization
+	if (
+		trimmed.includes( '#' ) ||
+		trimmed.startsWith( ':' ) ||
+		trimmed.startsWith( '_' ) ||
+		trimmed.endsWith( '_' )
+	) {
+		return false;
+	}
+
 	const title = mw.Title.newFromText( trimmed );
 	return title !== null && title.getNamespaceId() === NS_MAIN && !title.getFragment();
 }

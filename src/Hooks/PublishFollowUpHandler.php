@@ -6,7 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
-use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Output\Hook\BeforePageDisplayHook;
 
 class PublishFollowUpHandler implements BeforePageDisplayHook {
 

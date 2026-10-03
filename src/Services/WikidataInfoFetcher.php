@@ -6,7 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Services;
 
 use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Http\HttpRequestFactory;
-use MediaWiki\Languages\LanguageFactory;
+use MediaWiki\Language\LanguageFactory;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ObjectCache\WANObjectCache;
 

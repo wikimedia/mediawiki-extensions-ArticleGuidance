@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Mainframe98",
 			"McDutchie",
 			"Siebrand"
 		]
@@ -78,6 +79,8 @@
 	"articleguidance-tracking-category": "Pagina's die gebruikmaken van paginarichtlijnen",
 	"articleguidance-tracking-category-desc": "Pagina's in deze categorie gebruiken de tag <article-guidance> om gestructureerde richtlijnen te bieden voor het schrijven.",
 	"articleguidance-subjectcovered-button": "Pagina verbeteren",
+	"articleguidance-subjectcovered-redirect-success": "\"$1\" verwijst nu door naar \"$2\".",
+	"articleguidance-subjectcovered-redirect-retry": "Opnieuw proberen",
 	"articleguidance-titleconflict-suggestion-prefix": "Suggestie:",
 	"articleguidance-titleconflict-continue": "Doorgaan",
 	"articleguidance-titleconflict-selected-subject": "Geselecteerd project",
@@ -100,5 +103,6 @@
 	"articleguidance-unsupported-subject-request-title": "Ondersteuning vragen voor dit type",
 	"articleguidance-unsupported-subject-request-description": "Vraag de community om richtlijnen toe te voegen voor dit type pagina.",
 	"articleguidance-unsupported-subject-start-title": "Begin met bewerken",
-	"articleguidance-unsupported-subject-start-description": "Maak deze pagina zonder richtlijnen."
+	"articleguidance-unsupported-subject-start-description": "Maak deze pagina zonder richtlijnen.",
+	"communityconfiguration-articleguidance-feature-section-label": "Beschikbaarheid"
 }

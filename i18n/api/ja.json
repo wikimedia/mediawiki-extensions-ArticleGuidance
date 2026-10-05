@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Omotecho"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "<!-- Do not translate text that is either quoted, or inside <var></var>, <kbd></kbd>, <samp></samp>, <code></code>, or ; and : in this message. -->\nこの編集の作成に<kbd>[[Special:NewArticle|Article guidance]]</kbd>を使ったと示す記録であり、それに従ってタグ付けしてください。"
+}

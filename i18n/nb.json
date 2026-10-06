@@ -78,10 +78,5 @@
 	"articleguidance-publish-followup-confirmation-title": "Artikkelen er publisert!",
 	"articleguidance-publish-followup-community-review": "Andre bidragsytere kommer til å gjennomgå denne artikkelen. I mellomtiden, ta en ekstra titt på forslagene til å forbedre den.",
 	"articleguidance-publish-followup-edit-more-button": "Forbedre artikkel",
-	"articleguidance-publish-followup-close-button": "Lukk",
-	"articleguidance-unsupported-subject-heading": "Ingen veileder for dette emnet enda",
-	"articleguidance-unsupported-subject-request-title": "Forespør støtte for denne typen",
-	"articleguidance-unsupported-subject-request-description": "Spør fellesskapet om å legge til veilederstøtte for denne typen artikkel.",
-	"articleguidance-unsupported-subject-start-title": "Begynn å skrive",
-	"articleguidance-unsupported-subject-start-description": "Skriv denne artikkelen uten artikkelveiviseren."
+	"articleguidance-publish-followup-close-button": "Lukk"
 }

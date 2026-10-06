@@ -87,10 +87,5 @@
 	"articleguidance-publish-followup-confirmation-title": "নিবন্ধটি প্রকাশিত হয়েছে!",
 	"articleguidance-publish-followup-community-review": "অন্যান্য সম্পাদকগণ এই নিবন্ধটি পর্যালোচনা করবেন। এর মাঝে, এটি আরও উন্নত করার জন্য প্রদত্ত পরামর্শগুলো আবার দেখে নিন।",
 	"articleguidance-publish-followup-edit-more-button": "নিবন্ধের উন্নয়ন করুন",
-	"articleguidance-publish-followup-close-button": "বন্ধ করুন",
-	"articleguidance-unsupported-subject-heading": "এই বিষয়ের জন্য এখনো কোনো নির্দেশনা উপলভ্য নয়",
-	"articleguidance-unsupported-subject-request-title": "এই ধরনটির জন্য সহায়তার অনুরোধ করুন",
-	"articleguidance-unsupported-subject-request-description": "এই ধরনের নিবন্ধের জন্য নির্দেশনা যোগ করতে সম্প্রদায়ের কাছে অনুরোধ করুন।",
-	"articleguidance-unsupported-subject-start-title": "লেখা শুরু করুন",
-	"articleguidance-unsupported-subject-start-description": "নিবন্ধ নির্দেশিকা ছাড়াই এই নিবন্ধটি লিখুন।"
+	"articleguidance-publish-followup-close-button": "বন্ধ করুন"
 }

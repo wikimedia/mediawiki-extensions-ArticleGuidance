@@ -87,10 +87,5 @@
 	"articleguidance-publish-followup-confirmation-title": "O artigo foi publicado!",
 	"articleguidance-publish-followup-community-review": "Outros editores irão revisar este artigo. Enquanto isso, dê uma olhada nas sugestões para melhorá-lo.",
 	"articleguidance-publish-followup-edit-more-button": "Melhorar artigo",
-	"articleguidance-publish-followup-close-button": "Fechar",
-	"articleguidance-unsupported-subject-heading": "Ainda não há orientações sobre este tópico",
-	"articleguidance-unsupported-subject-request-title": "Solicitar suporte para este tipo",
-	"articleguidance-unsupported-subject-request-description": "Solicite à comunidade que adicione orientações para este tipo de artigo.",
-	"articleguidance-unsupported-subject-start-title": "Começar a escrever",
-	"articleguidance-unsupported-subject-start-description": "Escreva este artigo sem assistência."
+	"articleguidance-publish-followup-close-button": "Fechar"
 }

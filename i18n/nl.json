@@ -75,7 +75,6 @@
 	"articleguidance-specialnewarticle-no-matching-type": "Kunt u het juiste type niet vinden?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Stel een nieuw type voor",
 	"articleguidance-feedback-missing-type-preloadtitle": "Er kon geen overeenkomend artikeltype worden gevonden voor “$1”.",
-	"articleguidance-feedback-request-support-preloadtitle": "Verzoek om ondersteuning: $1 ($2)",
 	"articleguidance-tracking-category": "Pagina's die gebruikmaken van paginarichtlijnen",
 	"articleguidance-tracking-category-desc": "Pagina's in deze categorie gebruiken de tag <article-guidance> om gestructureerde richtlijnen te bieden voor het schrijven.",
 	"articleguidance-subjectcovered-button": "Pagina verbeteren",
@@ -99,10 +98,5 @@
 	"articleguidance-publish-followup-community-review": "Andere bewerkers gaan deze pagina beoordelen. Bekijk in de tussentijd de suggesties ter verbetering nog eens.",
 	"articleguidance-publish-followup-edit-more-button": "Pagina verbeteren",
 	"articleguidance-publish-followup-close-button": "Sluiten",
-	"articleguidance-unsupported-subject-heading": "Er is nog geen richtlijn beschikbaar voor dit onderwerp",
-	"articleguidance-unsupported-subject-request-title": "Ondersteuning vragen voor dit type",
-	"articleguidance-unsupported-subject-request-description": "Vraag de community om richtlijnen toe te voegen voor dit type pagina.",
-	"articleguidance-unsupported-subject-start-title": "Begin met bewerken",
-	"articleguidance-unsupported-subject-start-description": "Maak deze pagina zonder richtlijnen.",
 	"communityconfiguration-articleguidance-feature-section-label": "Beschikbaarheid"
 }

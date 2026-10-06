@@ -81,7 +81,6 @@
 	"articleguidance-specialnewarticle-no-matching-type": "Non riesci a trovare il tipo giusto?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Suggerisci un nuovo tipo",
 	"articleguidance-feedback-missing-type-preloadtitle": "Impossibile trovare un tipo di voce corrispondente per \"$1\"",
-	"articleguidance-feedback-request-support-preloadtitle": "Richiesta di supporto: $1 ($2)",
 	"articleguidance-tracking-category": "Pagine che utilizzano il percorso guidato",
 	"articleguidance-tracking-category-desc": "Le pagine in questa categoria usano il tag <article-guidance> per fornire una guida strutturata per la creazione della voce.",
 	"articleguidance-subjectcovered-subtitle": "Il risultato selezionato contiene una voce",
@@ -111,10 +110,5 @@
 	"articleguidance-publish-followup-community-review": "Altri utenti revisioneranno questa voce. Nel frattempo guarda i suggerimenti per migliorarla.",
 	"articleguidance-publish-followup-edit-more-button": "Migliora voce",
 	"articleguidance-publish-followup-close-button": "Chiudi",
-	"articleguidance-unsupported-subject-heading": "Non esistono ancora percorsi guidati per questo argomento",
-	"articleguidance-unsupported-subject-request-title": "Richiedi assistenza per questo tipo",
-	"articleguidance-unsupported-subject-request-description": "Chiedi alla comunità di aggiungere un percorso guidato per questo tipo di voce.",
-	"articleguidance-unsupported-subject-start-title": "inizia a scrivere",
-	"articleguidance-unsupported-subject-start-description": "Scrivi questa voce saltando il percorso guidato.",
 	"communityconfiguration-articleguidance-feature-section-label": "Disponibilità"
 }

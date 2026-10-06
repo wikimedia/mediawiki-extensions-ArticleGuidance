@@ -90,10 +90,5 @@
 	"articleguidance-publish-followup-confirmation-title": "문서가 게시되었습니다!",
 	"articleguidance-publish-followup-community-review": "다른 편집자들이 이 문서를 검토할 예정입니다. 그동안 문서 개선을 위한 제안들을 다시 한번 살펴보시기 바랍니다.",
 	"articleguidance-publish-followup-edit-more-button": "문서 개선하기",
-	"articleguidance-publish-followup-close-button": "닫기",
-	"articleguidance-unsupported-subject-heading": "이 주제에 대한 지침이 아직 없습니다",
-	"articleguidance-unsupported-subject-request-title": "이 유형에 대한 지원을 요청",
-	"articleguidance-unsupported-subject-request-description": "커뮤니티에 이러한 유형의 문서에 대한 지침을 추가해 달라고 요청합니다.",
-	"articleguidance-unsupported-subject-start-title": "글쓰기 시작",
-	"articleguidance-unsupported-subject-start-description": "문서 작성 지침 없이 이 문서를 작성합니다."
+	"articleguidance-publish-followup-close-button": "닫기"
 }

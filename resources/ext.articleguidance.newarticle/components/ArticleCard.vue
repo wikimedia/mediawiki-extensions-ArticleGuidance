@@ -109,34 +109,6 @@ module.exports = defineComponent( {
 		margin: 0 4px;
 	}
 
-	.cdx-card__thumbnail {
-		.cdx-thumbnail {
-			width: 100%;
-			height: 150px;
-			object-fit: cover;
-			background-color: @background-color-neutral-subtle;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-			}
-
-			&.cdx-thumbnail--placeholder {
-				background-color: @background-color-neutral-subtle;
-
-				.cdx-icon {
-					opacity: 0.3;
-					width: 48px;
-					height: 48px;
-				}
-			}
-		}
-	}
-
 	&.ext-articleguidance-article-card--interactive {
 		cursor: pointer;
 

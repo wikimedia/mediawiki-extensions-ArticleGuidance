@@ -121,6 +121,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "A page titled \"$1\" has already been created.",
 	"articleguidance-subjectcovered-redirect-error-permission": "You're not allowed to create this page.",
 	"articleguidance-subjectcovered-redirect-retry": "Retry",
+	"articleguidance-subjectcovered-redirect-returnto": "Return to $1",
 	"articleguidance-titleconflict-suggestion-prefix": "Suggestion:",
 	"articleguidance-titleconflict-continue": "Continue",
 	"articleguidance-titleconflict-selected-subject": "Selected subject",

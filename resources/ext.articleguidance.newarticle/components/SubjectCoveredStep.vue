@@ -85,6 +85,14 @@
 				</cdx-button>
 			</cdx-message>
 		</div>
+		<a
+			v-if="returnToLink"
+			:href="returnToLink.url"
+			class="ext-articleguidance-subjectcovered-returnto"
+			@click="handleReturnTo"
+		>
+			{{ returnToLink.text }}
+		</a>
 	</step>
 </template>
 
@@ -112,7 +120,12 @@ module.exports = defineComponent( {
 	},
 	setup() {
 		const store = useArticleGuidanceStore();
-		const { localArticleInfo, searchQuery, redLinkTitle } = storeToRefs( store );
+		const {
+			localArticleInfo,
+			searchQuery,
+			redLinkTitle,
+			redLinkReferrer
+		} = storeToRefs( store );
 
 		const {
 			redirectState,
@@ -137,6 +150,21 @@ module.exports = defineComponent( {
 			canCreateRedirect.value :
 			redirectState.value !== 'done'
 		);
+
+		const returnToLink = computed( () => {
+			const redirectDone = redirectState.value === 'created' ||
+				redirectState.value === 'done';
+			const title = redirectDone && redLinkReferrer.value ?
+				mw.Title.newFromText( redLinkReferrer.value ) :
+				null;
+			return title ? {
+				url: title.getUrl(),
+				text: mw.message(
+					'articleguidance-subjectcovered-redirect-returnto',
+					title.getPrefixedText()
+				).text()
+			} : null;
+		} );
 
 		const redirectDescriptionText = computed( () => mw.message(
 			'articleguidance-subjectcovered-redirect-description',
@@ -199,6 +227,9 @@ module.exports = defineComponent( {
 		const handleDismissRedirectMessage = () => {
 			dismissRedirectMessage();
 		};
+		const handleReturnTo = () => {
+			instrument.logSubjectCoveredAction( 'return' );
+		};
 		return {
 			localArticleInfo,
 			redirectState,
@@ -207,12 +238,14 @@ module.exports = defineComponent( {
 			redirectDescriptionText,
 			redirectSuccessText,
 			redirectErrorText,
+			returnToLink,
 			redirectIcon: cdxIconArticleRedirect,
 			handleBack,
 			handleImproveArticle,
 			handleReadArticle,
 			handleCreateRedirect,
-			handleDismissRedirectMessage
+			handleDismissRedirectMessage,
+			handleReturnTo
 		};
 	}
 } );
@@ -241,6 +274,12 @@ module.exports = defineComponent( {
 		margin-top: 0.5rem;
 		max-width: 400px;
 	}
+}
+
+.ext-articleguidance-subjectcovered-returnto {
+	display: block;
+	margin-top: 0.5rem;
+	font-size: @font-size-medium;
 }
 
 .ext-articleguidance-subjectcovered-redirect-description {

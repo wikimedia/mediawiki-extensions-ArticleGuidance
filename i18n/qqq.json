@@ -122,6 +122,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "Error message shown when the redirect could not be created because the page was created by someone else, or in another tab, while the user was on this step. No retry button is offered, because the title is no longer free. Parameters:\n* $1 - the red-link title the user followed, for example \"NYC\".",
 	"articleguidance-subjectcovered-redirect-error-permission": "Error message shown when the user is not allowed to create the redirect, for example because they were blocked or lost the right while on this step. No retry button is offered.",
 	"articleguidance-subjectcovered-redirect-retry": "Button label for trying the failed redirect creation again.\n{{Identical|Retry}}",
+	"articleguidance-subjectcovered-redirect-returnto": "Link shown once the redirect was created, leading back to the page that held the red link the user followed. Only shown when that page is known. Parameters:\n* $1 - the title of that page, for example \"Solar System\".\n{{Identical|Return to}}",
 	"articleguidance-titleconflict-suggestion-prefix": "Text preceding the suggested alternative title link in the title conflict step.",
 	"articleguidance-titleconflict-continue": "Button label to proceed past the title conflict step once the user has chosen a free title.",
 	"articleguidance-titleconflict-selected-subject": "Label shown above the selected Wikidata subject card in the title conflict step.",

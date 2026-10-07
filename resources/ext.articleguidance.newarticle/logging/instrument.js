@@ -199,7 +199,7 @@ function logSubjectCoveredShown() {
 /**
  * Fire when the user acts on the subject-covered step.
  *
- * @param {string} subtype 'improve', 'read', or 'create_redirect'.
+ * @param {string} subtype 'improve', 'read', 'create_redirect', or 'return'.
  */
 function logSubjectCoveredAction( subtype ) {
 	const data = {};

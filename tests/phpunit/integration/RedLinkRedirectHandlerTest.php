@@ -24,7 +24,8 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 
 	private function getHandler(
 		bool $redirectEnabled = true,
-		bool $enabled = true
+		bool $enabled = true,
+		?string $refererTitle = null
 	): RedLinkRedirectHandler {
 		// Empty referer/category lists => every referer is in scope; junior gate off.
 		$config = new HashConfig( [
@@ -48,8 +49,11 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 		$userOptionsLookup->method( 'getBoolOption' )->willReturn( true );
 
+		$titleExtractor = $this->createMock( TitleExtractor::class );
+		$titleExtractor->method( 'extractPageTitle' )->willReturn( $refererTitle );
+
 		return new RedLinkRedirectHandler(
-			$this->createMock( TitleExtractor::class ),
+			$titleExtractor,
 			$config,
 			$this->getServiceContainer()->getTitleFactory(),
 			$instrumentFactory,
@@ -161,6 +165,45 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		);
 
 		$this->assertFalse( $result, 'A red link with no deletion log should redirect.' );
+	}
+
+	public function testRedirectCarriesRefererAsReturnTo(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->once() )->method( 'redirect' )
+			->with( $this->stringContains( 'returnto=Solar+System' ) );
+
+		$this->getHandler( true, true, 'Solar_System' )->onBeforeInitialize(
+			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
+		);
+	}
+
+	public function testRedirectOmitsReturnToWithoutReferer(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->once() )->method( 'redirect' )
+			->with( $this->logicalNot( $this->stringContains( 'returnto' ) ) );
+
+		$this->getHandler( true )->onBeforeInitialize(
+			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
+		);
+	}
+
+	public function testRedirectOmitsReturnToWhenRefererIsRedLinkTitle(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$output = $this->createMock( OutputPage::class );
+		$output->expects( $this->once() )->method( 'redirect' )
+			->with( $this->logicalNot( $this->stringContains( 'returnto' ) ) );
+
+		$this->getHandler( true, true, 'ArticleGuidanceNeverExistedRedLink' )->onBeforeInitialize(
+			$title, null, $output, $this->makeUser(), $this->makeRedLinkRequest(), null
+		);
 	}
 
 	public function testDisabledRedirectDoesNotRedirect(): void {

@@ -34,6 +34,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const titleSuggestion = ref( null );
 	const originalTypedTitle = ref( null );
 	const redLinkTitle = ref( null );
+	// Page holding the red link, when the server could tell (T426844).
+	const redLinkReferrer = ref( null );
 	const isRedLink = computed( () => redLinkTitle.value !== null );
 
 	// The generic outline is not a type of article, so it is never named as one
@@ -277,8 +279,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		searchQuery.value = query;
 	}
 
-	function setRedLinkOrigin( title ) {
+	function setRedLinkOrigin( title, referrer ) {
 		redLinkTitle.value = title;
+		redLinkReferrer.value = referrer || null;
 	}
 
 	function buildNotabilityState() {
@@ -450,6 +453,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		titleSuggestion,
 		originalTypedTitle,
 		redLinkTitle,
+		redLinkReferrer,
 		isRedLink,
 		creationTitle,
 		hasInstructions,

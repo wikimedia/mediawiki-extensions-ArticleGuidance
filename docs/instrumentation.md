@@ -33,7 +33,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `guidance_shown` | Instructions step is shown | — | — | — |
 | `write_start` | User clicks "Start Writing" | — | — | `{"outline":{…}}` [see below](#how-an-outline-is-reported) |
 | `subject_covered_shown` | Subject-covered step is shown | — | — | — |
-| `subject_covered_action` | User acts on the subject-covered step | — | `improve`, `read`, or `create_redirect` | — |
+| `subject_covered_action` | User acts on the subject-covered step | — | `improve`, `read`, `create_redirect`, or `return` | — |
 | `redirect_created` | A redirect creation attempt finishes | — | `success` or `error` | `{"code":"<action API error code>"}` on error |
 | `title_conflict_shown` | Title-conflict step is shown | — | — | — |
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |

@@ -271,10 +271,17 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			$this->sendEntryPointEvent( 'redlink', $shouldRedirect );
 			if ( $shouldRedirect ) {
 				// Outcome 1: go to Article Guidance
-				$this->performRedirect( $output, [
+				$params = [
 					'newarticletitle' => $title->getPrefixedText(),
 					'source' => 'redlink',
-				] );
+				];
+				// Lets the subject-covered step offer a way back once it has turned
+				// the red link into a redirect (T426844).
+				$refTitle = $this->getRefererTitle( $request );
+				if ( $refTitle !== null && !$refTitle->equals( $title ) ) {
+					$params['returnto'] = $refTitle->getPrefixedText();
+				}
+				$this->performRedirect( $output, $params );
 				return false;
 			} else {
 				// Outcome 2: go directly to the editor

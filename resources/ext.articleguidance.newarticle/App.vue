@@ -42,6 +42,10 @@ module.exports = defineComponent( {
 		source: {
 			type: String,
 			default: ''
+		},
+		returnTo: {
+			type: String,
+			default: ''
 		}
 	},
 	setup( props ) {
@@ -53,7 +57,7 @@ module.exports = defineComponent( {
 		}
 
 		if ( props.source === 'redlink' && props.initialTitle ) {
-			store.setRedLinkOrigin( props.initialTitle );
+			store.setRedLinkOrigin( props.initialTitle, props.returnTo );
 		}
 
 		watch( currentStep, () => {

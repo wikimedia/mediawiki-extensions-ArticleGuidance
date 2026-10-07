@@ -7,8 +7,9 @@ const container = document.getElementById( 'content' );
 if ( container ) {
 	const initialTitle = ( mw.util.getParamValue( 'newarticletitle' ) || '' ).replace( /_/g, ' ' );
 	const source = mw.util.getParamValue( 'source' ) || '';
+	const returnTo = mw.util.getParamValue( 'returnto' ) || '';
 	instrument.logInit( initialTitle, source );
-	Vue.createMwApp( App, { initialTitle, source } )
+	Vue.createMwApp( App, { initialTitle, source, returnTo } )
 		.use( createPinia() )
 		.mount( container );
 }

@@ -2,6 +2,18 @@ const { ref, watch } = require( 'vue' );
 const { checkPagesExist } = require( '../api/MediaWiki.js' );
 const { withRetry } = require( '../utils/retry.js' );
 
+// Page-scoped cache: cleared automatically on page reload, and by clearExistenceCache().
+// The search step checks again when the user goes back to it.
+// Key: title, Value: whether the page exists
+const existenceCache = new Map();
+
+/**
+ * Forget the cached existence of all titles, after the workflow creates a page.
+ */
+function clearExistenceCache() {
+	existenceCache.clear();
+}
+
 /**
  * Composable for checking if an article exists on the local wiki
  *
@@ -29,11 +41,19 @@ function useArticleExist( title ) {
 			return;
 		}
 
+		if ( existenceCache.has( currentTitle ) ) {
+			exists.value = existenceCache.get( currentTitle );
+			loading.value = false;
+			error.value = null;
+			return;
+		}
+
 		loading.value = true;
 		error.value = null;
 
 		try {
 			const existenceMap = await withRetry( () => checkPagesExist( [ currentTitle ] ) );
+			existenceCache.set( currentTitle, existenceMap[ currentTitle ] );
 			// Only update if title hasn't changed during the async operation
 			if ( title.value === currentTitle ) {
 				exists.value = existenceMap[ currentTitle ];
@@ -81,4 +101,4 @@ function useArticleExist( title ) {
 	};
 }
 
-module.exports = useArticleExist;
+module.exports = { useArticleExist, clearExistenceCache };

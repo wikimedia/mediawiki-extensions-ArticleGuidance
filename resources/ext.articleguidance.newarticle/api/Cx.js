@@ -17,6 +17,11 @@ const config = require( '../config.json' );
 // or unresponsive service never blocks the search results.
 const TRANSLATE_TIMEOUT_MS = 10000;
 
+// Page-scoped cache: cleared automatically on page reload. Failed requests are
+// not cached.
+// Key: request URL and text, Value: translated text or null
+const translationCache = new Map();
+
 /**
  * Escape the characters that would otherwise break the HTML wrapping we send to
  * cxserver, which expects an HTML document as input.
@@ -50,6 +55,10 @@ async function translateQuery( text, sourceLang, targetLang ) {
 	}
 
 	const url = cxServerUrl + '/' + sourceLang + '/' + target + '/MinT';
+	const cacheKey = url + '|' + trimmed;
+	if ( translationCache.has( cacheKey ) ) {
+		return translationCache.get( cacheKey );
+	}
 
 	try {
 		const data = await $.ajax( {
@@ -69,8 +78,9 @@ async function translateQuery( text, sourceLang, targetLang ) {
 		// We may need to update this after the T434057 resolves.
 		const html = data ? ( data.contents || data.html || '' ) : '';
 		const doc = new DOMParser().parseFromString( html, 'text/html' );
-		const translation = ( doc.body.textContent || '' ).trim();
-		return translation || null;
+		const translation = ( doc.body.textContent || '' ).trim() || null;
+		translationCache.set( cacheKey, translation );
+		return translation;
 	} catch ( error ) {
 		return null;
 	}

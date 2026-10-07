@@ -12,10 +12,6 @@ jest.mock(
 	() => ( { searchWikidata: jest.fn(), fetchEntityClaims: jest.fn() } )
 );
 jest.mock(
-	'../../../resources/ext.articleguidance.newarticle/api/Sparql.js',
-	() => ( { checkItemHierarchyMatches: jest.fn() } )
-);
-jest.mock(
 	'../../../resources/ext.articleguidance.newarticle/api/Cx.js',
 	() => ( { translateQuery: jest.fn() } )
 );
@@ -23,20 +19,9 @@ jest.mock(
 	'../../../resources/ext.articleguidance.newarticle/utils/commonsThumb.js',
 	() => ( { getCommonsThumbUrl: jest.fn() } )
 );
-jest.mock(
-	'../../../resources/ext.articleguidance.newarticle/logging/search.js',
-	() => ( { reportSearchEvaluation: jest.fn() } )
-);
-jest.mock(
-	'../../../resources/ext.articleguidance.newarticle/stores/useArticleGuidanceStore.js',
-	() => () => ( { loadOutlines: () => Promise.resolve( [] ) } )
-);
 
 const { searchWikidata, fetchEntityClaims } = require(
 	'../../../resources/ext.articleguidance.newarticle/api/Wikidata.js'
-);
-const { checkItemHierarchyMatches } = require(
-	'../../../resources/ext.articleguidance.newarticle/api/Sparql.js'
 );
 const useWikidataSearch = require(
 	'../../../resources/ext.articleguidance.newarticle/composables/useWikidataSearch.js'
@@ -54,8 +39,6 @@ describe( 'useWikidataSearch', () => {
 		jest.useFakeTimers();
 		searchWikidata.mockReset();
 		fetchEntityClaims.mockReset();
-		checkItemHierarchyMatches.mockReset();
-		checkItemHierarchyMatches.mockResolvedValue( {} );
 		searchWikidata.mockResolvedValue( [ { id: 'Q10993', url: '' } ] );
 		fetchEntityClaims.mockResolvedValue( {
 			Q10993: { claims: {}, label: 'Tiger Woods', hasLabel: true, description: '' }

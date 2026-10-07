@@ -113,16 +113,16 @@ describe( 'collectDirectMatches', () => {
 } );
 
 describe( 'applyHierarchyMatches', () => {
-	it( 'merges hierarchy matches and ignores the excluded bucket', () => {
+	it( 'merges hierarchy matches across groups', () => {
 		const matches = { Q123: [ 'Q1' ] };
 		const itemHierarchyMatches = {
 			P106: { Q123: new Set( [ 'Q2', 'Q1' ] ) },
-			__excluded__: { Q123: new Set( [ 'Q999' ] ) }
+			default: { Q123: new Set( [ 'Q3' ] ) }
 		};
 
 		applyHierarchyMatches( matches, itemHierarchyMatches );
 
-		expect( matches.Q123.sort() ).toEqual( [ 'Q1', 'Q2' ] );
+		expect( matches.Q123.sort() ).toEqual( [ 'Q1', 'Q2', 'Q3' ] );
 	} );
 } );
 

@@ -12,6 +12,10 @@ jest.mock(
 	() => ( { createRedirect: jest.fn() } )
 );
 jest.mock(
+	'../../../resources/ext.articleguidance.newarticle/composables/useArticleExist.js',
+	() => ( { clearExistenceCache: jest.fn() } )
+);
+jest.mock(
 	'../../../resources/ext.articleguidance.newarticle/logging/instrument.js',
 	() => ( { logRedirectCreated: jest.fn() } )
 );
@@ -21,6 +25,9 @@ const { checkPagesExist } = require(
 );
 const { createRedirect: createRedirectPage } = require(
 	'../../../resources/ext.articleguidance.newarticle/api/Redirect.js'
+);
+const { clearExistenceCache } = require(
+	'../../../resources/ext.articleguidance.newarticle/composables/useArticleExist.js'
 );
 const instrument = require(
 	'../../../resources/ext.articleguidance.newarticle/logging/instrument.js'
@@ -124,6 +131,7 @@ describe( 'useRedirectCreation', () => {
 		expect( createRedirectPage ).toHaveBeenCalledWith( 'NYC', 'New York City' );
 		expect( r.redirectState.value ).toBe( 'created' );
 		expect( instrument.logRedirectCreated ).toHaveBeenCalledWith( true );
+		expect( clearExistenceCache ).toHaveBeenCalled();
 	} );
 
 	it( 'dismissing a success is terminal', async () => {
@@ -146,6 +154,7 @@ describe( 'useRedirectCreation', () => {
 		expect( r.redirectState.value ).toBe( 'error' );
 		expect( r.redirectErrorCode.value ).toBe( 'ratelimited' );
 		expect( instrument.logRedirectCreated ).toHaveBeenCalledWith( false, 'ratelimited' );
+		expect( clearExistenceCache ).not.toHaveBeenCalled();
 		// The title is still free, so the action stays available.
 		expect( r.canCreateRedirect.value ).toBe( true );
 		r.dismissRedirectMessage();

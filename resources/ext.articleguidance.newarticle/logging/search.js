@@ -1,69 +1,46 @@
 /* eslint-disable no-console */
 /**
- * Console reporter for search outline-matching evaluation.
+ * Console reporter for outline-matching evaluation.
  */
 
 /**
- * Log the outcome of outline matching for all search results to the browser console.
+ * Log the outline match of the selected search result to the browser console.
  *
- * Results are logged in a single collapsed group. Each result is one line.
- * Multiple matches on a single result are flagged with ⚠.
+ * Multiple matches are flagged with ⚠.
  *
- * @param {string} searchQuery   The search query string
- * @param {Array}  results       Ordered display results (matched first, then unmatched)
- * @param {Object} sparqlMatches Post-selectBestMatches map { itemQId: string[] }
- * @param {Object} outlineByType Map of { articleTypeQId: outline }
+ * @param {string} itemQId Q ID of the selected item
+ * @param {string[]} matchedQIds Post-selectBestMatches article-type Q IDs
+ * @param {Array} outlines Outlines that declare article types
  */
-// Must stay in sync with MAX_TOTAL / MAX_UNMATCHED in SearchStep.vue
-const MAX_TOTAL = 8;
-const MAX_UNMATCHED = 3;
-
-function reportSearchEvaluation( searchQuery, results, sparqlMatches, outlineByType ) {
+function reportOutlineMatch( itemQId, matchedQIds, outlines ) {
 	const debugParam = mw.util.getParamValue( 'debug' );
 	if ( debugParam !== '1' && debugParam !== 'true' ) {
 		return;
 	}
 
-	const displayed = results
-		.filter( ( r ) => r.matched )
-		.concat( results.filter( ( r ) => !r.matched ).slice( 0, MAX_UNMATCHED ) )
-		.slice( 0, MAX_TOTAL );
-
 	const formatOutline = ( qid ) => {
-		const outline = outlineByType[ qid ];
+		const outline = outlines.find(
+			( o ) => o.articleTypes.some( ( t ) => t.id === qid )
+		);
 		if ( !outline ) {
 			return qid + ' (depth ?)';
 		}
 		// Depth is per matched Q ID, not per outline (T421260)
-		const typeEntry = ( outline.articleTypes || [] ).find( ( t ) => t.id === qid );
-		const depth = ( typeEntry && typeEntry.hierarchyDepth !== null &&
+		const typeEntry = outline.articleTypes.find( ( t ) => t.id === qid );
+		const depth = ( typeEntry.hierarchyDepth !== null &&
 			typeEntry.hierarchyDepth !== undefined ) ? typeEntry.hierarchyDepth : '?';
 		return ( outline.label || qid ) + ' (depth ' + depth + ')';
 	};
 
-	const rows = displayed.map( ( result ) => {
-		const itemCol = ( result.label || result.id ) + ' (' + result.id + ')';
-		const finalQIds = sparqlMatches[ result.id ] || [];
-		let matchCol;
-		if ( finalQIds.length === 0 ) {
-			matchCol = '—';
-		} else if ( finalQIds.length === 1 ) {
-			matchCol = formatOutline( finalQIds[ 0 ] );
-		} else {
-			matchCol = '⚠ ' + finalQIds.map( formatOutline ).join( ', ' );
-		}
-		return { itemCol, matchCol };
-	} );
-
-	const colWidth = rows.reduce( ( max, row ) => Math.max( max, row.itemCol.length ), 0 );
-
-	console.groupCollapsed(
-		'[ArticleGuidance] Search "' + searchQuery + '" — ' + displayed.length + ' results'
-	);
-	rows.forEach( ( row ) => {
-		console.log( row.itemCol.padEnd( colWidth + 2 ) + row.matchCol );
-	} );
-	console.groupEnd();
+	let matchCol;
+	if ( matchedQIds.length === 0 ) {
+		matchCol = '—';
+	} else if ( matchedQIds.length === 1 ) {
+		matchCol = formatOutline( matchedQIds[ 0 ] );
+	} else {
+		matchCol = '⚠ ' + matchedQIds.map( formatOutline ).join( ', ' );
+	}
+	console.log( '[ArticleGuidance] Outline match for ' + itemQId + ': ' + matchCol );
 }
 
-module.exports = { reportSearchEvaluation };
+module.exports = { reportOutlineMatch };

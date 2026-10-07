@@ -43,6 +43,40 @@ function mockPageNamespaces( namespaceByTitle ) {
 	global.mw.Api = jest.fn().mockImplementation( () => ( { get } ) );
 }
 
+describe( 'searchWikidata', () => {
+	let searchWikidata;
+
+	beforeEach( () => {
+		mockMw();
+		jest.resetModules();
+		( { searchWikidata } = require( '../../../resources/ext.articleguidance.newarticle/api/Wikidata.js' ) );
+	} );
+
+	it( 'excludes the given P31 values in the search query', async () => {
+		global.fetch = mockFetch( { query: { search: [] } } );
+
+		await searchWikidata( ' Titanic ', 'en', 12, [ 'Q4167410', 'Q13406463' ] );
+
+		const url = new URL( global.fetch.mock.calls[ 0 ][ 0 ] );
+		expect( url.searchParams.get( 'srsearch' ) ).toBe(
+			'Titanic -haswbstatement:P31=Q4167410 -haswbstatement:P31=Q13406463'
+		);
+		expect( url.searchParams.get( 'srlimit' ) ).toBe( '12' );
+	} );
+
+	it( 'reuses the results of a search sent before', async () => {
+		global.fetch = mockFetch( { query: { search: [ { ns: 0, title: 'Q42' } ] } } );
+
+		await searchWikidata( 'Douglas Adams', 'en', 12 );
+		const result = await searchWikidata( 'Douglas Adams', 'en', 12 );
+		await searchWikidata( 'Douglas Adams', 'fr', 12 );
+
+		expect( result.map( ( r ) => r.id ) ).toEqual( [ 'Q42' ] );
+		// The search in another language is a different request
+		expect( global.fetch ).toHaveBeenCalledTimes( 2 );
+	} );
+} );
+
 describe( 'fetchEntityClaims', () => {
 	let fetchEntityClaims;
 
@@ -64,7 +98,7 @@ describe( 'fetchEntityClaims', () => {
 			}
 		} );
 
-		const result = await fetchEntityClaims( [ 'Q42' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
 
 		expect( result.Q42.hasLabel ).toBe( true );
 		expect( result.Q42.label ).toBe( 'Douglas Adams' );
@@ -84,7 +118,7 @@ describe( 'fetchEntityClaims', () => {
 			}
 		} );
 
-		const result = await fetchEntityClaims( [ 'Q123' ], [], 'de' );
+		const result = await fetchEntityClaims( [ 'Q123' ], 'de' );
 
 		expect( result.Q123.hasLabel ).toBe( true );
 		expect( result.Q123.label ).toBe( 'Locomotive' );
@@ -103,7 +137,7 @@ describe( 'fetchEntityClaims', () => {
 			}
 		} );
 
-		const result = await fetchEntityClaims( [ 'Q999' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q999' ], 'en' );
 
 		expect( result.Q999.hasLabel ).toBe( false );
 		expect( result.Q999.label ).toBe( 'Q999' );
@@ -116,7 +150,7 @@ describe( 'fetchEntityClaims', () => {
 			}
 		} );
 
-		const result = await fetchEntityClaims( [ 'Q404' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q404' ], 'en' );
 
 		expect( result.Q404 ).toBeUndefined();
 	} );
@@ -139,7 +173,7 @@ describe( 'fetchEntityClaims', () => {
 			}
 		} );
 
-		const result = await fetchEntityClaims( [ 'Q42', 'Q999' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q42', 'Q999' ], 'en' );
 
 		expect( result.Q42.hasLabel ).toBe( true );
 		expect( result.Q999.hasLabel ).toBe( false );
@@ -163,7 +197,7 @@ describe( 'fetchEntityClaims', () => {
 		} );
 		mockPageNamespaces( { 'Douglas Adams': 0 } );
 
-		const result = await fetchEntityClaims( [ 'Q42' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
 
 		expect( result.Q42.localSitelink ).toEqual( sitelink );
 		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( false );
@@ -189,9 +223,38 @@ describe( 'fetchEntityClaims', () => {
 		// Namespace 4 (Project) here, resolved server-side regardless of query text or language.
 		mockPageNamespaces( { 'Wikipedia:Sandbox': 4 } );
 
-		const result = await fetchEntityClaims( [ 'Q42' ], [], 'en' );
+		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
 
 		expect( result.Q42.localSitelink ).toBeNull();
 		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( true );
+	} );
+
+	it( 'keeps every item-valued claim and caches the entity', async () => {
+		global.fetch = mockFetch( {
+			entities: {
+				Q42: {
+					labels: { en: { language: 'en', value: 'Douglas Adams' } },
+					descriptions: {},
+					claims: {
+						P31: [ { mainsnak: { snaktype: 'value', datavalue: {
+							type: 'wikibase-entityid', value: { id: 'Q5' }
+						} } } ],
+						P106: [ { mainsnak: { snaktype: 'value', datavalue: {
+							type: 'wikibase-entityid', value: { id: 'Q36180' }
+						} } } ],
+						P18: [ { mainsnak: { snaktype: 'value', datavalue: {
+							type: 'string', value: 'Douglas adams portrait.jpg'
+						} } } ]
+					},
+					sitelinks: {}
+				}
+			}
+		} );
+
+		await fetchEntityClaims( [ 'Q42' ], 'en' );
+		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
+
+		expect( global.fetch ).toHaveBeenCalledTimes( 1 );
+		expect( result.Q42.claims ).toEqual( { P31: [ 'Q5' ], P106: [ 'Q36180' ] } );
 	} );
 } );

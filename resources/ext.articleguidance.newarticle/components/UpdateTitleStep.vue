@@ -73,7 +73,7 @@
 				:title="selectedResult.label"
 				:description="selectedResult.description"
 				:thumbnail="selectedResult.thumbnail"
-				:outline-name="selectedResult.outlineName"
+				:outline-name="selectedOutlineName"
 			>
 			</article-card>
 
@@ -102,7 +102,7 @@
 const { defineComponent, ref, computed, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton } = require( '../codex.js' );
-const useArticleExist = require( '../composables/useArticleExist.js' );
+const { useArticleExist } = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const useTitleValidation = require( '../composables/useTitleValidation.js' );
 const Step = require( './Step.vue' );
@@ -120,7 +120,7 @@ module.exports = defineComponent( {
 	setup() {
 		const store = useArticleGuidanceStore();
 		const {
-			selectedResult, originalTypedTitle, isRedLink, redLinkTitle
+			selectedResult, selectedOutlineName, originalTypedTitle, isRedLink, redLinkTitle
 		} = storeToRefs( store );
 
 		const titleOnOpen = store.articleTitle || store.trimmedQuery;
@@ -200,6 +200,7 @@ module.exports = defineComponent( {
 			existsWarningText,
 			originallyTypedText,
 			selectedResult,
+			selectedOutlineName,
 			showOriginalOption,
 			redLinkReminderText,
 			showRedLinkReminder,

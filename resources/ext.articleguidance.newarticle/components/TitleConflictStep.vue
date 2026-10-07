@@ -64,7 +64,7 @@
 						:title="selectedResult.label"
 						:description="selectedResult.description"
 						:thumbnail="selectedResult.thumbnail"
-						:outline-name="selectedResult.outlineName"
+						:outline-name="selectedOutlineName"
 					>
 					</article-card>
 					<article-card
@@ -104,7 +104,7 @@ const { defineComponent, ref, computed, watch, onMounted } = require( 'vue' );
 const { storeToRefs } = require( 'pinia' );
 const { CdxTextInput, CdxMessage, CdxButton, CdxIcon } = require( '../codex.js' );
 const { cdxIconLinkExternal } = require( '../icons.json' );
-const useArticleExist = require( '../composables/useArticleExist.js' );
+const { useArticleExist } = require( '../composables/useArticleExist.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
@@ -123,7 +123,8 @@ module.exports = defineComponent( {
 	setup() {
 		const store = useArticleGuidanceStore();
 		const {
-			selectedResult, selectedOutline, isGenericOutlineSelected, titleSuggestion
+			selectedResult, selectedOutline, selectedOutlineName, isGenericOutlineSelected,
+			titleSuggestion
 		} = storeToRefs( store );
 
 		const localTitle = ref( store.articleTitle || '' );
@@ -181,6 +182,7 @@ module.exports = defineComponent( {
 			titleSuggestion,
 			selectedResult,
 			selectedOutline,
+			selectedOutlineName,
 			showSelectedSubject,
 			canContinue,
 			handleBack,

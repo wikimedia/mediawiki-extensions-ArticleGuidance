@@ -55,46 +55,32 @@ function extractQId( uri ) {
  * to wait for wbgetentities P31 values before querying. Runs one query per group
  * in parallel, skipping items already present in the page-scoped cache.
  *
- * Uses `+` (one or more hops) for normal groups to avoid redundancy with zero-hop
- * checks performed by the caller. Uses `*` (zero or more) for the excluded group
- * so that direct P31 matches are also caught.
+ * Uses `+` (one or more hops) to avoid redundancy with zero-hop checks performed
+ * by the caller.
  *
  * @param {string[]} itemQIds Array of Wikidata item Q IDs
  * @param {Object} groups Map of groupKey → outlineQId[]
- * @param {string[]} excludedItemTypes Array of excluded item type Q IDs
  * @return {Promise<Object>} Map of { groupKey: { itemQId: Set<outlineQId> } }
  */
-async function checkItemHierarchyMatches( itemQIds, groups, excludedItemTypes ) {
-	const EXCLUDED_KEY = '__excluded__';
-
+async function checkItemHierarchyMatches( itemQIds, groups ) {
 	if ( !itemQIds || itemQIds.length === 0 ) {
 		return {};
 	}
 
-	const allGroups = Object.assign( {}, groups );
-	if ( excludedItemTypes && excludedItemTypes.length > 0 ) {
-		allGroups[ EXCLUDED_KEY ] = excludedItemTypes;
-	}
-
-	if ( Object.keys( allGroups ).length === 0 ) {
+	if ( Object.keys( groups ).length === 0 ) {
 		return {};
 	}
 
 	const result = {};
 	const queryTasks = [];
 
-	Object.entries( allGroups ).forEach( ( [ key, outlineQIds ] ) => {
+	Object.entries( groups ).forEach( ( [ key, outlineQIds ] ) => {
 		if ( !outlineQIds || outlineQIds.length === 0 ) {
 			return;
 		}
 
-		const isExcluded = key === EXCLUDED_KEY;
-
 		let pathExpr, pathKey;
-		if ( isExcluded ) {
-			pathExpr = 'wdt:' + PROP_INSTANCE_OF + '/wdt:' + PROP_SUBCLASS_OF + '*';
-			pathKey = PROP_INSTANCE_OF + '/' + PROP_SUBCLASS_OF + '*';
-		} else if ( key === PROP_PARENT_TAXON ) {
+		if ( key === PROP_PARENT_TAXON ) {
 			pathExpr = 'wdt:' + PROP_PARENT_TAXON + '+';
 			pathKey = PROP_PARENT_TAXON + '+';
 		} else {

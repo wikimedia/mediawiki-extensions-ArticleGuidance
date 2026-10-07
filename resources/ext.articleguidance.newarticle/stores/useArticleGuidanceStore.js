@@ -16,7 +16,16 @@ const {
 	outlineEventContext
 } = require( '../utils/outlineSelection.js' );
 const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
+const { matchOutline } = require( '../composables/matchOutline.js' );
+const { withRetry } = require( '../utils/retry.js' );
+const { withTimeout, TimeoutError } = require( '../utils/timeout.js' );
 const instrument = require( '../logging/instrument.js' );
+
+// The loading state shows for a minimum time, so that it does not flicker when
+// matching is fast. When matching is too slow, matching stops, and the generic
+// outline is used (T439877).
+const SELECTION_MIN_DURATION = 1000;
+const MATCHING_TIMEOUT = 10000;
 
 const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const currentStep = ref( 'search' );
@@ -25,6 +34,11 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	const trimmedQuery = computed( () => ( searchQuery.value || '' ).trim() );
 	const selectedResult = ref( null );
 	const selectedOutline = ref( null );
+	// Article-type Q ID that the selected result matched, if any
+	const matchedQId = ref( null );
+	// True from the selection of a result until the next step is known
+	const selectionPending = ref( false );
+	const selectionError = ref( false );
 	const references = ref( [] );
 	const outlines = ref( null );
 	const outlinesLoading = ref( false );
@@ -52,6 +66,10 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		() => !!( selectedOutline.value && selectedOutline.value.default )
 	);
 
+	// The generic outline is not a type, so it has no name to show
+	const selectedOutlineName = computed( () => ( !isGenericOutlineSelected.value &&
+		selectedOutline.value && selectedOutline.value.label ) || null );
+
 	const localArticleInfo = computed( () => ( {
 		title: ( localArticle.value && localArticle.value.title ) ||
 			( selectedResult.value && selectedResult.value.localSitelink &&
@@ -60,9 +78,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			( selectedResult.value && selectedResult.value.description ) || '',
 		thumbnail: ( localArticle.value && localArticle.value.thumbnail ) ||
 			( selectedResult.value && selectedResult.value.thumbnail ) || null,
-		outlineName: ( selectedResult.value && selectedResult.value.outlineName ) ||
-			( !isGenericOutlineSelected.value && selectedOutline.value &&
-			selectedOutline.value.label ) || null
+		outlineName: selectedOutlineName.value
 	} ) );
 
 	const sitelinkCount = computed(
@@ -193,7 +209,48 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		return true;
 	}
 
+	// Q IDs of the items that matching completed for. The caches keep their match,
+	// so a new selection of one of these items is instant.
+	const matchedItemQIds = new Set();
+
+	/**
+	 * Match the selected result to an outline, and select that outline.
+	 *
+	 * Falls back to the generic outline when nothing matches, or matching fails or
+	 * times out.
+	 *
+	 * @param {Object} result Selected Wikidata result
+	 * @return {Promise<void>} Rejects when the outlines fail to load
+	 */
+	async function selectOutlineForArticle( result ) {
+		const startTime = performance.now();
+		let fallback = 'none';
+		matchedQId.value = null;
+		// The search does not wait for the outlines, so they can still be loading
+		const loadedOutlines = await withRetry( () => loadOutlines() );
+		try {
+			// The user waits from the selection, so the timeout includes the outlines load
+			matchedQId.value = await withTimeout(
+				matchOutline( result.id, loadedOutlines, mw.config.get( 'wgUserLanguage' ) ),
+				MATCHING_TIMEOUT - ( performance.now() - startTime )
+			);
+			matchedItemQIds.add( result.id );
+		} catch ( err ) {
+			fallback = err instanceof TimeoutError ? 'timeout' : 'error';
+		}
+		selectedOutline.value = selectOutlineForResult( loadedOutlines, matchedQId.value );
+		instrument.logOutlineMatched(
+			result.id,
+			outlineEventContext( selectedOutline.value, matchedQId.value ),
+			Math.round( performance.now() - startTime ),
+			fallback
+		);
+	}
+
 	async function selectArticle( result, titleTaken ) {
+		if ( selectionPending.value ) {
+			return;
+		}
 		const titleObj = mw.Title.newFromUserInput( result.label );
 		const label = titleObj ? titleObj.getMainText() : null;
 		articleTitle.value = null;
@@ -204,7 +261,37 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		}
 		selectedResult.value = result;
 
-		selectedOutline.value = selectOutlineForResult( outlines.value, result.matchedQId );
+		selectionPending.value = true;
+		selectionError.value = false;
+		// The match of a known item is instant, so it cannot flicker
+		const minDuration = matchedItemQIds.has( result.id ) ? 0 : SELECTION_MIN_DURATION;
+		try {
+			const [ outlineSelected ] = await Promise.all( [
+				selectOutlineForArticle( result ).then( () => true, () => false ),
+				new Promise( ( resolve ) => {
+					setTimeout( resolve, minDuration );
+				} )
+			] );
+			if ( !outlineSelected ) {
+				// Without the outlines, there is no generic outline to fall back to
+				selectionError.value = true;
+				return;
+			}
+			await routeSelectedArticle( result, titleTaken, label );
+		} finally {
+			selectionPending.value = false;
+		}
+	}
+
+	/**
+	 * Navigate to the step that follows the selection of a Wikidata result.
+	 *
+	 * @param {Object} result Selected Wikidata result
+	 * @param {boolean} titleTaken Whether the typed title exists on the local wiki
+	 * @param {string|null} label Result label, normalized as a title
+	 * @return {Promise<void>}
+	 */
+	async function routeSelectedArticle( result, titleTaken, label ) {
 		if ( topicExistsOnWiki.value ) {
 			await loadLocalArticle();
 			goTo( 'subjectcovered' );
@@ -257,6 +344,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		}
 		// The user picks the outline, so a result selected earlier no longer applies
 		selectedResult.value = null;
+		matchedQId.value = null;
 		selectedOutline.value = outline;
 		articleTitle.value = null;
 		titleSuggestion.value = null;
@@ -343,7 +431,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	async function startWriting() {
 		instrument.logWriteStart( outlineEventContext(
 			selectedOutline.value,
-			selectedResult.value && selectedResult.value.matchedQId
+			matchedQId.value
 		) );
 
 		// Resolve Citoid wikitext for each reference. The promise is normally
@@ -435,6 +523,9 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		trimmedQuery,
 		selectedResult,
 		selectedOutline,
+		selectedOutlineName,
+		selectionPending,
+		selectionError,
 		references,
 		outlines,
 		outlinesList,

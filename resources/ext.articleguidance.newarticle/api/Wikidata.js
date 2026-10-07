@@ -3,10 +3,16 @@ const { getPageNamespaces } = require( './MediaWiki.js' );
 
 const NS_MAIN = 0;
 
-// Page-scoped cache: cleared automatically on page reload.
+// Page-scoped cache: cleared automatically on page reload. It keeps every item-valued
+// claim, so outline matching of a search result reads the claims from it.
 // Key: qid, Value: entity data object (claims, label, description, imageFilename, sitelinkCount,
 //   localSitelink, localSitelinkOutsideMainNamespace)
 const entityClaimsCache = new Map();
+
+// Page-scoped cache: cleared automatically on page reload. A search runs again
+// when the user goes back to the search step.
+// Key: search request URL, Value: search results
+const searchCache = new Map();
 
 /**
  * Search Wikidata entities using the MediaWiki full-text search API (CirrusSearch),
@@ -15,9 +21,10 @@ const entityClaimsCache = new Map();
  * @param {string} query Search query
  * @param {string} language Language code
  * @param {number} limit Maximum number of results (default: 20)
+ * @param {string[]} excludedTypes Q IDs of the P31 values to exclude from the results
  * @return {Promise<Array>} Array of Wikidata entities with id, label, description, url
  */
-async function searchWikidata( query, language, limit = 20 ) {
+async function searchWikidata( query, language, limit = 20, excludedTypes = [] ) {
 	if ( !query || query.trim().length === 0 ) {
 		return [];
 	}
@@ -25,11 +32,17 @@ async function searchWikidata( query, language, limit = 20 ) {
 	const searchUrl = buildApiUrl( {
 		action: 'query',
 		list: 'search',
-		srsearch: query.trim(),
+		// The search backend applies the exclusions, so that every result is usable
+		srsearch: [ query.trim() ].concat(
+			excludedTypes.map( ( qid ) => '-haswbstatement:P31=' + qid )
+		).join( ' ' ),
 		srnamespace: NS_MAIN,
 		srlimit: limit.toString(),
 		uselang: language
 	} );
+	if ( searchCache.has( searchUrl ) ) {
+		return searchCache.get( searchUrl );
+	}
 
 	try {
 		const searchResponse = await fetch( searchUrl );
@@ -44,7 +57,7 @@ async function searchWikidata( query, language, limit = 20 ) {
 			return [];
 		}
 
-		return searchData.query.search
+		const results = searchData.query.search
 			.filter( ( item ) => /^Q\d+$/.test( item.title ) )
 			.map( ( item ) => ( {
 				id: item.title,
@@ -52,6 +65,8 @@ async function searchWikidata( query, language, limit = 20 ) {
 				description: '',
 				url: getPageUrl( item.title )
 			} ) );
+		searchCache.set( searchUrl, results );
+		return results;
 	} catch ( error ) {
 		// eslint-disable-next-line no-console
 		console.error( 'Wikidata search error:', error );
@@ -63,14 +78,13 @@ async function searchWikidata( query, language, limit = 20 ) {
  * Fetch claims, labels, and descriptions for multiple Wikidata entities in a single request.
  *
  * @param {string[]} qids Array of Wikidata Q IDs (e.g. ['Q42', 'Q937'])
- * @param {string[]} properties Array of property IDs to extract (e.g. ['P31', 'P171'])
  * @param {string} language Language code for labels and descriptions
- * @return {Promise<Object>} Map of qid to entity data, each with claims, label, hasLabel,
- *   description, imageFilename, sitelinkCount, localSitelink for the current wiki (null if
- *   none, or if the only local sitelink is outside the Main namespace), and
- *   localSitelinkOutsideMainNamespace
+ * @return {Promise<Object>} Map of qid to entity data, each with claims (property ID to the
+ *   item Q IDs it links to), label, hasLabel, description, imageFilename, sitelinkCount,
+ *   localSitelink for the current wiki (null if none, or if the only local sitelink is outside
+ *   the Main namespace), and localSitelinkOutsideMainNamespace
  */
-async function fetchEntityClaims( qids, properties, language ) {
+async function fetchEntityClaims( qids, language ) {
 	if ( !qids || qids.length === 0 ) {
 		return {};
 	}
@@ -130,12 +144,14 @@ async function fetchEntityClaims( qids, properties, language ) {
 			continue;
 		}
 		const claims = {};
-		for ( const prop of properties ) {
-			const statements = ( entity.claims && entity.claims[ prop ] ) || [];
-			claims[ prop ] = statements
+		for ( const [ prop, statements ] of Object.entries( entity.claims || {} ) ) {
+			const values = statements
 				.filter( ( s ) => s.mainsnak && s.mainsnak.snaktype === 'value' &&
 					s.mainsnak.datavalue && s.mainsnak.datavalue.type === 'wikibase-entityid' )
 				.map( ( s ) => s.mainsnak.datavalue.value.id );
+			if ( values.length > 0 ) {
+				claims[ prop ] = values;
+			}
 		}
 		const p18Statements = ( entity.claims && entity.claims.P18 ) || [];
 		const imageStatement = p18Statements.find(

@@ -17,6 +17,7 @@
 	"articleguidance-specialnewarticle-checking": "Checking...",
 	"articleguidance-specialnewarticle-checking-subject": "Checking for a matching subject.",
 	"articleguidance-specialnewarticle-checking-subject-delayed": "Still checking. This may take a moment.",
+	"articleguidance-specialnewarticle-matching-outline": "Preparing guidance for \"$1\".",
 	"articleguidance-specialnewarticle-no-results": "No subjects found for \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Couldn't check this subject.",
 	"articleguidance-specialnewarticle-outlines-error": "Couldn't load the article types.",

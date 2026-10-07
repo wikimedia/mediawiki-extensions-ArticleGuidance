@@ -3,29 +3,17 @@ const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
 const { translateQuery } = require( '../api/Cx.js' );
 const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
 const { containsNonLatin } = require( '../utils/script.js' );
-const { checkItemHierarchyMatches } = require( '../api/Sparql.js' );
-const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { withRetry } = require( '../utils/retry.js' );
-const { reportSearchEvaluation } = require( '../logging/search.js' );
-const {
-	PROP_INSTANCE_OF,
-	EXCLUDED_KEY,
-	propForGroup,
-	groupOutlinesByMatchVia,
-	collectDirectMatches,
-	applyHierarchyMatches,
-	selectBestMatches
-} = require( './outlineMatching.js' );
 const config = require( '../config.json' );
 
+// The search step shows 8 results. The extra candidates replace items that
+// processCandidates() drops.
+const SEARCH_LIMIT = 12;
+
 /**
- * Composable for searching Wikidata with outline matching and hierarchy depth filtering
+ * Composable for searching Wikidata
  *
- * Filters search results to show only the most specific matching outlines based on
- * hierarchy depth (P279 ancestor count). When a search result matches multiple
- * outlines at different depths, only the highest-depth (most specific) matches are shown
- * for that specific item. Each matched item appears in the results, showing only its
- * most specific type(s).
+ * Outline matching runs later, for the selected result only (T439877).
  *
  * @param {ref<string>} query - Reactive reference to search query
  * @param {ref<string>} language - Reactive reference to selected language
@@ -39,8 +27,7 @@ function useWikidataSearch( query, language ) {
 	const searchDuration = ref( null );
 	let debounceTimer = null;
 	let latestRequestId = 0;
-
-	const store = useArticleGuidanceStore();
+	const excludedItemTypes = mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
 
 	/**
 	 * Translate the query via cxserver and search Wikidata with the translation.
@@ -60,162 +47,54 @@ function useWikidataSearch( query, language ) {
 			return [];
 		}
 		try {
-			return await searchWikidata( translated, targetLang );
+			return await searchWikidata(
+				translated, targetLang, SEARCH_LIMIT, excludedItemTypes
+			);
 		} catch ( err ) {
 			return [];
 		}
 	};
 
 	/**
-	 * Process raw Wikidata search candidates: fetch claims, run SPARQL hierarchy match,
-	 * and map to display objects.
+	 * Process raw Wikidata search candidates: fetch claims, drop unlabeled items and
+	 * items whose local article is outside the Main namespace, and map to display objects.
 	 *
 	 * @param {Array} candidates - Wikidata search results (candidates)
-	 * @param {Array} outlines - Loaded outlines
 	 * @param {boolean} isTranslation - Whether these candidates are from translation search
-	 * @return {Promise<Object>} Mapped results, sparqlMatches, and outlineByType
+	 * @return {Promise<Array>} Mapped results, in Wikidata search order
 	 */
-	const processCandidates = async ( candidates, outlines, isTranslation = false ) => {
-		// Filter outlines to those with at least one valid article type. This
-		// drops the generic outline, which declares none (T428152). The workflow
-		// falls back to it at selection time instead.
-		const validOutlines = outlines.filter(
-			( outline ) => outline.articleTypes && outline.articleTypes.length > 0
-		);
-
-		// With no outline to match against, the steps below return every
-		// candidate as unmatched. A wiki whose only outline is the generic one
-		// must still show results (T435605).
+	const processCandidates = async ( candidates, isTranslation = false ) => {
 		if ( candidates.length === 0 ) {
-			return {
-				results: [],
-				sparqlMatches: {},
-				outlineByType: {}
-			};
+			return [];
 		}
 
-		// Extract Q IDs from search results
 		const searchQIds = candidates.map( ( result ) => result.id );
 
-		// Group outlines by matchVia and collect the properties to look up
-		const groups = groupOutlinesByMatchVia( validOutlines );
-		const properties = [ ...new Set( Object.keys( groups ).map( propForGroup ) ) ];
-		const excludedItemTypesList =
-			mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
+		const entityData = await withRetry(
+			() => fetchEntityClaims( searchQIds, language.value )
+		);
 
-		// Run wbgetentities and SPARQL hierarchy check in parallel
-		const [ entityData, itemHierarchyMatches ] = await Promise.all( [
-			withRetry( () => fetchEntityClaims( searchQIds, properties, language.value ) ),
-			withRetry( () => checkItemHierarchyMatches(
-				searchQIds, groups, excludedItemTypesList
-			) )
-		] );
-
-		// Exclude items whose P31 is (directly or via P279+) a configured excluded type
-		const excludedTypeSet = new Set( excludedItemTypesList );
-		const exclusionByItem = itemHierarchyMatches[ EXCLUDED_KEY ] || {};
-		const filteredQIds = searchQIds.filter( ( qid ) => {
-			const entity = entityData[ qid ];
-			if ( !entity || !entity.hasLabel ) {
-				return false;
-			}
-			const p31Values = entity.claims[ PROP_INSTANCE_OF ] || [];
-			const isDirectlyExcluded = p31Values.some( ( v ) => excludedTypeSet.has( v ) );
-			const isHierarchyExcluded =
-				exclusionByItem[ qid ] && exclusionByItem[ qid ].size > 0;
-			return !isDirectlyExcluded && !isHierarchyExcluded &&
-				!entity.localSitelinkOutsideMainNamespace;
-		} );
-		const filteredQIdSet = new Set( filteredQIds );
-		const filteredCandidates = candidates.filter( ( r ) => filteredQIdSet.has( r.id ) );
-
-		// Build directTypesByGroup for 0-hop checks (uses wbgetentities data)
-		const directTypesByGroup = {};
-		Object.keys( groups ).forEach( ( key ) => {
-			const prop = propForGroup( key );
-			const itemTypeMap = {};
-			filteredQIds.forEach( ( qid ) => {
-				const typeValues = entityData[ qid ].claims[ prop ] || [];
-				if ( typeValues.length > 0 ) {
-					itemTypeMap[ qid ] = new Set( typeValues );
-				}
+		return candidates
+			.filter( ( result ) => {
+				const entity = entityData[ result.id ];
+				return !!entity && entity.hasLabel &&
+					!entity.localSitelinkOutsideMainNamespace;
+			} )
+			.map( ( result ) => {
+				const entity = entityData[ result.id ];
+				return {
+					id: result.id,
+					label: entity.label,
+					labelFallback: entity.labelFallback,
+					description: entity.description,
+					url: result.url,
+					thumbnail: ( entity.imageFilename &&
+						getCommonsThumbUrl( entity.imageFilename ) ) || null,
+					sitelinkCount: entity.sitelinkCount,
+					localSitelink: entity.localSitelink,
+					viaTranslation: isTranslation
+				};
 			} );
-			directTypesByGroup[ key ] = itemTypeMap;
-		} );
-
-		// Build outline lookup, keyed by the article types each outline matches.
-		// A multi-item outline gets one entry per Q ID (many keys → same outline).
-		const outlineByType = {};
-		validOutlines.forEach( ( outline ) => {
-			outline.articleTypes.forEach( ( typeEntry ) => {
-				outlineByType[ typeEntry.id ] = outline;
-			} );
-		} );
-		const outlineQIdSet = new Set( Object.keys( outlineByType ) );
-
-		// Collect matches, starting with 0-hop cases
-		const matches = {};
-
-		// Pre-check: item is itself an outline type (e.g. searching for 'Animalia')
-		filteredQIds.forEach( ( qid ) => {
-			if ( outlineQIdSet.has( qid ) ) {
-				matches[ qid ] = [ qid ];
-			}
-		} );
-
-		// Direct property → outline-type match (0-hop via wbgetentities) across
-		// every matchVia group, since the SPARQL hierarchy query uses `+` and
-		// would miss e.g. an item whose P106 is itself one of an outline's article types.
-		collectDirectMatches( matches, filteredQIds, directTypesByGroup, outlineQIdSet );
-
-		applyHierarchyMatches( matches, itemHierarchyMatches );
-		const sparqlMatches = selectBestMatches( matches, validOutlines );
-
-		const processedResults = filteredCandidates.map( ( result ) => {
-			const matchedQIds = sparqlMatches[ result.id ] || [];
-			const matched = matchedQIds.length > 0;
-			const outlineNames = [];
-			const seenOutlineTitles = new Set();
-			let outlineThumbnail = null;
-			matchedQIds.forEach( ( matchedQId ) => {
-				const outline = outlineByType[ matchedQId ];
-				// Dedupe by outline page title: an item can match a
-				// multi-item outline through several of its Q IDs
-				if ( !outline || seenOutlineTitles.has( outline.title ) ) {
-					return;
-				}
-				seenOutlineTitles.add( outline.title );
-				if ( outline.label && !outlineNames.includes( outline.label ) ) {
-					outlineNames.push( outline.label );
-				}
-				if ( !outlineThumbnail && outline.thumbnail ) {
-					outlineThumbnail = outline.thumbnail;
-				}
-			} );
-			// entityData entry is guaranteed: filteredQIds requires it
-			const entity = entityData[ result.id ];
-			return {
-				id: result.id,
-				label: entity.label,
-				labelFallback: entity.labelFallback,
-				description: entity.description,
-				url: result.url,
-				matchedQId: matched ? matchedQIds[ 0 ] : null,
-				thumbnail: ( entity.imageFilename &&
-					getCommonsThumbUrl( entity.imageFilename ) ) || outlineThumbnail,
-				outlineName: outlineNames.length > 0 ? outlineNames.join( ', ' ) : null,
-				matched,
-				sitelinkCount: entity.sitelinkCount,
-				localSitelink: entity.localSitelink,
-				viaTranslation: isTranslation
-			};
-		} );
-
-		return {
-			results: processedResults,
-			sparqlMatches,
-			outlineByType
-		};
 	};
 
 	/**
@@ -243,18 +122,16 @@ function useWikidataSearch( query, language ) {
 			// a zero-result) whenever the query is in a non-Latin script, so items
 			// that only have a label in the translation target language can still match.
 			const wikidataSearchPromise = withRetry(
-				() => searchWikidata( searchQuery, language.value )
+				() => searchWikidata(
+					searchQuery, language.value, SEARCH_LIMIT, excludedItemTypes
+				)
 			);
-			const outlinesPromise = withRetry( () => store.loadOutlines() );
 			const translationSearchPromise = containsNonLatin( searchQuery ) ?
 				searchViaTranslation( searchQuery ).catch( () => [] ) :
 				Promise.resolve( [] );
 
-			// Await only the native-language Wikidata search and the outlines load first
-			const [ wikidataResults, outlines ] = await Promise.all( [
-				wikidataSearchPromise,
-				outlinesPromise
-			] );
+			// Await only the native-language Wikidata search first
+			const wikidataResults = await wikidataSearchPromise;
 
 			// skip if the user types a new character during the search
 			if ( requestId !== latestRequestId ) {
@@ -262,19 +139,13 @@ function useWikidataSearch( query, language ) {
 			}
 
 			// Process native Wikidata search results first
-			const {
-				results: processedWikidataResults,
-				sparqlMatches: nativeSparqlMatches,
-				outlineByType: nativeOutlineByType
-			} = await processCandidates( wikidataResults, outlines, false );
+			const processedWikidataResults = await processCandidates( wikidataResults, false );
 
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 
 			let processedTranslatedResults = [];
-			let translatedSparqlMatches = {};
-			let translatedOutlineByType = {};
 			let path = 'wikidata_direct';
 
 			const MAX_RESULT = 8;
@@ -293,14 +164,10 @@ function useWikidataSearch( query, language ) {
 				);
 
 				if ( newTranslatedCandidates.length > 0 ) {
-					const translationProcessResult = await processCandidates(
+					processedTranslatedResults = await processCandidates(
 						newTranslatedCandidates,
-						outlines,
 						true
 					);
-					processedTranslatedResults = translationProcessResult.results;
-					translatedSparqlMatches = translationProcessResult.sparqlMatches;
-					translatedOutlineByType = translationProcessResult.outlineByType;
 				}
 
 				if ( processedWikidataResults.length === 0 ) {
@@ -316,45 +183,9 @@ function useWikidataSearch( query, language ) {
 				return;
 			}
 
-			// Merge native and translated candidates, listing matched items first,
-			// and then listing unmatched items, preserving relative order.
-			const nativeMatched = processedWikidataResults.filter( ( r ) => r.matched );
-			const nativeUnmatched = processedWikidataResults.filter( ( r ) => !r.matched );
-			const translatedMatched = processedTranslatedResults.filter(
-				( r ) => r.matched
-			);
-			const translatedUnmatched = processedTranslatedResults.filter(
-				( r ) => !r.matched
-			);
+			// Native results come first, then translated ones, each in Wikidata order
+			const finalResults = processedWikidataResults.concat( processedTranslatedResults );
 
-			const finalResults = [
-				...nativeMatched,
-				...translatedMatched,
-				...nativeUnmatched,
-				...translatedUnmatched
-			];
-
-			const combinedSparqlMatches = Object.assign(
-				{},
-				nativeSparqlMatches,
-				translatedSparqlMatches
-			);
-			const combinedOutlineByType = Object.assign(
-				{},
-				nativeOutlineByType,
-				translatedOutlineByType
-			);
-
-			reportSearchEvaluation(
-				searchQuery,
-				finalResults,
-				combinedSparqlMatches,
-				combinedOutlineByType
-			);
-
-			if ( requestId !== latestRequestId ) {
-				return;
-			}
 			results.value = finalResults;
 			searchPath.value = path;
 			searchDuration.value = Math.round( performance.now() - startTime );

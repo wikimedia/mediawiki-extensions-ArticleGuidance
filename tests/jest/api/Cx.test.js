@@ -11,8 +11,6 @@ jest.mock(
 	{ virtual: true }
 );
 
-const { translateQuery } = require( '../../../resources/ext.articleguidance.newarticle/api/Cx.js' );
-
 const CX_SERVER_URL = 'https://cxserver.wikimedia.org/v1/mt';
 
 function setCxConfig( { serverUrl = CX_SERVER_URL, target = 'en' } = {} ) {
@@ -29,8 +27,13 @@ function mockAjaxReject() {
 }
 
 describe( 'translateQuery', () => {
+	let translateQuery;
+
 	beforeEach( () => {
 		setCxConfig();
+		// Start each test with an empty translation cache
+		jest.resetModules();
+		( { translateQuery } = require( '../../../resources/ext.articleguidance.newarticle/api/Cx.js' ) );
 	} );
 
 	it( 'returns the translated text on success', async () => {
@@ -132,5 +135,24 @@ describe( 'translateQuery', () => {
 
 		expect( global.$.ajax.mock.calls[ 0 ][ 0 ].url )
 			.toBe( 'https://cxserver.wikimedia.org/v1/mt/hi/fr/MinT' );
+	} );
+
+	it( 'reuses the translation of a text translated before', async () => {
+		mockAjax( { html: '<p>Mahatma Gandhi</p>' } );
+
+		await translateQuery( 'महात्मा गांधी', 'hi' );
+		const result = await translateQuery( ' महात्मा गांधी ', 'hi' );
+
+		expect( result ).toBe( 'Mahatma Gandhi' );
+		expect( global.$.ajax ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'does not cache a failed request', async () => {
+		mockAjaxReject();
+		await translateQuery( 'महात्मा गांधी', 'hi' );
+
+		mockAjax( { html: '<p>Mahatma Gandhi</p>' } );
+
+		expect( await translateQuery( 'महात्मा गांधी', 'hi' ) ).toBe( 'Mahatma Gandhi' );
 	} );
 } );

@@ -1,6 +1,6 @@
 const { computed } = require( 'vue' );
 const useWikidataSearch = require( './useWikidataSearch.js' );
-const useArticleExist = require( './useArticleExist.js' );
+const { useArticleExist } = require( './useArticleExist.js' );
 
 /**
  * Umbrella composable that combines multiple search types

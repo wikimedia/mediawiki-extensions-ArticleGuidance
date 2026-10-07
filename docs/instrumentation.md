@@ -23,10 +23,11 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 |---|---|---|---|---|
 | `entry_point` | Eligible user clicks an in-scope red link | `redlink` | — | `{"redirected":<bool>}` |
 | `init` | `Special:NewArticle` wizard is ready | `redlink`, `articlewizard`, or `direct` | — | `{"title":"<article title>"}` |
-| `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` |
-| `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>","outline":{…}}` [see below](#how-an-outline-is-reported) |
+| `write_title` | Debounced Wikidata search fires (query ≥ 1 character) | — | — | `{"query":"<search query>","result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>","duration":<n>}` (`result_count` is the number of results shown, at most 8) |
+| `select_topic` | User clicks a Wikidata result card | — | `suggested_topic` | `{"result_qid":"<QID>"}` |
 | `select_topic` | User picks an outline from the browse-by-type panel, or picks "Other" there | — | `manual_topic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`matched_qid` always null) |
 | `select_topic` | User clicks "Continue anyway" on the search step, which replaces the browse-by-type link when the wiki has no types | — | `continue_generic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`qids` always `["*"]`, `matched_qid` always null) |
+| `outline_matched` | Outline matching for the selected Wikidata result finishes | — | — | `{"result_qid":"<QID>","outline":{…},"duration":<ms>,"fallback":"<none|error|timeout>"}` (`duration` includes any wait for the outlines to load) [see below](#how-an-outline-is-reported) |
 | `add_source` | Source URL validated by the `/articleguidance/v0/source/validate` API | — | `valid` or `invalid` | `{"url":"<url>","domain":"<domain>","classification":"<classification>","mandatory":<bool>}` |
 | `notability_action` | User clicks an option on the notability step | — | `wikidata_item`, `sandbox`, or `learn` | — |
 | `notability_check_shown` | Notability step is shown | — | — | `{"tags":["<tag>",…]}` |
@@ -42,7 +43,12 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 
 ## How an outline is reported
 
-`select_topic` and `write_start` describe the outline the same way.
+`select_topic`, `outline_matched` and `write_start` describe the outline the same way.
+
+A Wikidata result is matched to an outline only after the user selects it (T439877). Its
+`select_topic` event therefore has no outline; the `outline_matched` event that follows reports
+it. `fallback` is `error` when matching failed, and `timeout` when it took longer than 10 s.
+The generic outline is used in both cases.
 
 | Field | Meaning |
 |-------|---------|
@@ -57,7 +63,7 @@ outline linked to a single Q ID.
 ### The generic guidance outline
 
 Every wiki has a generic outline: its own, or the default one (T437432). A result that
-matches no outline continues as `suggested_topic` with `qids` of `["*"]`, and
+matches no outline continues with `qids` of `["*"]` in `outline_matched`, and
 `unsupported_topic`, `unsupported_subject_shown` and `unsupported_subject_action` are no
 longer sent. A time series that crosses the deploy therefore shows a step. Count
 `unsupported_topic` and `suggested_topic` together to compare across it.

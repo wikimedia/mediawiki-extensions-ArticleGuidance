@@ -8,6 +8,7 @@
 		<cdx-text-input
 			ref="searchInput"
 			v-model="searchQuery"
+			:disabled="selectionPending"
 			:placeholder="$i18n( 'articleguidance-specialnewarticle-title-placeholder' ).text()"
 			class="ext-articleguidance-search-input"
 		>
@@ -26,7 +27,14 @@
 		<!-- Inline outlines panel -->
 		<outlines v-if="showOutlines"></outlines>
 
-		<template v-if="!showOutlines">
+		<!-- Selection of a result: outline matching and title checks -->
+		<div v-if="selectionPending" class="ext-articleguidance-results">
+			<cdx-progress-indicator show-label>
+				{{ matchingMessage }}
+			</cdx-progress-indicator>
+		</div>
+
+		<template v-if="!showOutlines && !selectionPending">
 			<div class="ext-articleguidance-results">
 				<!-- Loading state -->
 				<div v-if="loading">
@@ -36,7 +44,7 @@
 				</div>
 
 				<!-- Error state -->
-				<div v-if="error" class="ext-articleguidance-inline-error">
+				<div v-if="error || selectionError" class="ext-articleguidance-inline-error">
 					<span class="ext-articleguidance-inline-error-message">
 						{{ $i18n( 'articleguidance-specialnewarticle-search-error' ).text() }}
 					</span>
@@ -74,7 +82,6 @@
 							:title="result.label"
 							:description="result.description"
 							:thumbnail="result.thumbnail"
-							:outline-name="result.outlineName"
 							:interactive="true"
 							@click="handleSelect( result )"
 						>
@@ -181,8 +188,7 @@ const { cdxIconInfo } = require( '../icons.json' );
 const useSearchDelayed = require( '../composables/useSearchDelayed.js' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getEditArticleUrl } = require( '../utils/articleUrl.js' );
-const { selectOutlineForResult, outlineEventContext } =
-	require( '../utils/outlineSelection.js' );
+const { outlineEventContext } = require( '../utils/outlineSelection.js' );
 const instrument = require( '../logging/instrument.js' );
 const { scrollToTop } = require( '../utils/scroll.js' );
 const { isMobile } = require( '../utils/mobile.js' );
@@ -210,7 +216,8 @@ module.exports = defineComponent( {
 
 		const store = useArticleGuidanceStore();
 		const {
-			searchQuery, showOutlines, outlines, genericOutline, hasTypedOutlines
+			searchQuery, showOutlines, genericOutline, hasTypedOutlines, selectionPending,
+			selectionError, selectedResult
 		} = storeToRefs( store );
 
 		const searchInput = ref( null );
@@ -242,19 +249,24 @@ module.exports = defineComponent( {
 			}
 		} );
 
+		const MAX_TOTAL = 8;
+
+		const visibleResults = computed( () => results.value.slice( 0, MAX_TOTAL ) );
+
 		watch( loading, ( isLoading ) => {
 			if ( !isLoading && validQuery.value ) {
 				instrument.logWriteTitle(
 					validQuery.value,
-					results.value.length,
+					visibleResults.value.length,
 					searchPath.value,
 					searchDuration.value
 				);
 			}
 		} );
 
-		// Dismiss outlines immediately when the user modifies the query
+		// A change to the query dismisses the outlines and the selection error
 		watch( searchQuery, () => {
+			selectionError.value = false;
 			if ( showOutlines.value ) {
 				store.hideOutlines();
 			}
@@ -278,17 +290,18 @@ module.exports = defineComponent( {
 			}
 		} );
 
+		const matchingMessage = computed( () => mw.msg(
+			'articleguidance-specialnewarticle-matching-outline',
+			selectedResult.value ? selectedResult.value.label : validQuery.value
+		) );
+
 		// Handle result selection
 		const handleSelect = ( result ) => {
-			// Derive the outline the way the store derives it, so the event
-			// cannot report an outline that the workflow does not use. A
-			// result that matches nothing falls back to the generic outline
-			// (T435605).
-			const outline = selectOutlineForResult( outlines.value, result.matchedQId );
-			instrument.logSelectSuggestedTopic(
-				result.id,
-				outlineEventContext( outline, result.matchedQId )
-			);
+			// Ignore clicks while a previous selection is pending
+			if ( selectionPending.value ) {
+				return;
+			}
+			instrument.logSelectSuggestedTopic( result.id );
 			store.selectArticle( result, articleExist.value === true );
 		};
 
@@ -316,8 +329,10 @@ module.exports = defineComponent( {
 			store.hideOutlines();
 		};
 
-		// Handle retrying after a search error
+		// Handle retrying after a search error or an outlines load error
 		const handleRetry = () => {
+			selectionError.value = false;
+			store.loadOutlines().catch( () => {} );
 			performSearch( validQuery.value );
 			checkExistence();
 		};
@@ -342,19 +357,6 @@ module.exports = defineComponent( {
 			() => isExperiencedEditor.value &&
 				!!validQuery.value &&
 				validQuery.value.trim().length >= 1
-		);
-
-		const MAX_TOTAL = 8;
-		const MAX_UNMATCHED = 3;
-
-		const matchedResults = computed(
-			() => results.value.filter( ( r ) => r.matched )
-		);
-		const unmatchedResults = computed(
-			() => results.value.filter( ( r ) => !r.matched ).slice( 0, MAX_UNMATCHED )
-		);
-		const visibleResults = computed(
-			() => matchedResults.value.concat( unmatchedResults.value ).slice( 0, MAX_TOTAL )
 		);
 
 		const hasFallbackLabels = computed(
@@ -382,6 +384,9 @@ module.exports = defineComponent( {
 			searchQuery,
 			validQuery,
 			showOutlines,
+			selectionPending,
+			selectionError,
+			matchingMessage,
 			loading,
 			error,
 			invalidTitle,

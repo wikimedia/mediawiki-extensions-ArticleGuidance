@@ -55,7 +55,7 @@ function logInit( initialTitle, source ) {
  * Fire when a debounced title search completes.
  *
  * @param {string} query Search query that was submitted.
- * @param {number} resultCount Number of results returned.
+ * @param {number} resultCount Number of results shown.
  * @param {string|null} path Search path taken:
  *   - 'wikidata_direct': Native search results only (no MinT translation used).
  *   - 'mint_fallback_success': Native search returned no results, MinT translation returned
@@ -80,19 +80,36 @@ function logWriteTitle( query, resultCount, path = null, duration = null ) {
 }
 
 /**
- * Fire when the user selects a Wikidata search result card.
+ * Fire when the user selects a Wikidata search result card. The outline is not
+ * known yet: outline_matched reports it.
  *
  * @param {string} resultQid QID of the clicked Wikidata item.
+ */
+function logSelectSuggestedTopic( resultQid ) {
+	const data = {};
+	data.action_subtype = 'suggested_topic';
+	data.action_context = { result_qid: resultQid };
+	submit( 'select_topic', data );
+}
+
+/**
+ * Fire when outline matching for the selected Wikidata result finishes.
+ *
+ * @param {string} resultQid QID of the selected Wikidata item.
  * @param {Object} outline Outline the workflow will use, from outlineEventContext(). Its qids
  *   are ['*'] for the generic guidance outline, which the result falls back to when nothing
  *   matches. The server always serves a generic outline (T437432), so every result continues
  *   the workflow.
+ * @param {number} duration Duration of the outlines load and matching, in milliseconds.
+ * @param {string} fallback 'none', 'error' when matching failed, or 'timeout' when matching
+ *   took too long. The generic outline is used in both cases.
  */
-function logSelectSuggestedTopic( resultQid, outline ) {
+function logOutlineMatched( resultQid, outline, duration, fallback ) {
 	const data = {};
-	data.action_subtype = 'suggested_topic';
-	data.action_context = { result_qid: resultQid, outline: outline };
-	submit( 'select_topic', data );
+	data.action_context = {
+		result_qid: resultQid, outline: outline, duration: duration, fallback: fallback
+	};
+	submit( 'outline_matched', data );
 }
 
 /**
@@ -256,6 +273,7 @@ module.exports = {
 	logInit,
 	logWriteTitle,
 	logSelectSuggestedTopic,
+	logOutlineMatched,
 	logSelectManualTopic,
 	logContinueWithGeneric,
 	logAddSource,

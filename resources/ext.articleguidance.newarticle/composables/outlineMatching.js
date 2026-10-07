@@ -1,7 +1,6 @@
 'use strict';
 
 const PROP_INSTANCE_OF = 'P31';
-const EXCLUDED_KEY = '__excluded__';
 
 /**
  * Map a matchVia group key to the Wikidata property it represents.
@@ -11,6 +10,19 @@ const EXCLUDED_KEY = '__excluded__';
  */
 function propForGroup( key ) {
 	return key === 'default' ? PROP_INSTANCE_OF : key;
+}
+
+/**
+ * Keep the outlines that declare at least one article type. This drops the
+ * generic outline, which declares none (T428152).
+ *
+ * @param {Array} outlines
+ * @return {Array}
+ */
+function getTypedOutlines( outlines ) {
+	return ( outlines || [] ).filter(
+		( outline ) => outline.articleTypes && outline.articleTypes.length > 0
+	);
 }
 
 /**
@@ -81,10 +93,7 @@ function collectDirectMatches( matches, itemQIds, directTypesByGroup, outlineQId
  * @param {Object} itemHierarchyMatches Map of { groupKey: { itemQId: Set<outlineQId> } }
  */
 function applyHierarchyMatches( matches, itemHierarchyMatches ) {
-	Object.entries( itemHierarchyMatches ).forEach( ( [ key, itemOutlineMap ] ) => {
-		if ( key === EXCLUDED_KEY ) {
-			return;
-		}
+	Object.values( itemHierarchyMatches ).forEach( ( itemOutlineMap ) => {
 		Object.entries( itemOutlineMap ).forEach( ( [ itemQId, outlineSet ] ) => {
 			if ( !matches[ itemQId ] ) {
 				matches[ itemQId ] = [];
@@ -144,8 +153,8 @@ function selectBestMatches( matches, outlines ) {
 
 module.exports = {
 	PROP_INSTANCE_OF,
-	EXCLUDED_KEY,
 	propForGroup,
+	getTypedOutlines,
 	groupOutlinesByMatchVia,
 	collectDirectMatches,
 	applyHierarchyMatches,

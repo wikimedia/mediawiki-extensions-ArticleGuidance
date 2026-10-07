@@ -4,6 +4,7 @@ const { ref, computed } = require( 'vue' );
 const { checkPagesExist } = require( '../api/MediaWiki.js' );
 const { createRedirect: createRedirectPage } = require( '../api/Redirect.js' );
 const { isRedirectOfferable } = require( '../utils/redirect.js' );
+const { clearExistenceCache } = require( './useArticleExist.js' );
 const instrument = require( '../logging/instrument.js' );
 
 /**
@@ -64,6 +65,8 @@ function useRedirectCreation( { redLinkTitle, searchQuery, targetTitle } ) {
 
 		try {
 			await createRedirectPage( source, target );
+			// The source title now exists
+			clearExistenceCache();
 			redirectState.value = 'created';
 			instrument.logRedirectCreated( true );
 		} catch ( code ) {

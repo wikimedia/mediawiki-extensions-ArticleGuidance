@@ -18,6 +18,7 @@
 	"articleguidance-specialnewarticle-checking": "Progress indicator message displayed while checking search results against available outlines",
 	"articleguidance-specialnewarticle-checking-subject": "Progress indicator message displayed while checking search results for a matching subject in the search step",
 	"articleguidance-specialnewarticle-checking-subject-delayed": "Progress indicator message displayed when checking search results for a matching subject takes longer than the expected threshold in the search step",
+	"articleguidance-specialnewarticle-matching-outline": "Progress indicator message displayed in the search step while the selected subject is matched to an outline. Parameters: $1 is the label of the selected subject",
 	"articleguidance-specialnewarticle-no-results": "Message shown when no Wikidata entities match the search query. Parameters: $1 is the search query text",
 	"articleguidance-specialnewarticle-search-error": "Error message shown inline in the search results area when all Wikidata queries fail even after a silent retry. Followed by a 'Try again' button.",
 	"articleguidance-specialnewarticle-outlines-error": "Error message shown in the list of article types when the list cannot be loaded.",

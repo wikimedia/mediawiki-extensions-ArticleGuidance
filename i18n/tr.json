@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Efygz",
 			"Hedda",
 			"Nabbegat"
 		]
@@ -80,7 +81,7 @@
 	"articleguidance-subjectcovered-button": "Bu maddeyi geliştir",
 	"articleguidance-subjectcovered-redirect-error-exists": "\"$1\" başlıklı bir sayfa zaten oluşturulmuş.",
 	"articleguidance-subjectcovered-redirect-error-permission": "Bu sayfayı oluşturma izniniz yok",
-	"articleguidance-subjectcovered-redirect-retry": "Tekrar dene",
+	"articleguidance-subjectcovered-redirect-retry": "Yeniden dene",
 	"articleguidance-titleconflict-suggestion-prefix": "Öneri:",
 	"articleguidance-titleconflict-continue": "Devam et",
 	"articleguidance-titleconflict-selected-subject": "Seçilen konu",

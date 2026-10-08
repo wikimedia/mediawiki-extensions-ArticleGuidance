@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Meno25"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "سجل أن هذا التعديل تم إجراؤه من خلال <kbd>[[Special:NewArticle|إرشادات المقالة]]</kbd> ، حتى يمكن وضع علامات عليه وفقًا لذلك."
+}

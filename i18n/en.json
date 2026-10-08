@@ -50,6 +50,7 @@
 	"articleguidance-sources-unreliable-warning-title": "Not recommended by community",
 	"articleguidance-sources-unreliable-warning-description": "This source type is rarely accepted for this article type.",
 	"articleguidance-sources-unreliable-warning-description-generic": "This source type is rarely accepted on this wiki.",
+	"articleguidance-sources-unreliable-warning-description-risky": "This website is considered unreliable on this wiki.",
 	"articleguidance-sources-tips-title": "Tips for $1 articles",
 	"articleguidance-sources-tips-title-generic": "Tips for choosing sources",
 	"articleguidance-sources-tips-content-recommended": "These source types work well:",

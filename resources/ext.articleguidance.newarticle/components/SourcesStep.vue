@@ -274,10 +274,6 @@ module.exports = defineComponent( {
 			mw.message( 'articleguidance-sources-tips-title-generic' ).text() :
 			mw.message( 'articleguidance-sources-tips-title', selectedOutline.value.label ).text()
 		);
-		const unreliableWarningDescription = computed( () => isGenericOutlineSelected.value ?
-			mw.message( 'articleguidance-sources-unreliable-warning-description-generic' ).text() :
-			mw.message( 'articleguidance-sources-unreliable-warning-description' ).text()
-		);
 		const recommendedTitle = computed(
 			() => mw.message( 'articleguidance-sources-tips-content-recommended' ).text()
 		);
@@ -293,8 +289,17 @@ module.exports = defineComponent( {
 		const checking = ref( false );
 		// Inline validation error (invalid URL or duplicate)
 		const validationError = ref( null );
-		// Unreliable source warning (null or { domain })
+		// Unreliable source warning (null or { domain, classification })
 		const unreliableWarning = ref( null );
+		const unreliableWarningDescription = computed( () => {
+			// The model judges the website for the whole wiki, not for the article type
+			if ( unreliableWarning.value && unreliableWarning.value.classification === 'risky' ) {
+				return mw.message( 'articleguidance-sources-unreliable-warning-description-risky' ).text();
+			}
+			return isGenericOutlineSelected.value ?
+				mw.message( 'articleguidance-sources-unreliable-warning-description-generic' ).text() :
+				mw.message( 'articleguidance-sources-unreliable-warning-description' ).text();
+		} );
 		// Tips accordion open state (expanded by default)
 		const tipsOpen = ref( true );
 
@@ -350,11 +355,14 @@ module.exports = defineComponent( {
 					getOutlineLookupQId( selectedOutline.value )
 				);
 				const mandatory = minRequiredSources.value > 0;
-				if ( result.classification === 'spam' || result.classification === 'discouraged' ) {
+				if ( [ 'spam', 'discouraged', 'risky' ].includes( result.classification ) ) {
 					instrument.logAddSource(
 						false, url, result.domain, result.classification, mandatory
 					);
-					unreliableWarning.value = { domain: result.domain };
+					unreliableWarning.value = {
+						domain: result.domain,
+						classification: result.classification
+					};
 					if ( urlInput.value ) {
 						urlInput.value.blur();
 					}

@@ -5,8 +5,10 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Tests\Unit;
 
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
+use MediaWiki\Extension\ArticleGuidance\Services\ReferenceRiskClient;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\UrlAsciiEncoder;
+use MediaWiki\Extension\SpamBlacklist\SpamBlacklist;
 use MediaWiki\User\UserFactory;
 use MediaWikiUnitTestCase;
 
@@ -44,11 +46,13 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 	 *
 	 * @param array $genericOutline What getGenericOutline() returns
 	 * @param array|null $qIdOutline What getOutlineByQId() returns
+	 * @param ReferenceRiskClient|null $referenceRiskClient
 	 * @return SourceValidator
 	 */
 	private function getValidator(
 		array $genericOutline,
-		?array $qIdOutline = null
+		?array $qIdOutline = null,
+		?ReferenceRiskClient $referenceRiskClient = null
 	): SourceValidator {
 		$outlineService = $this->createMock( OutlineService::class );
 		$outlineService->method( 'getGenericOutline' )->willReturn( $genericOutline );
@@ -61,7 +65,8 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 			null,
 			$this->createMock( UserFactory::class ),
 			$outlineService,
-			$encoder
+			$encoder,
+			$referenceRiskClient
 		);
 	}
 
@@ -187,5 +192,85 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 
 		$result = $validator->validate( 'https://facebook.com/some-page', null );
 		$this->assertSame( 'neutral', $result['classification'] );
+	}
+
+	public static function provideReferenceRisk(): array {
+		return [
+			'risky' => [ true, 'risky' ],
+			'not risky' => [ false, 'neutral' ],
+		];
+	}
+
+	/**
+	 * The model classifies a domain that the outline does not list.
+	 *
+	 * @dataProvider provideReferenceRisk
+	 */
+	public function testReferenceRiskClassifiesNeutralSources( bool $isRisky, string $expected ): void {
+		$referenceRiskClient = $this->createMock( ReferenceRiskClient::class );
+		$referenceRiskClient->method( 'isRisky' )->with( 'example.org' )->willReturn( $isRisky );
+		$validator = $this->getValidator( self::GENERIC_OUTLINE, null, $referenceRiskClient );
+
+		$result = $validator->validate( 'https://www.example.org/page', null );
+		$this->assertSame( $expected, $result['classification'] );
+	}
+
+	public function testReferenceRiskClassifiesSubdomainOfRiskyDomain(): void {
+		$referenceRiskClient = $this->createMock( ReferenceRiskClient::class );
+		$referenceRiskClient->method( 'isRisky' )->willReturnCallback(
+			static fn ( string $domain ): bool => $domain === 'unreliable.example'
+		);
+		$validator = $this->getValidator( self::GENERIC_OUTLINE, null, $referenceRiskClient );
+
+		$result = $validator->validate( 'https://m.unreliable.example/news/article', null );
+		$this->assertSame( 'risky', $result['classification'] );
+		$this->assertSame( 'm.unreliable.example', $result['domain'] );
+	}
+
+	public static function provideOutlineSourceLists(): array {
+		return [
+			'recommended' => [ 'https://reuters.com/world/article', 'recommended' ],
+			'discouraged' => [ 'https://facebook.com/some-page', 'discouraged' ],
+		];
+	}
+
+	/**
+	 * The outline source lists take precedence over the model.
+	 *
+	 * @dataProvider provideOutlineSourceLists
+	 */
+	public function testOutlineSourceListsTakePrecedenceOverReferenceRisk( string $url, string $expected ): void {
+		$referenceRiskClient = $this->createMock( ReferenceRiskClient::class );
+		$referenceRiskClient->method( 'isRisky' )->willReturn( true );
+		$validator = $this->getValidator( self::GENERIC_OUTLINE, null, $referenceRiskClient );
+
+		$result = $validator->validate( $url, OutlineService::GENERIC_ARTICLE_TYPE );
+		$this->assertSame( $expected, $result['classification'] );
+	}
+
+	public function testSpamTakesPrecedenceOverReferenceRisk(): void {
+		if ( !class_exists( SpamBlacklist::class ) ) {
+			$this->markTestSkipped( 'SpamBlacklist is not installed' );
+		}
+
+		$referenceRiskClient = $this->createMock( ReferenceRiskClient::class );
+		$referenceRiskClient->method( 'isRisky' )->willReturn( true );
+
+		$spamBlacklist = $this->createMock( SpamBlacklist::class );
+		$spamBlacklist->method( 'filter' )->willReturn( [ 'spam.example' ] );
+
+		$encoder = $this->createMock( UrlAsciiEncoder::class );
+		$encoder->method( 'encode' )->willReturnArgument( 0 );
+
+		$validator = new SourceValidator(
+			$spamBlacklist,
+			$this->createMock( UserFactory::class ),
+			$this->createMock( OutlineService::class ),
+			$encoder,
+			$referenceRiskClient
+		);
+
+		$result = $validator->validate( 'https://spam.example/page', null );
+		$this->assertSame( 'spam', $result['classification'] );
 	}
 }

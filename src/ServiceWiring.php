@@ -8,6 +8,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\CommonsThumb;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
+use MediaWiki\Extension\ArticleGuidance\Services\ReferenceRiskClient;
 use MediaWiki\Extension\ArticleGuidance\Services\SourceValidator;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
@@ -18,6 +19,7 @@ use MediaWiki\Extension\SpamBlacklist\BaseBlacklist;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\WikiMap\WikiMap;
 
 /** @phpcs-require-sorted-array */
 return [
@@ -54,6 +56,23 @@ return [
 			$services->getContentLanguage(),
 		);
 	},
+	'ArticleGuidanceReferenceRiskClient' => static function ( MediaWikiServices $services ): ReferenceRiskClient {
+		$config = $services->getMainConfig();
+		// The model identifies a wiki by the database name without "wiki", e.g. "be_x_old" for
+		// be_x_oldwiki. The content language code does not always match it.
+		$wikiId = WikiMap::getCurrentWikiId();
+		return new ReferenceRiskClient(
+			$services->getHttpRequestFactory(),
+			$services->getMainWANObjectCache(),
+			LoggerFactory::getInstance( 'ArticleGuidance' ),
+			$config->get( 'ArticleGuidanceLiftWingBaseUrl' ),
+			$config->get( 'ArticleGuidanceLiftWingReferenceRiskHostHeader' ),
+			$config->get( 'ArticleGuidanceUserAgent' ),
+			str_ends_with( $wikiId, 'wiki' )
+				? substr( $wikiId, 0, -strlen( 'wiki' ) )
+				: $services->getContentLanguage()->getCode(),
+		);
+	},
 	'ArticleGuidanceRenderer' => static function ( MediaWikiServices $services ): ArticleGuidanceRenderer {
 		return new ArticleGuidanceRenderer(
 			$services->getService( 'ArticleGuidanceWikidataUrls' )
@@ -68,6 +87,9 @@ return [
 			$services->getUserFactory(),
 			$services->getService( 'ArticleGuidanceOutlineService' ),
 			new UrlAsciiEncoder(),
+			$services->getMainConfig()->get( 'ArticleGuidanceReferenceRiskEnabled' )
+				? $services->getService( 'ArticleGuidanceReferenceRiskClient' )
+				: null,
 		);
 	},
 	'ArticleGuidanceTagContentExtractorService' => static function (

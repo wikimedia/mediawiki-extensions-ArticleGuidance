@@ -31,7 +31,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `select_topic` | User picks an outline from the browse-by-type panel, or picks "Other" there | — | `manual_topic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`matched_qid` always null) |
 | `select_topic` | User clicks "Continue anyway" on the search step, which replaces the browse-by-type link when the wiki has no types | — | `continue_generic` | `{"outline":{…}}` [see below](#how-an-outline-is-reported) (`qids` always `["*"]`, `matched_qid` always null) |
 | `outline_matched` | Outline matching for the selected Wikidata result finishes | — | — | `{"result_qid":"<QID>","outline":{…},"duration":<ms>,"fallback":"<none|error|timeout>"}` (`duration` includes any wait for the outlines to load) [see below](#how-an-outline-is-reported) |
-| `add_source` | Source URL validated by the `/articleguidance/v0/source/validate` API | — | `valid` or `invalid` | `{"url":"<url>","domain":"<domain>","classification":"<classification>","mandatory":<bool>}` |
+| `add_source` | Source URL validated by the `/articleguidance/v0/source/validate` API | — | `valid` or `invalid` | `{"url":"<url>","domain":"<domain>","classification":"<classification>","mandatory":<bool>}` (`classification` is `spam`, `recommended`, `discouraged`, `neutral`, or `risky`: the outline does not list the domain and the reference-risk model marks it as risky, T442164) |
 | `notability_action` | User clicks an option on the notability step | — | `wikidata_item`, `sandbox`, or `learn` | — |
 | `notability_check_shown` | Notability step is shown | — | — | `{"tags":["<tag>",…]}` |
 | `guidance_shown` | Instructions step is shown | — | — | — |

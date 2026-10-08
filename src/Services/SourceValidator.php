@@ -18,6 +18,7 @@ class SourceValidator {
 		private readonly UserFactory $userFactory,
 		private readonly OutlineService $outlineService,
 		private readonly UrlAsciiEncoder $urlAsciiEncoder,
+		private readonly ?ReferenceRiskClient $referenceRiskClient = null,
 	) {
 	}
 
@@ -52,11 +53,38 @@ class SourceValidator {
 			}
 		}
 
+		$classification = $this->classifyDomain( $domain, $outlineQId );
+		// The outline source lists take precedence over the reference-risk model.
+		if ( $classification === 'neutral' && $this->isRiskyDomain( $domain ) ) {
+			$classification = 'risky';
+		}
 		return [
 			'domain' => $domain,
-			'classification' => $this->classifyDomain( $domain, $outlineQId ),
+			'classification' => $classification,
 			'title' => $this->titleFromPath( $url ),
 		];
+	}
+
+	/**
+	 * Ask the reference-risk model about the domain and each parent domain.
+	 * The perennial sources list names parent domains, so a subdomain such
+	 * as "m.example.com" must match an entry for "example.com".
+	 *
+	 * @param string $domain
+	 * @return bool
+	 */
+	private function isRiskyDomain( string $domain ): bool {
+		if ( $this->referenceRiskClient === null ) {
+			return false;
+		}
+		$labels = explode( '.', $domain );
+		while ( count( $labels ) > 1 ) {
+			if ( $this->referenceRiskClient->isRisky( implode( '.', $labels ) ) ) {
+				return true;
+			}
+			array_shift( $labels );
+		}
+		return false;
 	}
 
 	/**

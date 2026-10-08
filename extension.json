@@ -128,6 +128,18 @@
 			"value": "en",
 			"description": "Language code that non-Latin topic-matching queries are translated into before searching Wikidata."
 		},
+		"ArticleGuidanceReferenceRiskEnabled": {
+			"value": false,
+			"description": "Enable reference-risk check in the sources step."
+		},
+		"ArticleGuidanceLiftWingBaseUrl": {
+			"value": "https://api.wikimedia.org/service/lw/inference/v1/models/",
+			"description": "Base URL of the LiftWing models. Production uses the internal endpoint."
+		},
+		"ArticleGuidanceLiftWingReferenceRiskHostHeader": {
+			"value": null,
+			"description": "Host header for the reference-risk model, needed with the internal LiftWing endpoint. Null sends none."
+		},
 		"ArticleGuidanceFeedbackTalkPage": {
 			"value": "",
 			"description": "Full title of the local talk page that collects Article Guidance feedback, e.g. 'Wikipedia talk:Article Guidance'. Empty falls back to Talk:Article guidance on mediawiki.org."
@@ -387,6 +399,7 @@
 				"articleguidance-sources-unreliable-warning-title",
 				"articleguidance-sources-unreliable-warning-description",
 				"articleguidance-sources-unreliable-warning-description-generic",
+				"articleguidance-sources-unreliable-warning-description-risky",
 				"articleguidance-sources-check-failed",
 				"articleguidance-sources-tips-title",
 				"articleguidance-sources-tips-title-generic",

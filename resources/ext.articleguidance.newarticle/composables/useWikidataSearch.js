@@ -390,6 +390,12 @@ function useWikidataSearch( query, language ) {
 			return;
 		}
 
+		// Show the loading state during the debounce. Otherwise the search step
+		// shows "no results" before the search starts. Discard the results of
+		// a search in progress, because they are for an older query.
+		latestRequestId++;
+		loading.value = true;
+
 		// Set new timer for debounced search
 		debounceTimer = setTimeout( () => {
 			performSearch( newQuery );

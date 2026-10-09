@@ -117,6 +117,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "Eine Seite mit dem Titel „$1“ wurde bereits erstellt.",
 	"articleguidance-subjectcovered-redirect-error-permission": "Du darfst diese Seite nicht erstellen.",
 	"articleguidance-subjectcovered-redirect-retry": "Wiederholen",
+	"articleguidance-subjectcovered-redirect-returnto": "Zurück zur Seite $1",
 	"articleguidance-titleconflict-suggestion-prefix": "Vorschlag:",
 	"articleguidance-titleconflict-continue": "Fortfahren",
 	"articleguidance-titleconflict-selected-subject": "Ausgewähltes Thema",

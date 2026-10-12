@@ -120,6 +120,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "تم إنشاء صفحة بعنوان \" $1 \" بالفعل.",
 	"articleguidance-subjectcovered-redirect-error-permission": "لا يُسمح لك بإنشاء هذه الصفحة.",
 	"articleguidance-subjectcovered-redirect-retry": "إعادة المحاولة",
+	"articleguidance-subjectcovered-redirect-returnto": "العودة إلى $1",
 	"articleguidance-titleconflict-suggestion-prefix": "اقتراح:",
 	"articleguidance-titleconflict-continue": "استمرار",
 	"articleguidance-titleconflict-selected-subject": "الموضوع المختار",

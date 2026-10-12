@@ -119,6 +119,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "Strona o tytule „$1” została już utworzona.",
 	"articleguidance-subjectcovered-redirect-error-permission": "Nie masz uprawnień do utworzenia tej strony.",
 	"articleguidance-subjectcovered-redirect-retry": "Spróbuj ponownie",
+	"articleguidance-subjectcovered-redirect-returnto": "Wróć do „$1”",
 	"articleguidance-titleconflict-suggestion-prefix": "Sugestia:",
 	"articleguidance-titleconflict-continue": "Kontynuuj",
 	"articleguidance-titleconflict-selected-subject": "Wybrany temat",

@@ -121,6 +121,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "标题为“$1”的页面已被创建。",
 	"articleguidance-subjectcovered-redirect-error-permission": "您无权创建此页面。",
 	"articleguidance-subjectcovered-redirect-retry": "重试",
+	"articleguidance-subjectcovered-redirect-returnto": "返回$1",
 	"articleguidance-titleconflict-suggestion-prefix": "建议：",
 	"articleguidance-titleconflict-continue": "继续",
 	"articleguidance-titleconflict-selected-subject": "选中的主题",

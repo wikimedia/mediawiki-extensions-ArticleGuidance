@@ -117,6 +117,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "Xa se creou unha páxina titulada «$1».",
 	"articleguidance-subjectcovered-redirect-error-permission": "Non tes permiso para crear esta páxina.",
 	"articleguidance-subjectcovered-redirect-retry": "Reintentar",
+	"articleguidance-subjectcovered-redirect-returnto": "Volver a «$1»",
 	"articleguidance-titleconflict-suggestion-prefix": "Suxestión:",
 	"articleguidance-titleconflict-continue": "Continuar",
 	"articleguidance-titleconflict-selected-subject": "Tema seleccionado",

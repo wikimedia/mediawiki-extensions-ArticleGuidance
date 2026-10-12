@@ -117,6 +117,7 @@
 	"articleguidance-subjectcovered-redirect-error-exists": "Bog cinwaankiisu yahay \"$1\" horay ayaa loo abuuray.",
 	"articleguidance-subjectcovered-redirect-error-permission": "Looma oggola inaad abuurto boggan.",
 	"articleguidance-subjectcovered-redirect-retry": "Isku day",
+	"articleguidance-subjectcovered-redirect-returnto": "Ku noqo $1",
 	"articleguidance-titleconflict-suggestion-prefix": "Talo:",
 	"articleguidance-titleconflict-continue": "Sii wad",
 	"articleguidance-titleconflict-selected-subject": "Mawduuca la xushay",

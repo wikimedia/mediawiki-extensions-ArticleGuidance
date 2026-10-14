@@ -5,6 +5,10 @@
 		]
 	},
 	"articleguidance-desc": "Permite que os usuários criem artigos por meio de um fluxo de trabalho guiado e assistido.",
+	"articleguidance-disabled-title": "Não há orientações sobre o artigo",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Orientação para artigos]] não está habilitada nesta wiki.",
+	"articleguidance-pref-enable-label": "Usar as orientações para artigos ao criar novos artigos",
+	"articleguidance-pref-enable-help": "Quando ativado, a criação de um novo artigo abre a experiência guiada em vez da interface de edição padrão.",
 	"articleguidance-specialnewarticle-title": "Novo artigo",
 	"articleguidance-specialnewarticle-title-placeholder": "Título do artigo",
 	"articleguidance-specialnewarticle-loading": "Pesquisando...",
@@ -17,6 +21,7 @@
 	"articleguidance-specialnewarticle-disambiguation-title": "O que é isto?",
 	"articleguidance-specialnewarticle-browse-outlines-prefix": "Assunto indisponível?",
 	"articleguidance-specialnewarticle-browse-outlines-link": "Escolha um tipo",
+	"articleguidance-specialnewarticle-browse-outlines-continue": "Continuar mesmo assim",
 	"articleguidance-specialnewarticle-skip-guidance-prefix": "Pular assistência.",
 	"articleguidance-specialnewarticle-skip-guidance-link": "Editar sem orientação da comunidade.",
 	"articleguidance-specialnewarticle-skip-guidance-info-label": "Saiba mais sobre as orientações para artigos",
@@ -81,5 +86,16 @@
 	"articleguidance-publish-followup-confirmation-title": "O artigo foi publicado!",
 	"articleguidance-publish-followup-community-review": "Outros editores revisarão este artigo. Enquanto isso, dê uma olhada nas sugestões para melhorá-lo.",
 	"articleguidance-publish-followup-edit-more-button": "Melhorar o artigo",
-	"articleguidance-publish-followup-close-button": "Fechar"
+	"articleguidance-publish-followup-close-button": "Fechar",
+	"communityconfiguration-articleguidance-title": "Orientações para artigos",
+	"communityconfiguration-articleguidance-description": "Configurações para a experiência guiada de criação de novos artigos nesta wiki.",
+	"communityconfiguration-articleguidance-feature-section-label": "Disponibilidade",
+	"communityconfiguration-articleguidance-feature-section-description": "Essa configuração determina se a experiência guiada para a criação de novos artigos estará disponível nesta wiki.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Quando essa opção estiver desativada, o guia de artigos não estará disponível: os links em vermelho abrem o editor padrão, a página guiada não pode ser usada e a preferência pessoal fica oculta. As configurações abaixo só têm efeito quando essa opção estiver ativada.",
+	"communityconfiguration-articleguidance-redirect-section-label": "Criação de artigos com orientação",
+	"communityconfiguration-articleguidance-redirect-section-description": "Essas configurações determinam quem será direcionado para a experiência guiada de criação de novos artigos, em vez do editor padrão.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Abrir a experiência guiada a partir dos links em vermelho",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Quando ativada, ao clicar em um link vermelho que leva a um artigo ausente, é exibida a experiência guiada em vez do editor padrão. Os editores que preferirem o editor padrão podem desativar essa opção em suas preferências.",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limitar aos editores mais recentes",
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Essa configuração só tem efeito enquanto a configuração acima estiver ativada. Quando ativada, apenas os editores cujo número de edições seja inferior ao limite definido para o “editor mais recente” desta wiki terão acesso à experiência guiada, enquanto todos os demais continuarão usando o editor padrão."
 }

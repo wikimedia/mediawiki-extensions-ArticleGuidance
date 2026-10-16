@@ -230,7 +230,7 @@ module.exports = defineComponent( {
 
 		// Initialize search composable with validated query
 		const {
-			results, loading, error, performSearch, articleExist, checkExistence, isDelayed
+			results, loading, error, performSearch, isDelayed
 		} = useSearchDelayed( validQuery, selectedLanguage );
 
 		// The loading message based on the delay state.
@@ -242,7 +242,6 @@ module.exports = defineComponent( {
 			store.loadOutlines();
 			if ( validQuery.value && validQuery.value.trim().length >= 1 ) {
 				performSearch( validQuery.value, 'mount' );
-				checkExistence();
 			} else {
 				searchInput.value.focus();
 			}
@@ -290,7 +289,7 @@ module.exports = defineComponent( {
 				return;
 			}
 			instrument.logSelectSuggestedTopic( result.id );
-			store.selectArticle( result, articleExist.value === true );
+			store.selectArticle( result );
 		};
 
 		// With no types to browse, the panel would only offer the generic
@@ -322,7 +321,6 @@ module.exports = defineComponent( {
 			selectionError.value = false;
 			store.loadOutlines().catch( () => {} );
 			performSearch( validQuery.value );
-			checkExistence();
 		};
 
 		// URL for the skip-guidance link; recomputed when the title changes
@@ -357,13 +355,11 @@ module.exports = defineComponent( {
 			() => !loading.value && !!validQuery.value && results.value.length > 0
 		);
 
-		// Only show "no results" if article doesn't exist
 		const showNoResults = computed(
 			() => !loading.value &&
 				!!validQuery.value &&
 				results.value.length === 0 &&
-				!error.value &&
-				!articleExist.value
+				!error.value
 		);
 
 		// Return everything you want to expose to the template

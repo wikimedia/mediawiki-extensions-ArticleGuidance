@@ -9,7 +9,9 @@ When a user types in the search box, `useWikidataSearch` debounces the input and
 
 Using CirrusSearch means queries like "Titanic film" match entities whose label is "Titanic" and whose description contains "film", mirroring the results users see on Wikidata.org.
 
-`searchWikidata`, `translateQuery` and the existence check of the typed title (`useArticleExist`) keep page-scoped caches. When the user goes back to the search step, the step searches again, and the caches answer a query sent before without a new request. Failed requests are not cached. The existence cache is cleared when the workflow creates a redirect. A page that someone else creates in the meantime shows as missing until the page reloads.
+The search step does not check whether the typed title exists. When the user selects a result, `checkTitlesExist` (`useArticleExist`) checks the typed title, and the result label when it replaces the typed title, in one request that runs during outline matching.
+
+`searchWikidata`, `translateQuery` and the existence check keep page-scoped caches. When the user goes back to the search step, the step searches again, and the caches answer a query sent before without a new request. A new selection with the same query and label sends no existence request. Failed requests are not cached. The existence cache is cleared when the workflow creates a redirect. A page that someone else creates in the meantime shows as missing until the page reloads.
 
 ## Processing Flow
 

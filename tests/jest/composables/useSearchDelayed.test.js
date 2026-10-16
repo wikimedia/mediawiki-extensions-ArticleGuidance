@@ -4,16 +4,14 @@ const mockVue = require( 'vue' );
 const { ref, nextTick } = mockVue;
 const { mount } = require( '@vue/test-utils' );
 
-// Mock useSearch to control loading state and prevent actual API calls
+// Mock useWikidataSearch to control loading state and prevent actual API calls
 const mockLoading = ref( false );
 jest.mock(
-	'../../../resources/ext.articleguidance.newarticle/composables/useSearch.js',
-	() => ( {
-		useSearch: () => ( {
-			loading: mockLoading,
-			results: mockVue.ref( [] ),
-			error: mockVue.ref( null )
-		} )
+	'../../../resources/ext.articleguidance.newarticle/composables/useWikidataSearch.js',
+	() => () => ( {
+		loading: mockLoading,
+		results: mockVue.ref( [] ),
+		error: mockVue.ref( null )
 	} )
 );
 

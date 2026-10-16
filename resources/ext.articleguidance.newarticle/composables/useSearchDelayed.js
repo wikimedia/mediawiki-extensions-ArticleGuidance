@@ -1,8 +1,8 @@
-const { useSearch } = require( './useSearch.js' );
+const useWikidataSearch = require( './useWikidataSearch.js' );
 const { ref, watch, onUnmounted } = require( 'vue' );
 
 /**
- * Custom composable that extends useSearch with a loading delay state.
+ * Custom composable that extends useWikidataSearch with a loading delay state.
  *
  * @param {Object} query - Reactive reference to search query
  * @param {Object} language - Reactive reference to selected language
@@ -10,7 +10,7 @@ const { ref, watch, onUnmounted } = require( 'vue' );
  * @return {Object} Combined search state, methods and delay
  */
 function useSearchDelayed( query, language, thresholdMs = 2300 ) {
-	const searchState = useSearch( query, language );
+	const searchState = useWikidataSearch( query, language );
 
 	const isDelayed = ref( false );
 	let loadingTimer = null;

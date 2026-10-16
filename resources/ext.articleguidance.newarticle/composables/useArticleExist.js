@@ -3,7 +3,6 @@ const { checkPagesExist } = require( '../api/MediaWiki.js' );
 const { withRetry } = require( '../utils/retry.js' );
 
 // Page-scoped cache: cleared automatically on page reload, and by clearExistenceCache().
-// The search step checks again when the user goes back to it.
 // Key: title, Value: whether the page exists
 const existenceCache = new Map();
 
@@ -12,6 +11,28 @@ const existenceCache = new Map();
  */
 function clearExistenceCache() {
 	existenceCache.clear();
+}
+
+/**
+ * Check which titles exist on the local wiki. Only the titles that are not
+ * in the cache are requested, in one request.
+ *
+ * @param {string[]} titles Titles to check
+ * @return {Promise<Object>} Whether each title exists, keyed by title
+ */
+async function checkTitlesExist( titles ) {
+	const uncachedTitles = titles.filter( ( title ) => !existenceCache.has( title ) );
+	if ( uncachedTitles.length > 0 ) {
+		const existenceMap = await checkPagesExist( uncachedTitles );
+		uncachedTitles.forEach( ( title ) => {
+			existenceCache.set( title, !!existenceMap[ title ] );
+		} );
+	}
+	const result = {};
+	titles.forEach( ( title ) => {
+		result[ title ] = existenceCache.get( title );
+	} );
+	return result;
 }
 
 /**
@@ -101,4 +122,4 @@ function useArticleExist( title ) {
 	};
 }
 
-module.exports = { useArticleExist, clearExistenceCache };
+module.exports = { useArticleExist, checkTitlesExist, clearExistenceCache };

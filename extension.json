@@ -266,7 +266,6 @@
 				"composables/useRedirectCreation.js",
 				"composables/outlineMatching.js",
 				"composables/matchOutline.js",
-				"composables/useSearch.js",
 				"composables/useSearchDelayed.js",
 				"composables/useWikidataSearch.js",
 				"composables/useTitleValidation.js",

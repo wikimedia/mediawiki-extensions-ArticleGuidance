@@ -18,6 +18,7 @@ const {
 } = require( '../utils/outlineSelection.js' );
 const { getCreateArticleUrl } = require( '../utils/articleUrl.js' );
 const { matchOutline } = require( '../composables/matchOutline.js' );
+const { checkTitlesExist } = require( '../composables/useArticleExist.js' );
 const { withRetry } = require( '../utils/retry.js' );
 const { withTimeout, TimeoutError } = require( '../utils/timeout.js' );
 const instrument = require( '../logging/instrument.js' );
@@ -204,10 +205,28 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		if ( !existenceMap[ trimmed ] ) {
 			return false;
 		}
-		articleTitle.value = trimmed;
+		await routeToTitleConflict( trimmed, result );
+		return true;
+	}
+
+	/**
+	 * @param {string} title Title that exists on the local wiki
+	 * @param {Object|null} result Selected Wikidata result, when available
+	 * @return {Promise<void>}
+	 */
+	async function routeToTitleConflict( title, result ) {
+		articleTitle.value = title;
 		titleSuggestion.value = await findTitleSuggestion( result );
 		goTo( 'titleconflict' );
-		return true;
+	}
+
+	/**
+	 * @param {string|null} label Result label, normalized as a title
+	 * @return {boolean} Whether the label replaces the typed title as the article title
+	 */
+	function labelReplacesTypedTitle( label ) {
+		return !isRedLink.value && !!label &&
+			label.toLowerCase() !== trimmedQuery.value.toLowerCase();
 	}
 
 	// Q IDs of the items that matching completed for. The caches keep their match,
@@ -248,7 +267,25 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		);
 	}
 
-	async function selectArticle( result, titleTaken ) {
+	/**
+	 * Check the titles that routing needs: the typed title, and the result label
+	 * when it replaces the typed title.
+	 *
+	 * @param {string|null} label Result label, normalized as a title
+	 * @return {Promise<Object>} Whether each title exists, keyed by title
+	 */
+	function checkSelectionTitles( label ) {
+		if ( topicExistsOnWiki.value ) {
+			return Promise.resolve( {} );
+		}
+		const titles = [ trimmedQuery.value ];
+		if ( labelReplacesTypedTitle( label ) ) {
+			titles.push( label );
+		}
+		return withRetry( () => checkTitlesExist( titles ) );
+	}
+
+	async function selectArticle( result ) {
 		if ( selectionPending.value ) {
 			return;
 		}
@@ -267,18 +304,21 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		// The match of a known item is instant, so it cannot flicker
 		const minDuration = matchedItemQIds.has( result.id ) ? 0 : SELECTION_MIN_DURATION;
 		try {
-			const [ outlineSelected ] = await Promise.all( [
+			// The title check does not need the outline, so it runs during matching
+			const [ outlineSelected, existenceMap ] = await Promise.all( [
 				selectOutlineForArticle( result ).then( () => true, () => false ),
+				checkSelectionTitles( label ).catch( () => null ),
 				new Promise( ( resolve ) => {
 					setTimeout( resolve, minDuration );
 				} )
 			] );
-			if ( !outlineSelected ) {
-				// Without the outlines, there is no generic outline to fall back to
+			// Without the outlines, there is no generic outline to fall back to.
+			// Without the title check, the next step is not known.
+			if ( !outlineSelected || !existenceMap ) {
 				selectionError.value = true;
 				return;
 			}
-			await routeSelectedArticle( result, titleTaken, label );
+			await routeSelectedArticle( result, label, existenceMap );
 		} finally {
 			selectionPending.value = false;
 		}
@@ -288,22 +328,20 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	 * Navigate to the step that follows the selection of a Wikidata result.
 	 *
 	 * @param {Object} result Selected Wikidata result
-	 * @param {boolean} titleTaken Whether the typed title exists on the local wiki
 	 * @param {string|null} label Result label, normalized as a title
+	 * @param {Object} existenceMap Whether each title from checkSelectionTitles() exists
 	 * @return {Promise<void>}
 	 */
-	async function routeSelectedArticle( result, titleTaken, label ) {
+	async function routeSelectedArticle( result, label, existenceMap ) {
 		if ( topicExistsOnWiki.value ) {
 			await loadLocalArticle();
 			goTo( 'subjectcovered' );
-		} else if ( titleTaken ) {
-			articleTitle.value = trimmedQuery.value;
-			titleSuggestion.value = await findTitleSuggestion( result );
-			goTo( 'titleconflict' );
+		} else if ( existenceMap[ trimmedQuery.value ] ) {
+			await routeToTitleConflict( trimmedQuery.value, result );
 		} else {
-			if ( !isRedLink.value && label &&
-				label.toLowerCase() !== trimmedQuery.value.toLowerCase() ) {
-				if ( await routeIfTitleTaken( label, result ) ) {
+			if ( labelReplacesTypedTitle( label ) ) {
+				if ( existenceMap[ label ] ) {
+					await routeToTitleConflict( label, result );
 					return;
 				}
 				originalTypedTitle.value = trimmedQuery.value;

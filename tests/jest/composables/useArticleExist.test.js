@@ -10,7 +10,7 @@ jest.mock(
 const { checkPagesExist } = require(
 	'../../../resources/ext.articleguidance.newarticle/api/MediaWiki.js'
 );
-const { useArticleExist, clearExistenceCache } = require(
+const { useArticleExist, checkTitlesExist, clearExistenceCache } = require(
 	'../../../resources/ext.articleguidance.newarticle/composables/useArticleExist.js'
 );
 
@@ -65,5 +65,52 @@ describe( 'useArticleExist', () => {
 
 		expect( error.value ).toBe( null );
 		expect( exists.value ).toBe( true );
+	} );
+} );
+
+describe( 'checkTitlesExist', () => {
+	beforeEach( () => {
+		checkPagesExist.mockReset();
+		clearExistenceCache();
+	} );
+
+	it( 'checks all titles in one request', async () => {
+		checkPagesExist.mockResolvedValue( { Paris: true } );
+
+		const existenceMap = await checkTitlesExist( [ 'Paris', 'Paris, Texas' ] );
+
+		expect( checkPagesExist ).toHaveBeenCalledTimes( 1 );
+		expect( checkPagesExist ).toHaveBeenCalledWith( [ 'Paris', 'Paris, Texas' ] );
+		expect( existenceMap ).toEqual( { Paris: true, 'Paris, Texas': false } );
+	} );
+
+	it( 'requests only the titles that are not in the cache', async () => {
+		checkPagesExist.mockResolvedValue( { Paris: true } );
+		await useArticleExist( ref( 'Paris' ) ).checkExistence();
+		checkPagesExist.mockResolvedValue( {} );
+
+		const existenceMap = await checkTitlesExist( [ 'Paris', 'Paris, Texas' ] );
+
+		expect( checkPagesExist ).toHaveBeenLastCalledWith( [ 'Paris, Texas' ] );
+		expect( existenceMap ).toEqual( { Paris: true, 'Paris, Texas': false } );
+	} );
+
+	it( 'sends no request when all titles are in the cache', async () => {
+		checkPagesExist.mockResolvedValue( { Paris: true } );
+		await checkTitlesExist( [ 'Paris' ] );
+
+		const existenceMap = await checkTitlesExist( [ 'Paris' ] );
+
+		expect( checkPagesExist ).toHaveBeenCalledTimes( 1 );
+		expect( existenceMap ).toEqual( { Paris: true } );
+	} );
+
+	it( 'does not cache a failed check', async () => {
+		checkPagesExist.mockRejectedValue( new Error( 'API error' ) );
+		await expect( checkTitlesExist( [ 'Paris' ] ) ).rejects.toThrow( 'API error' );
+
+		checkPagesExist.mockResolvedValue( { Paris: true } );
+
+		expect( await checkTitlesExist( [ 'Paris' ] ) ).toEqual( { Paris: true } );
 	} );
 } );

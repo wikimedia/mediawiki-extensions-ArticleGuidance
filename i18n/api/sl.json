@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Zabeleženje, da je bila ta sprememba narejena prek <kbd>[[Special:NewArticle|Vodenje za članke]]</kbd>, da jo je mogoče ustrezno označiti."
+}

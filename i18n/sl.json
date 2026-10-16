@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"articleguidance-desc": "Omogoča uporabnikom ustvarjanje člankov z vodenim, podprtim delovnim procesom",
+	"articleguidance-specialnewarticle-title": "Nov članek",
+	"articleguidance-specialnewarticle-title-placeholder": "Naslov članka",
+	"articleguidance-specialnewarticle-loading": "Iskanje ...",
+	"articleguidance-specialnewarticle-checking": "Preverjanje ...",
+	"articleguidance-specialnewarticle-no-results": "Za »$1« ni bilo najdenih tem",
+	"articleguidance-titleconflict-exists-warning": "Članek z naslovom »$1« že obstaja.",
+	"articleguidance-specialnewarticle-edit-existing": "Uredi obstoječi članek",
+	"articleguidance-specialnewarticle-disambiguation-title": "Kaj je to?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Izberite tip namesto tega",
+	"articleguidance-sources-title": "Dodajanje virov",
+	"articleguidance-sources-subtitle": "Viri pomagajo bralcem preveriti dejstva in pokažejo, zakaj je ta tema pomembna.",
+	"articleguidance-sources-subtitle-notability-risk": "Pri tej vrsti članka so za nadaljevanje potrebni viri.",
+	"articleguidance-sources-url-placeholder": "Prilepite povezavo do vira",
+	"articleguidance-sources-add-source": "Dodaj vir",
+	"articleguidance-sources-invalid-url": "Vnesite veljaven URL",
+	"articleguidance-sources-duplicate": "Ta vir je že dodan",
+	"articleguidance-sources-continue": "Nadaljuj",
+	"articleguidance-sources-helper": "Med pisanjem lahko dodajate vire.",
+	"articleguidance-sources-helper-required": "$1 člankov v tem vikiju zahteva vire.",
+	"articleguidance-sources-helper-progress": "Dodanih je $1 od {{PLURAL:$2|$2 vira|$2 virov}}.",
+	"articleguidance-sources-unreliable-warning-title": "Skupnost odsvetuje",
+	"articleguidance-sources-unreliable-warning-description": "Ta vrsta vira je za to vrsto članka redko sprejeta.",
+	"articleguidance-sources-tips-title": "Nasveti za članke »$1«",
+	"articleguidance-sources-tips-content-recommended": "Te vrste virov delujejo dobro:",
+	"articleguidance-sources-tips-content-discouraged": "Te so redko sprejete:",
+	"articleguidance-sources-check-failed": "Preverjanje vira ni uspelo. Poskusite znova.",
+	"articleguidance-instructions-guidance-heading": "Začetek dela s tem člankom.",
+	"articleguidance-instructions-start-writing": "Začni pisati",
+	"articleguidance-navigation-back": "Nazaj"
+}

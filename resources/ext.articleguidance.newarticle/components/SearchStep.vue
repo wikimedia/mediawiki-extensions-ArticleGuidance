@@ -230,8 +230,7 @@ module.exports = defineComponent( {
 
 		// Initialize search composable with validated query
 		const {
-			results, loading, error, performSearch, articleExist, checkExistence, isDelayed,
-			searchPath, searchDuration
+			results, loading, error, performSearch, articleExist, checkExistence, isDelayed
 		} = useSearchDelayed( validQuery, selectedLanguage );
 
 		// The loading message based on the delay state.
@@ -242,7 +241,7 @@ module.exports = defineComponent( {
 		onMounted( () => {
 			store.loadOutlines();
 			if ( validQuery.value && validQuery.value.trim().length >= 1 ) {
-				performSearch( validQuery.value );
+				performSearch( validQuery.value, 'mount' );
 				checkExistence();
 			} else {
 				searchInput.value.focus();
@@ -252,17 +251,6 @@ module.exports = defineComponent( {
 		const MAX_TOTAL = 8;
 
 		const visibleResults = computed( () => results.value.slice( 0, MAX_TOTAL ) );
-
-		watch( loading, ( isLoading ) => {
-			if ( !isLoading && validQuery.value ) {
-				instrument.logWriteTitle(
-					validQuery.value,
-					visibleResults.value.length,
-					searchPath.value,
-					searchDuration.value
-				);
-			}
-		} );
 
 		// A change to the query dismisses the outlines and the selection error
 		watch( searchQuery, () => {

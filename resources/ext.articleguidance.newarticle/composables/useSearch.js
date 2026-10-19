@@ -27,8 +27,6 @@ function useSearch( query, language ) {
 	return {
 		// Wikidata results
 		results: wikidataSearch.results,
-		searchPath: wikidataSearch.searchPath,
-		searchDuration: wikidataSearch.searchDuration,
 
 		// Article existence
 		articleExist: articleExistence.exists,

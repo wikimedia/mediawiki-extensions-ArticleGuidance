@@ -21,6 +21,9 @@ if ( !funnelEntryToken ) {
 	mw.storage.session.set( SESSION_KEY, funnelEntryToken );
 }
 
+// Set by logInit()
+let actionSource = 'direct';
+
 function submit( action, extraData ) {
 	if ( instrumentFailed ) {
 		return;
@@ -45,18 +48,39 @@ function submit( action, extraData ) {
  * @param {string} source Entry point: 'redlink', 'articlewizard', or 'direct'.
  */
 function logInit( initialTitle, source ) {
+	actionSource = source || 'direct';
 	const data = {};
-	data.action_source = source || 'direct';
+	data.action_source = actionSource;
 	data.action_context = { title: initialTitle };
 	submit( 'init', data );
 }
 
 /**
- * Fire when a debounced title search completes.
+ * Fire when a title search request is sent. Typing and the debounce are excluded.
  *
- * @param {string} query Search query that was submitted.
- * @param {number} resultCount Number of results shown.
- * @param {string|null} path Search path taken:
+ * @param {string} searchId Identifies the search. The matching search_end has the same ID.
+ * @param {string} query The query that is searched.
+ * @param {string} trigger 'mount' when the search step opens with a query, or 'input' when
+ *   the user edits the query.
+ */
+function logSearchStart( searchId, query, trigger ) {
+	const data = {};
+	data.action_source = actionSource;
+	data.action_subtype = trigger;
+	data.action_context = { search_id: searchId, query: query };
+	submit( 'search_start', data );
+}
+
+/**
+ * Fire when a title search ends. A search the user leaves has no search_end.
+ *
+ * @param {string} searchId ID from the matching search_start.
+ * @param {string} query The query that was searched, not the current input.
+ * @param {string} status 'results', 'no_results', 'error', 'replaced' when a newer search
+ *   replaces it, or 'cancelled' when the user clears the query.
+ * @param {number} duration Time from search_start to the outcome, in milliseconds.
+ * @param {number|null} [resultCount] Number of results shown, for 'results' and 'no_results'.
+ * @param {string|null} [path] Search path, for 'results' and 'no_results':
  *   - 'wikidata_direct': Native search results only (no MinT translation used).
  *   - 'mint_fallback_success': Native search returned no results, MinT translation returned
  *     results.
@@ -64,19 +88,36 @@ function logInit( initialTitle, source ) {
  *     returned no results.
  *   - 'wikidata_and_mint': Both native search and MinT translation returned results and were
  *     merged.
- * @param {number|null} duration Total search duration in milliseconds.
  */
-function logWriteTitle( query, resultCount, path = null, duration = null ) {
+function logSearchEnd( searchId, query, status, duration, resultCount = null, path = null ) {
 	const data = {};
-	const context = { query: query, result_count: resultCount };
+	data.action_source = actionSource;
+	data.action_subtype = status;
+	const context = { search_id: searchId, query: query, duration: duration };
+	if ( resultCount !== null ) {
+		context.result_count = resultCount;
+	}
 	if ( path !== null ) {
 		context.path = path;
 	}
-	if ( duration !== null ) {
-		context.duration = duration;
-	}
 	data.action_context = context;
-	submit( 'write_title', data );
+	submit( 'search_end', data );
+}
+
+/**
+ * Fire when the page is hidden or shown again, on every step. The last 'hidden' event
+ * marks the end of the visit.
+ *
+ * @param {boolean} hidden True when the page is hidden.
+ * @param {string} step The current workflow step.
+ * @param {number} stepDuration Time since the step was shown, in milliseconds.
+ */
+function logVisibilityChange( hidden, step, stepDuration ) {
+	const data = {};
+	data.action_source = actionSource;
+	data.action_subtype = hidden ? 'hidden' : 'visible';
+	data.action_context = { step: step, step_duration: stepDuration };
+	submit( 'visibility_change', data );
 }
 
 /**
@@ -271,7 +312,9 @@ function logSkipGuidance( title ) {
 
 module.exports = {
 	logInit,
-	logWriteTitle,
+	logSearchStart,
+	logSearchEnd,
+	logVisibilityChange,
 	logSelectSuggestedTopic,
 	logOutlineMatched,
 	logSelectManualTopic,

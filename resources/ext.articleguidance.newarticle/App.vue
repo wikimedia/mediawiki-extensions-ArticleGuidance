@@ -22,6 +22,7 @@ const SubjectCoveredStep = require( './components/SubjectCoveredStep.vue' );
 const TitleConflictStep = require( './components/TitleConflictStep.vue' );
 const UpdateTitleStep = require( './components/UpdateTitleStep.vue' );
 const { scrollToTop } = require( './utils/scroll.js' );
+const instrument = require( './logging/instrument.js' );
 
 module.exports = defineComponent( {
 	name: 'App',
@@ -60,8 +61,20 @@ module.exports = defineComponent( {
 			store.setRedLinkOrigin( props.initialTitle, props.returnTo );
 		}
 
+		let stepStartTime = performance.now();
+
 		watch( currentStep, () => {
+			stepStartTime = performance.now();
 			scrollToTop();
+		} );
+
+		// The last 'hidden' event shows where the user left the workflow
+		document.addEventListener( 'visibilitychange', () => {
+			instrument.logVisibilityChange(
+				document.hidden,
+				currentStep.value,
+				Math.round( performance.now() - stepStartTime )
+			);
 		} );
 
 		return { currentStep };

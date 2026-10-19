@@ -1,13 +1,15 @@
-const { ref, watch } = require( 'vue' );
+const { ref, watch, onScopeDispose } = require( 'vue' );
 const { searchWikidata, fetchEntityClaims } = require( '../api/Wikidata.js' );
 const { translateQuery } = require( '../api/Cx.js' );
 const { getCommonsThumbUrl } = require( '../utils/commonsThumb.js' );
 const { containsNonLatin } = require( '../utils/script.js' );
 const { withRetry } = require( '../utils/retry.js' );
+const instrument = require( '../logging/instrument.js' );
 const config = require( '../config.json' );
 
 // The search step shows 8 results. The extra candidates replace items that
 // processCandidates() drops.
+const MAX_RESULT = 8;
 const SEARCH_LIMIT = 12;
 
 /**
@@ -23,10 +25,10 @@ function useWikidataSearch( query, language ) {
 	const results = ref( [] );
 	const loading = ref( false );
 	const error = ref( null );
-	const searchPath = ref( null );
-	const searchDuration = ref( null );
 	let debounceTimer = null;
 	let latestRequestId = 0;
+	// The search that has a search_start event and no search_end event yet
+	let activeSearch = null;
 	const excludedItemTypes = mw.config.get( 'wgArticleGuidanceExcludedItemTypes' ) || [];
 
 	/**
@@ -98,22 +100,51 @@ function useWikidataSearch( query, language ) {
 	};
 
 	/**
+	 * Log the end of the active search, if there is one.
+	 *
+	 * @param {string} status Status of the search_end event
+	 * @param {number|null} [resultCount] Number of results shown
+	 * @param {string|null} [path] Search path taken
+	 */
+	const endActiveSearch = ( status, resultCount = null, path = null ) => {
+		if ( !activeSearch ) {
+			return;
+		}
+		instrument.logSearchEnd(
+			activeSearch.id,
+			activeSearch.query,
+			status,
+			Math.round( performance.now() - activeSearch.startTime ),
+			resultCount,
+			path
+		);
+		activeSearch = null;
+	};
+
+	/**
 	 * Perform search with current query and language
 	 *
 	 * @param {string} searchQuery - Query string to search for
+	 * @param {string} [trigger] - Cause of the search, for the search_start event
 	 * @return {Promise<void>}
 	 */
-	const performSearch = async ( searchQuery ) => {
+	const performSearch = async ( searchQuery, trigger = 'input' ) => {
 		const requestId = ++latestRequestId;
 		if ( !searchQuery || searchQuery.trim().length < 1 ) {
+			endActiveSearch( 'cancelled' );
 			results.value = [];
 			loading.value = false;
-			searchPath.value = null;
-			searchDuration.value = null;
 			return;
 		}
 
-		const startTime = performance.now();
+		endActiveSearch( 'replaced' );
+		activeSearch = {
+			id: mw.user.generateRandomSessionId(),
+			query: searchQuery,
+			startTime: performance.now()
+		};
+		instrument.logSearchStart( activeSearch.id, searchQuery, trigger );
+
 		loading.value = true;
 		error.value = null;
 
@@ -148,7 +179,6 @@ function useWikidataSearch( query, language ) {
 			let processedTranslatedResults = [];
 			let path = 'wikidata_direct';
 
-			const MAX_RESULT = 8;
 			if ( processedWikidataResults.length < MAX_RESULT ) {
 				const translatedResults = await translationSearchPromise;
 
@@ -187,16 +217,18 @@ function useWikidataSearch( query, language ) {
 			const finalResults = processedWikidataResults.concat( processedTranslatedResults );
 
 			results.value = finalResults;
-			searchPath.value = path;
-			searchDuration.value = Math.round( performance.now() - startTime );
+			endActiveSearch(
+				finalResults.length > 0 ? 'results' : 'no_results',
+				Math.min( finalResults.length, MAX_RESULT ),
+				path
+			);
 		} catch ( err ) {
 			if ( requestId !== latestRequestId ) {
 				return;
 			}
 			error.value = err.message || 'Failed to search Wikidata';
 			results.value = [];
-			searchPath.value = null;
-			searchDuration.value = null;
+			endActiveSearch( 'error' );
 		} finally {
 			if ( requestId === latestRequestId ) {
 				loading.value = false;
@@ -214,10 +246,9 @@ function useWikidataSearch( query, language ) {
 		// Don't search if query is too short
 		if ( !newQuery || newQuery.trim().length < 1 ) {
 			latestRequestId++;
+			endActiveSearch( 'cancelled' );
 			results.value = [];
 			loading.value = false;
-			searchPath.value = null;
-			searchDuration.value = null;
 			return;
 		}
 
@@ -225,6 +256,7 @@ function useWikidataSearch( query, language ) {
 		// shows "no results" before the search starts. Discard the results of
 		// a search in progress, because they are for an older query.
 		latestRequestId++;
+		endActiveSearch( 'replaced' );
 		loading.value = true;
 
 		// Set new timer for debounced search
@@ -241,12 +273,18 @@ function useWikidataSearch( query, language ) {
 		}
 	} );
 
+	// Stop a pending or running search when the search step closes. The search
+	// gets no search_end, like a search the user leaves.
+	onScopeDispose( () => {
+		clearTimeout( debounceTimer );
+		latestRequestId++;
+		activeSearch = null;
+	}, true );
+
 	return {
 		results,
 		loading,
 		error,
-		searchPath,
-		searchDuration,
 		performSearch
 	};
 }

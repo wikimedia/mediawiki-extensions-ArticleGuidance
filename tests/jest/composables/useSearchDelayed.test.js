@@ -6,17 +6,13 @@ const { mount } = require( '@vue/test-utils' );
 
 // Mock useSearch to control loading state and prevent actual API calls
 const mockLoading = ref( false );
-const mockSearchPath = ref( 'wikidata_direct' );
-const mockSearchDuration = ref( 120 );
 jest.mock(
 	'../../../resources/ext.articleguidance.newarticle/composables/useSearch.js',
 	() => ( {
 		useSearch: () => ( {
 			loading: mockLoading,
 			results: mockVue.ref( [] ),
-			error: mockVue.ref( null ),
-			searchPath: mockSearchPath,
-			searchDuration: mockSearchDuration
+			error: mockVue.ref( null )
 		} )
 	} )
 );
@@ -49,17 +45,6 @@ describe( 'useSearchDelayed', () => {
 		} );
 
 		expect( wrapper.vm.isDelayed ).toBe( false );
-	} );
-
-	it( 'forwards searchPath and searchDuration from useSearch', () => {
-		const query = ref( '' );
-		const language = ref( 'en' );
-		const wrapper = mount( TestComponent, {
-			props: { query, language }
-		} );
-
-		expect( wrapper.vm.searchPath ).toBe( 'wikidata_direct' );
-		expect( wrapper.vm.searchDuration ).toBe( 120 );
 	} );
 
 	it( 'starts timer and sets isDelayed to true after delay when loading', async () => {

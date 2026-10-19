@@ -15,6 +15,7 @@
 	"articleguidance-specialnewarticle-checking": "Überprüfung...",
 	"articleguidance-specialnewarticle-checking-subject": "Es wird nach einem passenden Betreff gesucht.",
 	"articleguidance-specialnewarticle-checking-subject-delayed": "Wir prüfen das noch. Das kann einen Moment dauern.",
+	"articleguidance-specialnewarticle-matching-outline": "Vorbereitung der Leitlinien für „$1“.",
 	"articleguidance-specialnewarticle-no-results": "Für „$1“ wurden keine Themen gefunden.",
 	"articleguidance-specialnewarticle-search-error": "Das Thema konnte nicht geprüft werden.",
 	"articleguidance-specialnewarticle-outlines-error": "Die Artikeltypen konnten nicht geladen werden.",

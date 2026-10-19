@@ -19,6 +19,7 @@
 	"articleguidance-specialnewarticle-checking": "检查中…",
 	"articleguidance-specialnewarticle-checking-subject": "正在检查匹配的主题。",
 	"articleguidance-specialnewarticle-checking-subject-delayed": "仍在检查中。这可能需要一些时间。",
+	"articleguidance-specialnewarticle-matching-outline": "正在准备“$1”的指引。",
 	"articleguidance-specialnewarticle-no-results": "未找到与“$1”相关的主题",
 	"articleguidance-specialnewarticle-search-error": "无法检查此主题。",
 	"articleguidance-specialnewarticle-outlines-error": "无法加载条目类型。",

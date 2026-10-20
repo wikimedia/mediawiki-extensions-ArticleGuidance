@@ -4,6 +4,7 @@ const {
 	evaluateTag,
 	evaluateNotabilityTags,
 	getBlockingRestrictionType,
+	getThreshold,
 	isSourcesRequired
 } = require( '../../../resources/ext.articleguidance.newarticle/utils/notability.js' );
 
@@ -48,6 +49,18 @@ const tagCases = {
 		state: { ...BASE_STATE, sitelinkCount: 7 },
 		expected: { active: false }
 	},
+	'crosswiki — 1 site link, outline threshold of 1 → inactive': {
+		tag: 'crosswiki',
+		state: { ...BASE_STATE, sitelinkCount: 1 },
+		outline: { notabilityThresholds: { crosswiki: 1 } },
+		expected: { active: false }
+	},
+	'crosswiki — 7 site links, outline threshold of 8 → active': {
+		tag: 'crosswiki',
+		state: { ...BASE_STATE, sitelinkCount: 7 },
+		outline: { notabilityThresholds: { crosswiki: 8 } },
+		expected: { active: true }
+	},
 	'junior — 5 user edits (below threshold of 10) → active': {
 		tag: 'junior',
 		state: { ...BASE_STATE, userEditCount: 5 },
@@ -75,8 +88,8 @@ const tagCases = {
 	}
 };
 
-test.each( Object.entries( tagCases ) )( 'evaluateTag: %s', ( label, { tag, state, expected } ) => {
-	const { active } = evaluateTag( tag, state );
+test.each( Object.entries( tagCases ) )( 'evaluateTag: %s', ( label, { tag, state, outline, expected } ) => {
+	const { active } = evaluateTag( tag, state, outline );
 	expect( active ).toBe( expected.active );
 } );
 
@@ -104,6 +117,11 @@ const notabilityCases = {
 		outline: { notabilityRisk: [ 'junior' ] },
 		state: BASE_STATE,
 		expected: { activeTags: [ 'junior' ], willShow: false }
+	},
+	'crosswiki override met by sitelinks → willShow false': {
+		outline: { notabilityRisk: [ 'crosswiki' ], notabilityThresholds: { crosswiki: 2 } },
+		state: { ...BASE_STATE, sitelinkCount: 2 },
+		expected: { activeTags: [], willShow: false }
 	},
 	'sources and junior → willShow false': {
 		outline: { notabilityRisk: [ 'sources', 'junior' ] },
@@ -226,4 +244,40 @@ const sourcesRequiredCases = {
 
 test.each( Object.entries( sourcesRequiredCases ) )( 'isSourcesRequired: %s', ( label, { outline, state, expected } ) => {
 	expect( isSourcesRequired( outline, state ) ).toBe( expected );
+} );
+
+// ---------------------------------------------------------------------------
+// getThreshold — per-outline override with config fallback
+// ---------------------------------------------------------------------------
+
+const thresholdCases = {
+	'null outline, sources → config default': {
+		outline: null,
+		tag: 'sources',
+		expected: 2
+	},
+	'no overrides, crosswiki → config default': {
+		outline: { notabilityRisk: [ 'crosswiki' ] },
+		tag: 'crosswiki',
+		expected: 5
+	},
+	'empty overrides (PHP empty array) → config default': {
+		outline: { notabilityThresholds: [] },
+		tag: 'sources',
+		expected: 2
+	},
+	'sources override → override': {
+		outline: { notabilityThresholds: { sources: 4 } },
+		tag: 'sources',
+		expected: 4
+	},
+	'override for another tag → config default': {
+		outline: { notabilityThresholds: { sources: 4 } },
+		tag: 'crosswiki',
+		expected: 5
+	}
+};
+
+test.each( Object.entries( thresholdCases ) )( 'getThreshold: %s', ( label, { outline, tag, expected } ) => {
+	expect( getThreshold( outline, tag ) ).toBe( expected );
 } );

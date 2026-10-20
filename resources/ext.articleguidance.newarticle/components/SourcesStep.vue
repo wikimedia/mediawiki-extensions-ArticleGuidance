@@ -456,8 +456,8 @@ module.exports = defineComponent( {
 		const subtitleMessage = computed( () => {
 			if ( isMandatory.value ) {
 				return isGenericOutlineSelected.value ?
-					mw.message( 'articleguidance-sources-subtitle-notability-risk-generic' ).text() :
-					mw.message( 'articleguidance-sources-subtitle-notability-risk' ).text();
+					mw.message( 'articleguidance-sources-subtitle-notability-risk-generic', minRequiredSources.value ).text() :
+					mw.message( 'articleguidance-sources-subtitle-notability-risk', minRequiredSources.value ).text();
 			}
 			return mw.message( 'articleguidance-sources-subtitle' ).text();
 		} );

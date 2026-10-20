@@ -24,6 +24,9 @@ class ArticleGuidanceTagHandler implements
 
 	private const KNOWN_NOTABILITY_TAGS = [ 'wikidata', 'crosswiki', 'sources', 'junior', 'draft' ];
 
+	/** A tag with a "-N" count suffix, e.g. "sources-3" */
+	private const NOTABILITY_TAG_COUNT_PATTERN = '/^(\w+)-([1-9]\d*)$/';
+
 	public function __construct(
 		private readonly WikidataInfoFetcher $wikidataInfoFetcher,
 		private readonly ArticleGuidanceRenderer $renderer,
@@ -71,13 +74,28 @@ class ArticleGuidanceTagHandler implements
 		// The interface never names the generic outline, so it ignores the label.
 		$customLabel = $isGeneric ? null : ( trim( $attributes['label'] ?? '' ) ?: null );
 		$outlineLabel = $customLabel ?? $this->getDefaultOutlineLabel( $parser->getTitle() );
-		$allTags = $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null );
-		$validTags = array_values( array_filter( $allTags,
-			static fn ( $tag ) => in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
-		) );
-		$invalidTags = array_values( array_filter( $allTags,
-			static fn ( $tag ) => !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true )
-		) );
+		// Only tags with a configured threshold accept a count suffix
+		$notabilityThresholds = [
+			'crosswiki' => $this->mainConfig->get( 'ArticleGuidanceCrossWikiThreshold' ),
+			'sources' => $this->mainConfig->get( 'ArticleGuidanceSourcesThreshold' ),
+		];
+		$validTags = [];
+		$invalidTags = [];
+		$thresholdOverrides = [];
+		foreach ( $this->parseNotabilityRisk( $attributes['notability-risk'] ?? null ) as $tag ) {
+			if ( preg_match( self::NOTABILITY_TAG_COUNT_PATTERN, $tag, $matches )
+				&& isset( $notabilityThresholds[$matches[1]] )
+			) {
+				$tag = $matches[1];
+				$thresholdOverrides[$tag] = (int)$matches[2];
+				$notabilityThresholds[$tag] = $thresholdOverrides[$tag];
+			}
+			if ( !in_array( $tag, self::KNOWN_NOTABILITY_TAGS, true ) ) {
+				$invalidTags[] = $tag;
+			} elseif ( !in_array( $tag, $validTags, true ) ) {
+				$validTags[] = $tag;
+			}
+		}
 		// Explicit match-via override from tag attribute; null means infer from Wikidata
 		$explicitMatchVia = $attributes['match-via'] ?? null;
 		if ( $explicitMatchVia !== null && !$this->isValidWikidataPropertyId( $explicitMatchVia ) ) {
@@ -104,10 +122,6 @@ class ArticleGuidanceTagHandler implements
 			$recommendedSourcesHtml = $this->extractAndParseSources( $content, 'recommended-sources', $parser, $frame );
 			$discouragedSourcesHtml = $this->extractAndParseSources( $content, 'discouraged-sources', $parser, $frame );
 		}
-
-		$notabilityThresholds = [
-			'crosswiki' => $this->mainConfig->get( 'ArticleGuidanceCrossWikiThreshold' ),
-		];
 
 		$wikidataImage = null;
 		// Renderer-facing list of { id, label, description, matchVia } entries;
@@ -190,6 +204,9 @@ class ArticleGuidanceTagHandler implements
 			}
 			if ( $validTags !== [] ) {
 				$data['notabilityRisk'] = $validTags;
+			}
+			if ( $thresholdOverrides !== [] ) {
+				$data['notabilityThresholds'] = $thresholdOverrides;
 			}
 			if ( $instructionsHtml !== null && $instructionsHtml !== '' ) {
 				$data['instructions'] = $instructionsHtml;

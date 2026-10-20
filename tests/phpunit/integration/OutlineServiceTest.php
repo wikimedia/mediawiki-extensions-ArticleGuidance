@@ -157,6 +157,29 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( $articleTypes, $outlines[0]['articleTypes'] );
 	}
 
+	public function testPassesThroughNotabilityThresholds(): void {
+		$service = $this->getService(
+			[
+				$this->makeMember( 1, 'Wikipedia:Company outline' ),
+				$this->makeMember( 2, 'Wikipedia:Album outline' ),
+			],
+			[
+				1 => json_encode( [
+					'articleTypes' => [ [ 'id' => 'Q4830453', 'hierarchyDepth' => 5, 'matchVia' => null ] ],
+					'notabilityRisk' => [ 'sources' ],
+					'notabilityThresholds' => [ 'sources' => 3 ],
+				] ),
+				2 => $this->makeBlob( [ 'Q482994' ] ),
+			]
+		);
+
+		$outlines = $this->getWikiOutlines( $service );
+
+		$this->assertCount( 2, $outlines );
+		$this->assertSame( [ 'sources' => 3 ], $outlines[0]['notabilityThresholds'] );
+		$this->assertSame( [], $outlines[1]['notabilityThresholds'] );
+	}
+
 	public function testGetOutlineByQIdMatchesAnyListedId(): void {
 		$service = $this->getService(
 			[
@@ -281,6 +304,7 @@ class OutlineServiceTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( OutlineService::DEFAULT_GENERIC_OUTLINE_TITLE, $default['title'] );
 		$this->assertSame( [], $default['articleTypes'] );
 		$this->assertSame( [ 'junior', 'sources' ], $default['notabilityRisk'] );
+		$this->assertSame( [], $default['notabilityThresholds'] );
 		$this->assertSame( '', $default['label'] );
 		$this->assertNotSame( '', trim( $default['instructions'] ) );
 		$this->assertCount( 3, $default['recommendedSources']['info'] );

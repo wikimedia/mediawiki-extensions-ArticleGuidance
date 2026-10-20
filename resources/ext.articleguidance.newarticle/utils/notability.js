@@ -1,8 +1,29 @@
 /**
  * Evaluation utilities for notability tags.
  * Thresholds are read from mw.config (wgArticleGuidanceJuniorEditorThreshold,
- * wgArticleGuidanceCrossWikiThreshold).
+ * wgArticleGuidanceCrossWikiThreshold, wgArticleGuidanceSourcesThreshold).
+ * An outline can override the crosswiki and sources thresholds with a "-N" tag suffix.
  */
+
+const DEFAULT_THRESHOLD_CONFIG = {
+	crosswiki: 'wgArticleGuidanceCrossWikiThreshold',
+	sources: 'wgArticleGuidanceSourcesThreshold'
+};
+
+/**
+ * Get the threshold for a countable notability tag.
+ *
+ * @param {Object|null} outline
+ * @param {string} tag 'crosswiki' or 'sources'
+ * @return {number}
+ */
+function getThreshold( outline, tag ) {
+	const overrides = outline && outline.notabilityThresholds;
+	if ( overrides && typeof overrides[ tag ] === 'number' ) {
+		return overrides[ tag ];
+	}
+	return mw.config.get( DEFAULT_THRESHOLD_CONFIG[ tag ] );
+}
 
 /**
  * Evaluate a single notability tag against the current state.
@@ -12,9 +33,10 @@
  * @param {boolean} state.selectedWikidataItem
  * @param {number|null} state.sitelinkCount
  * @param {number} state.userEditCount
+ * @param {Object|null} [outline] Supplies per-outline threshold overrides
  * @return {{ active: boolean, detail: string }}
  */
-function evaluateTag( tag, state ) {
+function evaluateTag( tag, state, outline ) {
 	switch ( tag ) {
 		case 'wikidata': {
 			const active = !state.selectedWikidataItem;
@@ -24,7 +46,7 @@ function evaluateTag( tag, state ) {
 			};
 		}
 		case 'crosswiki': {
-			const min = mw.config.get( 'wgArticleGuidanceCrossWikiThreshold' );
+			const min = getThreshold( outline, 'crosswiki' );
 			const count = state.sitelinkCount;
 			const active = count === null || count < min;
 			const countLabel = count === null ? 'null' : String( count );
@@ -54,7 +76,7 @@ function evaluateTag( tag, state ) {
 		case 'sources': {
 			return {
 				active: false,
-				detail: 'Editor will be required to add at least two sources.'
+				detail: `Editor will be required to add at least ${ getThreshold( outline, 'sources' ) } sources.`
 			};
 		}
 		default:
@@ -74,7 +96,7 @@ function evaluateNotabilityTags( outline, state ) {
 		return { tagResults: [], willShow: false };
 	}
 	const tagResults = outline.notabilityRisk.map( ( tag ) => {
-		const evaluation = evaluateTag( tag, state );
+		const evaluation = evaluateTag( tag, state, outline );
 		return { tag: tag, active: evaluation.active, detail: evaluation.detail };
 	} );
 	const juniorResult = tagResults.find( ( r ) => r.tag === 'junior' );
@@ -136,5 +158,6 @@ module.exports = {
 	evaluateTag,
 	evaluateNotabilityTags,
 	getBlockingRestrictionType,
+	getThreshold,
 	isSourcesRequired
 };

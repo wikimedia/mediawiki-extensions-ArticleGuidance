@@ -6,6 +6,7 @@ const { fetchAllCitationsWikitext } = require( '../api/Citoid.js' );
 const {
 	evaluateNotabilityTags,
 	getBlockingRestrictionType,
+	getThreshold,
 	isSourcesRequired
 } = require( '../utils/notability.js' );
 const { reportNotabilityEvaluation } = require( '../logging/notability.js' );
@@ -405,7 +406,7 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		if ( !isSourcesRequired( selectedOutline.value, buildNotabilityState() ) ) {
 			return 0;
 		}
-		return mw.config.get( 'wgArticleGuidanceSourcesThreshold' );
+		return getThreshold( selectedOutline.value, 'sources' );
 	} );
 
 	const creationTitle = computed( () => {

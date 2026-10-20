@@ -49,6 +49,7 @@ const { CdxButton, CdxIcon, CdxMessage } = require( '../codex.js' );
 const { cdxIconArrowPrevious, cdxIconBook, cdxIconLogoWikidata, cdxIconSandbox } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { getPageUrl } = require( '../utils/wikidata.js' );
+const { getThreshold } = require( '../utils/notability.js' );
 const instrument = require( '../logging/instrument.js' );
 const Step = require( './Step.vue' );
 const ArticleInfo = require( './ArticleInfo.vue' );
@@ -71,11 +72,16 @@ module.exports = defineComponent( {
 
 		const warningMessage = computed( () => {
 			const type = store.getBlockingRestriction();
+			if ( type === 'crosswiki' ) {
+				return mw.message(
+					'articleguidance-notability-warning-crosswiki',
+					getThreshold( store.selectedOutline, 'crosswiki' )
+				).text();
+			}
 			if ( type ) {
 				// Messages that can be used here:
 				// * articleguidance-notability-warning-wikidata
 				// * articleguidance-notability-warning-draft
-				// * articleguidance-notability-warning-crosswiki
 				return mw.message( 'articleguidance-notability-warning-' + type ).text();
 			}
 			return mw.message( 'articleguidance-notability-warning' ).text();

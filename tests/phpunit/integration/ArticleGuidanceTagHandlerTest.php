@@ -71,7 +71,10 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 				'sparql' => 'https://query.wikidata.org/sparql',
 			] ) ),
 			new TagContentExtractorService(),
-			new HashConfig( [ 'ArticleGuidanceCrossWikiThreshold' => 5 ] )
+			new HashConfig( [
+				'ArticleGuidanceCrossWikiThreshold' => 5,
+				'ArticleGuidanceSourcesThreshold' => 2,
+			] )
 		);
 	}
 
@@ -173,6 +176,68 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->assertNotNull( $data );
 		$this->assertSame( [ 'sources' ], $data['notabilityRisk'] );
 		$this->assertStringContainsString( 'Cite your sources.', $data['instructions'] );
+	}
+
+	/**
+	 * A "-N" suffix on sources or crosswiki stores the bare tag and an override
+	 * of the configured threshold, which the tag box shows.
+	 */
+	public function testThresholdSuffixStoresOverride(): void {
+		$html = $this->renderTag( [ 'article-type' => '*', 'notability-risk' => 'sources-3 crosswiki-1' ] );
+
+		$data = $this->getStoredData();
+		$this->assertNotNull( $data );
+		$this->assertSame( [ 'sources', 'crosswiki' ], $data['notabilityRisk'] );
+		$this->assertSame( [ 'sources' => 3, 'crosswiki' => 1 ], $data['notabilityThresholds'] );
+		$this->assertStringContainsString( '(articleguidance-notability-tag-sources: 3)', $html );
+		$this->assertStringContainsString( '(articleguidance-notability-tag-crosswiki: 1)', $html );
+	}
+
+	/**
+	 * Tags without a suffix store no override, and the tag box shows the
+	 * configured thresholds.
+	 */
+	public function testTagsWithoutSuffixUseConfiguredThresholds(): void {
+		$html = $this->renderTag( [ 'article-type' => '*', 'notability-risk' => 'sources crosswiki' ] );
+
+		$data = $this->getStoredData();
+		$this->assertNotNull( $data );
+		$this->assertArrayNotHasKey( 'notabilityThresholds', $data );
+		$this->assertStringContainsString( '(articleguidance-notability-tag-sources: 2)', $html );
+		$this->assertStringContainsString( '(articleguidance-notability-tag-crosswiki: 5)', $html );
+	}
+
+	/**
+	 * A tag that appears with and without a suffix is stored once, with the
+	 * override.
+	 */
+	public function testThresholdSuffixDeduplicatesTag(): void {
+		$this->renderTag( [ 'article-type' => '*', 'notability-risk' => 'sources sources-4' ] );
+
+		$data = $this->getStoredData();
+		$this->assertNotNull( $data );
+		$this->assertSame( [ 'sources' ], $data['notabilityRisk'] );
+		$this->assertSame( [ 'sources' => 4 ], $data['notabilityThresholds'] );
+	}
+
+	/**
+	 * The suffix must be a positive integer, and only sources and crosswiki
+	 * accept one. Other forms are unknown tags.
+	 */
+	public function testInvalidThresholdSuffixIsUnknownTag(): void {
+		$html = $this->renderTag( [
+			'article-type' => '*',
+			'notability-risk' => 'sources-0 crosswiki-abc sources- junior-5 draft',
+		] );
+
+		$data = $this->getStoredData();
+		$this->assertNotNull( $data );
+		$this->assertSame( [ 'draft' ], $data['notabilityRisk'] );
+		$this->assertArrayNotHasKey( 'notabilityThresholds', $data );
+		$this->assertStringContainsString(
+			'(articleguidance-notability-unknown-tags: sources-0, crosswiki-abc, sources-, junior-5)',
+			$html
+		);
 	}
 
 	/**

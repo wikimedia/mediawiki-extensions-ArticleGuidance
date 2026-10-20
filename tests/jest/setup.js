@@ -6,6 +6,7 @@ global.TextEncoder = require( 'util' ).TextEncoder;
 const configValues = {
 	wgArticleGuidanceJuniorEditorThreshold: 10,
 	wgArticleGuidanceCrossWikiThreshold: 5,
+	wgArticleGuidanceSourcesThreshold: 2,
 	wgWikiID: 'testwiki',
 	wgLegalTitleChars: ' %!"$&\'()*,\\-.\\/0-9:;=?@A-Z\\\\^_`a-z~\\x80-\\xFF+',
 	wgNamespaceIds: {

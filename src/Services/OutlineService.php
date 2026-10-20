@@ -275,6 +275,7 @@ class OutlineService {
 				'instructions' => $pageData['instructions'] ?? null,
 				'thumbnail' => $image,
 				'notabilityRisk' => $pageData['notabilityRisk'] ?? [],
+				'notabilityThresholds' => $pageData['notabilityThresholds'] ?? [],
 				'recommendedSources' => $pageData['recommendedSources'] ?? [],
 				'discouragedSources' => $pageData['discouragedSources'] ?? [],
 			];
@@ -321,6 +322,7 @@ class OutlineService {
 			'instructions' => $this->contentMessage( 'articleguidance-default-outline-instructions' )->parse(),
 			'thumbnail' => null,
 			'notabilityRisk' => [ 'junior', 'sources' ],
+			'notabilityThresholds' => [],
 			'recommendedSources' => [
 				'info' => $this->parseMessages( [
 					'articleguidance-default-outline-recommended-source-1',

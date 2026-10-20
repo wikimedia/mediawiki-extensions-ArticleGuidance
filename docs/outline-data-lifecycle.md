@@ -134,4 +134,6 @@ ETag already changes with them. The version currently in use is `v1`.
 The tag handler also passes the metadata to `ArticleGuidanceRenderer`, which produces the HTML
 displayed inline on the outline page. This runs on every parse, independently of the above.
 Notability thresholds (e.g. the crosswiki sitelink count) are read from wiki config at render time
-and are not stored in the page property.
+and are not stored in the page property. The exception is a per-outline override written as a `-N`
+suffix on a `sources` or `crosswiki` tag (e.g. `sources-3`). The page property stores it under
+`notabilityThresholds`, and the client falls back to wiki config for tags without an override.

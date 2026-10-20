@@ -88,6 +88,7 @@
 	"articleguidance-default-outline-discouraged-source-4": "Sources that only mention the topic in passing without substantive coverage",
 	"articleguidance-default-outline-preload": "[Start with a short introduction: who or what the subject is and why it is notable.]\n\n[Continue with the most relevant aspects of the topic, each supported by a source.]\n\n== References ==\n\n<references>\n$1\n</references>",
 	"articleguidance-notability-restrictions-title": "Notability restrictions",
+	"articleguidance-notability-unknown-tags": "Unknown tags: $1",
 	"articleguidance-notability-warning": "New articles of this type are often deleted on this wiki. Starting with one of the options below gives new contributors a better chance to succeed",
 	"articleguidance-notability-warning-crosswiki": "To create an article about this subject, it must already exist in at least $1 other {{PLURAL:$1|Wikipedia|Wikipedias}}.",
 	"articleguidance-notability-warning-wikidata": "You can create this type of article only for subjects with a Wikidata entry.",

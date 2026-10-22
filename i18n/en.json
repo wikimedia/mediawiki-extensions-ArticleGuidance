@@ -145,6 +145,7 @@
 	"articleguidance-publish-followup-close-button": "Close",
 	"communityconfiguration-articleguidance-title": "Article guidance",
 	"communityconfiguration-articleguidance-description": "Settings for the guided new-article experience on this wiki.",
+	"communityconfiguration-articleguidance-info-text": "To learn more about Article Guidance and how to configure it, see the [[mw:Special:MyLanguage/Article_guidance/Community_Configuration|instructions on the project page]].",
 	"communityconfiguration-articleguidance-feature-section-label": "Availability",
 	"communityconfiguration-articleguidance-feature-section-description": "This setting decides whether the guided new-article experience is available on this wiki at all.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Enable article guidance on this wiki",

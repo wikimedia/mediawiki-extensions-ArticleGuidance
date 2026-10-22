@@ -33,7 +33,10 @@
 							"MediaWiki\\Extension\\ArticleGuidance\\Config\\ArticleGuidanceSchema"
 						]
 					},
-					"type": "mw-config"
+					"type": "mw-config",
+					"options": {
+						"helpPage": "Article_guidance/Community_Configuration"
+					}
 				}
 			}
 		}

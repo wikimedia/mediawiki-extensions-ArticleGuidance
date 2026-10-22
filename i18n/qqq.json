@@ -147,6 +147,7 @@
 	"articleguidance-publish-followup-close-button": "Label for a close button used in the post-publish follow-up panel and other modals in the Article Guidance workflow.",
 	"communityconfiguration-articleguidance-title": "Name of the Article Guidance configuration form, shown on Special:CommunityConfiguration.",
 	"communityconfiguration-articleguidance-description": "Short description of the Article Guidance configuration form, shown under {{msg-mw|communityconfiguration-articleguidance-title}} on Special:CommunityConfiguration.",
+	"communityconfiguration-articleguidance-info-text": "Introduction text shown above the settings of the Article Guidance configuration form, on Special:CommunityConfiguration/ArticleGuidance. Links to the configuration instructions on MediaWiki.org.",
 	"communityconfiguration-articleguidance-feature-section-label": "Heading of the section of the Article Guidance configuration form that holds the switch for the whole feature, on Special:CommunityConfiguration/ArticleGuidance.",
 	"communityconfiguration-articleguidance-feature-section-description": "Text shown under the {{msg-mw|communityconfiguration-articleguidance-feature-section-label}} section heading.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Label of the checkbox that turns the whole Article Guidance feature on or off, on Special:CommunityConfiguration/ArticleGuidance.",

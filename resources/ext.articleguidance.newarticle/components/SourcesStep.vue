@@ -82,6 +82,7 @@
 					v-for="( source, index ) in verifiedSources"
 					:key="source.url"
 					:type="source.classification === 'recommended' ? 'success' : 'notice'"
+					:icon="cdxIconReference"
 					class="ext-articleguidance-source-message"
 					allow-user-dismiss
 					@user-dismissed="removeSource( index )"
@@ -226,7 +227,7 @@ const {
 	CdxAccordion, CdxButton, CdxIcon, CdxMessage,
 	CdxProgressIndicator, CdxTextInput
 } = require( '../codex.js' );
-const { cdxIconAdd, cdxIconInfoFilled } = require( '../icons.json' );
+const { cdxIconAdd, cdxIconInfoFilled, cdxIconReference } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { getOutlineLookupQId } = require( '../utils/outlineSelection.js' );
@@ -481,6 +482,7 @@ module.exports = defineComponent( {
 			handleBack,
 			cdxIconAdd,
 			cdxIconInfoFilled,
+			cdxIconReference,
 			tipsOpen,
 			recommendedSources,
 			discouragedSources,
@@ -590,6 +592,10 @@ module.exports = defineComponent( {
 	&.cdx-message--success,
 	&.cdx-message--notice {
 		border-bottom: @border-width-base @border-style-base @border-color-subtle;
+	}
+
+	&.cdx-message--notice .cdx-message__icon--vue {
+		color: @color-progressive;
 	}
 
 	.ext-articleguidance-source-domain {

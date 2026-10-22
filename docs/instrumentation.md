@@ -10,8 +10,9 @@ log events are never loaded.
 The instrument does not control who is redirected to `Special:NewArticle`. That is controlled by
 `ArticleGuidanceRedirectEnabled`; see [red-link-redirect.md](red-link-redirect.md).
 
-An `entry_point` event is sent for every eligible user who clicks an in-scope red link, whether or
-not the redirect is enabled. These events are the funnel denominator.
+Events are sent only for Article Guidance actions. A user who follows a red link to the editor
+without going through Article Guidance, or who creates a page outside of Article Guidance, sends no
+event.
 
 Funnel events are sent for every user who reaches `Special:NewArticle`, enabling drop-off
 analysis across wizard steps. Each session shares a `funnel_entry_token` stored in
@@ -21,7 +22,7 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 
 | `action` | Trigger | `action_source` | `action_subtype` | `action_context` |
 |---|---|---|---|---|
-| `entry_point` | Eligible user clicks an in-scope red link | `redlink` | — | `{"redirected":<bool>}` |
+| `entry_point` | Eligible user clicks an in-scope red link and is redirected to `Special:NewArticle` | `redlink` | — | — |
 | `init` | `Special:NewArticle` wizard is ready | `redlink`, `articlewizard`, or `direct` | — | `{"title":"<article title>"}` |
 | `search_start` | A title search request is sent, after the debounce | `redlink`, `articlewizard`, or `direct` | `mount` or `input` | `{"search_id":"<id>","query":"<search query>"}` [see below](#title-search-events) |
 | `search_end` | A title search ends | `redlink`, `articlewizard`, or `direct` | `results`, `no_results`, `error`, `replaced`, or `cancelled` | `{"search_id":"<id>","query":"<search query>","duration":<ms>,"result_count":<n>,"path":"<wikidata_direct|mint_fallback_success|mint_fallback_no_results|wikidata_and_mint>"}` [see below](#title-search-events) |
@@ -40,8 +41,8 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `redirect_created` | A redirect creation attempt finishes | — | `success` or `error` | `{"code":"<action API error code>"}` on error |
 | `title_conflict_shown` | Title-conflict step is shown | — | — | — |
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
-| `editing_start` | User lands on the editor: after completing the AG workflow, or by following a red link while the redirect is off | — | — | `{"page":{"title":"<title>"}}` |
-| `article_saved` | User saves the first revision of a new article (fires for every new article, not only for AG-workflow participants;  redirects are excluded, they are covered by `redirect_created`) | — | — | `{"page":{"title":"<title>","id":<id>}}` |
+| `editing_start` | User lands on the editor after completing the AG workflow | `articleguidance` | — | `{"page":{"title":"<title>"}}` |
+| `article_saved` | User saves the first revision of a new article that they started in the AG workflow (redirects are excluded, they are covered by `redirect_created`) | `articleguidance` | — | `{"page":{"title":"<title>","id":<id>,"namespace_id":<ns>}}` |
 
 ## Title search events
 

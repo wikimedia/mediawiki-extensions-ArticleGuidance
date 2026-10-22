@@ -9,6 +9,7 @@ use MediaWiki\Extension\ArticleGuidance\Hooks\RedLinkRedirectHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Extension\TestKitchen\Sdk\InstrumentInterface;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
@@ -25,7 +26,8 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 	private function getHandler(
 		bool $redirectEnabled = true,
 		bool $enabled = true,
-		?string $refererTitle = null
+		?string $refererTitle = null,
+		?InstrumentInterface $instrument = null
 	): RedLinkRedirectHandler {
 		// Empty referer/category lists => every referer is in scope; junior gate off.
 		$config = new HashConfig( [
@@ -45,6 +47,10 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			null,
 			$featureState
 		);
+		if ( $instrument !== null ) {
+			$instrumentFactory = $this->createMock( ArticleGuidanceInstrumentFactory::class );
+			$instrumentFactory->method( 'getInstrument' )->willReturn( $instrument );
+		}
 
 		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
 		$userOptionsLookup->method( 'getBoolOption' )->willReturn( true );
@@ -61,6 +67,12 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			$this->getServiceContainer()->getConnectionProvider(),
 			$featureState,
 		);
+	}
+
+	private function markTestSkippedWithoutTestKitchen(): void {
+		if ( !interface_exists( InstrumentInterface::class ) ) {
+			$this->markTestSkipped( 'The TestKitchen extension is not installed.' );
+		}
 	}
 
 	private function makeRedLinkRequest(): WebRequest {
@@ -218,6 +230,25 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 		);
 
 		$this->assertNull( $result, 'Handler should fall through to the normal editor flow.' );
+	}
+
+	public function testRedirectSendsEntryPointEvent(): void {
+		$this->markTestSkippedWithoutTestKitchen();
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceNeverExistedRedLink' );
+
+		$instrument = $this->createMock( InstrumentInterface::class );
+		$instrument->expects( $this->once() )->method( 'send' )
+			->with( 'entry_point', [ 'action_source' => 'redlink' ] );
+
+		$this->getHandler( true, true, null, $instrument )->onBeforeInitialize(
+			$title,
+			null,
+			$this->createMock( OutputPage::class ),
+			$this->makeUser(),
+			$this->makeRedLinkRequest(),
+			null
+		);
 	}
 
 	public function testDisabledFeatureDoesNotRedirect(): void {

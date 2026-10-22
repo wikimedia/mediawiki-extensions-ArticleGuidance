@@ -81,22 +81,15 @@ class EditTagHandler implements
 		$session = $request->getSession();
 		$titleText = $wikiPage->getTitle()->getPrefixedText();
 
-		$eventData = [
-			'page' => [
-				'title' => $titleText,
-				'id' => $wikiPage->getId(),
-				'namespace_id' => $wikiPage->getTitle()->getNamespace(),
-			]
-		];
-
 		$fromApi = $request->getCheck( self::API_PARAM );
 		$editing = $session->get( self::SESSION_EDITING );
 		$fromSession = is_array( $editing ) && isset( $editing[ $titleText ] );
 
-		if ( $fromApi || $fromSession ) {
-			$tags[] = self::TAG;
-			$eventData['action_source'] = 'articleguidance';
+		if ( !$fromApi && !$fromSession ) {
+			return;
 		}
+
+		$tags[] = self::TAG;
 
 		if ( $fromSession ) {
 			// Remove only this title; other tabs' in-flight edits stay tracked. Carry
@@ -126,6 +119,13 @@ class EditTagHandler implements
 			return;
 		}
 
-		$this->instrumentFactory->getInstrument()?->send( 'article_saved', $eventData );
+		$this->instrumentFactory->getInstrument()?->send( 'article_saved', [
+			'action_source' => 'articleguidance',
+			'page' => [
+				'title' => $titleText,
+				'id' => $wikiPage->getId(),
+				'namespace_id' => $wikiPage->getTitle()->getNamespace(),
+			],
+		] );
 	}
 }

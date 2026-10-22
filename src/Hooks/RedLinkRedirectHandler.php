@@ -176,29 +176,24 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 	}
 
 	/**
-	 * Send an event for each user who reaches an Article Guidance entry point, whether
-	 * or not the redirect is enabled. These events are the funnel denominator.
+	 * Send an event when a user is sent to Article Guidance from an entry point.
 	 *
 	 * @param string $source Entry point: 'redlink'.
-	 * @param bool $redirected True when the user goes to Special:NewArticle.
 	 */
-	private function sendEntryPointEvent( string $source, bool $redirected ): void {
+	private function sendEntryPointEvent( string $source ): void {
 		$this->instrumentFactory->getInstrument()?->send( 'entry_point', [
 			'action_source' => $source,
-			'action_context' => json_encode( [ 'redirected' => $redirected ] ),
 		] );
 	}
 
 	/**
-	 * Send an event when the user starts to edit a new article.
+	 * Send an event when the user comes back from Article Guidance to edit a new article.
 	 *
 	 * @param Title $title
-	 * @param string $source How the user reached the editor: 'articleguidance' when they
-	 *   came through Article Guidance, 'redlink' when they went directly to the editor.
 	 */
-	private function sendEditingStartedEvent( Title $title, string $source ): void {
+	private function sendEditingStartedEvent( Title $title ): void {
 		$this->instrumentFactory->getInstrument()?->send( 'editing_start', [
-			'action_source' => $source,
+			'action_source' => 'articleguidance',
 			'page' => [
 				'title' => $title->getPrefixedText(),
 			]
@@ -242,7 +237,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			$editing[ $titleText ] = $value;
 			$editing = array_slice( $editing, -EditTagHandler::MAX_TRACKED, null, true );
 			$session->set( EditTagHandler::SESSION_EDITING, $editing );
-			$this->sendEditingStartedEvent( $title, 'articleguidance' );
+			$this->sendEditingStartedEvent( $title );
 			return;
 		}
 
@@ -268,9 +263,9 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 
 			$shouldRedirect = $this->featureState->isRedirectEnabled()
 				&& $this->hasArticleGuidanceEnabled( $user );
-			$this->sendEntryPointEvent( 'redlink', $shouldRedirect );
 			if ( $shouldRedirect ) {
 				// Outcome 1: go to Article Guidance
+				$this->sendEntryPointEvent( 'redlink' );
 				$params = [
 					'newarticletitle' => $title->getPrefixedText(),
 					'source' => 'redlink',
@@ -285,7 +280,6 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 				return false;
 			} else {
 				// Outcome 2: go directly to the editor
-				$this->sendEditingStartedEvent( $title, 'redlink' );
 				return;
 			}
 		}

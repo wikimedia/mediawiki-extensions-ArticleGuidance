@@ -9,6 +9,7 @@ use MediaWiki\Api\ApiQuery;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ArticleGuidance\Hooks\EditTagHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
+use MediaWiki\Extension\TestKitchen\Sdk\InstrumentInterface;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Revision\RevisionRecord;
@@ -32,10 +33,16 @@ class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 	private const TAG = 'articleguidance';
 	private const API_PARAM = 'articleguidance';
 
-	private function getHandler(): EditTagHandler {
+	private function getHandler( ?InstrumentInterface $instrument = null ): EditTagHandler {
 		$instrumentFactory = $this->createMock( ArticleGuidanceInstrumentFactory::class );
-		$instrumentFactory->method( 'getInstrument' )->willReturn( null );
+		$instrumentFactory->method( 'getInstrument' )->willReturn( $instrument );
 		return new EditTagHandler( $instrumentFactory );
+	}
+
+	private function markTestSkippedWithoutTestKitchen(): void {
+		if ( !interface_exists( InstrumentInterface::class ) ) {
+			$this->markTestSkipped( 'The TestKitchen extension is not installed.' );
+		}
 	}
 
 	/**
@@ -117,6 +124,26 @@ class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 			Title::makeTitle( NS_MAIN, self::TITLE )->getPrefixedText(),
 			$published,
 			'the title moves to the published set for the follow-up module'
+		);
+	}
+
+	public function testSendsArticleSavedForAnArticleGuidanceCreation(): void {
+		$this->markTestSkippedWithoutTestKitchen();
+		$this->setMainRequest( [] );
+		RequestContext::getMain()->getRequest()->getSession()->set( EditTagHandler::SESSION_EDITING, [
+			Title::makeTitle( NS_MAIN, self::TITLE )->getPrefixedText() => true,
+		] );
+		[ $wikiPage, $rev ] = $this->makeFirstRevision( false );
+
+		$instrument = $this->createMock( InstrumentInterface::class );
+		$instrument->expects( $this->once() )->method( 'send' )
+			->with( 'article_saved', $this->callback(
+				static fn ( array $data ) => $data['action_source'] === 'articleguidance'
+			) );
+
+		$tags = [];
+		$this->getHandler( $instrument )->onRevisionFromEditComplete(
+			$wikiPage, $rev, false, UserIdentityValue::newRegistered( 1, 'Editor' ), $tags
 		);
 	}
 

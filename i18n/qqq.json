@@ -3,6 +3,7 @@
 		"authors": [
 			"Albertoleoncio",
 			"Eduardo Medina",
+			"McDutchie",
 			"Nik Gkountas",
 			"Stephane Bisson"
 		]
@@ -111,7 +112,7 @@
 	"articleguidance-specialnewarticle-outlines-other-description": "Description on the {{msg-mw|articleguidance-specialnewarticle-outlines-other}} card, the last card in the list of article types.",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Standalone action label for opening a new feedback topic to suggest a new type. The topic opens on the wiki's own Article Guidance talk page, or on \"Talk:Article guidance\" on mediawiki.org when the wiki has none.",
 	"articleguidance-feedback-missing-type-preloadtitle": "Section heading pre-filled into the new-topic form when a user reports that no article type matched. Shown on the wiki's own Article Guidance talk page.\n\nParameters:\n* $1 - the article title the user entered",
-	"articleguidance-tracking-category": "Tracking category name for pages that use the article-guidance tag. See [[Special:TrackingCategories]].",
+	"articleguidance-tracking-category": "Tracking category name for pages that use the article-guidance tag. See [[Special:TrackingCategories]].\n{{Tracking category name}}",
 	"articleguidance-tracking-category-desc": "Description of the tracking category for pages using article-guidance tags, shown on [[Special:TrackingCategories]].",
 	"articleguidance-subjectcovered-subtitle": "Subtitle for the step shown when the subject the user chose already has an article on the wiki. Shown above a card describing that article.",
 	"articleguidance-subjectcovered-button": "Button label for improving the existing article when the subject already exists.",

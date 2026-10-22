@@ -18,6 +18,7 @@
 	"articleguidance-specialnewarticle-checking": "جارٍ التحقق...",
 	"articleguidance-specialnewarticle-checking-subject": "جارٍ التحقق من وجود موضوع مطابق.",
 	"articleguidance-specialnewarticle-checking-subject-delayed": "ما زلنا نتحقق. قد يستغرق هذا بعض الوقت.",
+	"articleguidance-specialnewarticle-matching-outline": "إعداد التوجيهات لـ \" $1 \".",
 	"articleguidance-specialnewarticle-no-results": "لم يُعثر على أي مواضيع لـ ”$1“",
 	"articleguidance-specialnewarticle-search-error": "تعذر التحقق من هذا الموضوع.",
 	"articleguidance-specialnewarticle-outlines-error": "تعذر تحميل أنواع المقالات.",

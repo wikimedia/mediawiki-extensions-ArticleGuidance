@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Zaznamenať, že táto úprava bola vykonaná cez <kbd>[[Special:NewArticle|Article guidance]]</kbd>, aby mohla byť príslušne označená."
+}

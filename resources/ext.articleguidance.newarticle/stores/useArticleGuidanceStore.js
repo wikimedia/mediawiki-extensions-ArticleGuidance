@@ -2,7 +2,6 @@ const { defineStore } = require( 'pinia' );
 const { ref, computed } = require( 'vue' );
 const { fetchOutlines } = require( '../api/Outlines.js' );
 const { checkPagesExist, fetchLocalArticleData } = require( '../api/MediaWiki.js' );
-const { fetchAllCitationsWikitext } = require( '../api/Citoid.js' );
 const {
 	evaluateNotabilityTags,
 	getBlockingRestrictionType,
@@ -109,7 +108,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	}
 
 	let loadingPromise = null;
-	let citationWikitextsPromise = null;
 
 	async function loadOutlines() {
 		if ( outlines.value !== null ) {
@@ -467,20 +465,14 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 	 * the instructions step and, when there is no guidance to show, the sources
 	 * step.
 	 */
-	async function startWriting() {
+	function startWriting() {
 		instrument.logWriteStart( outlineEventContext(
 			selectedOutline.value,
 			matchedQId.value
 		) );
 
-		// Resolve Citoid wikitext for each reference. The promise is normally
-		// pre-started in SourcesStep (often already resolved by the time the
-		// user clicks); fall back to a fresh fetch if it is absent. Each entry
-		// is Citoid-formatted wikitext or null, so fall back to the raw URL
-		// per-reference.
-		const urls = references.value.map( ( r ) => r.url );
-		const wikitexts = await ( citationWikitextsPromise || fetchAllCitationsWikitext( urls ) );
-		const refs = urls.map( ( url, i ) => ( wikitexts && wikitexts[ i ] ) || url );
+		// Fall back to the raw URL when Citoid gave no wikitext
+		const refs = references.value.map( ( r ) => r.wikitext || r.url );
 
 		// The outline page is the preload page. The default outline has no
 		// page: its title is MediaWiki:Articleguidance-default-outline-preload,
@@ -521,14 +513,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		} else {
 			startWriting();
 		}
-	}
-
-	function setCitationWikitextsPromise( promise ) {
-		citationWikitextsPromise = promise;
-	}
-
-	function getCitationWikitextsPromise() {
-		return citationWikitextsPromise;
 	}
 
 	function goToUpdateTitle() {
@@ -604,8 +588,6 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 		confirmNotability,
 		confirmSources,
 		startWriting,
-		setCitationWikitextsPromise,
-		getCitationWikitextsPromise,
 		goToUpdateTitle,
 		goBack
 	};

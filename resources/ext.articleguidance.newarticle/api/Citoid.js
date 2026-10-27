@@ -1,12 +1,27 @@
 const { citationToWikitext } = require( '../utils/citation.js' );
+const { openLinksInNewTab } = require( '../utils/links.js' );
 
 // Module that injects the content-language 'citoid-template-type-map.json'
 // message into the client (via ve.init.platform.addMessages). Loaded lazily so
 // ArticleGuidance keeps working on wikis without Citoid/VisualEditor.
 const CITOID_DATA_MODULE = 'ext.citoid.visualEditor.data';
 
-// Memoised promise for loading CITOID_DATA_MODULE once per page load.
-let typeMapModulePromise = null;
+// Citoid types that a type map without '_default' must map. Same list as
+// ve.ui.Citoid.init.js, which rejects a map that does not.
+const REQUIRED_TYPE_MAPPINGS = [
+	'artwork', 'audioRecording', 'bill', 'blogPost', 'book', 'bookSection', 'case',
+	'computerProgram', 'conferencePaper', 'dictionaryEntry', 'document', 'email',
+	'encyclopediaArticle', 'film', 'forumPost', 'hearing', 'instantMessage', 'interview',
+	'journalArticle', 'letter', 'magazineArticle', 'manuscript', 'map', 'newspaperArticle',
+	'patent', 'podcast', 'presentation', 'radioBroadcast', 'report', 'statute', 'thesis',
+	'tvBroadcast', 'videoRecording', 'webpage'
+];
+
+// The type map does not change during a page load.
+let typeMapPromise = null;
+
+// Promises for maps.citoid, by template name. Many sources use the same template.
+const templateMapPromises = {};
 
 /**
  * Build the base Citoid service URL for the 'mediawiki' format, following the
@@ -71,7 +86,8 @@ async function fetchCitation( url ) {
  * Lazily loads the Citoid data module so 'citoid-template-type-map.json' (the
  * per-wiki, content-language map at MediaWiki:Citoid-template-type-map.json)
  * becomes readable, then parses it. Returns an empty map when Citoid is not
- * configured or the message is absent/unparseable: with no type map no template
+ * configured, the message is absent/unparseable, or the map has no '_default'
+ * and misses a required type: with no type map no template
  * name resolves, so citationToWikitext returns null and callers fall back to
  * the raw URL. This mirrors VisualEditor's Citoid integration, which disables
  * the feature entirely when the type map is missing rather than guessing
@@ -79,16 +95,23 @@ async function fetchCitation( url ) {
  *
  * @return {Promise<Object>}
  */
-async function getCitoidTypeMap() {
+function getCitoidTypeMap() {
+	if ( !typeMapPromise ) {
+		typeMapPromise = loadCitoidTypeMap();
+	}
+	return typeMapPromise;
+}
+
+/**
+ * @return {Promise<Object>}
+ */
+async function loadCitoidTypeMap() {
 	try {
 		// No point loading the Citoid module on a wiki without Citoid.
 		if ( !getCitoidServiceUrl() ) {
 			return {};
 		}
-		if ( !typeMapModulePromise ) {
-			typeMapModulePromise = mw.loader.using( CITOID_DATA_MODULE );
-		}
-		await typeMapModulePromise;
+		await mw.loader.using( CITOID_DATA_MODULE );
 
 		const raw = mw.message( 'citoid-template-type-map.json' ).plain();
 		// When a message key is missing, mw.message returns the key itself, and
@@ -97,7 +120,13 @@ async function getCitoidTypeMap() {
 		if ( raw.charAt( 0 ) === '{' ) {
 			const parsed = JSON.parse( raw );
 			if ( parsed && typeof parsed === 'object' ) {
-				return parsed;
+				// eslint-disable-next-line no-underscore-dangle
+				const missing = parsed._default ? [] :
+					REQUIRED_TYPE_MAPPINGS.filter( ( type ) => !parsed[ type ] );
+				if ( !missing.length ) {
+					return parsed;
+				}
+				mw.log.warn( '[ArticleGuidance] Required mapping(s) missing from citoid-template-type-map.json: ' + missing.join( ', ' ) );
 			}
 		}
 	} catch ( e ) {
@@ -122,93 +151,106 @@ function resolveTemplateName( citation, typeMap ) {
 }
 
 /**
- * Fetch the TemplateData 'maps.citoid' block for a set of template names.
+ * Fetch the TemplateData 'maps.citoid' block for a template.
  *
  * This is how Citoid/VisualEditor localises citation *parameter* names per
- * wiki: each template's TemplateData declares a maps.citoid object mapping
- * Citoid field names to that template's parameters. Returns a map from the
- * requested template name to its maps.citoid object (omitting templates with
- * none). Resolves to an empty object on any failure so callers fall back to the
- * static English parameter table.
+ * wiki: the template's TemplateData declares a maps.citoid object mapping
+ * Citoid field names to that template's parameters. Resolves to null when the
+ * template has none, or on any failure. The citation then has no wikitext.
  *
- * @param {string[]} names - Bare template names (e.g. 'Lien web')
- * @return {Promise<Object>} Map of template name → maps.citoid object
+ * @param {string} name - Bare template name (e.g. 'Lien web')
+ * @return {Promise<Object|null>} maps.citoid object, or null
  */
-async function fetchTemplateDataMaps( names ) {
-	if ( !names.length ) {
-		return {};
-	}
-	try {
-		const titleByName = {};
-		names.forEach( ( name ) => {
-			titleByName[ name ] = new mw.Title( name, 10 ).getPrefixedText();
-		} );
-
-		const api = new mw.Api();
-		const response = await api.get( {
+async function fetchTemplateDataMap( name ) {
+	if ( !templateMapPromises[ name ] ) {
+		templateMapPromises[ name ] = new mw.Api().get( {
 			action: 'templatedata',
-			titles: Object.keys( titleByName ).map( ( n ) => titleByName[ n ] ).join( '|' ),
+			titles: new mw.Title( name, 10 ).getPrefixedText(),
 			redirects: 1,
 			includeMissingTitles: 1,
 			lang: mw.config.get( 'wgContentLanguage' ),
 			formatversion: 2
+		} ).then( ( response ) => {
+			// The request has one title, so the response has at most one page.
+			const pages = ( response && response.pages ) || {};
+			const page = pages[ Object.keys( pages )[ 0 ] ];
+			return ( page && page.maps && page.maps.citoid ) || null;
 		} );
-
-		const pages = ( response && response.pages ) || {};
-		const mapsByTitle = {};
-		Object.keys( pages ).forEach( ( key ) => {
-			const page = pages[ key ];
-			if ( page && page.title && page.maps && page.maps.citoid ) {
-				mapsByTitle[ page.title ] = page.maps.citoid;
-			}
-		} );
-
-		// Follow redirects from the requested title to the resolved title.
-		const redirectTo = {};
-		( ( response && response.redirects ) || [] ).forEach( ( r ) => {
-			redirectTo[ r.from ] = r.to;
-		} );
-
-		const result = {};
-		names.forEach( ( name ) => {
-			const resolvedTitle = redirectTo[ titleByName[ name ] ] || titleByName[ name ];
-			if ( mapsByTitle[ resolvedTitle ] ) {
-				result[ name ] = mapsByTitle[ resolvedTitle ];
-			}
-		} );
-		return result;
+	}
+	const promise = templateMapPromises[ name ];
+	try {
+		return await promise;
 	} catch ( e ) {
+		// Remove the failed request so that the next source tries again.
+		if ( templateMapPromises[ name ] === promise ) {
+			delete templateMapPromises[ name ];
+		}
 		mw.log.warn( '[ArticleGuidance] templatedata fetch error:', e );
-		return {};
+		return null;
 	}
 }
 
 /**
- * Fetch Citoid wikitext for an array of URLs in parallel.
+ * Render citation wikitext to HTML with the wiki parser.
  *
- * Resolves the per-wiki type map and the per-template parameter maps, then
- * converts each citation. Returns an array of wikitext-or-null values parallel
- * to the input; failures resolve to null so callers can fall back to raw URLs.
+ * Resolves with null on any failure so callers can fall back to a plain
+ * display of the source.
  *
- * @param {string[]} urls - The URLs to look up
- * @return {Promise<Array<string|null>>}
+ * @param {string} wikitext - Citation wikitext like `{{Cite web|url=…}}`
+ * @return {Promise<string|null>} Parsed HTML with links that open in a new tab, or null
  */
-async function fetchAllCitationsWikitext( urls ) {
-	const typeMap = await getCitoidTypeMap();
-	const citations = await Promise.all( urls.map( fetchCitation ) );
+async function renderCitation( wikitext ) {
+	try {
+		const response = await new mw.Api().post( {
+			action: 'parse',
+			text: wikitext,
+			contentmodel: 'wikitext',
+			prop: 'text',
+			disablelimitreport: 1,
+			disableeditsection: 1,
+			disabletoc: 1,
+			formatversion: 2
+		} );
+		const html = response && response.parse && response.parse.text;
+		return html ? openLinksInNewTab( html ) : null;
+	} catch ( e ) {
+		mw.log.warn( '[ArticleGuidance] Citation render error:', e );
+		return null;
+	}
+}
 
-	const templateNames = citations.map( ( data ) => resolveTemplateName( data, typeMap ) );
-	const distinctNames = Array.from( new Set( templateNames.filter( Boolean ) ) );
-	const mapsByTemplate = await fetchTemplateDataMaps( distinctNames );
-
-	return citations.map( ( data, i ) => {
-		const name = templateNames[ i ];
-		return citationToWikitext( data, name, name ? mapsByTemplate[ name ] || null : null );
-	} );
+/**
+ * Look up a source with Citoid and format it with the wiki's citation template.
+ *
+ * Resolves the per-wiki type map and the template's parameter map, builds the
+ * citation wikitext and renders it to HTML. Resolves with null when Citoid
+ * gives no wikitext or on any error, so that the citation never blocks the
+ * source. html is null when only the render fails.
+ *
+ * @param {string} url - The URL to look up
+ * @return {Promise<Object|null>} { wikitext, html }, or null
+ */
+async function fetchFormattedCitation( url ) {
+	try {
+		const [ typeMap, data ] = await Promise.all( [ getCitoidTypeMap(), fetchCitation( url ) ] );
+		const name = resolveTemplateName( data, typeMap );
+		const paramMap = name ? await fetchTemplateDataMap( name ) : null;
+		const wikitext = citationToWikitext( data, name, paramMap );
+		if ( !wikitext ) {
+			return null;
+		}
+		return {
+			wikitext,
+			html: await renderCitation( wikitext )
+		};
+	} catch ( e ) {
+		mw.log.warn( '[ArticleGuidance] Citation format error:', e );
+		return null;
+	}
 }
 
 module.exports = {
 	fetchCitation,
-	fetchAllCitationsWikitext,
+	fetchFormattedCitation,
 	getCitoidTypeMap
 };

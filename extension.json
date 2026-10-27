@@ -310,6 +310,7 @@
 				"utils/timeout.js",
 				"utils/articleUrl.js",
 				"utils/citation.js",
+				"utils/links.js",
 				"utils/scroll.js",
 				"utils/projectFeedback.js",
 				"utils/wikidata.js",

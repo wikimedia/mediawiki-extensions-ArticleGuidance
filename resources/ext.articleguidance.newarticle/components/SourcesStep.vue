@@ -87,12 +87,21 @@
 					allow-user-dismiss
 					@user-dismissed="removeSource( index )"
 				>
-					<p class="ext-articleguidance-source-domain">
-						{{ source.domain }}
-					</p>
-					<p v-if="source.title" class="ext-articleguidance-source-title">
-						{{ source.title }}
-					</p>
+					<!-- eslint-disable vue/no-v-html -->
+					<div
+						v-if="source.citationHtml"
+						class="ext-articleguidance-source-citation"
+						v-html="source.citationHtml"
+					></div>
+					<!-- eslint-enable vue/no-v-html -->
+					<template v-else>
+						<p class="ext-articleguidance-source-domain">
+							{{ source.domain }}
+						</p>
+						<p v-if="source.title" class="ext-articleguidance-source-title">
+							{{ source.title }}
+						</p>
+					</template>
 				</cdx-message>
 
 				<!-- Tips accordion (mobile only, hidden on desktop) -->
@@ -232,7 +241,7 @@ const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' 
 const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
 const { getOutlineLookupQId } = require( '../utils/outlineSelection.js' );
 const { validateSource } = require( '../api/Sources.js' );
-const { fetchAllCitationsWikitext } = require( '../api/Citoid.js' );
+const { fetchFormattedCitation, getCitoidTypeMap } = require( '../api/Citoid.js' );
 const instrument = require( '../logging/instrument.js' );
 const ArticleInfo = require( './ArticleInfo.vue' );
 const Step = require( './Step.vue' );
@@ -257,6 +266,8 @@ module.exports = defineComponent( {
 
 		onMounted( () => {
 			instrument.logSourcesShown();
+			// Load the type map now so that the first source does not wait for it
+			getCitoidTypeMap();
 		} );
 		const recommendedSources = computed(
 			() => selectedOutline.value.recommendedSources.info || []
@@ -320,7 +331,8 @@ module.exports = defineComponent( {
 
 		/**
 		 * Verify and add the current URL.
-		 * Check source reliability with the API.
+		 * Check source reliability with the API, and format the citation
+		 * with Citoid.
 		 */
 		const handleVerifyUrl = async () => {
 			const url = currentUrl.value.trim();
@@ -346,14 +358,17 @@ module.exports = defineComponent( {
 			checking.value = true;
 
 			try {
-				const result = await validateSource(
-					url,
-					null,
-					// '*' for the generic outline, which the endpoint resolves
-					// to the same outline. Its source lists apply like any
-					// other outline's. null only when no outline is selected.
-					getOutlineLookupQId( selectedOutline.value )
-				);
+				const [ result, citation ] = await Promise.all( [
+					validateSource(
+						url,
+						null,
+						// '*' for the generic outline, which the endpoint resolves
+						// to the same outline. Its source lists apply like any
+						// other outline's. null only when no outline is selected.
+						getOutlineLookupQId( selectedOutline.value )
+					),
+					fetchFormattedCitation( url )
+				] );
 				const mandatory = minRequiredSources.value > 0;
 				if ( [ 'spam', 'discouraged', 'risky' ].includes( result.classification ) ) {
 					instrument.logAddSource(
@@ -375,7 +390,9 @@ module.exports = defineComponent( {
 						url: url,
 						domain: result.domain,
 						classification: result.classification || 'neutral',
-						title: result.title
+						title: result.title,
+						wikitext: citation && citation.wikitext,
+						citationHtml: citation && citation.html
 					} );
 				}
 			} catch ( e ) {
@@ -447,14 +464,7 @@ module.exports = defineComponent( {
 			return mw.message( 'articleguidance-sources-helper' ).text();
 		} );
 
-		/**
-		 * Handle continue - navigate to next step.
-		 * Kick off Citoid prefetch in the background so it may resolve while
-		 * the user reads the instructions page.
-		 */
 		const handleContinue = () => {
-			const urls = verifiedSources.value.map( ( s ) => s.url );
-			store.setCitationWikitextsPromise( fetchAllCitationsWikitext( urls ) );
 			store.confirmSources();
 		};
 
@@ -616,6 +626,17 @@ module.exports = defineComponent( {
 		margin: 0;
 		font-size: @font-size-small;
 		color: @color-subtle;
+	}
+
+	.ext-articleguidance-source-citation {
+		// Keep clear of the dismiss button, which the padding override above
+		// no longer leaves room for
+		padding-right: @min-size-interactive-pointer;
+		overflow-wrap: anywhere;
+
+		p {
+			margin: 0;
+		}
 	}
 }
 

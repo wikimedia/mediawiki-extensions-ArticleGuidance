@@ -107,6 +107,18 @@ describe( 'citationToWikitext with maps.citoid', () => {
 		);
 	} );
 
+	it( 'joins each author into a string param when the map is a 1-D array', () => {
+		const citation = {
+			itemType: 'webpage',
+			url: 'https://example.com',
+			author: [ [ 'Jane', 'Doe' ], [ 'John', 'Smith' ] ]
+		};
+		const map = { url: 'url', author: [ 'author1', 'author2' ] };
+		expect( citationToWikitext( citation, 'Cite web', map ) ).toBe(
+			'{{Cite web|url=https://example.com|author1=Jane Doe|author2=John Smith}}'
+		);
+	} );
+
 	it( 'concatenates a 1-D array into a single string param', () => {
 		const citation = { itemType: 'webpage', url: 'https://example.com', isbn: [ 'a', 'b' ] };
 		const map = { url: 'url', isbn: 'isbn' };
@@ -156,58 +168,10 @@ describe( 'citationToWikitext null handling', () => {
 	} );
 } );
 
-describe( 'citationToWikitext English fallback (no maps.citoid)', () => {
-	it( 'uses the static English parameter table and warns', () => {
-		const citation = {
-			itemType: 'webpage',
-			url: 'https://example.com/article',
-			title: 'Example Article',
-			website: 'Example Site',
-			accessDate: '2026-05-12'
-		};
-		expect( citationToWikitext( citation, 'Cite web', null ) ).toBe(
-			'{{Cite web|url=https://example.com/article|title=Example Article|access-date=2026-05-12|website=Example Site}}'
-		);
-		expect( global.mw.log.warn ).toHaveBeenCalled();
-	} );
-
-	it( 'maps journal via the static table', () => {
-		const citation = {
-			itemType: 'journalArticle',
-			url: 'https://doi.org/10.1000/xyz',
-			title: 'A Study',
-			publicationTitle: 'Nature',
-			date: '2024'
-		};
-		expect( citationToWikitext( citation, 'Cite journal', null ) ).toBe(
-			'{{Cite journal|url=https://doi.org/10.1000/xyz|title=A Study|date=2024|journal=Nature}}'
-		);
-	} );
-
-	it( 'handles 2-D author arrays in the fallback path', () => {
-		const citation = {
-			itemType: 'webpage',
-			url: 'https://example.com',
-			author: [ [ 'Jane', 'Doe' ], [ 'John', 'Smith' ] ]
-		};
-		expect( citationToWikitext( citation, 'Cite web', null ) ).toBe(
-			'{{Cite web|url=https://example.com|first=Jane|last=Doe|first2=John|last2=Smith}}'
-		);
-	} );
-
-	it( 'skips a non-array author entry in the fallback path', () => {
-		const citation = {
-			itemType: 'webpage',
-			url: 'https://example.com',
-			author: 'Jane Doe'
-		};
-		expect( citationToWikitext( citation, 'Cite web', null ) ).toBe(
-			'{{Cite web|url=https://example.com}}'
-		);
-	} );
-
-	it( 'returns null when no fallback params are produced', () => {
-		const citation = { itemType: 'webpage', tags: [ 'foo' ] };
+describe( 'citationToWikitext without maps.citoid', () => {
+	it( 'returns null and warns, like the VisualEditor citation dialog', () => {
+		const citation = { itemType: 'webpage', url: 'https://example.com', title: 'Example' };
 		expect( citationToWikitext( citation, 'Cite web', null ) ).toBeNull();
+		expect( global.mw.log.warn ).toHaveBeenCalled();
 	} );
 } );

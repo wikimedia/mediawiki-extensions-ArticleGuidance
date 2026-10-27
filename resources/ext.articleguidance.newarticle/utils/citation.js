@@ -3,32 +3,6 @@
  */
 
 /**
- * Fallback map from Citoid field names to standard *English* MediaWiki citation
- * template parameter names. Used only when a template exposes no TemplateData
- * 'maps.citoid' block (so per-wiki parameter names are unavailable). On a
- * properly Citoid-configured wiki the maps.citoid path is used instead.
- */
-const CITOID_TO_PARAM = {
-	url: 'url',
-	title: 'title',
-	date: 'date',
-	accessDate: 'access-date',
-	publisher: 'publisher',
-	website: 'website',
-	language: 'language',
-	publicationTitle: 'journal',
-	encyclopediaTitle: 'encyclopedia',
-	volume: 'volume',
-	issue: 'issue',
-	pages: 'pages',
-	place: 'location',
-	edition: 'edition',
-	DOI: 'doi',
-	ISBN: 'isbn',
-	ISSN: 'issn'
-};
-
-/**
  * Append a `param=value` pair to the parts array when both are non-empty
  * strings. Like ve.dm.MWTemplateModel#addParameter, a template parameter is
  * only set once (first value wins) — later duplicates are ignored. This matters
@@ -112,7 +86,7 @@ function paramsFromCitoidMap( citation, citoidMap ) {
 
 				if ( concat2dField ) {
 					if ( Array.isArray( templateField ) && typeof templateField[ i ] === 'string' ) {
-						addParam( parts, templateField[ i ], concat2dField );
+						addParam( parts, seen, templateField[ i ], concat2dField );
 					} else {
 						concatCitoidField = concatCitoidField ?
 							concatCitoidField + ', ' + concat2dField :
@@ -131,43 +105,12 @@ function paramsFromCitoidMap( citation, citoidMap ) {
 }
 
 /**
- * Build wikitext params from a citation using the static English fallback table.
- *
- * Used only when the template has no maps.citoid. Handles the 2-D author array
- * shape returned by Citoid's 'mediawiki' format (author = [ [ first, last ], … ]).
- *
- * @param {Object} citation - A single Citoid citation object (mediawiki format)
- * @return {string[]} Array of `param=value` strings
- */
-function paramsFromDefaults( citation ) {
-	const parts = [];
-	const seen = new Set();
-
-	Object.keys( CITOID_TO_PARAM ).forEach( ( citoidField ) => {
-		addParam( parts, seen, CITOID_TO_PARAM[ citoidField ], citation[ citoidField ] );
-	} );
-
-	if ( Array.isArray( citation.author ) ) {
-		citation.author.forEach( ( author, i ) => {
-			if ( !Array.isArray( author ) ) {
-				return;
-			}
-			const suffix = i === 0 ? '' : String( i + 1 );
-			addParam( parts, seen, 'first' + suffix, author[ 0 ] );
-			addParam( parts, seen, 'last' + suffix, author[ 1 ] );
-		} );
-	}
-
-	return parts;
-}
-
-/**
  * Convert a flat Citoid citation object to a wikitext template string.
  *
- * Parameter names come from the template's TemplateData 'maps.citoid' block
- * (citoidMap) when available, which is how Citoid/VisualEditor localises
- * citations per-wiki. When citoidMap is missing (template has no maps.citoid),
- * falls back to a static English parameter table so English wikis still work.
+ * Parameter names come from the template's TemplateData 'maps.citoid' block,
+ * which is how Citoid/VisualEditor localises citations per-wiki. Like the
+ * VisualEditor citation dialog, a template without that block gives no
+ * citation: the wiki's TemplateData must supply the parameter names.
  *
  * Returns null when no template name is given or when the citation yields no
  * usable parameters, so callers can fall back to the raw URL.
@@ -175,22 +118,19 @@ function paramsFromDefaults( citation ) {
  * @param {Object} citationData - A single citation object returned by Citoid
  * @param {string} templateName - The resolved (localised) template name
  * @param {Object|null} citoidMap - The template's maps.citoid object, or null
- * @return {string|null} Wikitext string like `{{Cite web|url=…|title=…}}`, or null
+ * @return {string|null} Wikitext string like `{{Cite web|url=…}}`, or null
  */
 function citationToWikitext( citationData, templateName, citoidMap ) {
 	if ( !citationData || !citationData.itemType || !templateName ) {
 		return null;
 	}
 
-	let parts;
-	if ( citoidMap && typeof citoidMap === 'object' ) {
-		parts = paramsFromCitoidMap( citationData, citoidMap );
-	} else {
-		mw.log.warn( '[ArticleGuidance] No maps.citoid for "' + templateName + '"; using English parameter fallback' );
-		parts = paramsFromDefaults( citationData );
-	}
+	const parts = citoidMap && typeof citoidMap === 'object' ?
+		paramsFromCitoidMap( citationData, citoidMap ) :
+		[];
 
 	if ( parts.length === 0 ) {
+		mw.log.warn( `[ArticleGuidance] Empty template ${ templateName } produced. Check this template has a correctly configured citoid map in the template data.` );
 		return null;
 	}
 

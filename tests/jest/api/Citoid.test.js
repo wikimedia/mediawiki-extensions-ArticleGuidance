@@ -1,6 +1,11 @@
 'use strict';
 
 const CITOID_SERVICE_URL = 'http://localhost:1970';
+const PARSED_HTML = '<div class="mw-parser-output"><p>A</p></div>';
+// templatedata response for a template with a maps.citoid block
+const WEB_TEMPLATEDATA = {
+	pages: { 1: { title: 'Template:Cite web', maps: { citoid: { url: 'url', title: 'title' } } } }
+};
 
 function mockFetch( data, ok = true ) {
 	return jest.fn().mockResolvedValue( {
@@ -12,12 +17,12 @@ function mockFetch( data, ok = true ) {
 /**
  * @param {string|false} citoidServiceUrl Citoid service URL, or false for "not configured"
  * @param {string|null} typeMapJson Value returned by the type-map message
- * @param {Object} apiResponse templatedata API response (default: no maps)
+ * @param {Object} apiResponse templatedata API response
  */
 function mockMw(
 	citoidServiceUrl = CITOID_SERVICE_URL,
 	typeMapJson = null,
-	apiResponse = { pages: {} }
+	apiResponse = WEB_TEMPLATEDATA
 ) {
 	global.mw = Object.assign( {}, global.mw, {
 		config: {
@@ -36,7 +41,8 @@ function mockMw(
 		} ),
 		loader: { using: jest.fn().mockResolvedValue( undefined ) },
 		Api: jest.fn().mockImplementation( () => ( {
-			get: jest.fn().mockResolvedValue( apiResponse )
+			get: jest.fn().mockResolvedValue( apiResponse ),
+			post: jest.fn().mockResolvedValue( { parse: { text: PARSED_HTML } } )
 		} ) ),
 		Title: jest.fn().mockImplementation( ( name ) => ( {
 			getPrefixedText: () => 'Template:' + name
@@ -169,7 +175,7 @@ describe( 'getCitoidTypeMap', () => {
 	} );
 
 	it( 'loads the Citoid data module and parses the JSON message', async () => {
-		const customMap = { webpage: 'cite web', journalArticle: 'cite journal' };
+		const customMap = { _default: 'citation', webpage: 'cite web', journalArticle: 'cite journal' };
 		mockMw( CITOID_SERVICE_URL, JSON.stringify( customMap ) );
 		( { getCitoidTypeMap } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
 
@@ -182,6 +188,14 @@ describe( 'getCitoidTypeMap', () => {
 		( { getCitoidTypeMap } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
 
 		await expect( getCitoidTypeMap() ).resolves.toEqual( {} );
+	} );
+
+	it( 'returns an empty map when a map without _default misses a required type', async () => {
+		mockMw( CITOID_SERVICE_URL, JSON.stringify( { webpage: 'Cite web' } ) );
+		( { getCitoidTypeMap } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
+
+		await expect( getCitoidTypeMap() ).resolves.toEqual( {} );
+		expect( global.mw.log.warn ).toHaveBeenCalled();
 	} );
 
 	it( 'returns an empty map when the message is invalid JSON', async () => {
@@ -218,94 +232,173 @@ describe( 'getCitoidTypeMap', () => {
 	} );
 } );
 
-describe( 'fetchAllCitationsWikitext', () => {
-	let fetchAllCitationsWikitext;
+describe( 'fetchFormattedCitation', () => {
+	const MODULE = '../../../resources/ext.articleguidance.newarticle/api/Citoid.js';
+	let fetchFormattedCitation;
 
 	beforeEach( () => {
-		mockMw();
+		mockMw( CITOID_SERVICE_URL, JSON.stringify( { _default: 'Citation', webpage: 'Cite web' } ) );
 		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
+		( { fetchFormattedCitation } = require( MODULE ) );
 	} );
 
-	it( 'falls back to English parameter names when templates expose no maps.citoid', async () => {
-		mockMw( CITOID_SERVICE_URL, JSON.stringify( { webpage: 'Cite web' } ) );
-		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
-		global.fetch = jest.fn()
-			.mockResolvedValueOnce( { ok: true, json: () => Promise.resolve( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] ) } )
-			.mockResolvedValueOnce( { ok: true, json: () => Promise.resolve( [ { itemType: 'webpage', url: 'https://b.com', title: 'B' } ] ) } );
-
-		const result = await fetchAllCitationsWikitext( [ 'https://a.com', 'https://b.com' ] );
-
-		expect( result ).toEqual( [
-			'{{Cite web|url=https://a.com|title=A}}',
-			'{{Cite web|url=https://b.com|title=B}}'
-		] );
-	} );
-
-	it( 'returns null entries when no type map is available (Citoid configured but message missing)', async () => {
+	it( 'returns the wikitext and rendered HTML', async () => {
 		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
 
-		const result = await fetchAllCitationsWikitext( [ 'https://a.com' ] );
+		const result = await fetchFormattedCitation( 'https://a.com' );
 
-		expect( result ).toEqual( [ null ] );
+		expect( result ).toEqual( {
+			wikitext: '{{Cite web|url=https://a.com|title=A}}',
+			html: PARSED_HTML
+		} );
 	} );
 
 	it( 'localises template and parameter names from the type map + maps.citoid', async () => {
 		mockMw(
 			CITOID_SERVICE_URL,
-			JSON.stringify( { webpage: 'Lien web' } ),
+			JSON.stringify( { _default: 'Modèle', webpage: 'Lien web' } ),
 			{ pages: { 1: { title: 'Template:Lien web', maps: { citoid: { url: 'url', title: 'titre' } } } } }
 		);
 		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
+		( { fetchFormattedCitation } = require( MODULE ) );
 		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://example.fr', title: 'Bonjour' } ] );
 
-		const result = await fetchAllCitationsWikitext( [ 'https://example.fr' ] );
+		const result = await fetchFormattedCitation( 'https://example.fr' );
 
-		expect( result ).toEqual( [ '{{Lien web|url=https://example.fr|titre=Bonjour}}' ] );
+		expect( result.wikitext ).toBe( '{{Lien web|url=https://example.fr|titre=Bonjour}}' );
 	} );
 
-	it( 'returns null for a failed URL while succeeding for others', async () => {
-		mockMw( CITOID_SERVICE_URL, JSON.stringify( { webpage: 'Cite web' } ) );
-		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
-		global.fetch = jest.fn()
-			.mockResolvedValueOnce( { ok: true, json: () => Promise.resolve( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] ) } )
-			.mockRejectedValueOnce( new Error( 'Network error' ) );
-
-		const result = await fetchAllCitationsWikitext( [ 'https://a.com', 'https://b.com' ] );
-
-		expect( result[ 0 ] ).toBe( '{{Cite web|url=https://a.com|title=A}}' );
-		expect( result[ 1 ] ).toBeNull();
-	} );
-
-	it( 'resolves the type map only once regardless of URL count', async () => {
-		const messageSpy = jest.fn().mockReturnValue( { plain: () => 'no-leading-brace' } );
-		global.mw.message = messageSpy;
-		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
+	it( 'parses the wikitext with the wiki parser', async () => {
+		const post = jest.fn().mockResolvedValue( { parse: { text: PARSED_HTML } } );
+		global.mw.Api = jest.fn().mockImplementation( () => ( {
+			get: jest.fn().mockResolvedValue( WEB_TEMPLATEDATA ),
+			post
+		} ) );
 		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
 
-		await fetchAllCitationsWikitext( [ 'https://a.com', 'https://b.com', 'https://c.com' ] );
+		await fetchFormattedCitation( 'https://a.com' );
 
-		expect( messageSpy ).toHaveBeenCalledTimes( 1 );
-		expect( messageSpy ).toHaveBeenCalledWith( 'citoid-template-type-map.json' );
+		expect( post ).toHaveBeenCalledWith( expect.objectContaining( {
+			action: 'parse',
+			text: '{{Cite web|url=https://a.com|title=A}}',
+			contentmodel: 'wikitext'
+		} ) );
 	} );
 
-	it( 'returns an empty array for an empty input', async () => {
-		const result = await fetchAllCitationsWikitext( [] );
+	it( 'makes the links in the rendered HTML open in a new tab', async () => {
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+		global.mw.Api = jest.fn().mockImplementation( () => ( {
+			get: jest.fn().mockResolvedValue( WEB_TEMPLATEDATA ),
+			post: jest.fn().mockResolvedValue( { parse: { text: '<a href="https://a.com">A</a>' } } )
+		} ) );
+		jest.resetModules();
+		( { fetchFormattedCitation } = require( MODULE ) );
 
-		expect( result ).toEqual( [] );
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result.html ).toBe( '<a href="https://a.com" target="_blank" rel="noopener noreferrer">A</a>' );
 	} );
 
-	it( 'returns null entries when Citoid is not configured', async () => {
+	it( 'returns a null html when the parse request fails', async () => {
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+		mockMw( CITOID_SERVICE_URL, JSON.stringify( { _default: 'Citation', webpage: 'Cite web' } ) );
+		global.mw.Api = jest.fn().mockImplementation( () => ( {
+			get: jest.fn().mockResolvedValue( WEB_TEMPLATEDATA ),
+			post: jest.fn().mockRejectedValue( new Error( 'http' ) )
+		} ) );
+		jest.resetModules();
+		( { fetchFormattedCitation } = require( MODULE ) );
+
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result ).toEqual( { wikitext: '{{Cite web|url=https://a.com|title=A}}', html: null } );
+	} );
+
+	it( 'returns null when the citation cannot be built', async () => {
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+		jest.resetModules();
+		jest.doMock( '../../../resources/ext.articleguidance.newarticle/utils/citation.js', () => ( {
+			citationToWikitext: () => {
+				throw new Error( 'bad data' );
+			}
+		} ) );
+		( { fetchFormattedCitation } = require( MODULE ) );
+
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result ).toBeNull();
+		jest.dontMock( '../../../resources/ext.articleguidance.newarticle/utils/citation.js' );
+	} );
+
+	it( 'requests the TemplateData of a template one time for many sources', async () => {
+		const get = jest.fn().mockResolvedValue( WEB_TEMPLATEDATA );
+		global.mw.Api = jest.fn().mockImplementation( () => ( {
+			get,
+			post: jest.fn().mockResolvedValue( { parse: { text: PARSED_HTML } } )
+		} ) );
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+
+		await fetchFormattedCitation( 'https://a.com' );
+		await fetchFormattedCitation( 'https://b.com' );
+
+		expect( get ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'requests the TemplateData again after a failure', async () => {
+		const get = jest.fn()
+			.mockRejectedValueOnce( new Error( 'http' ) )
+			.mockResolvedValue( WEB_TEMPLATEDATA );
+		global.mw.Api = jest.fn().mockImplementation( () => ( {
+			get,
+			post: jest.fn().mockResolvedValue( { parse: { text: PARSED_HTML } } )
+		} ) );
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+
+		const first = await fetchFormattedCitation( 'https://a.com' );
+		const second = await fetchFormattedCitation( 'https://b.com' );
+
+		expect( first ).toBeNull();
+		expect( second.wikitext ).toBe( '{{Cite web|url=https://a.com|title=A}}' );
+		expect( get ).toHaveBeenCalledTimes( 2 );
+	} );
+
+	it( 'returns null when the template has no maps.citoid', async () => {
+		mockMw( CITOID_SERVICE_URL, JSON.stringify( { _default: 'Citation', webpage: 'Cite web' } ), { pages: {} } );
+		jest.resetModules();
+		( { fetchFormattedCitation } = require( MODULE ) );
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result ).toBeNull();
+	} );
+
+	it( 'returns null when no type map is available (Citoid configured but message missing)', async () => {
+		mockMw();
+		jest.resetModules();
+		( { fetchFormattedCitation } = require( MODULE ) );
+		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result ).toBeNull();
+	} );
+
+	it( 'returns null when the Citoid request fails', async () => {
+		global.fetch = jest.fn().mockRejectedValue( new Error( 'Network error' ) );
+
+		const result = await fetchFormattedCitation( 'https://a.com' );
+
+		expect( result ).toBeNull();
+	} );
+
+	it( 'returns null when Citoid is not configured', async () => {
 		mockMw( false );
 		jest.resetModules();
-		( { fetchAllCitationsWikitext } = require( '../../../resources/ext.articleguidance.newarticle/api/Citoid.js' ) );
+		( { fetchFormattedCitation } = require( MODULE ) );
 
-		const result = await fetchAllCitationsWikitext( [ 'https://example.com' ] );
+		const result = await fetchFormattedCitation( 'https://example.com' );
 
-		expect( result ).toEqual( [ null ] );
+		expect( result ).toBeNull();
 	} );
 } );

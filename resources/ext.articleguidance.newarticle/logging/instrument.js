@@ -182,19 +182,22 @@ function logContinueWithGeneric( outline ) {
 }
 
 /**
- * Fire when a source URL is validated by the API.
+ * Fire when a source URL is validated by the API, or when Citoid resolves
+ * a reference code such as an ISBN or DOI.
  *
  * @param {boolean} isValid True for accepted sources, false for spam or discouraged sources.
- * @param {string} url The source URL submitted.
- * @param {string} domain The domain extracted by the API.
+ * @param {string} url The source URL or reference code submitted.
+ * @param {string|null} domain The domain extracted by the API, null for a reference code.
  * @param {string} classification The classification returned by the API.
  * @param {boolean} mandatory True when the selected outline requires sources to proceed.
+ * @param {string|null} [itemType] Citoid item type (e.g. 'book', 'journalArticle'), when known.
  */
-function logAddSource( isValid, url, domain, classification, mandatory ) {
+function logAddSource( isValid, url, domain, classification, mandatory, itemType = null ) {
 	const data = {};
 	data.action_subtype = isValid ? 'valid' : 'invalid';
 	data.action_context = {
-		url: url, domain: domain, classification: classification, mandatory: mandatory
+		url: url, domain: domain, classification: classification, mandatory: mandatory,
+		item_type: itemType
 	};
 	submit( 'add_source', data );
 }

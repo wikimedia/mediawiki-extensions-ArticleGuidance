@@ -242,14 +242,18 @@ describe( 'fetchFormattedCitation', () => {
 		( { fetchFormattedCitation } = require( MODULE ) );
 	} );
 
-	it( 'returns the wikitext and rendered HTML', async () => {
-		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
+	it( 'returns the wikitext, rendered HTML, item type and identifiers', async () => {
+		global.fetch = mockFetch( [
+			{ itemType: 'webpage', url: 'https://a.com', title: 'A', DOI: '10.1234/A' }
+		] );
 
 		const result = await fetchFormattedCitation( 'https://a.com' );
 
 		expect( result ).toEqual( {
 			wikitext: '{{Cite web|url=https://a.com|title=A}}',
-			html: PARSED_HTML
+			html: PARSED_HTML,
+			itemType: 'webpage',
+			identifiers: [ 'doi:10.1234/a' ]
 		} );
 	} );
 
@@ -300,8 +304,8 @@ describe( 'fetchFormattedCitation', () => {
 	} );
 
 	it( 'returns a null html when the parse request fails', async () => {
-		global.fetch = mockFetch( [ { itemType: 'webpage', url: 'https://a.com', title: 'A' } ] );
-		mockMw( CITOID_SERVICE_URL, JSON.stringify( { _default: 'Citation', webpage: 'Cite web' } ) );
+		global.fetch = mockFetch( [ { itemType: 'book', title: 'B' } ] );
+		mockMw( CITOID_SERVICE_URL, JSON.stringify( { _default: 'Citation', book: 'Cite book' } ) );
 		global.mw.Api = jest.fn().mockImplementation( () => ( {
 			get: jest.fn().mockResolvedValue( WEB_TEMPLATEDATA ),
 			post: jest.fn().mockRejectedValue( new Error( 'http' ) )
@@ -309,9 +313,14 @@ describe( 'fetchFormattedCitation', () => {
 		jest.resetModules();
 		( { fetchFormattedCitation } = require( MODULE ) );
 
-		const result = await fetchFormattedCitation( 'https://a.com' );
+		const result = await fetchFormattedCitation( '978-0-226-77999-7' );
 
-		expect( result ).toEqual( { wikitext: '{{Cite web|url=https://a.com|title=A}}', html: null } );
+		expect( result ).toEqual( {
+			wikitext: '{{Cite book|title=B}}',
+			html: null,
+			itemType: 'book',
+			identifiers: []
+		} );
 	} );
 
 	it( 'returns null when the citation cannot be built', async () => {

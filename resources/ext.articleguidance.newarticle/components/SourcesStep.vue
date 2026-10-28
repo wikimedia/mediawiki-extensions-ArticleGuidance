@@ -26,7 +26,7 @@
 					<cdx-text-input
 						ref="urlInput"
 						v-model="currentUrl"
-						:placeholder="$i18n( 'articleguidance-sources-url-placeholder' ).text()"
+						:placeholder="$i18n( 'articleguidance-sources-input-placeholder' ).text()"
 						:disabled="checking"
 						:status="unreliableWarning ? 'error' : 'default'"
 						:clearable="true"
@@ -96,7 +96,7 @@
 					<!-- eslint-enable vue/no-v-html -->
 					<template v-else>
 						<p class="ext-articleguidance-source-domain">
-							{{ source.domain }}
+							{{ source.domain || source.url }}
 						</p>
 						<p v-if="source.title" class="ext-articleguidance-source-title">
 							{{ source.title }}
@@ -238,7 +238,9 @@ const {
 } = require( '../codex.js' );
 const { cdxIconAdd, cdxIconInfoFilled, cdxIconReference } = require( '../icons.json' );
 const useArticleGuidanceStore = require( '../stores/useArticleGuidanceStore.js' );
-const { isDuplicate, isValidUrl } = require( '../utils/sources.js' );
+const {
+	hasDuplicateIdentifier, isDuplicate, isReferenceCode, isValidUrl
+} = require( '../utils/sources.js' );
 const { getOutlineLookupQId } = require( '../utils/outlineSelection.js' );
 const { validateSource } = require( '../api/Sources.js' );
 const { fetchFormattedCitation, getCitoidTypeMap } = require( '../api/Citoid.js' );
@@ -330,9 +332,10 @@ module.exports = defineComponent( {
 		}, { deep: true } );
 
 		/**
-		 * Verify and add the current URL.
-		 * Check source reliability with the API, and format the citation
-		 * with Citoid.
+		 * Verify and add the current input.
+		 * A URL gets a community signal from the API. Citoid formats every
+		 * source, and is the only check for input that is not a URL, such as
+		 * an ISBN or DOI.
 		 */
 		const handleVerifyUrl = async () => {
 			const url = currentUrl.value.trim();
@@ -343,15 +346,15 @@ module.exports = defineComponent( {
 			// Clear any previous validation error
 			validationError.value = null;
 
-			// Inline validation: invalid URL
-			if ( !isValidUrl( url ) ) {
-				validationError.value = mw.message( 'articleguidance-sources-invalid-url' ).text();
-				return;
-			}
-
 			// Inline validation: duplicate
 			if ( isDuplicate( url, verifiedSources.value ) ) {
 				validationError.value = mw.message( 'articleguidance-sources-duplicate' ).text();
+				return;
+			}
+
+			const isUrl = isValidUrl( url );
+			if ( !isUrl && !isReferenceCode( url ) ) {
+				validationError.value = mw.message( 'articleguidance-sources-not-found' ).text();
 				return;
 			}
 
@@ -359,20 +362,31 @@ module.exports = defineComponent( {
 
 			try {
 				const [ result, citation ] = await Promise.all( [
-					validateSource(
+					isUrl ? validateSource(
 						url,
 						null,
 						// '*' for the generic outline, which the endpoint resolves
 						// to the same outline. Its source lists apply like any
 						// other outline's. null only when no outline is selected.
 						getOutlineLookupQId( selectedOutline.value )
-					),
+					) : { domain: null, classification: 'neutral', title: null },
 					fetchFormattedCitation( url )
 				] );
+				if ( !isUrl && !citation ) {
+					validationError.value = mw.message( 'articleguidance-sources-not-found' ).text();
+					return;
+				}
+				// The same work in a different form, such as an ISBN-10 and an ISBN-13
+				const identifiers = citation ? citation.identifiers : [];
+				if ( hasDuplicateIdentifier( identifiers, verifiedSources.value ) ) {
+					validationError.value = mw.message( 'articleguidance-sources-duplicate' ).text();
+					return;
+				}
 				const mandatory = minRequiredSources.value > 0;
+				const itemType = citation && citation.itemType;
 				if ( [ 'spam', 'discouraged', 'risky' ].includes( result.classification ) ) {
 					instrument.logAddSource(
-						false, url, result.domain, result.classification, mandatory
+						false, url, result.domain, result.classification, mandatory, itemType
 					);
 					unreliableWarning.value = {
 						domain: result.domain,
@@ -383,7 +397,7 @@ module.exports = defineComponent( {
 					}
 				} else {
 					instrument.logAddSource(
-						true, url, result.domain, result.classification, mandatory
+						true, url, result.domain, result.classification, mandatory, itemType
 					);
 					currentUrl.value = '';
 					verifiedSources.value.push( {
@@ -392,7 +406,8 @@ module.exports = defineComponent( {
 						classification: result.classification || 'neutral',
 						title: result.title,
 						wikitext: citation && citation.wikitext,
-						citationHtml: citation && citation.html
+						citationHtml: citation && citation.html,
+						identifiers
 					} );
 				}
 			} catch ( e ) {

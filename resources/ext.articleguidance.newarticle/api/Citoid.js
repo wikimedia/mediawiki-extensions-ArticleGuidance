@@ -1,5 +1,6 @@
 const { citationToWikitext } = require( '../utils/citation.js' );
 const { openLinksInNewTab } = require( '../utils/links.js' );
+const { getCitationIdentifiers } = require( '../utils/sources.js' );
 
 // Module that injects the content-language 'citoid-template-type-map.json'
 // message into the client (via ve.init.platform.addMessages). Loaded lazily so
@@ -227,12 +228,15 @@ async function renderCitation( wikitext ) {
  * gives no wikitext or on any error, so that the citation never blocks the
  * source. html is null when only the render fails.
  *
- * @param {string} url - The URL to look up
- * @return {Promise<Object|null>} { wikitext, html }, or null
+ * @param {string} input - URL or reference code (ISBN, DOI, …)
+ * @return {Promise<Object|null>} { wikitext, html, itemType, identifiers }, or null
  */
-async function fetchFormattedCitation( url ) {
+async function fetchFormattedCitation( input ) {
 	try {
-		const [ typeMap, data ] = await Promise.all( [ getCitoidTypeMap(), fetchCitation( url ) ] );
+		const [ typeMap, data ] = await Promise.all( [
+			getCitoidTypeMap(),
+			fetchCitation( input )
+		] );
 		const name = resolveTemplateName( data, typeMap );
 		const paramMap = name ? await fetchTemplateDataMap( name ) : null;
 		const wikitext = citationToWikitext( data, name, paramMap );
@@ -241,7 +245,9 @@ async function fetchFormattedCitation( url ) {
 		}
 		return {
 			wikitext,
-			html: await renderCitation( wikitext )
+			html: await renderCitation( wikitext ),
+			itemType: data.itemType,
+			identifiers: getCitationIdentifiers( data )
 		};
 	} catch ( e ) {
 		mw.log.warn( '[ArticleGuidance] Citation format error:', e );

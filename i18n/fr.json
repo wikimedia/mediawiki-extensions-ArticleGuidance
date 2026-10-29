@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Anterdc99",
 			"Escargot bleu",
 			"Framawiki",
-			"NClara"
+			"NClara",
+			"SleaY"
 		]
 	},
 	"articleguidance-desc": "Guidage et assistance à la création d'articles.",
@@ -50,6 +52,7 @@
 	"articleguidance-sources-unreliable-warning-title": "Déconseillé par la communauté",
 	"articleguidance-sources-unreliable-warning-description": "Ce type de source est rarement accepté pour ce type d'article.",
 	"articleguidance-sources-unreliable-warning-description-generic": "Ce type de source est rarement accepté sur ce wiki.",
+	"articleguidance-sources-unreliable-warning-description-risky": "Ce site web est considéré comme non fiable sur ce wiki.",
 	"articleguidance-sources-tips-title": "Conseils pour les articles «  $1 »",
 	"articleguidance-sources-tips-title-generic": "Conseils pour le choix de sources",
 	"articleguidance-sources-tips-content-recommended": "Ces types de sources fonctionnent bien :",
@@ -76,7 +79,7 @@
 	"articleguidance-type-label": "Objet :",
 	"articleguidance-invalid-article-type": "Type d'article invalide : « $1 » (format attendu : Q12345)",
 	"articleguidance-generic-note": "Ce plan est celui utilisé par défaut. Il n'est pas lié à une entrée Wikidata. Il est utilisé lorsqu'aucun autre plan ne correspond au sujet.",
-	"articleguidance-default-outline-preload": "[Commencez par une brève introduction : qui ou quoi est le sujet et pourquoi est-il important.]\n\n[Poursuivez avec les aspects les plus pertinents du sujet, chacun étayé par une source.]\n\n== Références ==\n\n<references>\n $1 \n</references>",
+	"articleguidance-default-outline-preload": "[Commencez par une brève introduction : qui ou quoi est le sujet et pourquoi est-il important.]\n\n[Poursuivez avec les aspects les plus pertinents du sujet, chacun étayé par une source.]\n\n== Références ==\n\n<references>\n$1\n</references>",
 	"articleguidance-notability-restrictions-title": "Exigences de notoriété",
 	"articleguidance-notability-unknown-tags": "Balises inconnues : $1",
 	"articleguidance-notability-warning": "Les nouveaux articles de ce type sont souvent supprimés. Choisir l'une des options ci-dessous offre aux nouveaux contributeurs et contributrices de meilleures chances de réussite.",

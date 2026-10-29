@@ -101,7 +101,7 @@
 	"articleguidance-notability-tag-crosswiki": "Es können nur Themen erstellt werden, die in mindestens {{PLURAL:$1|einer anderen Sprache|$1 anderen Sprachen}} verfügbar sind.",
 	"articleguidance-notability-tag-junior": "Die Einschränkungen gelten nur für neue Benutzer.",
 	"articleguidance-notability-tag-draft": "Veröffentlichung nur im Entwurfs- oder Benutzer-Namensraum zulässig.",
-	"articleguidance-notability-tag-sources": "Es können nur Themen erstellt werden, zu denen der Nutzer mindestens $1 {{PLURAL:$1|zuverlässigen Einzelnachweis|zuverlässige Einzelnachweise}}angegeben hat, die von der Community nicht missbilligt werden.",
+	"articleguidance-notability-tag-sources": "Es können nur Themen erstellt werden, zu denen der Nutzer mindestens $1 {{PLURAL:$1|zuverlässigen Einzelnachweis angegeben hat, der von der Community nicht missbilligt wird|zuverlässige Einzelnachweise angegeben hat, die von der Community nicht missbilligt werden}}.",
 	"articleguidance-notability-tag-draft-location": "Dein Artikel wird als „$1“ erstellt.",
 	"articleguidance-specialnewarticle-no-matching-type": "Kannst du den richtigen Typ nicht finden?",
 	"articleguidance-specialnewarticle-outlines-other": "Andere",

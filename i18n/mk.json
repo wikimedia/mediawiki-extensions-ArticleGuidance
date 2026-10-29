@@ -48,6 +48,7 @@
 	"articleguidance-sources-unreliable-warning-title": "Не е препорачано од заедницата",
 	"articleguidance-sources-unreliable-warning-description": "Овој вид на извор ретко се прифаќа за ваква статија.",
 	"articleguidance-sources-unreliable-warning-description-generic": "Овој вид на извор ретко се прифаќа на ова вики.",
+	"articleguidance-sources-unreliable-warning-description-risky": "Ова мрежно место се смета за немеродавно на ова вики.",
 	"articleguidance-sources-tips-title": "Совети за статии за $1",
 	"articleguidance-sources-tips-title-generic": "Совети за избор на извори",
 	"articleguidance-sources-tips-content-recommended": "Овие видови извори се добри:",

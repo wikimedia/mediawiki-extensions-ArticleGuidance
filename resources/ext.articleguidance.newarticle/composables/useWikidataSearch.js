@@ -58,8 +58,8 @@ function useWikidataSearch( query, language ) {
 	};
 
 	/**
-	 * Process raw Wikidata search candidates: fetch claims, drop unlabeled items and
-	 * items whose local article is outside the Main namespace, and map to display objects.
+	 * Process raw Wikidata search candidates: fetch claims, drop unlabeled items,
+	 * and map to display objects.
 	 *
 	 * @param {Array} candidates - Wikidata search results (candidates)
 	 * @param {boolean} isTranslation - Whether these candidates are from translation search
@@ -79,8 +79,7 @@ function useWikidataSearch( query, language ) {
 		return candidates
 			.filter( ( result ) => {
 				const entity = entityData[ result.id ];
-				return !!entity && entity.hasLabel &&
-					!entity.localSitelinkOutsideMainNamespace;
+				return !!entity && entity.hasLabel;
 			} )
 			.map( ( result ) => {
 				const entity = entityData[ result.id ];

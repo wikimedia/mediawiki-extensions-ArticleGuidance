@@ -1,6 +1,6 @@
 # Search and match pipeline
 
-Article creation and subject search are scoped to the Main namespace. For a candidate's local-wiki sitelink, the namespace is resolved server-side (`getPageNamespaces` in `api/MediaWiki.js`) rather than parsed client-side, so it's correct regardless of the current interface language.
+Article creation and subject search are scoped to the Main namespace. Wikidata items for pages outside it (project, help, template, module, portal and category pages) are excluded by type with `wgArticleGuidanceExcludedItemTypes`. This works on every wiki, also when the item has no sitelink to the local wiki.
 
 When a user types in the search box, `useWikidataSearch` debounces the input and fires the following requests in parallel:
 
@@ -19,7 +19,6 @@ Once the native Wikidata search completes, the native results are processed firs
 
 1. **`fetchEntityClaims`** — a single `wbgetentities` call fetches the item-valued claims (P31, P106, P171, etc.), the image (P18), the sitelinks, and the labels and descriptions (in the user's language) for the candidate Q-IDs at once.
 2. Items without a label in the user's language or its fallback languages are dropped.
-3. Items whose local-wiki sitelink is outside the Main namespace are dropped.
 
 Results keep the Wikidata search order. The search step shows the first 8.
 

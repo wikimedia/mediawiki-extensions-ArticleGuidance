@@ -29,20 +29,6 @@ function mockMw() {
 	} );
 }
 
-/**
- * Mock mw.Api().get() for getPageNamespaces, keyed by title → namespace ID.
- *
- * @param {Object} namespaceByTitle
- */
-function mockPageNamespaces( namespaceByTitle ) {
-	const get = jest.fn().mockResolvedValue( {
-		query: {
-			pages: Object.entries( namespaceByTitle ).map( ( [ title, ns ] ) => ( { title, ns } ) )
-		}
-	} );
-	global.mw.Api = jest.fn().mockImplementation( () => ( { get } ) );
-}
-
 describe( 'searchWikidata', () => {
 	let searchWikidata;
 
@@ -179,7 +165,7 @@ describe( 'fetchEntityClaims', () => {
 		expect( result.Q999.hasLabel ).toBe( false );
 	} );
 
-	it( 'keeps a local sitelink that points to a main-namespace page', async () => {
+	it( 'returns the local sitelink', async () => {
 		const sitelink = {
 			site: 'testwiki',
 			title: 'Douglas Adams',
@@ -195,38 +181,10 @@ describe( 'fetchEntityClaims', () => {
 				}
 			}
 		} );
-		mockPageNamespaces( { 'Douglas Adams': 0 } );
 
 		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
 
 		expect( result.Q42.localSitelink ).toEqual( sitelink );
-		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( false );
-	} );
-
-	it( 'drops a local sitelink that points outside the main namespace, e.g. a Wikipedia: page', async () => {
-		global.fetch = mockFetch( {
-			entities: {
-				Q42: {
-					labels: {},
-					descriptions: {},
-					claims: {},
-					sitelinks: {
-						testwiki: {
-							site: 'testwiki',
-							title: 'Wikipedia:Sandbox',
-							url: 'https://test.wikipedia.org/wiki/Wikipedia:Sandbox'
-						}
-					}
-				}
-			}
-		} );
-		// Namespace 4 (Project) here, resolved server-side regardless of query text or language.
-		mockPageNamespaces( { 'Wikipedia:Sandbox': 4 } );
-
-		const result = await fetchEntityClaims( [ 'Q42' ], 'en' );
-
-		expect( result.Q42.localSitelink ).toBeNull();
-		expect( result.Q42.localSitelinkOutsideMainNamespace ).toBe( true );
 	} );
 
 	it( 'keeps every item-valued claim and caches the entity', async () => {

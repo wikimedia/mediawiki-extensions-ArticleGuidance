@@ -78,6 +78,7 @@
 	"articleguidance-type-label": "Type:",
 	"articleguidance-type-item-description": "– $1",
 	"articleguidance-invalid-article-type": "Invalid article-type: \"$1\" (expected format: Q12345)",
+	"articleguidance-too-many-article-types": "Invalid article-type: an outline can have at most {{PLURAL:$1|one Wikidata item|$1 Wikidata items}}.",
 	"articleguidance-generic-note": "This is the generic guidance outline. It is not linked to a Wikidata item. It is used when no other outline matches the topic.",
 	"articleguidance-default-outline-instructions": "Wikipedia covers subjects that have received significant coverage in reliable sources that are independent of the subject. Before you write, check that such coverage exists. If it does not, the article is likely to be deleted however well it is written.\n\nQuick considerations:\n* Summarise what independent sources say. Do not add your own analysis, opinion or conclusions.\n* Open with a short lead that says what the subject is and why it is notable.\n* Cite a source for every claim that a reader could reasonably question.\n* Write in a neutral tone. Avoid promotional language and loaded words.\n* Do not write about yourself, your employer, your family or your friends.\n* Do not copy text from other websites or books. Write it in your own words.",
 	"articleguidance-default-outline-recommended-source-1": "News organisations with editorial oversight and a record of fact-checking",

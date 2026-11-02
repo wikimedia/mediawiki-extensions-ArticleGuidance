@@ -23,6 +23,9 @@ class OutlineService {
 	 */
 	public const GENERIC_ARTICLE_TYPE = '*';
 
+	/** Each article type costs Wikidata requests when an outline is saved */
+	public const MAX_ARTICLE_TYPES = 10;
+
 	/** Blob fields of an articleTypes entry that are not served */
 	private const ITEM_FIELDS = [ 'itemLabel' => true, 'itemDescription' => true, 'itemImage' => true ];
 

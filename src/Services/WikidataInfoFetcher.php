@@ -29,10 +29,11 @@ class WikidataInfoFetcher {
 	}
 
 	/**
-	 * Fetch a single Wikidata entity with caching, including hierarchy depth and match-via.
+	 * Fetch Wikidata entities with caching, including hierarchy depth and match-via.
 	 *
-	 * Fetches label, description, image, hierarchy depth, and match-via concurrently
-	 * using MultiHttpClient for optimal performance.
+	 * The IDs that are not in the cache are fetched together: one wbgetentities
+	 * request and one SPARQL query for all of them, sent concurrently. If the
+	 * SPARQL query fails, each of these IDs gets no hierarchy depth.
 	 *
 	 * When $matchVia is null, the match-via property is inferred from Wikidata superclasses
 	 * using the configured ArticleGuidanceMatchViaRules. Both P279 and P171 ancestor
@@ -40,123 +41,116 @@ class WikidataInfoFetcher {
 	 * the inferred property. This prevents Q5 (human) from getting an inflated depth via
 	 * its long biological P171 ancestry when matched via P31/P279.
 	 *
-	 * @param string $wikidataId Wikidata Q ID
+	 * @param string[] $wikidataIds Unique Wikidata Q IDs, at most 50 (the wbgetentities limit)
 	 * @param string $languageCode Language code
 	 * @param string|null $matchVia Explicit match-via override, or null to infer
-	 * @return array|null Array with 'label', 'description', 'image', 'hierarchyDepth',
-	 *   and 'matchVia' (null means use default P31/P279 path), or null on failure
+	 * @return array<string,array|null> Entity data by Q ID, or null on failure. Entity data
+	 *   has 'label', 'description', 'image', 'matchVia' (null means use default P31/P279
+	 *   path), and 'hierarchyDepth'.
 	 */
-	public function fetchEntityCached( string $wikidataId, string $languageCode, ?string $matchVia = null ): ?array {
-		// Cache key version - increment to invalidate old cache entries
-		$cacheKey = $this->cache->makeKey(
-			'articleguidance', 'wikidata', $wikidataId, $languageCode, $matchVia ?? 'infer', 'v11'
-		);
-		$method = __METHOD__;
-
-		return $this->cache->getWithSetCallback(
-			$cacheKey,
+	public function fetchEntitiesCached( array $wikidataIds, string $languageCode, ?string $matchVia = null ): array {
+		if ( $wikidataIds === [] ) {
+			return [];
+		}
+		$values = $this->cache->getMultiWithUnionSetCallback(
+			$this->cache->makeMultiKeys(
+				$wikidataIds,
+				// Cache key version - increment to invalidate old cache entries
+				fn ( string $id ) => $this->cache->makeKey(
+					'articleguidance', 'wikidata', $id, $languageCode, $matchVia ?? 'infer', 'v11'
+				)
+			),
 			WANObjectCache::TTL_WEEK,
-			function ( $oldValue, &$ttl, &$setOpts ) use ( $wikidataId, $languageCode, $matchVia, $method ) {
-				$multiClient = $this->httpRequestFactory->createMultiClient();
-
-				// Request 1: wbgetentities for label/description/image
-				$wbgetentitiesReq = [
-					'method' => 'GET',
-					'url' => $this->wikidataUrls->getApiUrl( [
-						'action' => 'wbgetentities',
-						'props' => 'labels|descriptions|claims',
-						'ids' => $wikidataId,
-						'languages' => $languageCode,
-						'languagefallback' => '1',
-						'format' => 'json'
-					] )
-				];
-
-				if ( $matchVia !== null ) {
-					// Explicit match-via: simple depth query along the known property chain.
-					// P171 outlines count P171 ancestors; all others count P279 ancestors.
-					$depthProperty = $matchVia === WikidataProperties::PROP_PARENT_TAXON
-						? WikidataProperties::PROP_PARENT_TAXON
-						: WikidataProperties::PROP_SUBCLASS_OF;
-					$sparqlQuery = "SELECT (COUNT(?intermediate) as ?depth) WHERE {
-						wd:{$wikidataId} wdt:{$depthProperty}* ?intermediate .
-					}";
-					$sparqlReq = $this->buildSparqlRequest( $sparqlQuery );
-					$responses = $multiClient->runMulti( [ $wbgetentitiesReq, $sparqlReq ], [], $method );
-
-					$entityData = $this->processWbgetentitiesResponse(
-						$responses[0]['response'], $wikidataId, $languageCode
-					);
-					if ( !$entityData ) {
-						$ttl = WANObjectCache::TTL_MINUTE * 5;
-						return null;
-					}
-					$entityData['matchVia'] = $matchVia;
-					$entityData['hierarchyDepth'] = $this->processSparqlResponse( $responses[1]['response'] );
-					if ( $entityData['hierarchyDepth'] === null ) {
-						$ttl = WANObjectCache::TTL_MINUTE * 5;
-					}
-				} else {
-					// No explicit match-via: infer from Wikidata superclasses and compute
-					// both P171 and P279 depths in a single SPARQL query.
-					$sparqlQuery = $this->buildInferenceAndDepthSparql( $wikidataId );
-					$sparqlReq = $this->buildSparqlRequest( $sparqlQuery );
-					$responses = $multiClient->runMulti( [ $wbgetentitiesReq, $sparqlReq ], [], $method );
-
-					$entityData = $this->processWbgetentitiesResponse(
-						$responses[0]['response'], $wikidataId, $languageCode
-					);
-					if ( !$entityData ) {
-						$ttl = WANObjectCache::TTL_MINUTE * 5;
-						return null;
-					}
-					[ 'matchVia' => $inferredMatchVia, 'hierarchyDepth' => $hierarchyDepth ] =
-						$this->processInferenceAndDepthSparqlResponse( $responses[1]['response'] );
-					$entityData['matchVia'] = $inferredMatchVia;
-					$entityData['hierarchyDepth'] = $hierarchyDepth;
-					if ( $hierarchyDepth === null ) {
-						$ttl = WANObjectCache::TTL_MINUTE * 5;
-					}
-				}
-
-				return $entityData;
-			},
-			[
-				'pcTTL' => WANObjectCache::TTL_PROC_LONG,
-				'lockTSE' => 30,
-			]
+			fn ( array $ids, array &$ttls ) => $this->fetchEntities( $ids, $languageCode, $matchVia, $ttls ),
+			[ 'pcTTL' => WANObjectCache::TTL_PROC_LONG ]
 		);
+		return array_combine( $wikidataIds, array_values( $values ) );
+	}
+
+	/**
+	 * @param string[] $ids Wikidata Q IDs
+	 * @param string $languageCode Language code
+	 * @param string|null $matchVia Explicit match-via override, or null to infer
+	 * @param int[] &$ttls Cache TTL by Q ID
+	 * @return array<string,array|null> Entity data by Q ID, or null on failure
+	 */
+	private function fetchEntities( array $ids, string $languageCode, ?string $matchVia, array &$ttls ): array {
+		$wbgetentitiesReq = [
+			'method' => 'GET',
+			'url' => $this->wikidataUrls->getApiUrl( [
+				'action' => 'wbgetentities',
+				'props' => 'labels|descriptions|claims',
+				'ids' => implode( '|', $ids ),
+				'languages' => $languageCode,
+				'languagefallback' => '1',
+				'format' => 'json'
+			] )
+		];
+		$sparqlQuery = $matchVia !== null
+			? $this->buildDepthSparql( $ids, $matchVia )
+			: $this->buildInferenceAndDepthSparql( $ids );
+		$responses = $this->httpRequestFactory->createMultiClient()->runMulti(
+			[ $wbgetentitiesReq, $this->buildSparqlRequest( $sparqlQuery ) ],
+			[],
+			__METHOD__
+		);
+
+		$entities = $this->processWbgetentitiesResponse( $responses[0]['response'], $languageCode );
+		$depths = $matchVia !== null
+			? $this->processDepthSparqlResponse( $responses[1]['response'], $matchVia )
+			: $this->processInferenceAndDepthSparqlResponse( $responses[1]['response'] );
+
+		$results = [];
+		foreach ( $ids as $id ) {
+			$entityData = $entities[$id] ?? null;
+			$depthData = $depths[$id] ?? [ 'matchVia' => $matchVia, 'hierarchyDepth' => null ];
+			if ( $entityData === null || $depthData['hierarchyDepth'] === null ) {
+				// Retry a failure soon
+				$ttls[$id] = WANObjectCache::TTL_MINUTE * 5;
+			}
+			$results[$id] = $entityData === null ? null : $entityData + $depthData;
+		}
+		return $results;
 	}
 
 	/**
 	 * Process wbgetentities API response
 	 *
 	 * @param array $response Response array from MultiHttpClient
-	 * @param string $wikidataId Wikidata ID being fetched
 	 * @param string $languageCode Language code
-	 * @return array|null Array with label, description, and image, or null on failure
+	 * @return array<string,array|null> Label, description, and image by Q ID, or null for
+	 *   an entity with none of them. Empty on failure.
 	 */
-	private function processWbgetentitiesResponse( array $response, string $wikidataId, string $languageCode ): ?array {
+	private function processWbgetentitiesResponse( array $response, string $languageCode ): array {
 		[ $code, $reason, $headers, $body, $error ] = $response;
 
 		if ( $code !== 200 ) {
 			$this->logger->error( 'wbgetentities request failed', [
 				'code' => $code,
 				'error' => $error,
-				'wikidataId' => $wikidataId
 			] );
-			return null;
+			return [];
 		}
 
 		$data = json_decode( $body, true );
-		if ( !is_array( $data ) || !isset( $data['entities'][$wikidataId] ) ) {
-			$this->logger->error( 'Invalid Wikidata API response format', [
-				'wikidataId' => $wikidataId
-			] );
-			return null;
+		if ( !is_array( $data ) || !is_array( $data['entities'] ?? null ) ) {
+			$this->logger->error( 'Invalid Wikidata API response format' );
+			return [];
 		}
 
-		$entity = $data['entities'][$wikidataId];
+		$entities = [];
+		foreach ( $data['entities'] as $id => $entity ) {
+			$entities[$id] = is_array( $entity ) ? $this->processEntity( $entity, $languageCode ) : null;
+		}
+		return $entities;
+	}
+
+	/**
+	 * @param array $entity Entity from a wbgetentities response
+	 * @param string $languageCode Language code
+	 * @return array|null Array with label, description, and image, or null if it has none of them
+	 */
+	private function processEntity( array $entity, string $languageCode ): ?array {
 		$labelData = $entity['labels'][$languageCode] ?? null;
 		$label = $labelData['value'] ?? null;
 		if ( $label !== null ) {
@@ -207,18 +201,39 @@ class WikidataInfoFetcher {
 	}
 
 	/**
+	 * Build a SPARQL query that counts the ancestors of each item along one property chain.
+	 * P171 outlines count P171 ancestors; all others count P279 ancestors.
+	 *
+	 * @param string[] $ids Wikidata Q IDs
+	 * @param string $matchVia Explicit match-via property
+	 * @return string SPARQL query
+	 */
+	private function buildDepthSparql( array $ids, string $matchVia ): string {
+		$depthProperty = $matchVia === WikidataProperties::PROP_PARENT_TAXON
+			? WikidataProperties::PROP_PARENT_TAXON
+			: WikidataProperties::PROP_SUBCLASS_OF;
+		$values = $this->buildValuesClause( $ids );
+
+		return "SELECT ?item (COUNT(?intermediate) AS ?depth) WHERE {
+  $values
+  ?item wdt:$depthProperty* ?intermediate .
+}
+GROUP BY ?item";
+	}
+
+	/**
 	 * Build a SPARQL query that infers match-via from superclasses and computes
-	 * both P279 and P171 ancestor depths in one request.
+	 * both P279 and P171 ancestor depths of each item in one request.
 	 *
 	 * Rules from $this->matchViaRules are evaluated in config order via wdt:P31/wdt:P279*;
 	 * the first matching superclass wins. An 'exclude' condition prevents a rule from
 	 * firing when the entity is also a subclass of the excluded Q-ID.
 	 * An empty string result means use the default P31/P279 path.
 	 *
-	 * @param string $wikidataId Wikidata Q ID
+	 * @param string[] $ids Wikidata Q IDs
 	 * @return string SPARQL query
 	 */
-	private function buildInferenceAndDepthSparql( string $wikidataId ): string {
+	private function buildInferenceAndDepthSparql( array $ids ): string {
 		$p31 = WikidataProperties::PROP_INSTANCE_OF;
 		$p279 = WikidataProperties::PROP_SUBCLASS_OF;
 		$p171 = WikidataProperties::PROP_PARENT_TAXON;
@@ -228,24 +243,34 @@ class WikidataInfoFetcher {
 		// so we accumulate from innermost (last rule) to outermost (first rule).
 		$matchViaExpr = '""';
 		foreach ( array_reverse( $this->matchViaRules ) as $rule ) {
-			$condition = "EXISTS { wd:{$wikidataId} $path wd:{$rule['superclass']} }";
+			$condition = "EXISTS { ?item $path wd:{$rule['superclass']} }";
 			$then = "\"{$rule['matchVia']}\"";
 			if ( isset( $rule['exclude'] ) ) {
-				$excludeCondition = "EXISTS { wd:{$wikidataId} wdt:$p279* wd:{$rule['exclude']} }";
+				$excludeCondition = "EXISTS { ?item wdt:$p279* wd:{$rule['exclude']} }";
 				$then = "IF($excludeCondition, $matchViaExpr, $then)";
 			}
 			$matchViaExpr = "IF($condition, $then, $matchViaExpr)";
 		}
+		$values = $this->buildValuesClause( $ids );
 
-		return "SELECT ?inferredMatchVia
+		return "SELECT ?item ?inferredMatchVia
   (COUNT(DISTINCT ?p279node) AS ?p279depth)
   (COUNT(DISTINCT ?p171node) AS ?p171depth)
 WHERE {
-  { SELECT ?inferredMatchVia WHERE { BIND($matchViaExpr AS ?inferredMatchVia) } }
-  OPTIONAL { wd:{$wikidataId} wdt:$p279* ?p279node }
-  OPTIONAL { wd:{$wikidataId} wdt:$p171* ?p171node }
+  $values
+  BIND($matchViaExpr AS ?inferredMatchVia)
+  OPTIONAL { ?item wdt:$p279* ?p279node }
+  OPTIONAL { ?item wdt:$p171* ?p171node }
 }
-GROUP BY ?inferredMatchVia";
+GROUP BY ?item ?inferredMatchVia";
+	}
+
+	/**
+	 * @param string[] $ids Wikidata Q IDs
+	 * @return string SPARQL VALUES clause that binds ?item to each ID
+	 */
+	private function buildValuesClause( array $ids ): string {
+		return 'VALUES ?item { ' . implode( ' ', array_map( static fn ( string $id ) => "wd:$id", $ids ) ) . ' }';
 	}
 
 	/**
@@ -253,44 +278,48 @@ GROUP BY ?inferredMatchVia";
 	 * Returns inferred match-via (null means default) and the depth along the correct chain.
 	 *
 	 * @param array $response Response array from MultiHttpClient
-	 * @return array{matchVia: string|null, hierarchyDepth: int|null}
+	 * @return array<string,array{matchVia: string|null, hierarchyDepth: int|null}> By Q ID.
+	 *   Empty on failure.
 	 */
 	private function processInferenceAndDepthSparqlResponse( array $response ): array {
-		[ $code, $reason, $headers, $body, $error ] = $response;
-
-		if ( $code !== 200 ) {
-			$this->logger->warning( 'Failed to fetch outline hierarchy depth and matchVia (code !== 200)', [
-				'code' => $code,
-				'error' => $error
-			] );
-			return [ 'matchVia' => null, 'hierarchyDepth' => null ];
+		$depths = [];
+		foreach ( $this->getSparqlBindingsByItem( $response ) as $id => $binding ) {
+			$inferredMatchVia = ( $binding['inferredMatchVia']['value'] ?? '' ) ?: null;
+			$depthKey = $inferredMatchVia === WikidataProperties::PROP_PARENT_TAXON ? 'p171depth' : 'p279depth';
+			$depths[$id] = [
+				'matchVia' => $inferredMatchVia,
+				'hierarchyDepth' => isset( $binding[$depthKey]['value'] )
+					? (int)$binding[$depthKey]['value']
+					: null,
+			];
 		}
-
-		$data = json_decode( $body, true );
-		if ( !is_array( $data ) || !isset( $data['results']['bindings'][0] ) ) {
-			$this->logger->warning( 'Failed to fetch outline hierarchy depth and matchVia (unexpected body)', [
-				'body' => substr( $body, 0, 200 )
-			] );
-			return [ 'matchVia' => null, 'hierarchyDepth' => null ];
-		}
-
-		$binding = $data['results']['bindings'][0];
-		$inferredMatchVia = ( $binding['inferredMatchVia']['value'] ?? '' ) ?: null;
-		$depthKey = $inferredMatchVia === WikidataProperties::PROP_PARENT_TAXON ? 'p171depth' : 'p279depth';
-		$hierarchyDepth = isset( $binding[$depthKey]['value'] )
-			? (int)$binding[$depthKey]['value']
-			: null;
-
-		return [ 'matchVia' => $inferredMatchVia, 'hierarchyDepth' => $hierarchyDepth ];
+		return $depths;
 	}
 
 	/**
 	 * Process SPARQL response for hierarchy depth with graceful degradation
 	 *
 	 * @param array $response Response array from MultiHttpClient
-	 * @return int|null Hierarchy depth (ancestor count along the relevant property chain), or null on failure
+	 * @param string $matchVia Explicit match-via property
+	 * @return array<string,array{matchVia: string, hierarchyDepth: int|null}> By Q ID.
+	 *   Hierarchy depth is the ancestor count along the relevant property chain. Empty on failure.
 	 */
-	private function processSparqlResponse( array $response ): ?int {
+	private function processDepthSparqlResponse( array $response, string $matchVia ): array {
+		$depths = [];
+		foreach ( $this->getSparqlBindingsByItem( $response ) as $id => $binding ) {
+			$depths[$id] = [
+				'matchVia' => $matchVia,
+				'hierarchyDepth' => isset( $binding['depth']['value'] ) ? (int)$binding['depth']['value'] : null,
+			];
+		}
+		return $depths;
+	}
+
+	/**
+	 * @param array $response Response array from MultiHttpClient
+	 * @return array<string,array> SPARQL result bindings by the Q ID in ?item. Empty on failure.
+	 */
+	private function getSparqlBindingsByItem( array $response ): array {
 		[ $code, $reason, $headers, $body, $error ] = $response;
 
 		if ( $code !== 200 ) {
@@ -298,17 +327,24 @@ GROUP BY ?inferredMatchVia";
 				'code' => $code,
 				'error' => $error
 			] );
-			return null;
+			return [];
 		}
 
 		$data = json_decode( $body, true );
-		if ( is_array( $data ) && isset( $data['results']['bindings'][0]['depth']['value'] ) ) {
-			return (int)$data['results']['bindings'][0]['depth']['value'];
+		if ( !is_array( $data ) || !is_array( $data['results']['bindings'] ?? null ) ) {
+			$this->logger->warning( 'Failed to fetch outline hierarchy depth (unexpected body)', [
+				'body' => substr( $body, 0, 200 )
+			] );
+			return [];
 		}
 
-		$this->logger->warning( 'Failed to fetch outline hierarchy depth (unexpected body)', [
-			'body' => substr( $body, 0, 200 )
-		] );
-		return null;
+		$bindings = [];
+		foreach ( $data['results']['bindings'] as $binding ) {
+			// ?item is an entity URI, e.g. http://www.wikidata.org/entity/Q5
+			if ( preg_match( '/\/(Q\d+)$/', $binding['item']['value'] ?? '', $matches ) ) {
+				$bindings[$matches[1]] = $binding;
+			}
+		}
+		return $bindings;
 	}
 }

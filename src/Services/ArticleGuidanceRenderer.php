@@ -41,6 +41,7 @@ class ArticleGuidanceRenderer {
 	 * @param string|null $customLabelNote Custom label note text
 	 * @param bool $isGeneric Whether this is the generic guidance outline, which
 	 *   has no article types
+	 * @param bool $hasTooManyTypes Whether the article-type attribute has more IDs than allowed
 	 * @return string Rendered HTML
 	 */
 	public function render(
@@ -56,7 +57,8 @@ class ArticleGuidanceRenderer {
 		array $notabilityThresholds = [],
 		?string $categoryNoteHtml = null,
 		?string $customLabelNote = null,
-		bool $isGeneric = false
+		bool $isGeneric = false,
+		bool $hasTooManyTypes = false
 	): string {
 		$isValid = $articleTypes !== [];
 		// The attribute was supplied but no ID survived parsing; distinct from the
@@ -138,9 +140,12 @@ class ArticleGuidanceRenderer {
 					->inLanguage( $targetLanguage )->text()
 			);
 		} elseif ( $hasInvalidType ) {
+			$errorMessage = $hasTooManyTypes
+				? Message::newFromKey( 'articleguidance-too-many-article-types' )
+					->numParams( OutlineService::MAX_ARTICLE_TYPES )
+				: Message::newFromKey( 'articleguidance-invalid-article-type', $articleType );
 			$topHtml .= Html::element( 'div', [ 'class' => 'ext-articleguidance-error' ],
-				Message::newFromKey( 'articleguidance-invalid-article-type', $articleType )
-					->inLanguage( $targetLanguage )->text()
+				$errorMessage->inLanguage( $targetLanguage )->text()
 			);
 		}
 

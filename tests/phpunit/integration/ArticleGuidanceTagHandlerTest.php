@@ -7,6 +7,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Tests\Integration;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Extension\ArticleGuidance\Hooks\ArticleGuidanceTagHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
+use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataUrls;
@@ -61,7 +62,9 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 	 */
 	private function getHandler( ?array $entityData = null ): ArticleGuidanceTagHandler {
 		$fetcher = $this->createMock( WikidataInfoFetcher::class );
-		$fetcher->method( 'fetchEntityCached' )->willReturn( $entityData );
+		$fetcher->method( 'fetchEntitiesCached' )->willReturnCallback(
+			static fn ( array $ids ) => array_fill_keys( $ids, $entityData )
+		);
 
 		return new ArticleGuidanceTagHandler(
 			$fetcher,
@@ -306,5 +309,40 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 5, $data['articleTypes'][0]['hierarchyDepth'] );
 		// Stored capitalized, so page_props needs no fixing at read time
 		$this->assertSame( 'Commercial organisation', $data['description'] );
+	}
+
+	/**
+	 * The cap limits the Wikidata requests that one outline can cause. Above
+	 * it, the whole attribute is invalid.
+	 */
+	public function testTooManyArticleTypesIsInvalid(): void {
+		$ids = array_map(
+			static fn ( int $n ) => "Q$n",
+			range( 1, OutlineService::MAX_ARTICLE_TYPES + 1 )
+		);
+		$html = $this->renderTag( [ 'article-type' => implode( ' ', $ids ) ] );
+
+		$this->assertNull( $this->getStoredData() );
+		$this->assertStringContainsString( 'ext-articleguidance-invalid', $html );
+		$this->assertStringContainsString( 'articleguidance-too-many-article-types', $html );
+	}
+
+	/**
+	 * The cap counts unique IDs, so repeated IDs do not make an outline invalid.
+	 */
+	public function testMaxArticleTypesIsAllowed(): void {
+		$ids = array_map(
+			static fn ( int $n ) => "Q$n",
+			range( 1, OutlineService::MAX_ARTICLE_TYPES )
+		);
+		$this->renderTag( [ 'article-type' => implode( ' ', $ids ) . ' Q1' ], null, false, [
+			'label' => 'business',
+			'description' => null,
+			'hierarchyDepth' => 5,
+			'matchVia' => null,
+			'image' => null,
+		] );
+
+		$this->assertSame( $ids, array_column( $this->getStoredData()['articleTypes'], 'id' ) );
 	}
 }

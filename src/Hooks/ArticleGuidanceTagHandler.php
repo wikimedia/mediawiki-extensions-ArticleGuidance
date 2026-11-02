@@ -134,6 +134,10 @@ class ArticleGuidanceTagHandler implements
 		if ( $articleType !== null && !$isGeneric ) {
 			$wikidataIds = $this->parseArticleTypes( $articleType );
 		}
+		$hasTooManyTypes = count( $wikidataIds ) > OutlineService::MAX_ARTICLE_TYPES;
+		if ( $hasTooManyTypes ) {
+			$wikidataIds = [];
+		}
 
 		foreach ( $wikidataIds as $id ) {
 			$renderTypes[] = [
@@ -152,12 +156,13 @@ class ArticleGuidanceTagHandler implements
 				// Get user language
 				$language = $parser->getContentLanguage()->getCode();
 
-				// Fetch entity data per ID; each ID keeps its own hierarchy
-				// depth and match-via since both are properties of the item
+				// Each ID keeps its own hierarchy depth and match-via
+				// since both are properties of the item
+				$entities = $this->wikidataInfoFetcher->fetchEntitiesCached(
+					$wikidataIds, $language, $explicitMatchVia
+				);
 				foreach ( $wikidataIds as $i => $id ) {
-					$entityData = $this->wikidataInfoFetcher->fetchEntityCached(
-						$id, $language, $explicitMatchVia
-					);
+					$entityData = $entities[$id] ?? null;
 					// Use inferred match-via from entity data; explicit override takes precedence
 					$entryMatchVia = $explicitMatchVia ?? $entityData['matchVia'] ?? null;
 					$itemDescription = $entityData['description'] ?? null;
@@ -262,7 +267,8 @@ class ArticleGuidanceTagHandler implements
 			$notabilityThresholds,
 			$categoryNoteHtml,
 			$customLabelNote,
-			$isGeneric
+			$isGeneric,
+			$hasTooManyTypes
 		);
 
 		return $html;
@@ -285,11 +291,10 @@ class ArticleGuidanceTagHandler implements
 			if ( !$this->isValidWikidataId( $token ) ) {
 				return [];
 			}
-			if ( !in_array( $token, $ids, true ) ) {
-				$ids[] = $token;
-			}
+			// Keyed, so that a long attribute does not cost quadratic time
+			$ids[$token] = true;
 		}
-		return $ids;
+		return array_keys( $ids );
 	}
 
 	/**

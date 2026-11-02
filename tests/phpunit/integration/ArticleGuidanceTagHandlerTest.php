@@ -255,6 +255,28 @@ class ArticleGuidanceTagHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( 'articleguidance-invalid-article-type', $html );
 	}
 
+	public static function provideImpossibleItemIds(): array {
+		return [
+			'zero' => [ 'Q5 Q0' ],
+			'leading zero' => [ 'Q5 Q033999' ],
+			'number too large' => [ 'Q5 Q2147483648' ],
+		];
+	}
+
+	/**
+	 * Wikidata rejects a whole wbgetentities request that contains an item ID that
+	 * cannot exist, so such an ID invalidates the attribute before any request.
+	 *
+	 * @dataProvider provideImpossibleItemIds
+	 */
+	public function testImpossibleItemIdIsInvalid( string $articleType ): void {
+		$html = $this->renderTag( [ 'article-type' => $articleType ] );
+
+		$this->assertNull( $this->getStoredData() );
+		$this->assertStringContainsString( 'ext-articleguidance-invalid', $html );
+		$this->assertStringContainsString( 'articleguidance-invalid-article-type', $html );
+	}
+
 	/**
 	 * A generic outline is not an invalid one, even though both end up with an
 	 * empty article type list.

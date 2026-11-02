@@ -8,6 +8,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
+use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Hook\BeforeInitializeHook;
 use MediaWiki\Logging\DatabaseLogEntry;
 use MediaWiki\Output\OutputPage;
@@ -229,7 +230,7 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			// is the specific Wikidata item the user selected (if any), so the article
 			// can be connected to it once published; otherwise true.
 			$item = $request->getVal( 'articleguidanceitem' );
-			$value = ( $item !== null && preg_match( '/^Q\d+$/', $item ) ) ? $item : true;
+			$value = ( $item !== null && WikidataProperties::isItemId( $item ) ) ? $item : true;
 			$editing = $session->get( EditTagHandler::SESSION_EDITING );
 			$editing = is_array( $editing ) ? $editing : [];
 			// Re-insert at the end so the most recently started edits survive the cap.

@@ -6,6 +6,7 @@ namespace MediaWiki\Extension\ArticleGuidance\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
+use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Output\Hook\BeforePageDisplayHook;
 
 class PublishFollowUpHandler implements BeforePageDisplayHook {
@@ -51,7 +52,7 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 				$this->config->get( 'ArticleGuidanceWikidataConnectEnabled' )
 				&& $out->getTitle()->getNamespace() === NS_MAIN
 				&& is_string( $item )
-				&& preg_match( '/^Q\d+$/', $item )
+				&& WikidataProperties::isItemId( $item )
 			) {
 				$out->addJsConfigVars( [
 					'wgArticleGuidanceConnectItemId' => $item,

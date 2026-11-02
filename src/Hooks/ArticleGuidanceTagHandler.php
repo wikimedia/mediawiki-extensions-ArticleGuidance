@@ -9,6 +9,7 @@ use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceRenderer;
 use MediaWiki\Extension\ArticleGuidance\Services\OutlineService;
 use MediaWiki\Extension\ArticleGuidance\Services\TagContentExtractorService;
 use MediaWiki\Extension\ArticleGuidance\Services\WikidataInfoFetcher;
+use MediaWiki\Extension\ArticleGuidance\WikidataProperties;
 use MediaWiki\Message\Message;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
@@ -304,7 +305,7 @@ class ArticleGuidanceTagHandler implements
 	 * @return bool True if valid Wikidata ID format
 	 */
 	private function isValidWikidataId( string $id ): bool {
-		return (bool)preg_match( '/^Q\d+$/', trim( $id ) );
+		return WikidataProperties::isItemId( trim( $id ) );
 	}
 
 	/**

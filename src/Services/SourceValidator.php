@@ -31,14 +31,20 @@ class SourceValidator {
 	 * @throws InvalidArgumentException if the URL is not valid
 	 */
 	public function validate( string $url, ?string $outlineQId = null ): array {
-		if ( !str_contains( $url, '://' ) ) {
+		if ( str_starts_with( $url, '//' ) ) {
+			// Protocol-relative, as citation templates allow
+			$url = 'https:' . $url;
+		} elseif ( !str_contains( $url, '://' ) ) {
 			$url = 'https://' . $url;
 		}
 		if ( !filter_var( $this->urlAsciiEncoder->encode( $url ), FILTER_VALIDATE_URL ) ) {
 			throw new InvalidArgumentException( 'Invalid URL' );
 		}
 
-		$domain = strtolower( preg_replace( '/^www\./i', '', parse_url( $url, PHP_URL_HOST ) ?? '' ) );
+		// A fully qualified host ends in a dot ("example.com."), which browsers
+		// resolve to the same site, so it must match the same list entries
+		$host = rtrim( parse_url( $url, PHP_URL_HOST ) ?? '', '.' );
+		$domain = strtolower( preg_replace( '/^www\./i', '', $host ) );
 
 		if ( $this->spamBlacklist !== null ) {
 			$matches = $this->spamBlacklist->filter(

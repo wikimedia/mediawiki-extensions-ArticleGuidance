@@ -248,6 +248,31 @@ class SourceValidatorTest extends MediaWikiUnitTestCase {
 		$this->assertSame( $expected, $result['classification'] );
 	}
 
+	public static function provideEquivalentHosts(): array {
+		return [
+			'trailing dot' => [ 'https://facebook.com./some-page', 'facebook.com' ],
+			'trailing dot, www and upper case' => [ 'https://WWW.FACEBOOK.COM./some-page', 'facebook.com' ],
+			'subdomain with trailing dot' => [ 'https://m.facebook.com./some-page', 'm.facebook.com' ],
+			'protocol-relative' => [ '//facebook.com/some-page', 'facebook.com' ],
+			'protocol-relative with trailing dot' => [ '//www.facebook.com./some-page', 'facebook.com' ],
+			'no scheme with trailing dot' => [ 'facebook.com./some-page', 'facebook.com' ],
+		];
+	}
+
+	/**
+	 * Other spellings of a listed host reach the same site and get the same
+	 * classification (T439785).
+	 *
+	 * @dataProvider provideEquivalentHosts
+	 */
+	public function testEquivalentHostSpellingsMatchTheLists( string $url, string $expectedDomain ): void {
+		$validator = $this->getValidator( self::GENERIC_OUTLINE );
+
+		$result = $validator->validate( $url, OutlineService::GENERIC_ARTICLE_TYPE );
+		$this->assertSame( 'discouraged', $result['classification'] );
+		$this->assertSame( $expectedDomain, $result['domain'] );
+	}
+
 	public function testSpamTakesPrecedenceOverReferenceRisk(): void {
 		if ( !class_exists( SpamBlacklist::class ) ) {
 			$this->markTestSkipped( 'SpamBlacklist is not installed' );

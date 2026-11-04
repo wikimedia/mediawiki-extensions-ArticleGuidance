@@ -3,7 +3,9 @@
 		"authors": [
 			"Escargot bleu",
 			"Framawiki",
-			"NClara"
+			"NClara",
+			"Anterdc99",
+			"SleaY"
 		]
 	},
 	"articleguidance-desc": "Guidage et assistance à la création d'articles.",
@@ -74,7 +76,7 @@
 	"articleguidance-type-label": "Objet :",
 	"articleguidance-invalid-article-type": "Type d'article invalide : « $1 » (format attendu : Q12345)",
 	"articleguidance-generic-note": "Ce plan est celui utilisé par défaut. Il n'est pas lié à une entrée Wikidata. Il est utilisé lorsqu'aucun autre plan ne correspond au sujet.",
-	"articleguidance-default-outline-preload": "[Commencez par une brève introduction : qui ou quoi est le sujet et pourquoi est-il important.]\n\n[Poursuivez avec les aspects les plus pertinents du sujet, chacun étayé par une source.]\n\n== Références ==\n\n<references>\n $1 \n</references>",
+	"articleguidance-default-outline-preload": "[Commencez par une brève introduction : qui ou quoi est le sujet et pourquoi est-il important.]\n\n[Poursuivez avec les aspects les plus pertinents du sujet, chacun étayé par une source.]\n\n== Références ==\n\n<references>\n$1\n</references>",
 	"articleguidance-notability-restrictions-title": "Exigences de notoriété",
 	"articleguidance-notability-warning": "Les nouveaux articles de ce type sont souvent supprimés. Choisir l'une des options ci-dessous offre aux nouveaux contributeurs et contributrices de meilleures chances de réussite.",
 	"articleguidance-notability-warning-crosswiki": "Pour créer un article sur ce sujet, il doit déjà exister dans d'autres versions linguistiques de Wikipédia.",

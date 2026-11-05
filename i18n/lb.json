@@ -14,7 +14,7 @@
 	"articleguidance-sources-title": "Sourcen derbäisetzen",
 	"articleguidance-sources-subtitle-notability-risk": "Dës Zort Artikel brauch op d'mannst $1 {{PLURAL:$1|Source|Sourcen}}, ier Dir virufuere kënnt.",
 	"articleguidance-sources-subtitle-notability-risk-generic": "Dësen Artikel brauch op d'mannst $1 {{PLURAL:$1|Source|Sourcen}}, ier Dir virufuere kënnt.",
-	"articleguidance-sources-invalid-url": "Gitt eng gülteg URL an",
+	"articleguidance-sources-input-placeholder": "Setzt e Link, eng ISBN oder en DOI an",
 	"articleguidance-sources-helper-required": "$1 Artikelen op dëser Wiki brauch Sourcen.",
 	"articleguidance-sources-helper-progress": "$1 vu(n) {{PLURAL:$2|$2 Sourcen}} derbäigesat.",
 	"articleguidance-sources-unreliable-warning-description-risky": "Dës Websäit gëtt op dëser Wiki als onzouverléisseg ugesinn.",

@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakimi97"
+		]
+	},
+	"articleguidance-desc": "Membolehkan pengguna mencipta rencana melalui aliran kerja berpandu dan berbantu",
+	"articleguidance-disabled-title": "Pembimbing rencana tidak tersedia",
+	"articleguidance-disabled": "[[mw\n:Special:MyLanguage/Article_guidance|Pembimbing Rencana]] tidak diaktifkan pada wiki ini.",
+	"articleguidance-pref-enable-label": "Gunakan pembimbing rencana apabila mencipta rencana baharu"
+}

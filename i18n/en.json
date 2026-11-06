@@ -151,11 +151,11 @@
 	"communityconfiguration-articleguidance-feature-section-label": "Availability",
 	"communityconfiguration-articleguidance-feature-section-description": "This setting decides whether the guided new-article experience is available on this wiki at all.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Enable article guidance on this wiki",
-	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "When this is off, article guidance is not available: red links open the standard editor, the guided page cannot be used, and the personal preference is hidden. The settings below have an effect only while this is on.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Activate the guidance, including special page to start new articles and processing of outlines. Options below determine how the feature is exposed to users (e.g., when clicking red links). When this is off, all guidance functionality is disabled.",
 	"communityconfiguration-articleguidance-redirect-section-label": "Guided article creation",
 	"communityconfiguration-articleguidance-redirect-section-description": "These settings decide who is taken to the guided new-article experience instead of the standard editor.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Open the guided experience from red links",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "When enabled, following a red link to a missing article opens the guided experience instead of the standard editor. Editors who prefer the standard editor can switch this off for themselves in their preferences.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Use the guided experience from red links",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Following a red link to a missing article will open the guided experience. When enabled for the wiki, editors who prefer going directly to the standard editor can still switch this off for themselves in their preferences.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Limit to newer editors",
-	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "This setting has an effect only while the setting above is on. When enabled, only editors below this wiki's newer-editor edit count get the guided experience, and everyone else keeps the standard editor."
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Shows the guided experience only to editors below this wiki’s newer-editor edit count. Everyone else uses the standard editor. This adjustment only has an effect when Article Guidance is enabled on the wiki."
 }

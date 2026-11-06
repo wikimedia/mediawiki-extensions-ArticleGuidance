@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Fahimrazick"
+		]
+	},
+	"articleguidance-desc": "பயனருக்கு வழிகாட்டப்படும், உதவி செய்யப்படும் ஒரு பணிப் பாய்ச்சலினூடாகக் கட்டுரைகளை உண்டாக்க வழி செய்கிறது",
+	"articleguidance-specialnewarticle-title": "புதிய கட்டுரை",
+	"articleguidance-specialnewarticle-title-placeholder": "கட்டுரைத் தலைப்பு",
+	"articleguidance-specialnewarticle-loading": "தேடுகிறது...",
+	"articleguidance-specialnewarticle-checking": "சரிபார்க்கிறது...",
+	"articleguidance-specialnewarticle-no-results": "\"$1\" இற்கு எத்தலைப்பும் காணப்படவில்லை",
+	"articleguidance-titleconflict-exists-warning": "\"$1\" என்று தலைப்புள்ள ஒரு கட்டுரை ஏற்கனவே இருக்கிறது.",
+	"articleguidance-specialnewarticle-edit-existing": "ஏற்கனவே உள்ள கட்டுரையைத் தொகு",
+	"articleguidance-specialnewarticle-disambiguation-title": "இது என்ன?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "அதற்குப் பதிலாக ஒரு வகையைத் தெரிவு செய்",
+	"articleguidance-sources-title": "ஆதாரங்களைச் சேர்",
+	"articleguidance-sources-subtitle": "ஆதாரங்கள் வாசகருக்கு உண்மைகளைச் சரிபார்க்க உதவுவதுடன் இத்தலைப்பு ஏன் முக்கியமாகிறது எனக் காட்டுகின்றன.",
+	"articleguidance-sources-add-source": "ஆதாரத்தைச் சேர்",
+	"articleguidance-sources-duplicate": "இந்த ஆதாரம் ஏற்கனவே சேர்க்கப்பட்டுள்ளது",
+	"articleguidance-sources-continue": "தொடர்க",
+	"articleguidance-sources-helper": "நீர் எழுதும் பொழுதே நீர் ஆதாரங்களைச் சேர்க்கலாம்.",
+	"articleguidance-sources-helper-required": "இந்த விக்கியிலுள்ள $1 கட்டுரைகளுக்கு ஆதாரங்கள் தேவை.",
+	"articleguidance-sources-helper-progress": "{{PLURAL:$2|$2 ஆதாரத்தில்|$2 ஆதாரங்களில்}} $1 சேர்க்கப்பட்டது அல்லது சேர்க்கப்பட்டன.",
+	"articleguidance-sources-unreliable-warning-title": "சமூகத்தாற் பரிந்துரைக்கப்படுவதில்லை",
+	"articleguidance-sources-unreliable-warning-description": "இந்த ஆதார வகை இக்கட்டுரை வகைக்கு அரிதாகவே ஏற்கப்படுகிறது.",
+	"articleguidance-sources-tips-title": "$1 கட்டுரைகளுக்கான உதவிக் குறிப்புகள்",
+	"articleguidance-sources-tips-content-recommended": "இந்த ஆதார வகைகள் நன்கு செயற்படுகின்றன:",
+	"articleguidance-sources-tips-content-discouraged": "இவை அரிதாகவே ஏற்கப்படுகின்றன:",
+	"articleguidance-sources-check-failed": "ஆதாரச் சரிபார்ப்பு தவறியது. மீண்டும் முயல்க.",
+	"articleguidance-instructions-guidance-heading": "இக்கட்டுரையைத் தொடங்குதல்",
+	"articleguidance-instructions-start-writing": "எழுதத் தொடங்குக",
+	"articleguidance-navigation-back": "பின்னே"
+}

@@ -39,7 +39,9 @@
 	"articleguidance-sources-subtitle": "تساعد المصادر القراء على التحقق من الحقائق وتوضح سبب أهمية هذا الموضوع.",
 	"articleguidance-sources-subtitle-notability-risk": "يتطلب هذا النوع من المقالات مبلغًا لا يقل عن $1 {{PLURAL:$1|مصدر|مصادر}} قبل أن تتمكن من المتابعة.",
 	"articleguidance-sources-subtitle-notability-risk-generic": "يتطلب هذا المقال مبلغًا لا يقل عن $1 {{PLURAL:$1| مصدر|مصادر}} قبل أن تتمكن من المتابعة.",
+	"articleguidance-sources-input-placeholder": "ألصق رابطًا أو رقم ISBN أو DOI",
 	"articleguidance-sources-add-source": "أضف مصدراً",
+	"articleguidance-sources-not-found": "لم يتم العثور على مصدر. أدخل رابطًا أو رمزًا مرجعيًا، مثل رقم ISBN أو DOI.",
 	"articleguidance-sources-duplicate": "أضيف هذا المصدر مسبقاً",
 	"articleguidance-sources-continue": "استمرار",
 	"articleguidance-sources-helper": "يمكنك إضافة المصادر أثناء الكتابة.",
@@ -146,11 +148,11 @@
 	"communityconfiguration-articleguidance-feature-section-label": "التوافر",
 	"communityconfiguration-articleguidance-feature-section-description": "يحدد هذا الإعداد ما إذا كانت تجربة إنشاء مقالة جديدة موجهة متاحة على هذه الويكي على الإطلاق.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "تفعيل إرشادات المقالات على هذه الويكي",
-	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "عند تعطيل هذا الخيار، لن تتوفر إرشادات المقالات: ستفتح الروابط الحمراء المحرر القياسي، ولن يكون بالإمكان استخدام صفحة الإرشادات، وسيتم إخفاء التفضيلات الشخصية. لا تُفعّل الإعدادات أدناه إلا عند تفعيل هذا الخيار.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "فعّل خاصية التوجيه، بما في ذلك صفحة خاصة لبدء مقالات جديدة ومعالجة المخططات. تحدد الخيارات أدناه كيفية ظهور هذه الخاصية للمستخدمين (مثلاً، عند النقر على الروابط الحمراء). عند تعطيل هذه الخاصية، يتم تعطيل جميع وظائف التوجيه.",
 	"communityconfiguration-articleguidance-redirect-section-label": "إنشاء المقالات الموجهة",
 	"communityconfiguration-articleguidance-redirect-section-description": "تحدد هذه الإعدادات من يتم نقله إلى تجربة إنشاء مقال جديد موجه بدلاً من المحرر القياسي.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "افتح التجربة الإرشادية من الروابط الحمراء",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "عند تفعيل هذه الخاصية، يؤدي النقر على رابط أحمر إلى مقال مفقود إلى فتح تجربة التحرير التفاعلية بدلاً من المحرر القياسي. ويمكن للمحررين الذين يفضلون المحرر القياسي تعطيل هذه الخاصية من إعداداتهم.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "استخدم التجربة الإرشادية من الروابط الحمراء",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "سيؤدي النقر على الرابط الأحمر المؤدي إلى مقال مفقود إلى فتح تجربة التوجيه. عند تفعيل هذه الميزة في ويكي، يمكن للمحررين الذين يفضلون الانتقال مباشرةً إلى المحرر القياسي تعطيلها بأنفسهم من خلال الإعدادات.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "يقتصر على المحررين الجدد",
-	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "لا يسري هذا الإعداد إلا عند تفعيل الإعداد المذكور أعلاه. عند التفعيل، يحصل المحررون الذين تقلّ أعداد تعديلاتهم عن عدد تعديلات المحررين الأحدث في هذه الويكي على تجربة التحرير الموجّه، بينما يحتفظ باقي المستخدمين بالمحرر القياسي."
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "يُعرض التوجيه فقط للمحررين الذين تقلّ رتبتهم عن عدد تعديلات المحررين الجدد في هذه الويكي. أما باقي المستخدمين فيستخدمون المحرر القياسي. ولا يُفعّل هذا التعديل إلا عند تفعيل ميزة \"توجيه المقالات\" في الويكي."
 }

@@ -1,8 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
+			"Paucabot",
 			"Pginer"
 		]
 	},
-	"articleguidance-specialnewarticle-title-placeholder": "Títol de l’article"
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Guia per a la creació d'articles]] no està activat en aquest wiki.",
+	"articleguidance-specialnewarticle-title-placeholder": "Títol de l’article",
+	"articleguidance-duplicate-generic-inactive-detail": "La Guia d'Articles ja utilitza $1 com a esquema genèric; per tant, aquest esquema no afectarà el flux de treball de creació d'articles.",
+	"articleguidance-header": "Guia per a la creació d'articles",
+	"articleguidance-specialnewarticle-missing-type-feedback": "Suggeriu un nou tipus",
+	"articleguidance-tracking-category": "[[Categoria:Articles que usen Guia d'Articles]]",
+	"tag-articleguidance": "Guia d'articles"
 }

@@ -6,6 +6,18 @@
 	},
 	"articleguidance-desc": "Membolehkan pengguna mencipta rencana melalui aliran kerja berpandu dan berbantu",
 	"articleguidance-disabled-title": "Pembimbing rencana tidak tersedia",
-	"articleguidance-disabled": "[[mw\n:Special:MyLanguage/Article_guidance|Pembimbing Rencana]] tidak diaktifkan pada wiki ini.",
-	"articleguidance-pref-enable-label": "Gunakan pembimbing rencana apabila mencipta rencana baharu"
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Pembimbing Rencana]] tidak didayakan pada wiki ini.",
+	"articleguidance-pref-enable-label": "Gunakan pembimbing rencana apabila mencipta rencana baharu",
+	"articleguidance-pref-enable-help": "Apabila didayakan, penciptaan rencana baharu akan membuka pengalaman berpandu dan bukannya penyunting standard.",
+	"articleguidance-specialnewarticle-title": "Rencana baharu",
+	"articleguidance-specialnewarticle-title-placeholder": "Tajuk rencana",
+	"articleguidance-specialnewarticle-loading": "Sedang mencari...",
+	"articleguidance-specialnewarticle-checking": "Sedang menyemak...",
+	"articleguidance-specialnewarticle-checking-subject": "Menyemak subjek berpadanan.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Masih menyemak. Proses ini mungkin mengambil sedikit masa.",
+	"articleguidance-specialnewarticle-matching-outline": "Menyediakan bimbingan untuk \"$1\".",
+	"articleguidance-specialnewarticle-no-results": "Tiada subjek yang ditemui untuk \"$1\"",
+	"articleguidance-specialnewarticle-search-error": "Tidak dapat menyemak subjek ini.",
+	"articleguidance-specialnewarticle-outlines-error": "Tidak dapat memuatkan jenis rencana tersebut.",
+	"articleguidance-specialnewarticle-search-retry": "Cuba lagi"
 }

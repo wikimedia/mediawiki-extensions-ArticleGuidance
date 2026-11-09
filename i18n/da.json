@@ -147,11 +147,11 @@
 	"communityconfiguration-articleguidance-feature-section-label": "Tilgængelighed",
 	"communityconfiguration-articleguidance-feature-section-description": "Denne indstilling afgør, om den guidede oplevelse med nye artikler overhovedet er tilgængelig på denne wiki.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "Aktivér artikelvejledning på denne wiki",
-	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Når dette er slået fra, er artikelvejledning ikke tilgængelig: røde links åbner standardeditoren, den guidede side kan ikke bruges, og den personlige præference er skjult. Indstillingerne nedenfor har kun effekt, når dette er slået til.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "Aktivér vejledningen, inklusive en særlig side til at starte nye artikler og behandle dispositioner. Valgmulighederne nedenfor bestemmer, hvordan funktionen vises for brugerne (f.eks. når man klikker på røde links). Når dette er slået fra, er al vejledningsfunktionalitet deaktiveret.",
 	"communityconfiguration-articleguidance-redirect-section-label": "Guidet artikeloprettelse",
 	"communityconfiguration-articleguidance-redirect-section-description": "Disse indstillinger bestemmer, hvem der føres til den guidede oplevelse med nye artikler i stedet for standardredigeringsprogrammet.",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Åbn den guidede oplevelse fra røde links",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Når det er aktiveret, åbnes den guidede oplevelse i stedet for standardeditoren, hvis du følger et rødt link til en manglende artikel. Bidragsydre, der foretrækker standardeditoren, kan slå dette fra i deres præferencer.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "Brug den guidede oplevelse fra røde links",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "Hvis du følger et rødt link til en manglende artikel, åbnes den guidede oplevelse. Når den er aktiveret for wikien, kan redaktører, der foretrækker at gå direkte til standardeditoren, stadig slå den fra for sig selv i deres præferencer.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "Begrænsning til nyere bidragsydre",
-	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Denne indstilling har kun effekt, når ovenstående indstilling er aktiveret. Når den er aktiveret, er det kun bidragsydre under denne wikis nyere redigeringstælling, der får den guidede oplevelse, og alle andre beholder standardeditoren."
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "Viser kun den guidede oplevelse for bidragsydre under denne wikis nyere redigeringsantal. Alle andre bruger standardeditoren. Denne justering har kun effekt, når Artikelvejledning er aktiveret på wikien."
 }

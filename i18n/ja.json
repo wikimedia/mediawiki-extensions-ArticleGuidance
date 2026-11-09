@@ -8,8 +8,8 @@
 		]
 	},
 	"articleguidance-desc": "利用者が案内付きの支援ワークフローを通じて記事を作成できるようにする",
-	"articleguidance-disabled-title": "記事のガイドは利用できません",
-	"articleguidance-disabled": "このウィキでは[[mw:Special:MyLanguage/Article_guidance|記事ガイド]]は無効にされています。",
+	"articleguidance-disabled-title": "記事編集のガイドは利用できません",
+	"articleguidance-disabled": "このウィキでは[[mw:Special:MyLanguage/Article_guidance|記事編集のガイド]]は無効になっています。",
 	"articleguidance-pref-enable-label": "新しい記事を作成する際に記事編集のガイドを利用する",
 	"articleguidance-pref-enable-help": "有効にすると、新しい記事を作成する際に、標準のエディターではなく、ガイド付きの記事執筆ウィザードが開きます。",
 	"articleguidance-specialnewarticle-title": "新しい記事",

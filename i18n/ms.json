@@ -19,5 +19,9 @@
 	"articleguidance-specialnewarticle-no-results": "Tiada subjek yang ditemui untuk \"$1\"",
 	"articleguidance-specialnewarticle-search-error": "Tidak dapat menyemak subjek ini.",
 	"articleguidance-specialnewarticle-outlines-error": "Tidak dapat memuatkan jenis rencana tersebut.",
-	"articleguidance-specialnewarticle-search-retry": "Cuba lagi"
+	"articleguidance-specialnewarticle-search-retry": "Cuba lagi",
+	"articleguidance-specialnewarticle-invalid-title": "Tajuk laman tidak boleh mengandungi $1. Tolong alih keluar aksara berkenaan dan cuba lagi.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Tajuk laman ini tidak sah. Sila cuba tajuk lain.",
+	"articleguidance-titleconflict-exists-warning": "Sebuah rencana bertajuk \"$1\" sudah wujud.",
+	"articleguidance-specialnewarticle-edit-existing": "Sunting rencana sedia ada"
 }

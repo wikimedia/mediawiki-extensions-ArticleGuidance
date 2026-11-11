@@ -68,10 +68,13 @@
 	"articleguidance-notability-tag-sources": "কেবলমাত্র সেই বিষয়গুলোই তৈরি করা সম্ভব যার জন্য ব্যবহারকারী এমন নির্ভরযোগ্য তথ্যসূত্র প্রদান করেছেন যা সম্প্রদায় কর্তৃক নিরুৎসাহিত নয়।",
 	"articleguidance-notability-tag-draft-location": "আপনার নিবন্ধটি \"$1\"-এ তৈরি করা হবে।",
 	"articleguidance-specialnewarticle-no-matching-type": "সঠিক ধরনটি খুঁজে পাচ্ছেন না?",
+	"articleguidance-specialnewarticle-outlines-other": "অন্যান্য",
 	"articleguidance-specialnewarticle-missing-type-feedback": "একটি নতুন ধরন/টাইপের পরামর্শ দিন",
 	"articleguidance-tracking-category": "নিবন্ধ নির্দেশিকা ব্যবহার করা পাতা",
 	"articleguidance-tracking-category-desc": "এই বিষয়শ্রেণীর পাতাগুলো নিবন্ধ তৈরির জন্য কাঠামোবদ্ধ নির্দেশনা দিতে <article-guidance> ট্যাগ ব্যবহার করে।",
 	"articleguidance-subjectcovered-button": "নিবন্ধের উন্নতি করুন",
+	"articleguidance-subjectcovered-redirect-retry": "পুনঃচেষ্টা করুন",
+	"articleguidance-subjectcovered-redirect-returnto": "$1-এ ফেরত যান",
 	"articleguidance-titleconflict-suggestion-prefix": "পরামর্শ:",
 	"articleguidance-titleconflict-continue": "অগ্রসর হোন",
 	"articleguidance-titleconflict-selected-subject": "নির্বাচিত বিষয়",
@@ -87,5 +90,7 @@
 	"articleguidance-publish-followup-confirmation-title": "নিবন্ধটি প্রকাশিত হয়েছে!",
 	"articleguidance-publish-followup-community-review": "অন্যান্য সম্পাদকগণ এই নিবন্ধটি পর্যালোচনা করবেন। এর মাঝে, এটি আরও উন্নত করার জন্য প্রদত্ত পরামর্শগুলো আবার দেখে নিন।",
 	"articleguidance-publish-followup-edit-more-button": "নিবন্ধের উন্নয়ন করুন",
-	"articleguidance-publish-followup-close-button": "বন্ধ করুন"
+	"articleguidance-publish-followup-close-button": "বন্ধ করুন",
+	"communityconfiguration-articleguidance-title": "নিবন্ধ নির্দেশিকা",
+	"communityconfiguration-articleguidance-feature-section-label": "উপলব্ধতা"
 }

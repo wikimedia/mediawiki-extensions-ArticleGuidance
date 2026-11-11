@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"StanProg"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Записване, че тази редакция е направена чрез <kbd>[[Special:NewArticle|насоки за статии]]</kbd>, така че да може да бъде етикетирана съответно."
+}

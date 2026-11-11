@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakimi97"
+		]
+	},
+	"articleguidance-desc": "Membolehkan pengguna mencipta rencana melalui aliran kerja berpandu dan berbantu",
+	"articleguidance-disabled-title": "Pembimbing rencana tidak tersedia",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Pembimbing Rencana]] tidak didayakan pada wiki ini.",
+	"articleguidance-pref-enable-label": "Gunakan pembimbing rencana apabila mencipta rencana baharu",
+	"articleguidance-pref-enable-help": "Apabila didayakan, penciptaan rencana baharu akan membuka pengalaman berpandu dan bukannya penyunting standard.",
+	"articleguidance-specialnewarticle-title": "Rencana baharu",
+	"articleguidance-specialnewarticle-title-placeholder": "Tajuk rencana",
+	"articleguidance-specialnewarticle-loading": "Sedang mencari...",
+	"articleguidance-specialnewarticle-checking": "Sedang menyemak...",
+	"articleguidance-specialnewarticle-checking-subject": "Menyemak subjek berpadanan.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Masih menyemak. Proses ini mungkin mengambil sedikit masa.",
+	"articleguidance-specialnewarticle-no-results": "Tiada subjek yang ditemui untuk \"$1\"",
+	"articleguidance-specialnewarticle-search-error": "Tidak dapat menyemak subjek ini.",
+	"articleguidance-specialnewarticle-outlines-error": "Tidak dapat memuatkan jenis rencana tersebut.",
+	"articleguidance-specialnewarticle-search-retry": "Cuba lagi",
+	"articleguidance-specialnewarticle-invalid-title": "Tajuk laman tidak boleh mengandungi $1. Tolong alih keluar aksara berkenaan dan cuba lagi.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Tajuk laman ini tidak sah. Sila cuba tajuk lain.",
+	"articleguidance-titleconflict-exists-warning": "Sebuah rencana bertajuk \"$1\" sudah wujud.",
+	"articleguidance-specialnewarticle-edit-existing": "Sunting rencana sedia ada"
+}

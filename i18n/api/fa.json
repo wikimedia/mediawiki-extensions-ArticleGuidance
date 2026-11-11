@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Darafsh"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "ثبت کند که این ویرایش از طریق <kbd>[[Special:NewArticle|راهنمای مقاله‌نویسی]]</kbd> انجام شده است تا بتوان برچسب مناسب را به آن افزود."
+}

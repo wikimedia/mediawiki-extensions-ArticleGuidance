@@ -6,7 +6,7 @@
 	},
 	"articleguidance-desc": "Им овозможува на корисниците да создаваат статии преку воден и потпомогнат работен тек.",
 	"articleguidance-disabled-title": "Упатственото создавање на статии е недостапно",
-	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Упатството за статии]] не е овозможено на ова вики.",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Упатственото создавање на статии]] не е овозможено на ова вики.",
 	"articleguidance-pref-enable-label": "Користи упатствено создавање за нови статии",
 	"articleguidance-pref-enable-help": "Кога е овозможено, при создавање на нова статија се отвора упатство наместо стандарден уредувач.",
 	"articleguidance-specialnewarticle-title": "Нова статија",

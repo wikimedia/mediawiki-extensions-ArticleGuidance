@@ -5,12 +5,14 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\ArticleGuidance\Tests\Integration;
 
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\ArticleGuidance\Hooks\EditTagHandler;
 use MediaWiki\Extension\ArticleGuidance\Hooks\RedLinkRedirectHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\ArticleGuidance\Services\FeatureState;
 use MediaWiki\Extension\ArticleGuidance\Services\TitleExtractor;
 use MediaWiki\Extension\TestKitchen\Sdk\InstrumentInterface;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
@@ -248,6 +250,31 @@ class RedLinkRedirectHandlerTest extends MediaWikiIntegrationTestCase {
 			$this->makeUser(),
 			$this->makeRedLinkRequest(),
 			null
+		);
+	}
+
+	public function testArticleGuidanceEditTracksItemAndOutline(): void {
+		$title = $this->getServiceContainer()->getTitleFactory()
+			->makeTitle( NS_MAIN, 'ArticleGuidanceTrackedEdit' );
+		$request = new FauxRequest( [
+			'veaction' => 'edit',
+			'articleguidance' => '1',
+			'articleguidanceitem' => 'Q42',
+			'articleguidancematchedqid' => 'Q5',
+			'preload' => 'template:Outline/Person',
+		] );
+
+		$this->getHandler()->onBeforeInitialize(
+			$title, null, $this->createMock( OutputPage::class ), $this->makeUser(), $request, null
+		);
+
+		$this->assertSame(
+			[ 'ArticleGuidanceTrackedEdit' => [
+				'item' => 'Q42',
+				'outline' => 'Template:Outline/Person',
+				'matchedQid' => 'Q5',
+			] ],
+			$request->getSession()->get( EditTagHandler::SESSION_EDITING )
 		);
 	}
 

@@ -6,11 +6,13 @@ namespace MediaWiki\Extension\ArticleGuidance\Tests\Integration;
 
 use MediaWiki\Api\ApiEditPage;
 use MediaWiki\Api\ApiQuery;
+use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ArticleGuidance\Hooks\EditTagHandler;
 use MediaWiki\Extension\ArticleGuidance\Services\ArticleGuidanceInstrumentFactory;
 use MediaWiki\Extension\TestKitchen\Sdk\InstrumentInterface;
 use MediaWiki\Page\WikiPage;
+use MediaWiki\RecentChanges\RecentChange;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -24,6 +26,7 @@ use Wikimedia\ParamValidator\ParamValidator;
 class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 
 	private const TITLE = 'ArticleGuidanceTaggedPage';
+	private const REV_ID = 456;
 
 	/**
 	 * Both strings are contracts rather than internals: the change tag is wiki
@@ -33,10 +36,16 @@ class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 	private const TAG = 'articleguidance';
 	private const API_PARAM = 'articleguidance';
 
-	private function getHandler( ?InstrumentInterface $instrument = null ): EditTagHandler {
+	private function getHandler(
+		?InstrumentInterface $instrument = null,
+		?ChangeTagsStore $changeTagsStore = null
+	): EditTagHandler {
 		$instrumentFactory = $this->createMock( ArticleGuidanceInstrumentFactory::class );
 		$instrumentFactory->method( 'getInstrument' )->willReturn( $instrument );
-		return new EditTagHandler( $instrumentFactory );
+		return new EditTagHandler(
+			$instrumentFactory,
+			$changeTagsStore ?? $this->createMock( ChangeTagsStore::class )
+		);
 	}
 
 	private function markTestSkippedWithoutTestKitchen(): void {
@@ -72,6 +81,7 @@ class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 			->makeRedirectContent( Title::makeTitle( NS_MAIN, 'Target' ) );
 
 		$rev = $this->createMock( RevisionRecord::class );
+		$rev->method( 'getId' )->willReturn( self::REV_ID );
 		// A first revision; later revisions are ignored by the hook.
 		$rev->method( 'getParentId' )->willReturn( 0 );
 		$rev->method( 'getContent' )->willReturn( $isRedirect ? $content : null );
@@ -145,6 +155,87 @@ class EditTagHandlerTest extends MediaWikiIntegrationTestCase {
 		$this->getHandler( $instrument )->onRevisionFromEditComplete(
 			$wikiPage, $rev, false, UserIdentityValue::newRegistered( 1, 'Editor' ), $tags
 		);
+	}
+
+	public function testArticleSavedCarriesTheItemAndOutline(): void {
+		$this->markTestSkippedWithoutTestKitchen();
+		$this->setMainRequest( [] );
+		RequestContext::getMain()->getRequest()->getSession()->set( EditTagHandler::SESSION_EDITING, [
+			Title::makeTitle( NS_MAIN, self::TITLE )->getPrefixedText() => [
+				'item' => 'Q42',
+				'outline' => 'Template:Outline/Person',
+				'matchedQid' => 'Q5',
+			],
+		] );
+		[ $wikiPage, $rev ] = $this->makeFirstRevision( false );
+
+		$instrument = $this->createMock( InstrumentInterface::class );
+		$instrument->expects( $this->once() )->method( 'send' )
+			->with( 'article_saved', $this->callback(
+				static fn ( array $data ) => $data['action_context'] === [
+					'outline' => [ 'title' => 'Template:Outline/Person', 'matched_qid' => 'Q5' ],
+				]
+			) );
+
+		$tags = [];
+		$this->getHandler( $instrument )->onRevisionFromEditComplete(
+			$wikiPage, $rev, false, UserIdentityValue::newRegistered( 1, 'Editor' ), $tags
+		);
+	}
+
+	public function testAppliesTheTagWithOutlineAndItemParams(): void {
+		$this->setMainRequest( [] );
+		RequestContext::getMain()->getRequest()->getSession()->set( EditTagHandler::SESSION_EDITING, [
+			Title::makeTitle( NS_MAIN, self::TITLE )->getPrefixedText() => [
+				'item' => 'Q42',
+				'outline' => 'Template:Outline/Person',
+				'matchedQid' => 'Q5',
+			],
+		] );
+		[ $wikiPage, $rev ] = $this->makeFirstRevision( false );
+
+		$recentChange = $this->createMock( RecentChange::class );
+		$recentChange->method( 'getAttribute' )->willReturnMap( [
+			[ 'rc_this_oldid', self::REV_ID ],
+			[ 'rc_id', 789 ],
+		] );
+
+		$changeTagsStore = $this->createMock( ChangeTagsStore::class );
+		$changeTagsStore->expects( $this->once() )->method( 'addTags' )->with(
+			self::TAG,
+			789,
+			self::REV_ID,
+			null,
+			'{"outline":"Template:Outline/Person","matched_qid":"Q5"}',
+			$recentChange
+		);
+
+		$handler = $this->getHandler( null, $changeTagsStore );
+		$tags = [];
+		$handler->onRevisionFromEditComplete(
+			$wikiPage, $rev, false, UserIdentityValue::newRegistered( 1, 'Editor' ), $tags
+		);
+		$handler->onRecentChange_save( $recentChange );
+
+		$this->assertContains( self::TAG, $tags, 'core still applies the tag if no recent change is saved' );
+	}
+
+	public static function provideTrackedEdits(): array {
+		return [
+			'current value' => [
+				[ 'item' => 'Q42', 'outline' => 'Template:Outline/Person', 'matchedQid' => 'Q5' ],
+				[ 'item' => 'Q42', 'outline' => 'Template:Outline/Person', 'matchedQid' => 'Q5' ],
+			],
+			'legacy item' => [ 'Q42', [ 'item' => 'Q42', 'outline' => null, 'matchedQid' => null ] ],
+			'legacy true' => [ true, [ 'item' => null, 'outline' => null, 'matchedQid' => null ] ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideTrackedEdits
+	 */
+	public function testReadTrackedEdit( mixed $value, array $expected ): void {
+		$this->assertSame( $expected, EditTagHandler::readTrackedEdit( $value ) );
 	}
 
 	public function testDeclaresTheMarkerParameterOnEditOnly(): void {

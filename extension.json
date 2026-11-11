@@ -251,7 +251,8 @@
 		"EditTag": {
 			"class": "MediaWiki\\Extension\\ArticleGuidance\\Hooks\\EditTagHandler",
 			"services": [
-				"ArticleGuidanceInstrumentFactory"
+				"ArticleGuidanceInstrumentFactory",
+				"ChangeTagsStore"
 			]
 		},
 		"PreloadCleanup": {
@@ -280,6 +281,7 @@
 		"ListDefinedTags": "EditTag",
 		"ChangeTagsListActive": "EditTag",
 		"RevisionFromEditComplete": "EditTag",
+		"RecentChange_save": "EditTag",
 		"EditFormPreloadText": "PreloadCleanup",
 		"BeforePageDisplay": "PublishFollowUp",
 		"OutputPageParserOutput": "DuplicateOutlineNotice",

@@ -42,12 +42,12 @@ class PublishFollowUpHandler implements BeforePageDisplayHook {
 		if ( is_array( $published ) && isset( $published[ $titleText ] ) ) {
 			$out->addModules( 'ext.articleguidance.publishingfollowup' );
 
-			// The map value is the selected Wikidata item (or true). Hand it to the
+			// The map value holds the selected Wikidata item. Hand it to the
 			// client so it can connect the new article. Gated by a config flag so
 			// dev/test/beta never write to Wikidata: when disabled, the id is never
 			// exposed and the client makes no request at all. Restricted to the main
 			// namespace so drafts and user sandboxes are never connected to an item.
-			$item = $published[ $titleText ];
+			$item = EditTagHandler::readTrackedEdit( $published[ $titleText ] )['item'];
 			if (
 				$this->config->get( 'ArticleGuidanceWikidataConnectEnabled' )
 				&& $out->getTitle()->getNamespace() === NS_MAIN

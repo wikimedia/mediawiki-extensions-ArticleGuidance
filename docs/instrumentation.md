@@ -42,7 +42,26 @@ analysis across wizard steps. Each session shares a `funnel_entry_token` stored 
 | `title_conflict_shown` | Title-conflict step is shown | — | — | — |
 | `title_conflict_action` | User acts on the title-conflict step | — | `continue`, `use_suggestion`, or `view_existing` | — |
 | `editing_start` | User lands on the editor after completing the AG workflow | `articleguidance` | — | `{"page":{"title":"<title>"}}` |
-| `article_saved` | User saves the first revision of a new article that they started in the AG workflow (redirects are excluded, they are covered by `redirect_created`) | `articleguidance` | — | `{"page":{"title":"<title>","id":<id>,"namespace_id":<ns>}}` |
+| `article_saved` | User saves the first revision of a new article that they started in the AG workflow (redirects are excluded, they are covered by `redirect_created`) | `articleguidance` | — | `{"outline":{"title":"<outline title>","matched_qid":"<QID>"}}` [see below](#article_saved-context); the `page` field is `{"title":"<title>","id":<id>,"namespace_id":<ns>}` |
+
+## `article_saved` context
+
+`outline.title` is the outline that was preloaded in the editor. `outline.matched_qid` is the
+outline type that the selected Wikidata item matched. It has the same meaning as in
+[the other events](#how-an-outline-is-reported): it is null when no match chose the outline.
+`qids` is not reported.
+
+## Change tag params
+
+The `articleguidance` change tag of an article started in the AG workflow carries
+params (`change_tag.ct_params`) as JSON:
+`{"outline":"<outline title>","matched_qid":"<QID>"}`, with the same meaning as in
+`article_saved`.
+A key is left out when its value is not known. Redirects created through the
+`articleguidance` API parameter have no params.
+
+`EditTagHandler` applies the tag with its params when the recent change is saved. If the edit
+makes no recent change, MediaWiki applies the tag without params.
 
 ## Title search events
 

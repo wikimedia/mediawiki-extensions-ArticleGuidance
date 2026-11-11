@@ -23,5 +23,7 @@
 	"articleguidance-specialnewarticle-invalid-title": "Tajuk laman tidak boleh mengandungi $1. Tolong alih keluar aksara berkenaan dan cuba lagi.",
 	"articleguidance-specialnewarticle-invalid-title-generic": "Tajuk laman ini tidak sah. Sila cuba tajuk lain.",
 	"articleguidance-titleconflict-exists-warning": "Sebuah rencana bertajuk \"$1\" sudah wujud.",
-	"articleguidance-specialnewarticle-edit-existing": "Sunting rencana sedia ada"
+	"articleguidance-specialnewarticle-edit-existing": "Sunting rencana sedia ada",
+	"articleguidance-specialnewarticle-disambiguation-title": "Apakah ini?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Subjek tidak tersedia?"
 }

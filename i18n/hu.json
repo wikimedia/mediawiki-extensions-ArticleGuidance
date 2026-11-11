@@ -1,0 +1,35 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dj"
+		]
+	},
+	"articleguidance-desc": "Lehetővé teszi a felhasználók számára, hogy útmutatással és segítséggel, lépésről lépésre hozzanak létre szócikkeket.",
+	"articleguidance-disabled-title": "A Szócikk-útmutató nem érhető el",
+	"articleguidance-disabled": "A [[mw:Special:MyLanguage/Article_guidance|Szócikk-útmutató]] nincs engedélyezve ezen a wikin.",
+	"articleguidance-pref-enable-label": "A Szócikk-útmutató használata új szócikkek létrehozásakor",
+	"articleguidance-pref-enable-help": "Ha engedélyezve van, új szócikk létrehozásakor a hagyományos szerkesztő helyett az irányított szócikklétrehozási felület nyílik meg.",
+	"articleguidance-specialnewarticle-title": "Új szócikk",
+	"articleguidance-specialnewarticle-title-placeholder": "Szócikk címe",
+	"articleguidance-specialnewarticle-loading": "Keresés...",
+	"articleguidance-specialnewarticle-checking": "Ellenőrzés...",
+	"articleguidance-specialnewarticle-checking-subject": "Egyező téma keresése.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Az ellenőrzés még folyamatban van. Ez eltarthat egy ideig.",
+	"articleguidance-specialnewarticle-matching-outline": "Útmutató előkészítése ehhez: „$1”.",
+	"articleguidance-specialnewarticle-no-results": "Nem található a(z) „$1” kifejezésnek megfelelő téma.",
+	"articleguidance-specialnewarticle-search-error": "Nem sikerült ellenőrizni ezt a témát.",
+	"articleguidance-specialnewarticle-outlines-error": "Nem sikerült betölteni a szócikktípusokat.",
+	"articleguidance-specialnewarticle-search-retry": "Próbáld újra",
+	"articleguidance-specialnewarticle-invalid-title": "A lapcímek nem tartalmazhatják a következő karaktereket: $1. Távolítsd el ezeket, majd próbáld újra.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Érvénytelen lapcím. Próbálj meg másik címet megadni.",
+	"articleguidance-titleconflict-exists-warning": "Már létezik „$1” című szócikk.",
+	"articleguidance-specialnewarticle-edit-existing": "Meglévő szócikk szerkesztése",
+	"articleguidance-specialnewarticle-disambiguation-title": "Mi ez?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Nem találod a keresett témát?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Válassz inkább szócikktípust",
+	"articleguidance-specialnewarticle-browse-outlines-continue": "Folytatás mindenképpen",
+	"articleguidance-specialnewarticle-skip-guidance-prefix": "Segítség kihagyása.",
+	"articleguidance-specialnewarticle-skip-guidance-link": "Szerkesztés közösségi útmutatás nélkül.",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "További információk a Szócikk-útmutatóról",
+	"articleguidance-specialnewarticle-language-fallback-notice": "Egyes találatok más nyelven jelennek meg."
+}

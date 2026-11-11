@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"ItsNyoty",
 			"Mainframe98",
 			"McDutchie",
 			"Siebrand"
@@ -38,7 +39,9 @@
 	"articleguidance-sources-subtitle": "Bronnen helpen lezers de feiten te controleren en laten zien waarom dit onderwerp belangrijk is.",
 	"articleguidance-sources-subtitle-notability-risk": "Voor dit soort artikel {{PLURAL:$1|is ten minste één bronvermelding|zijn ten minste $1 bronvermeldingen}} vereist voordat u verder kunt gaan.",
 	"articleguidance-sources-subtitle-notability-risk-generic": "Voor dit artikel {{PLURAL:$1|is ten minste één bronvermelding|zijn ten minste $1 bronvermeldingen}} vereist voordat u verder kunt gaan.",
+	"articleguidance-sources-input-placeholder": "Plak hier een link, ISBN of DOI",
 	"articleguidance-sources-add-source": "Bron toevoegen",
+	"articleguidance-sources-not-found": "Geen bron gevonden. Voer een link of referentiecode in, zoals een ISBN of DOI.",
 	"articleguidance-sources-duplicate": "Deze bron is al toegevoegd",
 	"articleguidance-sources-continue": "Doorgaan",
 	"articleguidance-sources-helper": "U kunt bronnen toevoegen terwijl u schrijft.",
@@ -75,6 +78,7 @@
 	"articleguidance-header": "Artikelbegeleiding",
 	"articleguidance-type-label": "Type:",
 	"articleguidance-invalid-article-type": "Foutief artikeltype: “$1” (vereiste indeling: Q12345)",
+	"articleguidance-too-many-article-types": "Ongeldig artikeltype: een overzicht kan maximaal {{PLURAL:$1| één Wikidata-item| $1 Wikidata-items}} bevatten.",
 	"articleguidance-generic-note": "Dit is de algemene begeleidingsopzet. Deze is niet gekoppeld aan een Wikidata-item. De opzet wordt gebruikt wanneer er geen andere op het onderwerp van toepassing is.",
 	"articleguidance-default-outline-instructions": "Wikipedia behandelt onderwerpen die al uitgebreid aan bod zijn gekomen in betrouwbare bronnen die onafhankelijk van het onderwerp zijn. Controleer voordat u begint met schrijven of er dergelijke bronnen zijn. Zo niet, dan wordt het artikel waarschijnlijk verwijderd, hoe goed het ook geschreven is.\n\nBelangrijke aandachtspunten:\n* Vat samen wat er in de onafhankelijke bronnen staat. Voeg geen eigen analyse, mening of conclusies toe.\n* Begin met een korte inleiding waarin u aangeeft wat het onderwerp is en waarom het relevant is.\n* Vermeld een bron voor elke bewering die een lezer redelijkerwijs in twijfel zou kunnen trekken.\n* Schrijf in een neutrale toon. Vermijd promotionele taal en suggestieve woorden.\n* Schrijf niet over uzelf, uw werkgever, uw familie of uw vrienden.\n* Kopieer geen tekst van andere websites of boeken. Schrijf de tekst in uw eigen woorden.",
 	"articleguidance-default-outline-recommended-source-1": "Nieuwsorganisaties met redactioneel toezicht en een goede staat van dienst op het gebied van feitencontrole",

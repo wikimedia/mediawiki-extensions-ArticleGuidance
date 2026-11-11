@@ -482,7 +482,8 @@ const useArticleGuidanceStore = defineStore( 'articleGuidance', () => {
 			creationTitle.value,
 			selectedOutline.value.title,
 			refs,
-			selectedResult.value && selectedResult.value.id
+			selectedResult.value && selectedResult.value.id,
+			matchedQId.value
 		);
 	}
 

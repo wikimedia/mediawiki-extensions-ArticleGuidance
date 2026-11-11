@@ -227,10 +227,19 @@ class RedLinkRedirectHandler implements BeforeInitializeHook {
 			$titleText = $title->getPrefixedText();
 			// Track each in-flight edit by title so concurrent edits in separate tabs
 			// don't clobber one another and all get tagged on publish. The stored value
-			// is the specific Wikidata item the user selected (if any), so the article
-			// can be connected to it once published; otherwise true.
+			// holds the Wikidata item the user selected, so the article can be connected
+			// to it once published. It also holds the outline (the preload page) and the
+			// outline type that the item matched, which are reported when it is saved.
 			$item = $request->getVal( 'articleguidanceitem' );
-			$value = ( $item !== null && WikidataProperties::isItemId( $item ) ) ? $item : true;
+			$matchedQid = $request->getVal( 'articleguidancematchedqid' );
+			$preload = $request->getVal( 'preload' );
+			$outline = $preload !== null ? $this->titleFactory->newFromText( $preload ) : null;
+			$value = [
+				'item' => ( $item !== null && WikidataProperties::isItemId( $item ) ) ? $item : null,
+				'outline' => $outline?->getPrefixedText(),
+				'matchedQid' => ( $matchedQid !== null && WikidataProperties::isItemId( $matchedQid ) )
+					? $matchedQid : null,
+			];
 			$editing = $session->get( EditTagHandler::SESSION_EDITING );
 			$editing = is_array( $editing ) ? $editing : [];
 			// Re-insert at the end so the most recently started edits survive the cap.

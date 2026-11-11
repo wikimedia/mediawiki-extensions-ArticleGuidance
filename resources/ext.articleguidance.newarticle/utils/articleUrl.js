@@ -12,9 +12,11 @@ const { isMobile } = require( './mobile.js' );
  * @param {string} [itemId]      Wikidata item Q-id the article is about, when the user
  *                               selected a specific item (used to connect the published
  *                               article to Wikidata)
+ * @param {string} [matchedQId]  Q-id of the outline type that the item matched, when a
+ *                               match chose the outline (reported when the article is saved)
  * @return {string}
  */
-function getCreateArticleUrl( title, outlineTitle, references, itemId ) {
+function getCreateArticleUrl( title, outlineTitle, references, itemId, matchedQId ) {
 	const preloadParams = references.map( ( r, index ) => `<ref name="ref${ index + 1 }">${ r }</ref>` );
 
 	const params = {
@@ -27,6 +29,10 @@ function getCreateArticleUrl( title, outlineTitle, references, itemId ) {
 
 	if ( itemId && /^Q\d+$/.test( itemId ) ) {
 		params.articleguidanceitem = itemId;
+	}
+
+	if ( matchedQId && /^Q\d+$/.test( matchedQId ) ) {
+		params.articleguidancematchedqid = matchedQId;
 	}
 
 	if ( isMobile() ) {

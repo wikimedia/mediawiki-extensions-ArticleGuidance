@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakimi97"
+		]
+	},
+	"articleguidance-desc": "Membolehkan pengguna mencipta rencana melalui aliran kerja berpandu dan berbantu",
+	"articleguidance-specialnewarticle-title": "Rencana baharu",
+	"articleguidance-specialnewarticle-title-placeholder": "Tajuk rencana",
+	"articleguidance-specialnewarticle-loading": "Sedang mencari...",
+	"articleguidance-specialnewarticle-checking": "Sedang menyemak...",
+	"articleguidance-specialnewarticle-no-results": "Tiada subjek yang ditemui untuk \"$1\"",
+	"articleguidance-titleconflict-exists-warning": "Sebuah rencana bertajuk \"$1\" sudah wujud.",
+	"articleguidance-specialnewarticle-edit-existing": "Sunting rencana sedia ada",
+	"articleguidance-specialnewarticle-disambiguation-title": "Apakah ini?"
+}

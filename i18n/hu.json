@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dj"
+		]
+	},
+	"articleguidance-desc": "Lehetővé teszi a felhasználók számára, hogy útmutatással és segítséggel, lépésről lépésre hozzanak létre szócikkeket.",
+	"articleguidance-specialnewarticle-title": "Új szócikk",
+	"articleguidance-specialnewarticle-title-placeholder": "Szócikk címe",
+	"articleguidance-specialnewarticle-loading": "Keresés...",
+	"articleguidance-specialnewarticle-checking": "Ellenőrzés...",
+	"articleguidance-specialnewarticle-no-results": "Nem található a(z) „$1” kifejezésnek megfelelő téma.",
+	"articleguidance-titleconflict-exists-warning": "Már létezik „$1” című szócikk.",
+	"articleguidance-specialnewarticle-edit-existing": "Meglévő szócikk szerkesztése",
+	"articleguidance-specialnewarticle-disambiguation-title": "Mi ez?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Válassz inkább szócikktípust"
+}

@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kareyac"
+		]
+	},
+	"articleguidance-specialnewarticle-title": "Նոր հոդված",
+	"articleguidance-specialnewarticle-title-placeholder": "Հոդվածի վերնագիր",
+	"articleguidance-specialnewarticle-loading": "Փնտրում եմ...",
+	"articleguidance-specialnewarticle-checking": "Ստուգում եմ...",
+	"articleguidance-sources-title": "Աղբյուրներ ավելացնել",
+	"articleguidance-sources-add-source": "Ավելացնել աղբյուր",
+	"articleguidance-sources-continue": "Շարունակել",
+	"articleguidance-navigation-back": "Հետ",
+	"articleguidance-titleconflict-continue": "Շարունակել",
+	"articleguidance-titleconflict-selected-subject": "Ընտրված թեման",
+	"articleguidance-titleconflict-viewexisting": "Տես առկա հոդվածը",
+	"articleguidance-publish-followup-close-button": "Փակել"
+}

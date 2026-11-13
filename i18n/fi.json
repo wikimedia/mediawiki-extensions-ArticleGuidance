@@ -5,6 +5,7 @@
 			"Wikipeedikko"
 		]
 	},
+	"articleguidance-desc": "Mahdollistaa käyttäjien luoda artikkeleita ohjatun ja tuetun kokemuksen kautta",
 	"articleguidance-specialnewarticle-title": "Uusi artikkeli",
 	"articleguidance-specialnewarticle-title-placeholder": "Artikkelin nimi",
 	"articleguidance-specialnewarticle-loading": "Haetaan...",
@@ -53,7 +54,7 @@
 	"articleguidance-notability-tag-draft-location": "Artikkelesi luodaan sivulle ”$1”.",
 	"articleguidance-specialnewarticle-no-matching-type": "Etkö löydä oikeaa tyyppiä?",
 	"articleguidance-specialnewarticle-missing-type-feedback": "Ehdota uutta tyyppiä",
-	"articleguidance-tracking-category": "Article guidancea käyttävät sivut",
+	"articleguidance-tracking-category": "Ohjattua artikkelin luontia käyttävät sivut",
 	"articleguidance-tracking-category-desc": "Tämän luokan sivut käyttävät <article-guidance>-elementtiä, joka tarjoaa jäsennellyn ohjauksen artikkelien luomiseen.",
 	"articleguidance-subjectcovered-title": "Artikkeli on jo olemassa",
 	"articleguidance-subjectcovered-description": "Tästä aiheesta on jo artikkeli tässä wikissä. Voit lukea tai parantaa sitä.",

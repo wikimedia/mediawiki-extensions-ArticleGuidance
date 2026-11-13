@@ -4,7 +4,8 @@
 			"Meno25",
 			"Mohammed Qays",
 			"Sandra Hanbo",
-			"Bachounda"
+			"Bachounda",
+			"ToadetteEdit1"
 		]
 	},
 	"articleguidance-desc": "يُمكّن المستخدمين من إنشاء مقالات من خلال سير عمل مُوجّه ومُساعد",
@@ -71,7 +72,7 @@
 	"articleguidance-titleconflict-viewexisting": "عرض المقالة الموجودة",
 	"tag-articleguidance": "إرشاد المقالة",
 	"tag-articleguidance-description": "أجري التعديل على المقالة عبر نموذج العمل إرشاد المقالة",
-	"articleguidance-publish-followup-confirmation-title": "تم نشر المقالة!",
+	"articleguidance-publish-followup-confirmation-title": "نُشرت المقالة!",
 	"articleguidance-publish-followup-community-review": "سيراجع محررون آخرون هذه المقالة. في هذه الأثناء، ألقِ نظرة أخرى على الاقتراحات لتحسينها.",
 	"articleguidance-publish-followup-edit-more-button": "تحسين المقالة",
 	"articleguidance-publish-followup-close-button": "إغلاق",

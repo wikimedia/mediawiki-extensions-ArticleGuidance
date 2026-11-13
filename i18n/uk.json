@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"Repakr"
+		]
+	},
+	"articleguidance-desc": "Дозволяє користувачам створювати статті за допомогою керованого, покрокового робочого процесу",
+	"articleguidance-specialnewarticle-title": "Нова стаття",
+	"articleguidance-specialnewarticle-title-placeholder": "Назва статті",
+	"articleguidance-specialnewarticle-loading": "Пошук…",
+	"articleguidance-specialnewarticle-checking": "Перевірка...",
+	"articleguidance-specialnewarticle-no-results": "Не знайдено предмету статті для «$1»",
+	"articleguidance-titleconflict-exists-warning": "Стаття під назвою «$1» вже існує.",
+	"articleguidance-specialnewarticle-edit-existing": "Редагувати наявну статтю",
+	"articleguidance-specialnewarticle-disambiguation-title": "Що це?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Натомість оберіть тип",
+	"articleguidance-sources-title": "Додати джерела",
+	"articleguidance-sources-add-source": "Додати джерело",
+	"articleguidance-sources-duplicate": "Це джерело вже додано",
+	"articleguidance-sources-continue": "Продовжити",
+	"articleguidance-sources-helper": "Ви можете додавати джерела під час написання.",
+	"articleguidance-sources-helper-required": "$1 {{PLURAL:$1|стаття|статті|статей}} у цій вікі потребують додавання джерел.",
+	"articleguidance-instructions-guidance-heading": "Початок роботи з цією статтею",
+	"articleguidance-instructions-start-writing": "Почати написання",
+	"articleguidance-navigation-back": "Назад",
+	"articleguidance-subjectcovered-button": "Покращити статтю",
+	"articleguidance-titleconflict-suggestion-prefix": "Пропозиція:",
+	"articleguidance-titleconflict-continue": "Продовжити",
+	"articleguidance-titleconflict-viewexisting": "Переглянути наявну статтю",
+	"articleguidance-publish-followup-close-button": "Закрити"
+}

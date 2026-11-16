@@ -150,11 +150,11 @@
 	"communityconfiguration-articleguidance-feature-section-label": "可用性",
 	"communityconfiguration-articleguidance-feature-section-description": "此设置决定本wiki是否提供引导式新条目编辑体验。",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "在本wiki启用条目指引",
-	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "关闭此功能后，条目指引将不可用：红色链接会打开标准编辑器，引导页面会无法使用，且个人偏好设置将被隐藏。以下设置仅在启用此功能时生效。",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "启用指引功能，包括用于开始撰写新条目和处理大纲的特殊页面。下面的选项决定了该功能向用户展示的方式（例如，点击红色链接时）。如果关闭此选项，所有指引功能都将被禁用。",
 	"communityconfiguration-articleguidance-redirect-section-label": "引导式条目创建",
 	"communityconfiguration-articleguidance-redirect-section-description": "这些设置决定了哪些用户会被引导至新条目编辑体验，而不是标准编辑器。",
 	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "从红色链接打开引导式编辑体验",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "启用此功能后，点击指向缺失条目的红色链接即可打开引导式编辑体验，而非标准编辑器。偏好标准编辑器的编者可以在参数设置中自行关闭此功能。",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "点击指向缺失条目的红色链接即可打开引导式编辑体验。当wiki启用此功能后，偏好直接进入标准编辑器的编者仍可在参数设置中自行关闭此功能。",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "仅限新手编者",
-	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "此设置仅在启用上述设置时生效。启用后，只有编辑次数低于本wiki“新手编者次数”的编者才能体验引导式编辑，其他编者仍使用标准编辑器。"
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "仅向编辑次数低于本wiki“新手编者次数”的编者展示引导式编辑。其他编者仍使用标准编辑器。此调整仅在本wiki启用了条目指引时生效。"
 }

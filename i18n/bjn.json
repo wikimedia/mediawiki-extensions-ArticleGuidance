@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Radramboo"
+		]
+	},
+	"articleguidance-desc": "Mampu'akan pamakai gasan maulah artikal malalui alur kerja nang dibantu wan dibantu",
+	"articleguidance-disabled-title": "Padoman artikel kada tersedia",
+	"articleguidance-pref-enable-label": "Pakai panuntun artikel wayah maulah artikel hanyar",
+	"articleguidance-pref-enable-help": "Munnya diaktifakan, maulah artikel hanyar mambuka pangalaman nang diarahakan ka panuntun artikel daripada babakan standar",
+	"articleguidance-specialnewarticle-title": "Artikel hanyar",
+	"articleguidance-specialnewarticle-title-placeholder": "Judul artikel",
+	"articleguidance-specialnewarticle-loading": "Menggagai...",
+	"articleguidance-specialnewarticle-checking": "Mencari...",
+	"articleguidance-specialnewarticle-checking-subject": "Mencari subjek nang cocok.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Masih jua memeriksa. Minta waktu setumat.",
+	"articleguidance-specialnewarticle-matching-outline": "Menyiapkan panduan gasan \"$1\".",
+	"articleguidance-specialnewarticle-no-results": "Kadada subjek nang ditamui gasan \"$1\"",
+	"articleguidance-specialnewarticle-search-error": "Kada kawa malihat subjek ini.",
+	"articleguidance-specialnewarticle-outlines-error": "Kada kawa membuka jenis artikel.",
+	"articleguidance-specialnewarticle-search-retry": "Cubai pulang"
+}

@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Avtr"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Укажите, что данная правка была внесена через <kbd>[[Special:NewArticle|Пошаговый шаблон статей]]</kbd>, чтобы она была помечена соответствующим тегом."
+}

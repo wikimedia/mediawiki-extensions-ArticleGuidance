@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yupik"
+		]
+	},
+	"articleguidance-specialnewarticle-title": "Uđđâ artikkâl",
+	"articleguidance-specialnewarticle-title-placeholder": "Artikkâl nommâ",
+	"articleguidance-specialnewarticle-no-results": "Uuccâmsáánán \"$1\" ij kavnum ohtâgin fáddá",
+	"articleguidance-specialnewarticle-search-retry": "Keččâl uđđâsist",
+	"articleguidance-sources-title": "Lasseet käldeid",
+	"articleguidance-sources-input-placeholder": "Labde liiŋkâ, ISBN teikkâ DOI",
+	"articleguidance-sources-add-source": "Lasseet käldee",
+	"articleguidance-sources-duplicate": "Taat käldee lii jo lasettum",
+	"articleguidance-sources-continue": "Juáđhi",
+	"articleguidance-instructions-start-writing": "Hammiiškyeđe",
+	"articleguidance-navigation-back": "Maassâd",
+	"articleguidance-type-label": "Tijppâ:",
+	"articleguidance-notability-unknown-tags": "Tubdâmettum kilgoleh: $1",
+	"articleguidance-notability-option-wikidata-title": "Lasseet taam fáádá Wikidatan",
+	"articleguidance-subjectcovered-button": "Pyereed artikkâl",
+	"articleguidance-subjectcovered-redirect-button": "Räähti stivrimsiijđo",
+	"articleguidance-subjectcovered-redirect-error": "Stivrimsiijđo rähtim ij luhostum.",
+	"articleguidance-subjectcovered-redirect-error-permission": "Tust ij lah lope rähtiđ taam siijđo.",
+	"articleguidance-subjectcovered-redirect-retry": "Iirât uđđâsist",
+	"articleguidance-subjectcovered-redirect-returnto": "Maacâ siijđon $1",
+	"articleguidance-titleconflict-suggestion-prefix": "Iävtuttâs:",
+	"articleguidance-titleconflict-continue": "Juáđhi",
+	"articleguidance-titleconflict-selected-subject": "Väljejum fáddá",
+	"articleguidance-updatetitle-title": "Peivid paječalluu",
+	"articleguidance-updatetitle-button": "Peivid paječalluu",
+	"articleguidance-updatetitle-cancel": "Jooskâ",
+	"articleguidance-updatetitle-use-original": "Keevti taam",
+	"articleguidance-updatetitle-restore-redlink": "Koomeet",
+	"articleguidance-publish-followup-edit-more-button": "Pyereed artikkâl",
+	"articleguidance-publish-followup-close-button": "Toopâ"
+}

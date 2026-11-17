@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ranveig"
+		]
+	},
+	"articleguidance-specialnewarticle-title": "Ny artikkel",
+	"articleguidance-specialnewarticle-title-placeholder": "Artikkeltittel",
+	"articleguidance-specialnewarticle-search-retry": "Prøv igjen",
+	"articleguidance-specialnewarticle-invalid-title": "Sidetitlar kan ikkje innehalda $1. Fjern desse teikna og prøv igjen.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Denne sidetittelen er ugyldig. Prøv eit anna namn.",
+	"articleguidance-titleconflict-exists-warning": "Ein artikkel med tittelen \"$1\" finst allereie.",
+	"articleguidance-specialnewarticle-edit-existing": "Rediger artikkelen som finst",
+	"articleguidance-specialnewarticle-disambiguation-title": "Kva er dette?"
+}

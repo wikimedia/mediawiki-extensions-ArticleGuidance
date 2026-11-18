@@ -63,5 +63,16 @@
 	"articleguidance-duplicate-active-lead": "Dit is d'n aktieven opzat veur $1.",
 	"articleguidance-duplicate-active-detail-single": "'nen Angeren opzat broek 'tzelfde Wikidata-bestandj mer weurt neet gebroek: $1.",
 	"articleguidance-duplicate-active-detail-multiple": "Anger opzatte broeken 'tzelfde Wikidata-bestandj, mer waere neet gebroek:",
-	"articleguidance-duplicate-inactive-lead": "Dezen opzat weurt neet gebroek."
+	"articleguidance-duplicate-inactive-lead": "Dezen opzat weurt neet gebroek.",
+	"articleguidance-duplicate-inactive-detail": "Artikelbegeleijing broek al $1 veur $2, dus dezen opzat haet geinen invlood op 't aanmake van artikele.",
+	"articleguidance-duplicate-partial-lead": "Dezen opzat wuuert allein gebroek veur e deil vanne Wikidata-bestenj.",
+	"articleguidance-duplicate-partial-detail": "Artikelbegeleijing broek al $1 veur $2, dus dezen opzat haet geinen invlood op 't aanmake van artikele veur det bestandj.",
+	"articleguidance-duplicate-generic-active-lead": "Dit is d'n aktieven algemeinen opzat.",
+	"articleguidance-duplicate-generic-active-detail-single": "'nen Angeren algemeinen opzat besjteit al meh weurt neet gebroek: $1.",
+	"articleguidance-duplicate-generic-active-detail-multiple": "Anger algemein opzatte besjtaon al, meh waere neet gebroek:",
+	"articleguidance-duplicate-generic-inactive-detail": "Artikelbegeleijing broek al $1 es d'n algemeinen opzat, dus dezen opzat haet geinen invlood op 't aanmake van artikele.",
+	"articleguidance-header": "Artikelbegeleijing",
+	"articleguidance-type-label": "Saort:",
+	"articleguidance-invalid-article-type": "Óngeljige artikelsaort: \"$1\" (benudigde indeiling: Q12345)",
+	"articleguidance-too-many-article-types": "Óngeljige artikelsaort: 'n euverzich moog heugstes {{PLURAL:$1|ei Wikidatabestandj|$1 Wikidatabestenj}} höbbe."
 }

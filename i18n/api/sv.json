@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sabelöga"
+		]
+	},
+	"apihelp-edit-param-articleguidance": "Registrera att den här redigeringen gjordes via <kbd>[[Special:NewArticle|Artikelvägledning]]</kbd>, så den kan ha taggats därefter."
+}

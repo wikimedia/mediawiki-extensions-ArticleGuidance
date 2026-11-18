@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"GianAntonucci"
+		]
+	},
+	"articleguidance-desc": "Pirmetti a l'utenti di criari artìculi pi menzu di un pircursu guidatu",
+	"articleguidance-disabled-title": "A guida a l'artìculu nun è dispunìbbili",
+	"articleguidance-disabled": "A [[mw:Special:MyLanguage/Article_guidance|guida a l'artìculu]] nun è abbilitatu nta sta wiki.",
+	"articleguidance-pref-enable-label": "Usa a guida a l'artìculu quannnu crìi n'artìculu",
+	"articleguidance-pref-enable-help": "Quannu è abbilitatu, a criazzioni di n'artìculu novu grapi u pircursu guidatu mmeci di l'edituri nurmali.",
+	"articleguidance-specialnewarticle-title": "Artìculu novu",
+	"articleguidance-specialnewarticle-title-placeholder": "Tìtulu di l'artìculu",
+	"articleguidance-specialnewarticle-loading": "Arricerca...",
+	"articleguidance-specialnewarticle-checking": "Cuntrollu..."
+}

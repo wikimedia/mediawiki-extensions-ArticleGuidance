@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"IOIOI"
+			"IOIOI",
+			"PanWor"
 		]
 	},
-	"apihelp-edit-param-articleguidance": "Należy odnotować, że ta edycja została wprowadzona zgodnie z <kbd>[[Special:NewArticle|wskazówkami dotyczącymi artykułów]]</kbd> , dzięki czemu można ją odpowiednio oznaczyć."
+	"apihelp-edit-param-articleguidance": "Odnotowanie, że ta edycja została dokonana za pośrednictwem <kbd>[[Special:NewArticle|Pomocy redaktorskiej]]</kbd>, aby mogła zostać odpowiednio oznaczona."
 }

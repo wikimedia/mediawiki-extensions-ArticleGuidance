@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mirishkorlik"
+		]
+	},
+	"articleguidance-desc": "Foydalanuvçilarga yönaltirilgan va yordamçi jarayon orqali maqolalar yaratiş imkonini beradi.",
+	"articleguidance-disabled-title": "Maqola böyiça körsatma mavjud emas",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Maqola böyiça körsatmalar]] uşbu vikida yoqilmagan",
+	"articleguidance-pref-enable-label": "Yangi maqolalar yaratişda maqola böyiça körsatmalardan foydalaning"
+}

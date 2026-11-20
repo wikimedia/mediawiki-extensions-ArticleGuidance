@@ -58,6 +58,7 @@
 	"articleguidance-navigation-back": "Назад",
 	"articleguidance-header": "Путівник зі створення статті",
 	"articleguidance-type-label": "Тип:",
+	"articleguidance-invalid-article-type": "Недійсний тип статті: «$1» (очікуваний формат: Q12345)",
 	"articleguidance-notability-unknown-tags": "Невідомі теги: $1",
 	"articleguidance-notability-option-wikidata-title": "Додати цю тему до Вікіданих",
 	"articleguidance-notability-option-sandbox-title": "Почати у своїй пісочниці",

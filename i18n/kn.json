@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Anzx"
+		]
+	},
+	"articleguidance-desc": "ಮಾರ್ಗದರ್ಶನೆ ಮೂಲಕ ಬಳಕೆದಾರರಿಗೆ ಲೇಖನಗಳನ್ನು ರಚಿಸಲು ಅನುವು ಮಾಡಿಕೊಡುತ್ತದೆ.",
+	"articleguidance-disabled-title": "ಲೇಖನ ಮಾರ್ಗದರ್ಶನ ಲಭ್ಯವಿಲ್ಲ.",
+	"articleguidance-disabled": "ಈ ವಿಕಿಯಲ್ಲಿ [[mw:Special:MyLanguage/Article_guidance|ಲೇಖನ ಮಾರ್ಗದರ್ಶನ]] ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ.",
+	"articleguidance-pref-enable-label": "ಹೊಸ ಲೇಖನಗಳನ್ನು ರಚಿಸುವಾಗ ಲೇಖನ ಮಾರ್ಗದರ್ಶನವನ್ನು ಬಳಸಿ.",
+	"articleguidance-pref-enable-help": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಹೊಸ ಲೇಖನವನ್ನು ರಚಿಸುವುದರಿಂದ ಪ್ರಮಾಣಿತ ಸಂಪಾದಕದ ಬದಲಿಗೆ ಮಾರ್ಗದರ್ಶಿ ಅನುಭವ ತೆರೆಯುತ್ತದೆ.",
+	"articleguidance-specialnewarticle-title": "ಹೊಸ ಲೇಖನ",
+	"articleguidance-specialnewarticle-title-placeholder": "ಲೇಖನದ ಶೀರ್ಷಿಕೆ",
+	"articleguidance-specialnewarticle-loading": "ಹುಡುಕಲಾಗುತ್ತಿದೆ...",
+	"articleguidance-specialnewarticle-checking": "ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
+}

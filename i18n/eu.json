@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Theklan",
+			"Xabier Armendaritz"
+		]
+	},
+	"articleguidance-desc": "Erabiltzaileei artikuluak sortzeko aukera ematen die, gidatutako eta lagundutako lan fluxu baten bidez.",
+	"articleguidance-specialnewarticle-title": "Artikulu berria",
+	"articleguidance-specialnewarticle-title-placeholder": "Artikuluaren izenburua",
+	"articleguidance-specialnewarticle-loading": "Bilatzen...",
+	"articleguidance-specialnewarticle-checking": "Egiaztatzen...",
+	"articleguidance-specialnewarticle-no-results": "«$1» izenbururako gairik ez da aurkitu",
+	"articleguidance-titleconflict-exists-warning": "«$1» izeneko artikulua existitzen da dagoeneko.",
+	"articleguidance-specialnewarticle-edit-existing": "Editatu lehendik dagoen artikulua",
+	"articleguidance-specialnewarticle-disambiguation-title": "Zer da hau?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Aukeratu mota bat, horren ordez",
+	"articleguidance-sources-title": "Erreferentziak gehitu",
+	"articleguidance-sources-subtitle": "Iturriek irakurleei datuak egiaztatzen laguntzen diete, eta gai hau zergatik den garrantzitsua erakusten dute.",
+	"articleguidance-sources-add-source": "Gehitu iturria",
+	"articleguidance-sources-duplicate": "Iturri hau dagoeneko gehitu da",
+	"articleguidance-sources-continue": "Jarraitu",
+	"articleguidance-sources-helper": "Iturriak gehi ditzakezu idazten ari zaren bitartean.",
+	"articleguidance-sources-helper-required": "Wiki honetako «$1» motako artikuluek iturriak behar dituzte.",
+	"articleguidance-sources-helper-progress": "Gutxienez {{PLURAL:$2|iturri bat behar da|$2 iturri behar dira}}, eta $1 gehitu d(ir)a.",
+	"articleguidance-sources-unreliable-warning-title": "Komunitateak ez erabiltzea gomendatzen du",
+	"articleguidance-sources-unreliable-warning-description": "Iturri mota hori gutxitan onartzen da artikulu mota horretarako.",
+	"articleguidance-sources-tips-title": "«$1» motako artikuluetarako aholkuak",
+	"articleguidance-instructions-start-writing": "Idazten hasi",
+	"articleguidance-navigation-back": "Atzera",
+	"articleguidance-tracking-category": "Artikuluak sortzeko gida erabiltzen duten orriak",
+	"articleguidance-titleconflict-suggestion-prefix": "Iradokizuna:",
+	"articleguidance-titleconflict-continue": "Jarraitu",
+	"articleguidance-titleconflict-selected-subject": "Aukeratutako gaia",
+	"articleguidance-titleconflict-viewexisting": "Ikusi lehendik dagoen artikulua",
+	"tag-articleguidance": "Artikuluak sortzeko gida"
+}

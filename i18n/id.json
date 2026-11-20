@@ -2,10 +2,27 @@
 	"@metadata": {
 		"authors": [
 			"Budhiastawa",
-			"Veracious"
+			"Veracious",
+			"Rafka Aditia"
 		]
 	},
+	"articleguidance-desc": "Memungkinkan pengguna untuk membuat artikel melalui alur kerja yang dipandu dan dibantu",
+	"articleguidance-specialnewarticle-title": "Artikel baru",
+	"articleguidance-specialnewarticle-title-placeholder": "Judul artikel",
+	"articleguidance-specialnewarticle-loading": "Mencari...",
+	"articleguidance-specialnewarticle-checking": "Memeriksa...",
+	"articleguidance-specialnewarticle-edit-existing": "Sunting artikel yang telah ada",
+	"articleguidance-specialnewarticle-disambiguation-title": "Apa ini?",
+	"articleguidance-sources-title": "Tambahkan sumber",
+	"articleguidance-sources-add-source": "Tambahkan sumber",
+	"articleguidance-sources-continue": "Lanjutkan",
+	"articleguidance-instructions-start-writing": "Mulai menulis",
+	"articleguidance-navigation-back": "Kembali",
 	"articleguidance-notability-warning-crosswiki": "Topik ini belum ada di Wikipedia lain. Cari tahu apa yang diperlukan untuk menerbitkan artikel di sini.",
 	"articleguidance-notability-warning-wikidata": "Anda hanya dapat membuat jenis artikel ini untuk subjek yang memiliki entri Wikidata.",
-	"articleguidance-notability-warning-draft": "Artikel ini awalnya berupa draf. Anda dapat menerbitkannya setelah siap."
+	"articleguidance-notability-warning-draft": "Artikel ini awalnya berupa draf. Anda dapat menerbitkannya setelah siap.",
+	"articleguidance-titleconflict-continue": "Lanjutkan",
+	"tag-articleguidance": "Pedoman Artikel",
+	"articleguidance-publish-followup-confirmation-title": "Artikel telah diterbitkan!",
+	"articleguidance-publish-followup-close-button": "Tutup"
 }

@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ooswesthoesbes"
+		]
+	},
+	"articleguidance-desc": "Hiemit kónne gebroekers pagina's aanmake mit 'n begelèdde, sjtiepende meneer van wirke.",
+	"articleguidance-specialnewarticle-title": "Nuuj artikel",
+	"articleguidance-specialnewarticle-title-placeholder": "Artikelnaam",
+	"articleguidance-specialnewarticle-loading": "Zeuke...",
+	"articleguidance-specialnewarticle-checking": "Kónterlere...",
+	"articleguidance-specialnewarticle-no-results": "Gein óngerwerpe gevónje veur \"$1\"",
+	"articleguidance-titleconflict-exists-warning": "'n Artikel mit de naam \"$1\" besjteit al.",
+	"articleguidance-specialnewarticle-edit-existing": "Bewirk besjtäönde pagina",
+	"articleguidance-specialnewarticle-disambiguation-title": "Waat is dit?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Kees veur 'n saort daoveur",
+	"articleguidance-sources-title": "Veug brónne toe",
+	"articleguidance-sources-subtitle": "Brónne helpe de laezer mit 't kónterlere van feite en tuint wiezoe dit óngerwerp wichtig is.",
+	"articleguidance-sources-add-source": "Veug brón toe",
+	"articleguidance-sources-duplicate": "Dees brón is al toegeveug",
+	"articleguidance-sources-continue": "Gank door",
+	"articleguidance-sources-helper": "Doe kans brónne toeveuge ónger 't sjrieve.",
+	"articleguidance-sources-helper-required": "$1 artikele op deze wiki broeke brónvermeljinge.",
+	"articleguidance-sources-helper-progress": "{{PLURAL:$2|Ein brón|$1 van de $2 brónne}} toegeveug.",
+	"articleguidance-sources-unreliable-warning-title": "Neet aangeraoje door de gemeinsjap",
+	"articleguidance-sources-unreliable-warning-description": "Dees brónsaort weurt zelje aangenómme veur dees saort aan artikel.",
+	"articleguidance-sources-tips-title": "Tips veur artikele van de saort $1",
+	"articleguidance-sources-tips-content-recommended": "Dees brónsaorte wirke good:",
+	"articleguidance-sources-tips-content-discouraged": "Dees waere zelje aangenómme:",
+	"articleguidance-sources-check-failed": "Brónkóntrol mislök. Perbeer 't nag 'ns.",
+	"articleguidance-instructions-guidance-heading": "Aanvange mit dit artikel",
+	"articleguidance-instructions-start-writing": "Vang aan mit sjrieve",
+	"articleguidance-navigation-back": "Trögk"
+}

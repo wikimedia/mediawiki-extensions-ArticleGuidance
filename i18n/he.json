@@ -38,9 +38,9 @@
 	"articleguidance-sources-subtitle": "מקורות עוזרים לקוראים לבדוק את העובדות ומראים מדוע הנושא הזה חשוב.",
 	"articleguidance-sources-subtitle-notability-risk": "ערך מהסוג הזה דורש לפחות {{PLURAL:$1|מקור|$1 מקורות}} לפני שיהיה אפשר להמשיך.",
 	"articleguidance-sources-subtitle-notability-risk-generic": "הערך הזה דורש לפחות {{PLURAL:$1|מקור אחד|$1 מקורות}} לפני שיהיה אפשר להמשיך.",
-	"articleguidance-sources-input-placeholder": "הדבקת קישור, ISBN או DOI",
+	"articleguidance-sources-input-placeholder": "הדבקת קישור, מסת\"ב או DOI",
 	"articleguidance-sources-add-source": "הוספת מקור",
-	"articleguidance-sources-not-found": "לא נמצא מקור. יש להזין קישור או מזהה מקור, כגון ISBN או DOI.",
+	"articleguidance-sources-not-found": "לא נמצא מקור. יש להזין קישור או מזהה מקור, כגון מסת\"ב או DOI.",
 	"articleguidance-sources-duplicate": "המקור הזה כבר נוסף",
 	"articleguidance-sources-continue": "המשך",
 	"articleguidance-sources-helper": "ניתן להוסיף מקורות תוך כדי כתיבה.",
@@ -118,11 +118,11 @@
 	"communityconfiguration-articleguidance-feature-section-label": "זמינות",
 	"communityconfiguration-articleguidance-feature-section-description": "ההגדרה הזאת קובעת אם החוויה המודרכת ליצירת ערך חדש זמינה באופן כללי בוויקי הזה.",
 	"communityconfiguration-articleguidance-articleguidanceenabled-control-label": "להפעיל את הדרכת הערכים בוויקי הזה",
-	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "הפעלת הדרכת הערכים, לרבות דף מיוחד לתחילת כתיבת ערכים חדשים ועיבוד מתווי ערכים. האפשרויות שלהלן קובעות כיצד התכונה תהיה זמינה למשתמשים (למשל, בעת לחיצה על קישורים אדומים). כאשר האפשרות הזאת כבויה, כל תכונות ההדרכה מושבתות.",
+	"communityconfiguration-articleguidance-articleguidanceenabled-help-text": "הפעלת ההדרכה, כולל דף מיוחד לתחילת כתיבת ערכים חדשים ועיבוד מתווי ערכים. האפשרויות הבאות קובעות איך התכונה תהיה זמינה למשתמשים (למשל, בעת לחיצה על קישורים אדומים). כאשר האפשרות הזאת כבויה, כל תכונות ההדרכה מושבתות.",
 	"communityconfiguration-articleguidance-redirect-section-label": "יצירת ערכים מודרכת",
 	"communityconfiguration-articleguidance-redirect-section-description": "ההגדרות האלו קובעות מי מועבר לחוויית הקריאה של ערכים חדשים במקום לעורך הרגיל.",
 	"communityconfiguration-articleguidance-articleguidanceredirectenabled-control-label": "שימוש בחוויה המודרכת בעת לחיצה על קישורים אדומים",
-	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "לחיצה על קישור אדום לערך שאינו קיים תפתח את החוויה המודרכת. כאשר האפשרות מופעלת באתר הוויקי, משתמשים שמעדיפים לעבור ישירות לעורך הרגיל עדיין יכולים להשבית אותה בהעדפות האישיות שלהם.",
+	"communityconfiguration-articleguidance-articleguidanceredirectenabled-help-text": "לחיצה על קישור אדום לערך שאינו קיים תפתח את החוויה המודרכת. כשהאפשרות מופעלת בוויקי, משתמשים שמעדיפים לעבור ישירות לעורך הרגיל עדיין יכולים להשבית אותה בהעדפות האישיות שלהם.",
 	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-control-label": "להגביל לעורכים חדשים",
-	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "החוויה המודרכת מוצגת רק לעורכים שמספר העריכות שלהם נמוך מהסף המוגדר לעורכים חדשים באתר הוויקי הזה. כל שאר העורכים משתמשים בעורך הרגיל. להגדרה הזאת יש השפעה רק כאשר הדרכת הערכים מופעלת באתר הוויקי."
+	"communityconfiguration-articleguidance-articleguidanceredirectjunioreditorsonly-help-text": "החוויה המודרכת מוצגת רק לעורכים שמספר העריכות שלהם נמוך מהסף המוגדר לעורכים חדשים בוויקי הזה. כל שאר העורכים משתמשים בעורך הרגיל. להגדרה הזאת יש השפעה רק כשהדרכת הערכים מופעלת בוויקי."
 }

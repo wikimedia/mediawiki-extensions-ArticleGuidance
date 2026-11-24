@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"DaSupremo"
+		]
+	},
+	"articleguidance-desc": "E dey enable users to create articles thru a guided, assisted workflow",
+	"articleguidance-disabled-title": "Article guidance no be available",
+	"articleguidance-disabled": "[[mw:Special:MyLanguage/Article_guidance|Article Guidance]] no be enabled for dis wiki top.",
+	"articleguidance-pref-enable-label": "Use article guidance wen you dey create new articles",
+	"articleguidance-pref-enable-help": "Wen dem enable, creating a new article dey open de guided experience instead of de standard editor.",
+	"articleguidance-specialnewarticle-title": "Fresh article",
+	"articleguidance-specialnewarticle-title-placeholder": "Article title",
+	"articleguidance-specialnewarticle-loading": "Dey search...",
+	"articleguidance-specialnewarticle-checking": "Dey check...",
+	"articleguidance-specialnewarticle-checking-subject": "Dey check for a matching subject.",
+	"articleguidance-specialnewarticle-checking-subject-delayed": "Still dey check. Dis fi take a moment.",
+	"articleguidance-specialnewarticle-matching-outline": "Dey prepare guidance give \"$1\".",
+	"articleguidance-specialnewarticle-no-results": "Dem no find subjects give \"$1\"",
+	"articleguidance-specialnewarticle-search-error": "E no fi check dis subject.",
+	"articleguidance-specialnewarticle-outlines-error": "No fi load de article types.",
+	"articleguidance-specialnewarticle-search-retry": "Make you san try",
+	"articleguidance-specialnewarticle-invalid-title": "Page titles no fi include $1. Remove dese characters den san try."
+}

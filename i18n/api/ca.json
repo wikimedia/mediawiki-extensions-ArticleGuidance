@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Soniettte"
+			"Soniettte",
+			"Tiputini"
 		]
 	},
-	"apihelp-edit-param-articleguidance": "Registra que aquesta edició s'ha fet a través de <kbd>[[Special:NewArticle|Article guidande]]</kbd> , de manera que es pugui etiquetar com cal."
+	"apihelp-edit-param-articleguidance": "Registreu que aquesta edició s'ha fet a través de <kbd>[[Special:NewArticle|Article guidande]]</kbd> , de manera que es pugui etiquetar com cal."
 }

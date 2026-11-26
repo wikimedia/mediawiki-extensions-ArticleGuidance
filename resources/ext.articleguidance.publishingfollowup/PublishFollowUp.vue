@@ -81,8 +81,8 @@ module.exports = exports = defineComponent( {
 	left: 0;
 	right: 0;
 	z-index: 100;
-	background-color: #fff;
-	border-top: 1px solid #a2a9b1;
+	background-color: @background-color-base;
+	border-top: @border-width-base @border-style-base @border-color-base;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	padding: 12px 16px;
@@ -140,8 +140,8 @@ module.exports = exports = defineComponent( {
 		}
 	}
 
-	&__icon--success {
-		color: #00af89;
+	&__icon--success.cdx-icon {
+		color: @color-icon-success;
 	}
 }
 </style>

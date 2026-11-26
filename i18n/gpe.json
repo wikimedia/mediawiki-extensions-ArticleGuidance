@@ -20,5 +20,17 @@
 	"articleguidance-specialnewarticle-search-error": "E no fi check dis subject.",
 	"articleguidance-specialnewarticle-outlines-error": "No fi load de article types.",
 	"articleguidance-specialnewarticle-search-retry": "Make you san try",
-	"articleguidance-specialnewarticle-invalid-title": "Page titles no fi include $1. Remove dese characters den san try."
+	"articleguidance-specialnewarticle-invalid-title": "Page titles no fi include $1. Remove dese characters den san try.",
+	"articleguidance-specialnewarticle-invalid-title-generic": "Dis page title be invalid. Please try anoda title.",
+	"articleguidance-titleconflict-exists-warning": "An article dem title \"$1\" already dey exist.",
+	"articleguidance-specialnewarticle-edit-existing": "Edit article wey dey exist",
+	"articleguidance-specialnewarticle-disambiguation-title": "Wat be dis?",
+	"articleguidance-specialnewarticle-browse-outlines-prefix": "Subject unavailable?",
+	"articleguidance-specialnewarticle-browse-outlines-link": "Make you pick a type instead",
+	"articleguidance-specialnewarticle-browse-outlines-continue": "Continue anyway",
+	"articleguidance-specialnewarticle-skip-guidance-prefix": "Make you skip assistance.",
+	"articleguidance-specialnewarticle-skip-guidance-link": "Edit widout community guidance.",
+	"articleguidance-specialnewarticle-skip-guidance-info-label": "Learn more about Article guidance",
+	"articleguidance-specialnewarticle-language-fallback-notice": "Sam results be shown insyd anoda language",
+	"articleguidance-sources-title": "Make you add sources"
 }
